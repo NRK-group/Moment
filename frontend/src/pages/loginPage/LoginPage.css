@@ -47,7 +47,7 @@
     height: 9%;
     margin: 2.5% auto;
     border-radius: 3px;
-    border: 1px solid;
+    border: 1px solid var(--subheading-color);
     padding: 1%;
     font-size: var(--tertiary-font-size);
 }
@@ -95,8 +95,15 @@ input:focus{
     border: none;
     width: 20%;
     height: 5%;
-    margin: 2% auto;
+    margin: 2%;
     color: white;
+    padding: 1.75%;
+}
+
+.loginIcons{
+    display: flex;
+    justify-content: center;
+    margin: 2% auto;
 }
 
 .loginGithub{
@@ -111,4 +118,24 @@ button:hover{
     cursor: pointer;
 }
 
+.loginRegisterOption{
+    width: 85%;
+    border-top:1px solid var(--subheading-color) ;
+    margin: auto;
+}
 
+.loginRegisterText{
+    width: fit-content;
+    margin: 2% auto;
+}
+
+.loginRegisterButton{
+    width: 50%;
+}
+
+@media all and (max-width: 480px) {
+    .loginContainer{
+    }
+
+    
+}

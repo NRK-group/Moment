@@ -20,11 +20,16 @@ export default function Login() {
           <LoginInput type='password' styleName='loginInput loginPasswordInput' placeholder='Password' />
           <button className="loginInput loginAttemptBtn" value='login'>Log in</button>
 
-          <p className="externalLogin">Login with: </p>
+          <p className="externalLogin">Log in with: </p>
           <span className="loginIcons">
           <button className="externalBtn loginGithub"><i class="fa-brands fa-github"></i> Github</button>
           <button className="externalBtn loginGoogle"><i class="fa-brands fa-google"></i> Google</button>
           </span>
+
+          <Card styleName='loginRegisterOption' > 
+          <p className="loginRegisterText">Don't have an account?</p>
+          <button className="loginInput loginAttemptBtn loginRegisterButton">Register Here</button>
+          </Card>
 
         </Card>
     </Card>

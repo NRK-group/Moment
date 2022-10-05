@@ -22,8 +22,8 @@ export default function Login() {
 
           <p className="externalLogin">Log in with: </p>
           <span className="loginIcons">
-          <button className="externalBtn loginGithub"><i class="fa-brands fa-github"></i> Github</button>
-          <button className="externalBtn loginGoogle"><i class="fa-brands fa-google"></i> Google</button>
+          <button className="externalBtn loginGithub"><i className="fa-brands fa-github"></i> Github</button>
+          <button className="externalBtn loginGoogle"><i className="fa-brands fa-google"></i> Google</button>
           </span>
 
           <Card styleName='loginRegisterOption' > 

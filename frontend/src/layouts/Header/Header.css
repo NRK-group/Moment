@@ -18,7 +18,7 @@
         height: var(--desktop-nav-height);
     }
     .header {
-        max-width: 800px;
+        max-width: 975px;
         height: var(--desktop-nav-height);
         width: 100%;
     }

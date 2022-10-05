@@ -8,7 +8,15 @@
     --heading-color: #2b2c34;
     --subheading-color: #2b2c3480;
     --background-color: #fffffe;
+    --border-color: #2b2c34;
     --button-color: #0095f6;
     --notif-color: #e45858;
     --content-color: #2b2c34;
+    --desktop-nav-height: 60px;
+    --mobile-nav-height: 40px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }

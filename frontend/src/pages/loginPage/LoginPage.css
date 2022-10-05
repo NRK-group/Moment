@@ -1,0 +1,114 @@
+.loginContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--background-color);
+    padding: 1%;
+}
+
+.loginLogoHolder{
+    width: 825px;
+    margin: auto;
+    height: fit-content;
+    min-height: 125px;
+    padding: 1.5%;
+}
+
+.loginMomentLogo{
+    width: 100%;
+    height: 100%;
+}
+
+.loginSlogan{
+    font-size: var(--subheading-font-size);
+    font-weight: bold;
+    width: fit-content;
+    margin-top: 5px;
+}
+
+.inputSection{
+    height: 475px;
+    width: 85%;
+    max-width: 450px;
+    min-width: 350px;
+    border-radius: 5px;
+    border: 2px solid var(--subheading-color);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.61);
+    margin: auto;
+
+}
+
+.loginInput{
+    display: flex;
+    justify-content: center;
+    width: 85%;
+    height: 9%;
+    margin: 2.5% auto;
+    border-radius: 3px;
+    border: 1px solid;
+    padding: 1%;
+    font-size: var(--tertiary-font-size);
+}
+
+input:focus{
+    outline: var(--button-color) solid 1.5px;
+    border: none;
+    
+}
+
+.loginTitle{
+    width: fit-content;
+    margin: 6% auto 8%;
+}
+
+
+.loginAttemptBtn{
+    display: flex;
+    margin: 4% auto;
+    background-color: var(--button-color);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    align-items: center;
+}
+
+.externalLogin{
+    width: fit-content;
+    margin: 2% auto;
+}
+
+.fa-github{
+    margin-right: 7%;
+}
+.fa-google{
+    margin-right: 7%;
+}
+.externalBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 3px;
+    border: none;
+    width: 20%;
+    height: 5%;
+    margin: 2% auto;
+    color: white;
+}
+
+.loginGithub{
+    background-color: #1f1f1f;
+}
+
+.loginGoogle{
+    background-color: #cc0000;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+

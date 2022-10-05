@@ -12,3 +12,12 @@
     --notif-color: #e45858;
     --content-color: #2b2c34;
 }
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+}

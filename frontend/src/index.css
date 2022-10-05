@@ -1,0 +1,14 @@
+:root {
+    font-family: 'Libre Franklin', sans-serif;
+    --heding-font-size: 1.6rem;
+    --subheading-font-size: 1.5rem;
+    --body-font-size: 1.6rem;
+    --input-font-size: 1.6rem;
+    --tertiary-font-size: 1.4rem;
+    --heading-color: #2b2c34;
+    --subheading-color: #2b2c3480;
+    --background-color: #fffffe;
+    --button-color: #0095f6;
+    --notif-color: #e45858;
+    --content-color: #2b2c34;
+}

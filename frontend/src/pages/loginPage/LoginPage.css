@@ -19,6 +19,7 @@
 .loginMomentLogo{
     width: 100%;
     height: 100%;
+    min-width: 275px;
 }
 
 .loginSlogan{
@@ -26,6 +27,7 @@
     font-weight: bold;
     width: fit-content;
     margin-top: 5px;
+    min-width: 265px;
 }
 
 .inputSection{
@@ -35,7 +37,7 @@
     min-width: 350px;
     border-radius: 5px;
     border: 2px solid var(--subheading-color);
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.61);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.61);
     margin: auto;
 
 }
@@ -49,7 +51,7 @@
     border-radius: 3px;
     border: 1px solid var(--subheading-color);
     padding: 1%;
-    font-size: var(--tertiary-font-size);
+    font-size: 1.2rem;
 }
 
 input:focus{
@@ -134,8 +136,14 @@ button:hover{
 }
 
 @media all and (max-width: 480px) {
-    .loginContainer{
+
+    .inputSection{
+        margin-top: 0;
+        height: fit-content;
     }
 
-    
+    .loginLogoHolder{
+        width: 75%;
+    }
+
 }

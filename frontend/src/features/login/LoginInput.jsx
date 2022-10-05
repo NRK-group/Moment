@@ -1,5 +1,9 @@
 export default function LoginInput(props) {
   return (
-    <input type={props.type} className={props.styleName} placeholder={props.placeholder} />
+    // <div class="inputBox">
+      <input type={props.type} className={props.styleName} placeholder={props.placeholder} />
+      // {/* <span>{props.placeholder}</span> */}
+    // {/* </div> */}
+
   )
 }

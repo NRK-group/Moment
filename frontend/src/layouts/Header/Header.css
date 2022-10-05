@@ -1,0 +1,25 @@
+.headerContainer {
+    border-bottom: var(--border-color) 1px solid;
+    height: var(--mobile-nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.header {
+    max-width: 400px;
+    height: var(--mobile-nav-height);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+}
+@media only screen and (min-width: 400px) {
+    .headerContainer {
+        height: var(--desktop-nav-height);
+    }
+    .header {
+        max-width: 975px;
+        height: var(--desktop-nav-height);
+        width: 100%;
+    }
+}

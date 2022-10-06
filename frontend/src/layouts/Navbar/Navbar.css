@@ -6,6 +6,9 @@
     height: 100%;
     fill: var(--border-color);
 }
+.navbarSize {
+    width: 30%;
+}
 .icon {
     height: 22px;
     width: 22px;

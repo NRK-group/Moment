@@ -3,13 +3,19 @@
 }
 
 .authAvatarBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     margin: auto;
     height: 10%;
     width: 10%;
     background-color: var(--button-color);
     border: none;
     color: white;
-    margin-bottom: 0;
+    margin-bottom: 21%;
+    margin-left: 68%;
+    border-radius: 50%;
 }
 
 .authAvatar{
@@ -19,12 +25,14 @@
     min-height: 125px;
     width: 10vmax;
     min-width: 125px;
-    background-color: var(--background-color);
-    background-image: url('./assets/user-circle-thin-svgrepo-com.svg');
+    background-image: url('./assets/noun-user-circle-4602186.svg');
     background-position: center;
     background-size: contain;
+    /* background-size: 110%; */
     background-repeat: no-repeat;
     border-radius: 50%;
+    opacity: 0.85;
+    cursor: pointer;
 }
 
 .authDate{

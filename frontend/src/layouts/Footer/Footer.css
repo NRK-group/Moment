@@ -7,13 +7,13 @@
     border-top: 1px solid var(--border-color);
 }
 .footer {
-    max-width: 400px;
+    max-width: 600px;
     height: var(--mobile-nav-height);
     display: flex;
     align-items: center;
     width: 100%;
 }
-@media only screen and (min-width: 400px) {
+@media only screen and (min-width: 600px) {
     .footerContainer {
         display: none;
     }

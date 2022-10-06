@@ -5,6 +5,8 @@ import {
     NewPostIcon,
     MessagesIcon,
     GroupsIcon,
+    NotificationsIcon,
+    ProfileIcon,
 } from '../../components/Icons/Icons';
 import './Navbar.css';
 
@@ -32,5 +34,20 @@ const FooterNav = () => {
         </div>
     );
 };
+const MobileHeaderNav = () => {
+    return (
+        <div className='navbar navbarSize'>
+            <>
+                <NavLink to='/Notifications'>
+                    <NotificationsIcon />
+                </NavLink>
+                <NavLink to='/Profile'>
+                    <ProfileIcon img={''} />
+                </NavLink>
+            </>
+        </div>
+    );
+};
 
-export default FooterNav;
+export { FooterNav, MobileHeaderNav };
+// export default FooterNav;

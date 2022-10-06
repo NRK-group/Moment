@@ -1,5 +1,5 @@
 import './Header.css';
-
+import { MobileHeaderNav } from '../Navbar/Navbar';
 const Header = () => {
     return (
         <div className='headerContainer'>
@@ -22,6 +22,7 @@ const Header = () => {
                     <use id='Moment' href='#img1' x='0' y='0' />
                 </svg>
             </div>
+            <MobileHeaderNav />
         </div>
     );
 };

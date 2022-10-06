@@ -1,4 +1,4 @@
-import FooterNav from '../Navbar/Navbar';
+import { FooterNav } from '../Navbar/Navbar';
 import './Footer.css';
 
 const Footer = () => {

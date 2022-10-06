@@ -17,6 +17,11 @@ function App() {
                     <Route path='/newpost' element={<h1>Newpost</h1>} />
                     <Route path='/messages' element={<h1>Messages</h1>} />
                     <Route path='/groups' element={<h1>Groups</h1>} />
+                    <Route
+                        path='/notifications'
+                        element={<h1>Notifications</h1>}
+                    />
+                    <Route path='/profile' element={<h1>Profile</h1>} />
                 </Routes>
             </>
             <Footer />

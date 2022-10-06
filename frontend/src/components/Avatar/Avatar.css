@@ -1,0 +1,24 @@
+.AvatarC img {
+    border-radius: 50%;
+    border: 3px solid rgb(27, 57, 205);
+  }
+
+
+.AvatarC {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1vw;
+    cursor: pointer;
+    position: relative;
+}
+
+.AvatarIcon {
+   position:absolute;
+    bottom:30%; 
+    right:10%;
+    color: blue;
+    background-color: white;
+    border-radius: 50%;
+}

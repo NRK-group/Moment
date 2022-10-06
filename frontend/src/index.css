@@ -13,10 +13,14 @@
     --notif-color: #e45858;
     --content-color: #2b2c34;
     --desktop-nav-height: 60px;
-    --mobile-nav-height: 40px;
+    --mobile-nav-height: 44px;
 }
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body{
+    margin: 0;
 }

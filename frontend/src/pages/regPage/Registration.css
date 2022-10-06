@@ -9,18 +9,18 @@
     background-color: var(--button-color);
     border: none;
     color: white;
-    margin-bottom: 2%;
+    margin-bottom: 0;
 }
 
 .authAvatar{
     display: flex;
     margin: auto;
-    height: 8vmax;
-    min-height: 100px;
-    width: 8vmax;
-    min-width: 100px;
-    background-color: var(--subheading-color);
-    background-image: url('./assets/golang.png');
+    height: 10vmax;
+    min-height: 125px;
+    width: 10vmax;
+    min-width: 125px;
+    background-color: var(--background-color);
+    background-image: url('./assets/user-circle-thin-svgrepo-com.svg');
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;

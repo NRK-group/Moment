@@ -13,6 +13,19 @@
     width: 100%;
     padding: 0 20px;
 }
+.headerLogo {
+    display: flex;
+    /* justify-content: center; */
+    width: 100%;
+    max-width: 330px;
+}
+#desktopHeaderNav {
+    display: none;
+}
+.search {
+    max-width: 270px;
+    width: 100%;
+}
 @media only screen and (min-width: 400px) {
     .headerContainer {
         height: var(--desktop-nav-height);
@@ -21,5 +34,15 @@
         max-width: 975px;
         height: var(--desktop-nav-height);
         width: 100%;
+    }
+}
+@media only screen and (min-width: 601px) {
+    #desktopHeaderNav {
+        display: flex;
+        max-width: 280px;
+        width: 100%;
+    }
+    #mobileHeaderNav {
+        display: none;
     }
 }

@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import { Route, Routes } from 'react-router-dom';
 import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
+import Profile from './pages/profile/Profile';
 
 function App() {
     return (
@@ -23,7 +24,7 @@ function App() {
                         path='/notifications'
                         element={<h1>Notifications</h1>}
                     />
-                    <Route path='/profile' element={<h1>Profile</h1>} />
+                    <Route path='/profile' element={<Profile/>} />
                 </Routes>
             </>
             <Footer />

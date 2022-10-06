@@ -17,6 +17,8 @@
 .AvatarIcon {
    position:absolute;
     bottom:30%; 
-    right:0;
+    right:10%;
     color: blue;
+    background-color: white;
+    border-radius: 50%;
 }

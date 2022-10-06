@@ -4,7 +4,7 @@
     margin: auto;
     width: 70vw;
     flex-direction: column;
-    background-color: var( --background-color);
+    background-color: var(--background-color);
 }
 
 .homePageStory {
@@ -15,8 +15,7 @@
 }
 
 .homePagePostArea {
-    height: 70vh;
-    display: flex;
+    height: 65vh;
     flex-direction: column;
     border-style: solid;
     border-color: blue;
@@ -35,12 +34,12 @@
 
 @media only screen and (max-width: 600px) {
     .homePage {
-        margin:0%;
+        margin: 0%;
         width: 100vw;
         border-style: solid;
         border-color: green;
-      
-        overflow-y:scroll;
+
+        overflow-y: scroll;
     }
 
     .homePageProfile {
@@ -51,6 +50,6 @@
         width: 100vw;
     }
     .homePagePostArea {
-        overflow-y:unset;
+        overflow-y: unset;
     }
 }

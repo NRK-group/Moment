@@ -12,6 +12,10 @@
     width: 45vw;
     border-style: solid;
     border-color: black;
+    overflow-x: scroll;
+    display: flex;
+    flex-direction: row;
+    
 }
 
 .homePagePostArea {
@@ -32,6 +36,17 @@
     display: flex;
 }
 
+.AvatarUsers {
+    height: 65px;
+    width: 65px;
+}
+
+.AvatarUserProfile {
+    height: 65px;
+    width: 65px;
+}
+
+
 @media only screen and (max-width: 600px) {
     .homePage {
         margin: 0%;
@@ -51,5 +66,14 @@
     }
     .homePagePostArea {
         overflow-y: unset;
+    }
+
+    .AvatarUsers {
+        height: 45px;
+        width: 45px;
+    }
+    .AvatarUserProfile {
+  height: 45px;
+        width: 45px;
     }
 }

@@ -1,0 +1,56 @@
+.inputText{
+    pointer-events: none;
+}
+
+.authAvatarBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    height: 10%;
+    width: 10%;
+    background-color: var(--button-color);
+    border: none;
+    color: white;
+    margin-bottom: 21%;
+    margin-left: 68%;
+    border-radius: 50%;
+}
+
+.authAvatar{
+    display: flex;
+    margin: auto;
+    height: 10vmax;
+    min-height: 125px;
+    width: 10vmax;
+    min-width: 125px;
+    background-image: url('./assets/noun-user-circle-4602186.svg');
+    background-position: center;
+    background-size: contain;
+    /* background-size: 110%; */
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    opacity: 0.85;
+    cursor: pointer;
+}
+
+.authDate{
+    display: flex;
+    width: 85%;
+    margin: auto;
+}
+
+.authDate > * {
+    margin: auto;
+    width: 30%;
+}
+
+select::-webkit-scrollbar{
+    width: 10px;
+}
+select::-webkit-scrollbar-thumb{
+    background-color: var(--subheading-color);
+    border-radius: 5px;
+}
+

@@ -1,0 +1,48 @@
+.inputText{
+    pointer-events: none;
+}
+
+.authAvatarBtn{
+    margin: auto;
+    height: 10%;
+    width: 10%;
+    background-color: var(--button-color);
+    border: none;
+    color: white;
+    margin-bottom: 2%;
+}
+
+.authAvatar{
+    display: flex;
+    margin: auto;
+    height: 8vmax;
+    min-height: 100px;
+    width: 8vmax;
+    min-width: 100px;
+    background-color: var(--subheading-color);
+    background-image: url('./assets/golang.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+}
+
+.authDate{
+    display: flex;
+    width: 85%;
+    margin: auto;
+}
+
+.authDate > * {
+    margin: auto;
+    width: 30%;
+}
+
+select::-webkit-scrollbar{
+    width: 10px;
+}
+select::-webkit-scrollbar-thumb{
+    background-color: var(--subheading-color);
+    border-radius: 5px;
+}
+

@@ -2,14 +2,14 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     background-color: var(--background-color);
     padding: 1%;
 }
 
 .loginLogoHolder{
-    width: 825px;
+    width: fit-content;
     margin: auto;
     height: fit-content;
     min-height: 125px;
@@ -17,8 +17,8 @@
 }
 
 .loginMomentLogo{
-    width: 100%;
-    height: 100%;
+    width: 40vw;
+    height: auto;
     min-width: 275px;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .inputSection{
-    height: 475px;
+    height: fit-content;
     width: 85%;
     max-width: 450px;
     min-width: 350px;
@@ -39,6 +39,7 @@
     border: 2px solid var(--subheading-color);
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.61);
     margin: auto;
+    padding: 2.5% 0;
 
 }
 
@@ -58,11 +59,6 @@ input:focus{
     outline: var(--button-color) solid 1.5px;
     border: none;
     
-}
-
-.loginTitle{
-    width: fit-content;
-    margin: 6% auto 8%;
 }
 
 
@@ -136,14 +132,15 @@ button:hover{
 }
 
 @media all and (max-width: 480px) {
+    .loginLogoHolder{
+        width: fit-content;
+    }
 
+}
+
+@media all and (max-width: 817px) {
     .inputSection{
         margin-top: 0;
-        height: fit-content;
     }
-
-    .loginLogoHolder{
-        width: 75%;
-    }
-
+    
 }

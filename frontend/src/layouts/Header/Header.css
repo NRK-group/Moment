@@ -4,6 +4,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background-color: var(--background-color);
 }
 .header {
     max-width: 601px;

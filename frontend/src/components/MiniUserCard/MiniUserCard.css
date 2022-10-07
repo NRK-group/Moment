@@ -1,0 +1,31 @@
+.miniUserCard {
+    height: 60px;
+    width: 100%;
+    padding: 8px 16px;
+    display: flex;
+    font-size: var(--secondary-font-size);
+}
+.miniUserCardImg {
+    height: 35px;
+    width: 35px;
+}
+.miniUserCardImgContainer {
+    height: 44px;
+    width: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.miniUserCardInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+}
+.miniUserCardName {
+    font-weight: 600;
+}
+.miniUserCardContent {
+    font-size: var(--tertiary-font-size);
+    color: var(--subheading-color);
+}

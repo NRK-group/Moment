@@ -43,7 +43,11 @@ const MobileHeaderNav = () => {
                         <NotificationsIcon />
                     </NavLink>
                     <NavLink to='/Profile'>
-                        <ProfileIcon img={''} />
+                        <ProfileIcon
+                            img={'./logo.svg'}
+                            imgStyleName='profileIcon'
+                            iconStyleName='icon'
+                        />
                     </NavLink>
                 </>
             </div>
@@ -71,7 +75,11 @@ const DesktopHeaderNav = () => {
                         <NotificationsIcon />
                     </NavLink>
                     <NavLink to='/Profile'>
-                        <ProfileIcon img={''} />
+                        <ProfileIcon
+                            img={'./logo.svg'}
+                            imgStyleName='profileIcon'
+                            iconStyleName='icon'
+                        />
                     </NavLink>
                 </>
             </div>

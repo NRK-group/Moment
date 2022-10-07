@@ -1,0 +1,29 @@
+.mobile {
+    width: 100%;
+    max-height: calc(
+        100vh - (var(--mobile-nav-height) + var(--mobile-nav-height))
+    );
+    background-color: black;
+    height: 100%;
+}
+.desktop {
+    width: 100%;
+    max-height: calc(100vh - var(--desktop-nav-height));
+    background-color: var(--secondary-background-color);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: scroll;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge add Firefox */
+.scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none; /* Firefox */
+}

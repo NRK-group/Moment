@@ -2,7 +2,7 @@
     width: 100%;
     max-height: 100vh;
     height: 100%;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     margin: var(--mobile-nav-height) 0;
 }
 .desktop {
@@ -15,6 +15,7 @@
     flex-direction: column;
     padding: 20px;
     overflow-y: scroll;
+    margin: var(--mobile-nav-height) 0;
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hidden::-webkit-scrollbar {

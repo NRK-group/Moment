@@ -7,9 +7,11 @@
     max-height: 1000px;
     border-radius: 3px;
     border: 1px solid var(--border-color);
+    overflow-y: scroll;
 }
 .mobileCard {
     background-color: var(--background-color);
     width: 100%;
-    height: 100%;
+    height: calc(100% - (var(--mobile-nav-height) * 2));
+    overflow-y: scroll;
 }

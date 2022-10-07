@@ -21,7 +21,7 @@ function Avatar({ avatarSrc, avatarAlt, styleName, name , avatarRedirect, avatar
         <div className='AvatarC'>
             <img className={styleNameS} src={src} alt={alt} onClick={()=>{avatarRedirect}} />
           { avatarIconS && (<span className='AvatarIcon'><i className="fa-solid fa-circle-plus"></i></span>)  }
-            <p>{nameS}</p>
+           { nameS && <p>{nameS}</p> }
             
         </div>
     );

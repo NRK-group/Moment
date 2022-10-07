@@ -1,0 +1,55 @@
+.PostBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 64%;
+    background-color: var(--background-color);
+    padding: 1%;
+    text-align: center;
+    border-style: solid;
+    border-color: red;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.PostBody:hover {
+    box-shadow: 0 8px 16px 0 rgba(203, 201, 201, 0.2);
+}
+
+.PostHeader {
+    display: flex;
+    height: 8%;
+    border-style: solid;
+    border-color: red;
+}
+
+.PostHeader P {
+    margin: revert;
+    margin-left: 0.2vw;
+}
+
+.PostContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 28%;
+    background-color: var(--background-color);
+    padding: 1%;
+    border-style: solid;
+    border-color: red;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.PostAvatarUsers {
+    height: 35px;
+    width: 35px;
+}
+
+.PostContainer {
+    border-style: solid;
+    border-color: red;
+    margin: auto;
+    height: 71vh; 
+    width: 22vw;
+}

@@ -8,8 +8,9 @@
 }
 
 .homePageStory {
+    margin: auto;
     height: 14vh;
-    width: 45vw;
+    width: 22vw;
     border-style: solid;
     border-color: black;
     overflow-x: scroll;
@@ -20,6 +21,7 @@
 
 .homePagePostArea {
     height: 65vh;
+    width: 42vw;
     flex-direction: column;
     border-style: solid;
     border-color: blue;

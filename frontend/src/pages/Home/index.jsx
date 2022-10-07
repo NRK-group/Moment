@@ -1,6 +1,7 @@
 
 import './Home.css';
 import Avatar from '../../components/Avatar';
+import Post from '../../features/Post';
 
 
 function Home() {
@@ -35,7 +36,9 @@ function Home() {
                         />
 ))}
                     </div>
-                    <div className='homePagePostArea'>Post</div>
+                    <div className='homePagePostArea'>
+                        <Post/>
+                        </div>
                 </div>
                 <div className='homePageProfile'>homePageProfile</div>
             </div>

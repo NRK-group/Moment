@@ -20,6 +20,7 @@ function Home() {
                             styleName={'AvatarUserProfile'}
                             name={'Profile'}
                             avatarIcon={"AvatarUserProfile"}
+                            cardStyleName={'AvatarC'}
                         />
                  
                         
@@ -32,6 +33,7 @@ function Home() {
                             styleName={'AvatarUsers'}
                             name={'ele'}
                             key={ele}
+                            cardStyleName={'AvatarC'}
                         />
 ))}
                     </div>

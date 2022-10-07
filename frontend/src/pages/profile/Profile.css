@@ -1,3 +1,137 @@
-.profileAvatar{
+.profileCard{
+    height: calc(100vh - 60px);
+    width: 100%;
+    margin: auto;
+    padding-top: 60px;
+}
+
+.profileSection{
+    display: flex;
+    height: fit-content;
+    width: 75%;
+    min-width: 500px;
+    margin: auto;
+}
+
+.profileAvatarImg{
     border: none;
+    height: 110%;
+    width: 110%;
+}
+
+.profileAvatar{
+    margin: 5%;
+    margin-top: 0;
+    height: 200px;
+    width: 200px;
+}
+
+.profileDetails{
+    width: 85%;
+    height: 100%;
+    min-height: 206px;
+    
+    padding: 3%;
+    padding-left: 0;
+}
+
+.profileDetailText {
+    width: fit-content;
+    margin: auto;
+}
+
+.profileDetailBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 20%;
+    min-width: 80px;
+    height: 25%;
+    min-height: 25px;
+    background-color: var(--button-color);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    margin: 2vh auto;
+    margin-top: min(2vh, 25px);
+    margin-bottom: min(2vh, 25px);
+}
+
+.profileStats{
+    display: flex;
+    width: 80%;
+    height: 30%;
+    /* background-color: aqua; */
+    margin: 5vh auto;
+    margin-top: min(5vh, 20px);
+}
+
+.profileStats_1{
+    display: none;
+}
+
+.stats{
+    width: 30%;
+    margin: auto;
+}
+
+p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    font-weight: bold;
+}
+
+@media all and (max-width: 780px) {
+    .profileSection{
+        min-width: 0;
+        width: 100%;
+    }
+
+    .profileStats{
+        display: none;
+    }
+
+    .profileStats_1{
+        margin-top: 2vh;
+        display: flex;
+    }
+
+    .profileDetails{
+        display: flex;
+        justify-content: center;
+
+    }
+    .profileDetailContainer{
+        margin: auto;
+    }
+
+    
+
+}
+
+@media all and (max-width: 480px) {
+    .profileCard{
+        padding-top: 3%;
+    }
+    
+    .profileAvatar{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .profileAvatarImg{
+        height: 110px;
+    }
+    .profileFullName{
+        font-size: var(--tertiary-font-size);
+    }
+    .profileSection{
+        height: 40%;
+    }
+
+
+
 }

@@ -36,15 +36,41 @@
     display: flex;
 }
 
-.AvatarUsers {
+.AvatarUsers img {
     height: 65px;
     width: 65px;
+    border-radius: 50%;
+    border: 3px solid rgb(27, 57, 205);
 }
 
-.AvatarUserProfile {
+.AvatarUserProfile  img {
     height: 65px;
     width: 65px;
+    border-radius: 50%;
+    border: 3px solid rgb(27, 57, 205);
 }
+
+.AvatarUserProfile  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1vw;
+    cursor: pointer;
+    position: relative;
+}
+
+
+.AvatarUsers  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1vw;
+    cursor: pointer;
+    position: relative;
+}
+
 
 
 @media only screen and (max-width: 600px) {
@@ -68,12 +94,12 @@
         overflow-y: unset;
     }
 
-    .AvatarUsers {
+    .AvatarUsers img {
         height: 45px;
         width: 45px;
     }
-    .AvatarUserProfile {
-  height: 45px;
+    .AvatarUserProfile img {
+        height: 45px;
         width: 45px;
     }
 }

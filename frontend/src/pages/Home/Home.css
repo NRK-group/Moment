@@ -55,7 +55,7 @@
         width: 100vw;
         border-style: solid;
         border-color: green;
-
+        height: 87%;
         overflow-y: scroll;
     }
 
@@ -64,10 +64,11 @@
     }
 
     .homePageStory {
-        width: 100vw;
+        width: 99vw;
     }
     .homePagePostArea {
         overflow-y: unset;
+        width: 99vw;
     }
 
     .AvatarUsers {

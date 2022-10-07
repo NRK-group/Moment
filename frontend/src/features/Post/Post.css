@@ -68,11 +68,6 @@
   .dropdown-content a:hover {
     background-color: #ddd;
   }
-  
-  .PostHeaderMenu:hover .dropdown-content {
-   
-  }
-
 
 
 .PostContent {
@@ -99,4 +94,12 @@
     margin: auto;
     height: 71vh; 
     width: 22vw;
+}
+
+@media only screen and (max-width: 600px) {
+    .PostContainer {
+        width: 98vw;
+    }
+
+
 }

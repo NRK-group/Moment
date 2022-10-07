@@ -1,0 +1,17 @@
+.search {
+    max-width: 270px;
+    width: 100%;
+    font-size: var(--tertiary-font-size);
+}
+.searchContainer {
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    background-color: var(--terheading-color);
+    padding: 5px 10px;
+    fill: var(--subheading-color);
+}
+.input {
+    all: unset;
+    padding-left: 10px;
+}

@@ -46,24 +46,47 @@
 .loginInput{
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 85%;
-    height: 9%;
-    margin: 2.5% auto;
+    height: 11%;
+    margin: 4% auto;
     border-radius: 3px;
     border: 1px solid var(--subheading-color);
     padding: 1%;
     font-size: 1.2rem;
 }
 
-input:focus{
-    outline: var(--button-color) solid 1.5px;
-    border: none;
-    
+.inputBox{
+    position: relative;
+    width: 100%;
 }
 
+.inputBox input:focus,
+.inputBox input:valid{
+    outline: var(--button-color) solid 1.5px;
+    border: none; 
+}
+
+.inputBox span{
+    position: absolute;
+    z-index: 10;
+    margin-top: -10%;
+    margin-left: 10%;
+}
+
+.inputBox input:valid ~ span,
+.inputBox input:focus ~ span{
+    transition: 0.1s ease-in;
+    color: var(--button-color);
+    transform: translateY(-95%);
+    font-size: 0.75rem;
+    padding: 0.5%;
+    background-color: var(--background-color);
+}
 
 .loginAttemptBtn{
     display: flex;
+    width: 85%;
     margin: 4% auto;
     background-color: var(--button-color);
     border: none;
@@ -134,6 +157,15 @@ button:hover{
 @media all and (max-width: 480px) {
     .loginLogoHolder{
         width: fit-content;
+    }
+
+    .inputBox span{
+        margin-top: -11%;
+    }
+
+    .inputBox input:valid ~ span,
+    .inputBox input:focus ~ span{
+        transform: translateY(-90%);
     }
 
 }

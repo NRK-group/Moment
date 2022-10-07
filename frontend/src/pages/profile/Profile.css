@@ -84,6 +84,53 @@ p{
     font-weight: bold;
 }
 
+.popUp{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.671);
+    top:0;
+}
+
+.FollowStatsPopUp{
+    position: fixed;
+    left: 0;
+    right: 0;
+    /* transform: translate(-65%, -55%); */
+    transition: 150ms ease-in;
+    margin: 7.5vh auto;
+    height: 90%;
+    min-height: 325px;
+    max-height: 390px;
+    width: 400px;
+    border-radius: 10px;
+    background-color: var(--background-color);
+    border: 2px solid var(--border-color)
+}
+
+.FollowStatsPopUpHeading{
+    display: flex;
+    height: 12%;
+    width: 100%;
+    border-bottom: 2px solid var(--subheading-color);
+    margin: auto;
+}
+
+.followStatsPopUpTitle{
+    width: fit-content;
+    margin: auto;
+}
+
+.followStatsPopUpCross{
+    font-weight: bold;
+    float: right;
+    margin-right: 2%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    /* align-items: center; */
+}
+
 @media all and (max-width: 780px) {
     .profileSection{
         min-width: 0;
@@ -121,6 +168,7 @@ p{
         display: flex;
         justify-content: center;
         align-items: center;
+        height: 100%;
     }
     .profileAvatarImg{
         height: 110px;
@@ -129,7 +177,13 @@ p{
         font-size: var(--tertiary-font-size);
     }
     .profileSection{
-        height: 40%;
+        height: 30%;
+        min-height: 175px;
+        margin-bottom: 1vh;
+    }
+
+    .profileDetails{
+        height: 100%;
     }
 
 

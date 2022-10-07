@@ -1,5 +1,6 @@
 import Avatar from "../../components/Avatar";
 import Card from "../../components/card/Card";
+import FollowStatsPopUp from "../../features/profile/FollowStatsPopUp";
 import ProfileStats from "../../features/profile/ProfileStats";
 import './Profile.css'
 
@@ -20,6 +21,7 @@ export default function Profile() {
         </Card>
         </Card>
           <ProfileStats styleName={'profileStats_1'} />
+          <FollowStatsPopUp type='following' />
 
     </Card>
   )

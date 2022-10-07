@@ -1,5 +1,6 @@
 import './Header.css';
 import { DesktopHeaderNav, MobileHeaderNav } from '../Navbar/Navbar';
+import Input from '../../components/Input/Input';
 const Header = () => {
     return (
         <div className='headerContainer'>
@@ -23,7 +24,7 @@ const Header = () => {
                         <use id='Moment' href='#img1' x='0' y='0' />
                     </svg>
                 </div>
-                <div class='search'></div>
+                <Input styleName={'search'} type={'search'} />
                 <DesktopHeaderNav />
                 <MobileHeaderNav />
             </div>

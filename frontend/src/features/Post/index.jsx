@@ -3,40 +3,43 @@ import Avatar from '../../components/Avatar';
 import './Post.css';
 import { useRef, useState } from 'react';
 
-export default function Post(props) {
-
-
-    const dropdown = useRef(null)
+export default function Post({
+    name,
+    postBodyText,
+    postBodyImgSrc,
+    postContent,
+    avatarSrc,
+}) {
+    const dropdown = useRef(null);
     const [toggle, setToggle] = useState(true);
 
-const OpenDropdownMenu = ()=> {
-    setToggle(!toggle)
-    if(toggle){
-        console.log("inside")
-    dropdown.current.style.display = "block"
-    } else {
-        dropdown.current.style.display = "none"
-    }
-}
-
+    const OpenDropdownMenu = () => {
+        setToggle(!toggle);
+        if (toggle) {
+            console.log('inside');
+            dropdown.current.style.display = 'block';
+        } else {
+            dropdown.current.style.display = 'none';
+        }
+    };
 
     return (
         <>
             <Card styleName={'PostContainer'}>
                 <Card styleName={'PostHeader'}>
-                    <>
+                    <div style={{display: "flex"}}>
                         <Avatar
-                            avatarSrc={
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
-                            }
+                            avatarSrc={avatarSrc}
                             styleName={'PostAvatarUsers'}
                         />
 
-                        <p>name</p>
-                    </>
+                        <p style={{marginLeft: "4px"}} >{name}</p>
+                    </div>
 
                     <div className='PostHeaderMenu'>
-                        <button className='dropbtn' onClick={()=> OpenDropdownMenu()}>
+                        <button
+                            className='dropbtn'
+                            onClick={() => OpenDropdownMenu()}>
                             <i className='fa-solid fa-ellipsis' />
                         </button>
                         <div ref={dropdown} className='dropdown-content'>
@@ -47,10 +50,11 @@ const OpenDropdownMenu = ()=> {
                     </div>
                 </Card>
                 <Card styleName={'PostBody'}>
-                    <p>fdrfrfre</p>
+                    {(postBodyText && <p>{postBodyText}</p>) ||
+                        (postBodyImgSrc && <img src={postBodyImgSrc} />)}
                 </Card>
                 <Card styleName={'PostContent'}>
-                    <p>fdrfrfre</p>
+                    <p>{postContent}</p>
                 </Card>
             </Card>
         </>

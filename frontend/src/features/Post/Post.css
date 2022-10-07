@@ -19,6 +19,7 @@
 .PostHeader {
     display: flex;
     height: 8%;
+    justify-content: space-between;
     border-style: solid;
     border-color: red;
 }
@@ -30,8 +31,8 @@
 
 .PostHeaderMenu {
     position: relative;
-    margin-left: calc(100% - 35% );
 }
+
 
 
   

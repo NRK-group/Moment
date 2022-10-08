@@ -24,7 +24,7 @@ function App() {
                         path='/notifications'
                         element={<h1>Notifications</h1>}
                     />
-                    <Route path='/profile' element={<Profile/>} />
+                    <Route path='/profile' element={<Profile />} />
                 </Routes>
             </>
             <Footer />

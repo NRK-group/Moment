@@ -155,8 +155,6 @@ p{
         margin: auto;
     }
 
-    
-
 }
 
 @media all and (max-width: 480px) {
@@ -186,6 +184,17 @@ p{
         height: 100%;
     }
 
+    .FollowStatsPopUp{
+        max-height: none;
+        min-height: 0px;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
 
-
+    .followStatsPopUpCross{
+        height: fit-content;
+        margin-top: 2%;
+    }
 }

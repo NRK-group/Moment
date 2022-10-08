@@ -37,7 +37,7 @@
     border-right: 1px solid var(--terheading-color);
 }
 .chatUsers {
-    height: calc(100% - 44px);
+    height: calc(100% - 88px);
     overflow-y: scroll;
 }
 .sendMessageContainer {
@@ -80,5 +80,8 @@
 @media only screen and (min-width: 601px) {
     .chatBox {
         border: 1px solid var(--terheading-color);
+    }
+    .chatUsers {
+        height: calc(100% - 44px);
     }
 }

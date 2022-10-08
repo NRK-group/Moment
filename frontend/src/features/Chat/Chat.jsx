@@ -33,6 +33,48 @@ const Chat = ({ bodyStyleName, cardStyleName }) => {
                                 />
                                 <MiniUserCard
                                     img='./logo.svg'
+                                    propsId='1'
+                                    name='Moment'
+                                    content='online'
+                                />
+                                <MiniUserCard
+                                    img='./logo.svg'
+                                    propsId='1'
+                                    name='Moment'
+                                    content='online'
+                                />
+                                <MiniUserCard
+                                    img='./logo.svg'
+                                    propsId='1'
+                                    name='Moment'
+                                    content='online'
+                                />
+                                <MiniUserCard
+                                    img='./logo.svg'
+                                    propsId='1'
+                                    name='Moment'
+                                    content='online'
+                                />
+                                <MiniUserCard
+                                    img='./logo.svg'
+                                    propsId='1'
+                                    name='Moment'
+                                    content='online'
+                                />
+                                <MiniUserCard
+                                    img='./logo.svg'
+                                    propsId='1'
+                                    name='Moment'
+                                    content='online'
+                                />
+                                <MiniUserCard
+                                    img='./logo.svg'
+                                    propsId='1'
+                                    name='Moment'
+                                    content='online'
+                                />
+                                <MiniUserCard
+                                    img='./logo.svg'
                                     propsId='2'
                                     name='Nate'
                                     content='online'

@@ -12,6 +12,16 @@ export default function FollowStatsPopUp(props) {
             </Card>
             <Card styleName='followStatsPopUpUserSection'>
                 <FollowStatUsers username='Nate Russell' />
+                <FollowStatUsers username='Nate Russell' />
+                <FollowStatUsers username='Nate Russell' />
+                <FollowStatUsers username='Nate Russell' />
+                <FollowStatUsers username='Nate Russell' />
+                <FollowStatUsers username='Nate Russell' />
+                <FollowStatUsers username='Nate Russell' />
+                <FollowStatUsers username='Nate Russell' />
+                <FollowStatUsers username='Nate Russell' />
+                <FollowStatUsers username='Nate Russell' />
+
 
             </Card>
 

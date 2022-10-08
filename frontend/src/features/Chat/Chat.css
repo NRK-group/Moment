@@ -17,6 +17,7 @@
     align-items: center;
     height: 44px;
     border-bottom: 1px solid var(--terheading-color);
+    padding: 0 20px;
 }
 .chatContainerHeader > :nth-child(1) {
     max-width: 250px;

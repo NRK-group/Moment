@@ -147,6 +147,7 @@ p{
     align-items: center;
     width: 100%;
     margin: 2% auto;
+    padding: 1%;
 }
 
 .followStatAvatarImg{
@@ -164,24 +165,25 @@ p{
 
 .followStatUsernameHold{
     width: fit-content;
-    padding-left: 2%
+    padding-left: 4%
 }
 
 .followStatUsername{
     width: fit-content;
-    font-size: var(--secondary-font-size);
+    font-size: var(--subheading-font-size);
     font-weight: lighter;
     /* margin-left: 2%; */
     word-wrap: none;
 }
 
 .followStatsRemove{
-    width: 15%;
-    height: 100%;
+    width: 20%;
+    height: 25px;
     border: none;
+    border-radius: 5px;
     background-color: var(--button-color);
     color: white;
-    float: right;
+    /* float: right; */
     margin-left: auto;
     margin-right: 5%;
 }
@@ -238,7 +240,7 @@ p{
         height: 100%;
     }
 
-    .FollowStatsPopUp{
+    .followStatsPopUp{
         max-height: none;
         min-height: 0px;
         height: 100%;

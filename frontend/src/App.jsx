@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import { Route, Routes } from 'react-router-dom';
 import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
+import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
 import { useState } from 'react';
 function App() {
@@ -46,7 +47,22 @@ function App() {
                     />
                     <Route path='/search' element={<h1>Search</h1>} />
                     <Route path='/newpost' element={<h1>Newpost</h1>} />
-                    <Route path='/messages' element={<h1>Messages</h1>} />
+                    <Route
+                        path='/messages'
+                        element={
+                            isMobile ? (
+                                <Chat
+                                    bodyStyleName='mobile'
+                                    cardStyleName='mobileCard'
+                                />
+                            ) : (
+                                <Chat
+                                    bodyStyleName='desktop'
+                                    cardStyleName='desktopCard'
+                                />
+                            )
+                        }
+                    />
                     <Route path='/groups' element={<h1>Groups</h1>} />
                     <Route
                         path='/notifications'

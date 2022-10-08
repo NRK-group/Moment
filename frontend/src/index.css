@@ -1,12 +1,12 @@
 :root {
     font-family: 'Libre Franklin', sans-serif;
     --heding-font-size: 1.6rem;
-    --subheading-font-size: 0.7rem;
+    --subheading-font-size: 1rem;
     --body-font-size: 1.6rem;
     --input-font-size: 1.6rem;
-    --tertiary-font-size: 0.65rem;
+    --tertiary-font-size: 0.9rem;
     --heading-color: #2b2c34;
-    --subheading-color: #2b2c3480;
+    --subheading-color: #2b2c3460;
     --terheading-color: #2b2c3420;
     --background-color: #fffffe;
     --secondary-background-color: #fafafa;
@@ -15,8 +15,8 @@
     --button-color: #0095f6;
     --notif-color: #e45858;
     --content-color: #2b2c34;
-    --desktop-nav-height: 50px;
-    --mobile-nav-height: 44px;
+    --desktop-nav-height: 60px;
+    --mobile-nav-height: 55px;
 }
 * {
     margin: 0;

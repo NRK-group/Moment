@@ -9,7 +9,7 @@ export const ChatUsersContainer = ({ users, currentUserName }) => {
                     <MiniUserCard
                         key={id}
                         img={img}
-                        propsId={id}
+                        propsId={`chat` + id}
                         name={name}
                         content={content}
                     />

@@ -33,19 +33,15 @@
     position: relative;
 }
 
-
-
-  
-  .PostHeaderMenu .dropbtn {
-    font-size: 16px;  
+.PostHeaderMenu .dropbtn {
+    font-size: 16px;
     border: none;
     outline: none;
     padding: 10px 16px;
     background-color: inherit;
     font-family: inherit;
     margin: 0;
-  }
-
+}
 
 .dropdown-content {
     display: none;
@@ -53,23 +49,22 @@
     right: 9%;
     background-color: var(--background-color);
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
-  }
-  
-  .dropdown-content a {
+}
+
+.dropdown-content a {
     float: none;
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
     text-align: left;
-  }
-  
-  .dropdown-content a:hover {
-    background-color: #ddd;
-  }
+}
 
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
 
 .PostContent {
     display: flex;
@@ -93,24 +88,24 @@
     justify-content: left;
 }
 
-.PostContentText  {
+.PostContentText {
     margin-top: 2vh;
     height: 85%;
     font-size: var(--post-font-size);
 }
 
-.PostContentIconsfooter  {
+.PostContentIconsfooter {
     display: flex;
     font-size: var(--post-font-size);
 }
 
-.PostContentIconsfooter  p {
-opacity: .5;
+.PostContentIconsfooter p {
+    opacity: 0.5;
 }
 
 .PostContentIconsfooter .iconContainer {
     justify-content: left;
-    margin-right: .61vw;
+    margin-right: 0.61vw;
 }
 
 .PostAvatarUsers {
@@ -121,7 +116,6 @@ opacity: .5;
     margin-left: 1vw;
     cursor: pointer;
     position: relative;
-   
 }
 
 .PostAvatarUsers img {
@@ -135,7 +129,7 @@ opacity: .5;
     border-style: solid;
     border-color: red;
     margin: auto;
-    height: 71vh; 
+    height: 71vh;
     width: 22vw;
 }
 
@@ -143,6 +137,4 @@ opacity: .5;
     .PostContainer {
         width: 98vw;
     }
-
-
 }

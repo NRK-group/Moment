@@ -33,12 +33,13 @@ function Home() {
                     <br />
 
                     <div className='homePagePostArea'>
-                        <Post  avatarSrc={
+                        <Post
+                            avatarSrc={
                                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
-                            } 
-                            name={"PostName"}
-                            postContent={"postContent"}/>
-                            
+                            }
+                            name={'PostName'}
+                            postContent={'postContent'}
+                        />
                     </div>
                 </div>
 

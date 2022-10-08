@@ -1,4 +1,5 @@
 .headerContainer {
+    border-bottom: var(--terheading-color) 1px solid;
     height: var(--mobile-nav-height);
     display: flex;
     align-items: center;
@@ -9,7 +10,6 @@
     background-color: var(--background-color);
 }
 .header {
-    border-bottom: var(--border-color) 1px solid;
     max-width: 601px;
     height: var(--mobile-nav-height);
     display: flex;

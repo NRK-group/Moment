@@ -14,7 +14,6 @@
     align-items: center;
     flex-direction: column;
     padding: 20px 20px var(--mobile-nav-height) 20px;
-    overflow-y: scroll;
     margin: var(--mobile-nav-height) 0;
 }
 @media only screen and (min-width: 601px) {

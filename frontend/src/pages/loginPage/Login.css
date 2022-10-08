@@ -1,4 +1,4 @@
-.loginContainer{
+.loginContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -6,9 +6,10 @@
     width: 100vw;
     background-color: var(--background-color);
     padding: 1%;
+    overflow-y: scroll;
 }
 
-.loginLogoHolder{
+.loginLogoHolder {
     width: fit-content;
     margin: auto;
     height: fit-content;
@@ -16,13 +17,13 @@
     padding: 1.5%;
 }
 
-.loginMomentLogo{
+.loginMomentLogo {
     width: 40vw;
     height: auto;
     min-width: 275px;
 }
 
-.loginSlogan{
+.loginSlogan {
     font-size: var(--subheading-font-size);
     font-weight: bold;
     width: fit-content;
@@ -30,7 +31,7 @@
     min-width: 265px;
 }
 
-.inputSection{
+.inputSection {
     height: fit-content;
     width: 85%;
     max-width: 450px;
@@ -40,10 +41,9 @@
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.61);
     margin: auto;
     padding: 2.5% 0;
-
 }
 
-.loginInput{
+.loginInput {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,18 +56,18 @@
     font-size: 1.2rem;
 }
 
-.inputBox{
+.inputBox {
     position: relative;
     width: 100%;
 }
 
 .inputBox input:focus,
-.inputBox input:valid{
+.inputBox input:valid {
     outline: var(--button-color) solid 1.5px;
-    border: none; 
+    border: none;
 }
 
-.inputBox span{
+.inputBox span {
     position: absolute;
     z-index: 10;
     margin-top: -10%;
@@ -75,7 +75,7 @@
 }
 
 .inputBox input:valid ~ span,
-.inputBox input:focus ~ span{
+.inputBox input:focus ~ span {
     transition: 0.1s ease-in;
     color: var(--button-color);
     transform: translateY(-95%);
@@ -84,7 +84,7 @@
     background-color: var(--background-color);
 }
 
-.loginAttemptBtn{
+.loginAttemptBtn {
     display: flex;
     width: 85%;
     margin: 4% auto;
@@ -96,18 +96,18 @@
     align-items: center;
 }
 
-.externalLogin{
+.externalLogin {
     width: fit-content;
     margin: 2% auto;
 }
 
-.fa-github{
+.fa-github {
     margin-right: 7%;
 }
-.fa-google{
+.fa-google {
     margin-right: 7%;
 }
-.externalBtn{
+.externalBtn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -121,58 +121,56 @@
     padding: 1.75%;
 }
 
-.loginIcons{
+.loginIcons {
     display: flex;
     justify-content: center;
     margin: 2% auto;
 }
 
-.loginGithub{
+.loginGithub {
     background-color: #1f1f1f;
 }
 
-.loginGoogle{
+.loginGoogle {
     background-color: #cc0000;
 }
 
-button:hover{
+button:hover {
     cursor: pointer;
 }
 
-.loginRegisterOption{
+.loginRegisterOption {
     width: 85%;
-    border-top:1px solid var(--subheading-color) ;
+    border-top: 1px solid var(--subheading-color);
     margin: auto;
 }
 
-.loginRegisterText{
+.loginRegisterText {
     width: fit-content;
     margin: 2% auto;
 }
 
-.loginRegisterButton{
+.loginRegisterButton {
     width: 50%;
 }
 
 @media all and (max-width: 480px) {
-    .loginLogoHolder{
+    .loginLogoHolder {
         width: fit-content;
     }
 
-    .inputBox span{
+    .inputBox span {
         margin-top: -11%;
     }
 
     .inputBox input:valid ~ span,
-    .inputBox input:focus ~ span{
+    .inputBox input:focus ~ span {
         transform: translateY(-90%);
     }
-
 }
 
 @media all and (max-width: 817px) {
-    .inputSection{
+    .inputSection {
         margin-top: 0;
     }
-    
 }

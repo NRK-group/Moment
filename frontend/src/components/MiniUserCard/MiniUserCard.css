@@ -4,6 +4,10 @@
     padding: 8px 16px;
     display: flex;
     font-size: var(--secondary-font-size);
+    cursor: pointer;
+}
+.miniUserCard:hover {
+    background-color: var(--secondary-background-color);
 }
 .miniUserCardImg {
     height: 25px;
@@ -24,6 +28,7 @@
 }
 .miniUserCardName {
     font-weight: 600;
+    font-size: var(--subheading-font-size);
 }
 .miniUserCardContent {
     font-size: var(--tertiary-font-size);

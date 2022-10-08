@@ -92,7 +92,7 @@ p{
     top:0;
 }
 
-.FollowStatsPopUp{
+.followStatsPopUp{
     position: fixed;
     left: 0;
     right: 0;
@@ -108,7 +108,7 @@ p{
     border: 2px solid var(--border-color)
 }
 
-.FollowStatsPopUpHeading{
+.followStatsPopUpHeading{
     display: flex;
     height: 12%;
     width: 100%;
@@ -129,6 +129,29 @@ p{
     text-align: center;
     justify-content: center;
     /* align-items: center; */
+}
+
+.followStatsPopUpUserSection {
+    background-color: red;
+}
+
+.followStatUser{
+    display: flex;
+}
+
+.followStatAvatarImg{
+    width: 50px;
+    height: 50px;
+    background-color: blue;
+}
+
+.followStatAvatar {
+    height: 100%;
+    width: 100%;
+}
+
+.followStatUsername{
+    width: fit-content;
 }
 
 @media all and (max-width: 780px) {

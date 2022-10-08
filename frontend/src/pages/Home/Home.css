@@ -15,7 +15,6 @@
     overflow-x: scroll;
     display: flex;
     flex-direction: row;
-    
 }
 
 .homePagePostArea {
@@ -43,14 +42,14 @@
     border: 3px solid rgb(27, 57, 205);
 }
 
-.AvatarUserProfile  img {
+.AvatarUserProfile img {
     height: 65px;
     width: 65px;
     border-radius: 50%;
     border: 3px solid rgb(27, 57, 205);
 }
 
-.AvatarUserProfile  {
+.AvatarUserProfile {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -60,8 +59,7 @@
     position: relative;
 }
 
-
-.AvatarUsers  {
+.AvatarUsers {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -70,8 +68,6 @@
     cursor: pointer;
     position: relative;
 }
-
-
 
 @media only screen and (max-width: 600px) {
     .homePage {

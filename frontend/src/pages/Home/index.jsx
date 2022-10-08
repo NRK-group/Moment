@@ -31,6 +31,7 @@ function Home({ bodyStyleName, cardStyleName }) {
                                     />
                                 ))}
                             </div>
+                            <br/>
                             <div className='homePagePostArea'> <Post
                             avatarSrc={
                                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'

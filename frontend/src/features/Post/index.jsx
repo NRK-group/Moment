@@ -1,5 +1,10 @@
 import Card from '../../components/card/Card';
 import Avatar from '../../components/Avatar';
+import {
+  LikeIcon,
+  FavoriteIcon,
+  FaceSmileIcon
+} from '../../components/Icons/Icons';
 import './Post.css';
 import { useRef, useState } from 'react';
 
@@ -54,7 +59,17 @@ export default function Post({
                         (postBodyImgSrc && <img src={postBodyImgSrc} />)}
                 </Card>
                 <Card styleName={'PostContent'}>
-                    <p>{postContent}</p>
+                    <div className='PostContentIcons'>
+                        <div className='PostContentIconLike'>
+                  <LikeIcon/>
+                  <p style={{fontSize:"var(--tertiary-font-size)"}}>0 Likes</p>
+                  </div>
+                  <FavoriteIcon/>
+                    </div>
+                    <p className='PostContentText'>{postContent}</p>
+                    <div className='PostContentIconsfooter'>
+                    <FaceSmileIcon/> <p>Add a comment</p>
+                    </div>
                 </Card>
             </Card>
         </>

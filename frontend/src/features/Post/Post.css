@@ -25,7 +25,7 @@
 }
 
 .PostHeader P {
-    margin: revert;
+    margin: auto;
     margin-left: 0.2vw;
 }
 
@@ -40,7 +40,7 @@
     font-size: 16px;  
     border: none;
     outline: none;
-    padding: 14px 16px;
+    padding: 10px 16px;
     background-color: inherit;
     font-family: inherit;
     margin: 0;
@@ -84,9 +84,51 @@
     transition: 0.3s;
 }
 
+.PostContentIcons {
+    display: flex;
+    justify-content: space-between;
+    height: 15%;
+}
+.PostContentIconLike .iconContainer {
+    justify-content: left;
+}
+
+.PostContentText  {
+    margin-top: 2vh;
+    height: 85%;
+    font-size: var(--post-font-size);
+}
+
+.PostContentIconsfooter  {
+    display: flex;
+    font-size: var(--post-font-size);
+}
+
+.PostContentIconsfooter  p {
+opacity: .5;
+}
+
+.PostContentIconsfooter .iconContainer {
+    justify-content: left;
+    margin-right: .61vw;
+}
+
 .PostAvatarUsers {
-    height: 35px;
-    width: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1vw;
+    cursor: pointer;
+    position: relative;
+   
+}
+
+.PostAvatarUsers img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: 3px solid rgb(27, 57, 205);
 }
 
 .PostContainer {

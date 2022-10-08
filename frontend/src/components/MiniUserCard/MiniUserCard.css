@@ -10,8 +10,8 @@
     background-color: var(--secondary-background-color);
 }
 .miniUserCardImg {
-    height: 25px;
-    width: 25px;
+    height: 30px;
+    width: 30px;
 }
 .miniUserCardImgContainer {
     height: 44px;
@@ -36,7 +36,7 @@
 }
 @media only screen and (min-width: 601px) {
     .miniUserCardImg {
-        height: 30px;
-        width: 30px;
+        height: 40px;
+        width: 40px;
     }
 }

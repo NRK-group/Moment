@@ -43,7 +43,7 @@
         height: var(--desktop-nav-height);
     }
     .header {
-        max-width: 850px;
+        max-width: 975px;
         height: var(--desktop-nav-height);
         width: 100%;
     }

@@ -6,8 +6,8 @@
 }
 .chatBox {
     background-color: var(--background-color);
-    height: calc(100% - 37px);
-    max-width: 700px;
+    height: 100%;
+    max-width: 850px;
     display: flex;
     width: 100%;
 }
@@ -15,7 +15,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 44px;
+    height: var(--mobile-nav-height);
     border-bottom: 1px solid var(--terheading-color);
     padding: 0 20px;
 }
@@ -38,7 +38,7 @@
     border-right: 1px solid var(--terheading-color);
 }
 .chatUsers {
-    height: calc(100% - 44px);
+    height: calc(100% - var(--mobile-nav-height));
     overflow-y: scroll;
 }
 .sendMessageContainer {
@@ -82,10 +82,11 @@
     .chatBox {
         border: 1px solid var(--terheading-color);
     }
-    .chatUsers {
-        height: calc(100% - 44px);
-    }
     .chatBox {
         height: 100%;
+    }
+    .chatUsers {
+        height: calc(100% - var(--desktop-nav-height));
+        overflow-y: scroll;
     }
 }

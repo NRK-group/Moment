@@ -6,7 +6,6 @@
 }
 .chatBox {
     background-color: var(--background-color);
-    border: 1px solid var(--terheading-color);
     height: 100%;
     max-width: 700px;
     display: flex;
@@ -77,4 +76,9 @@
     color: var(--background-color);
     padding: 5px 10px;
     border-radius: 5px;
+}
+@media only screen and (min-width: 601px) {
+    .chatBox {
+        border: 1px solid var(--terheading-color);
+    }
 }

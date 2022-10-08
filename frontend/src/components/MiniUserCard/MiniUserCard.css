@@ -6,8 +6,8 @@
     font-size: var(--secondary-font-size);
 }
 .miniUserCardImg {
-    height: 35px;
-    width: 35px;
+    height: 25px;
+    width: 25px;
 }
 .miniUserCardImgContainer {
     height: 44px;
@@ -28,4 +28,10 @@
 .miniUserCardContent {
     font-size: var(--tertiary-font-size);
     color: var(--subheading-color);
+}
+@media only screen and (min-width: 601px) {
+    .miniUserCardImg {
+        height: 30px;
+        width: 30px;
+    }
 }

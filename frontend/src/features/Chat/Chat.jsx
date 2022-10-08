@@ -5,12 +5,12 @@ import SendMessageBox from './components/SendMessageBox';
 import { ChatUsersContainer } from './components/chatUsersContainer';
 const Chat = ({ bodyStyleName, cardStyleName }) => {
     let users = [
-        { name: 'Moment', content: 'online', img: './logo.svg', propsId: '1' },
+        { name: 'Moment', content: 'online', img: './logo.svg', id: '1' },
         {
             name: 'Moment',
             content: 'online',
             img: './logo.svg',
-            propsId: '2',
+            id: '2',
         },
     ];
     let currentUserName = 'Moment';
@@ -19,7 +19,10 @@ const Chat = ({ bodyStyleName, cardStyleName }) => {
             <Card styleName={cardStyleName}>
                 <div className='chatContainer'>
                     <div className='chatBox'>
-                        <ChatUsersContainer users={currentUserName} />
+                        <ChatUsersContainer
+                            users={users}
+                            currentUserName={currentUserName}
+                        />
                         <div className='sendMessageContainer'>
                             <SendMessageBox />
                         </div>

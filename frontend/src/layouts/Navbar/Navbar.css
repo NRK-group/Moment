@@ -6,13 +6,14 @@
     height: 100%;
     max-width: 600px;
     fill: var(--border-color);
+    background-color: var(--background-color);
 }
 .navbarSize {
     width: 30%;
 }
 .icon {
-    height: 22px;
-    width: 22px;
+    height: 18px;
+    width: 18px;
 }
 .navbar a {
     display: flex;

@@ -36,41 +36,53 @@ const FooterNav = () => {
 };
 const MobileHeaderNav = () => {
     return (
-        <div className='navbar navbarSize' id='mobileHeaderNav'>
-            <>
-                <NavLink to='/Notifications'>
-                    <NotificationsIcon />
-                </NavLink>
-                <NavLink to='/Profile'>
-                    <ProfileIcon img={''} />
-                </NavLink>
-            </>
+        <div className='mobileNavContainer'>
+            <div className='navbar navbarSize' id='mobileHeaderNav'>
+                <>
+                    <NavLink to='/notifications'>
+                        <NotificationsIcon />
+                    </NavLink>
+                    <NavLink to='/profile'>
+                        <ProfileIcon
+                            img={'./logo.svg'}
+                            imgStyleName='profileIcon'
+                            iconStyleName='icon'
+                        />
+                    </NavLink>
+                </>
+            </div>
         </div>
     );
 };
 const DesktopHeaderNav = () => {
     return (
-        <div className='navbar' id='desktopHeaderNav'>
-            <>
-                <NavLink to='/home'>
-                    <HomeIcon />
-                </NavLink>
-                <NavLink to='/newpost'>
-                    <NewPostIcon />
-                </NavLink>
-                <NavLink to='/messages'>
-                    <MessagesIcon />
-                </NavLink>
-                <NavLink to='/groups'>
-                    <GroupsIcon />
-                </NavLink>
-                <NavLink to='/Notifications'>
-                    <NotificationsIcon />
-                </NavLink>
-                <NavLink to='/Profile'>
-                    <ProfileIcon img={''} />
-                </NavLink>
-            </>
+        <div className='navContainer'>
+            <div className='navbar' id='desktopHeaderNav'>
+                <>
+                    <NavLink to='/home'>
+                        <HomeIcon />
+                    </NavLink>
+                    <NavLink to='/messages'>
+                        <MessagesIcon />
+                    </NavLink>
+                    <NavLink to='/newpost'>
+                        <NewPostIcon />
+                    </NavLink>
+                    <NavLink to='/groups'>
+                        <GroupsIcon />
+                    </NavLink>
+                    <NavLink to='/notifications'>
+                        <NotificationsIcon />
+                    </NavLink>
+                    <NavLink to='/profile'>
+                        <ProfileIcon
+                            img={'./logo.svg'}
+                            imgStyleName='profileIcon'
+                            iconStyleName='icon'
+                        />
+                    </NavLink>
+                </>
+            </div>
         </div>
     );
 };

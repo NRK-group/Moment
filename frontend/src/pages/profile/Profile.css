@@ -85,6 +85,7 @@ p{
 }
 
 .popUp{
+    display: none;
     position: fixed;
     width: 100%;
     height: 100%;
@@ -93,6 +94,7 @@ p{
 }
 
 .followStatsPopUp{
+    display: none;
     position: fixed;
     left: 0;
     right: 0;

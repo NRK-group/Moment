@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import Card from '../card/Card'
 import './Avatar.css';
 
-function Avatar({ avatarSrc, avatarAlt, styleName, name , avatarRedirect, avatarIcon, cardStyleName }) {
+function Avatar({ avatarSrc, avatarAlt, styleName, name , avatarRedirect, avatarIcon }) {
     const [src, setSrc] = useState(avatarSrc);
     const [alt, setAlt] = useState(avatarAlt);
     const [nameS, setNameS] = useState(name);
     const [avatarIconS, setAvatarIconS] = useState(name);
     const [styleNameS, setStyleNameS] = useState(styleName);
-    const [cardStyleNameS, setCardStyleNameS] = useState(cardStyleName);
 
 
     useEffect(() => {
@@ -17,17 +16,16 @@ function Avatar({ avatarSrc, avatarAlt, styleName, name , avatarRedirect, avatar
         setStyleNameS(styleName)
         setNameS(name)
         setAvatarIconS(avatarIcon)
-        setCardStyleNameS(cardStyleName)
-    }, [avatarSrc, avatarAlt, styleName, avatarIcon, cardStyleName]);
+    }, [avatarSrc, avatarAlt, styleName, avatarIcon]);
 
 
     return (
-        <Card styleName={cardStyleNameS}>
-            <img className={styleNameS} src={src} alt={alt} onClick={()=>{avatarRedirect}} />
+        <div className={styleNameS}>
+            <img  src={src} alt={alt} onClick={()=>{avatarRedirect}} />
           { avatarIconS && (<span className='AvatarIcon'><i className="fa-solid fa-circle-plus"></i></span>)  }
             <p>{nameS}</p>
             
-        </Card>
+        </div>
     );
 }
 

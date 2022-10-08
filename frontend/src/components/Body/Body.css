@@ -1,10 +1,9 @@
 .mobile {
     width: 100%;
-    max-height: calc(
-        100vh - (var(--mobile-nav-height) + var(--mobile-nav-height))
-    );
-    background-color: black;
+    max-height: 100vh;
     height: 100%;
+    /* overflow-y: scroll; */
+    margin: var(--desktop-nav-height) 0;
 }
 .desktop {
     width: 100%;
@@ -14,8 +13,13 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding: 20px;
-    overflow-y: scroll;
+    padding: 20px 20px var(--mobile-nav-height) 20px;
+    margin: var(--mobile-nav-height) 0;
+}
+@media only screen and (min-width: 601px) {
+    .desktop {
+        padding: 20px;
+    }
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hidden::-webkit-scrollbar {

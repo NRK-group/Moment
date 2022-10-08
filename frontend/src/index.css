@@ -1,11 +1,11 @@
 :root {
     font-family: 'Libre Franklin', sans-serif;
     --heding-font-size: 1.6rem;
-    --subheading-font-size: 1.5rem;
+    --subheading-font-size: 0.7rem;
     --body-font-size: 1.6rem;
     --input-font-size: 1.6rem;
     --post-font-size: 1.0rem;
-    --tertiary-font-size: 0.8rem;
+    --tertiary-font-size: 0.65rem;
     --heading-color: #2b2c34;
     --subheading-color: #2b2c3480;
     --terheading-color: #2b2c3420;

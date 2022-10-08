@@ -18,7 +18,7 @@
 }
 @media only screen and (min-width: 601px) {
     .desktop {
-        padding: 20px;
+        padding: 20px 20px var(--mobile-nav-height) 20px;
     }
     .mobile {
         padding-top: 20px;

@@ -5,29 +5,53 @@ import SendMessageBox from './components/SendMessageBox';
 import { ChatUsersContainer } from './components/chatUsersContainer';
 const Chat = ({ bodyStyleName, cardStyleName }) => {
     let users = [
-        { name: 'Moment', content: 'online', img: './logo.svg', id: '1' },
         {
-            name: 'Moment',
-            content: 'online',
-            img: './logo.svg',
-            id: '2',
+            img: '',
+            id: 1,
+            name: 'Firstname Lastname',
+            content: 'Hello • 1w ago',
         },
     ];
     let currentUserName = 'Moment';
     return (
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
-                <div className='chatContainer'>
-                    <div className='chatBox'>
-                        <ChatUsersContainer
-                            users={users}
-                            currentUserName={currentUserName}
-                        />
-                        <div className='sendMessageContainer'>
-                            <SendMessageBox />
+                {bodyStyleName === 'mobile' ? (
+                    users.length !== 0 ? (
+                        <div className='chatContainer'>
+                            <div className='chatBox'>
+                                <ChatUsersContainer
+                                    styleName='chatUsersContainerMobile'
+                                    users={users}
+                                    currentUserName={currentUserName}
+                                />
+                            </div>
+                        </div>
+                    ) : (
+                        // for mobile view without any previews messages
+                        <div className='chatContainer'>
+                            <div className='chatBox'>
+                                <div className='sendMessageContainer'>
+                                    <SendMessageBox />
+                                </div>
+                            </div>
+                        </div>
+                    )
+                ) : (
+                    // for desktop view
+                    <div className='chatContainer'>
+                        <div className='chatBox'>
+                            <ChatUsersContainer
+                                styleName='chatUsersContainerDesktop'
+                                users={users}
+                                currentUserName={currentUserName}
+                            />
+                            <div className='sendMessageContainer'>
+                                <SendMessageBox />
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
             </Card>
         </Body>
     );

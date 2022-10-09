@@ -16,6 +16,7 @@ export default function Profile() {
           <h1 className='profileDetailText profileFullName'>Nathaniel Russell</h1>
           <h3 className='profileDetailText'>Nate</h3>
           <button className="profileDetailBtn">Edit</button>
+          <p class='profileAboutMe'>This section is where the bio goes. You should write 1-2 sentences about yourself.</p>
           </Card>
 
           <ProfileStats styleName={'profileStats'} />

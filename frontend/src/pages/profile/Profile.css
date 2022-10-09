@@ -307,8 +307,8 @@ background-size: 60%;
         min-width: 206px;
     }
     .profileSection{
-        height: 25%;
-        min-height: 175px;
+        height: 45%;
+        min-height: 210px;
         margin: 5% auto 1%;
 
     }
@@ -318,7 +318,7 @@ background-size: 60%;
     }
 
     .profileStats_1{
-        margin-bottom: 8%;
+        margin: 2% auto 8%;
     }
 
     .followStatsPopUp{

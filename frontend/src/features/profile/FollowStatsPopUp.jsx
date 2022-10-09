@@ -21,10 +21,7 @@ export default function FollowStatsPopUp(props) {
                 <FollowStatUsers username='Nate Russell' />
                 <FollowStatUsers username='Nate Russell' />
                 <FollowStatUsers username='Nate Russell' />
-
-
             </Card>
-
         </Card>
     </section>
   )

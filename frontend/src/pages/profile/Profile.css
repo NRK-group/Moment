@@ -3,6 +3,8 @@
     width: 100%;
     margin: auto;
     padding-top: 60px;
+    padding-bottom: 2%;
+    overflow: auto;
 }
 
 .profileSection{
@@ -10,7 +12,7 @@
     height: fit-content;
     width: 75%;
     min-width: 500px;
-    margin: 3% auto 1%;
+    margin: 3% auto 0;
 }
 
 .profileAvatarImg{
@@ -69,6 +71,7 @@
 
 .profileStats_1{
     display: none;
+    margin-bottom: 5%;
 }
 
 .stats{
@@ -187,6 +190,61 @@ p{
     margin-right: 5%;
 }
 
+.profileContentSelector{
+    display: flex;
+    justify-content: center;
+    border-top: 2px solid var(--subheading-color);
+    width: 75%;
+    min-width: 400px;
+    height: 10%;
+    margin: auto;
+}
+
+.profileContentSelector > * {
+    display: flex;
+    margin: auto;
+    font-size: 125%;
+    padding-top: 1%;
+}
+
+.profileContentSelector > * :hover {
+    cursor: pointer;
+}
+
+.profilePosts{
+    font-weight: bold;
+    border-top: 2px solid black;
+
+
+}
+
+.fa-bookmark{
+    display: flex;
+    align-items: center;
+    margin-right: 2%;
+    font-size: 95%;
+}
+.fa-table-list{
+    display: flex;
+    align-items: center;
+    margin-right: 2%;
+    font-size: 95%;
+}
+
+
+
+.profilePostContainer{
+    margin: 2% auto;
+    width: 75%;
+    height: 90%;
+    background-image: url('./assets/NothingToSee.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 15%;
+    background-size: 30%;
+    /* background-color: red; */
+}
+
 @media all and (max-width: 780px) {
     .profileSection{
         min-width: 0;
@@ -200,6 +258,7 @@ p{
 
     .profileStats_1{
         display: flex;
+        margin-top: 0;
     }
 
     .profileDetails{
@@ -210,6 +269,10 @@ p{
     .profileDetailContainer{
         margin: auto;
     }
+
+.profilePostContainer{
+background-size: 60%;
+}
 
 }
 
@@ -257,4 +320,13 @@ p{
         height: fit-content;
         margin-top: 2%;
     }
+
+.profileContentSelector{
+    height: 7%;
+    min-width: 0;
+    width: 85%;
+    }
+.profilePostContainer{
+    width: 100%;
+}
 }

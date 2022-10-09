@@ -24,6 +24,14 @@ export default function Profile() {
           <ProfileStats styleName={'profileStats_1'} />
           <FollowStatsPopUp type='following' />
 
+          <Card styleName='profileContentSelector'>
+            <span className="profilePosts"><i class="fa-solid fa-table-list"></i> Posts</span>
+            <span className="profileFavourites"><i class="fa-solid fa-bookmark"></i> Favourites</span>
+          </Card>
+          <Card styleName='profilePostContainer'>
+
+          </Card>
+
     </Card>
   )
 }

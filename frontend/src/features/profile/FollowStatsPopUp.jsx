@@ -11,16 +11,26 @@ export default function FollowStatsPopUp(props) {
                 <span className='followStatsPopUpCross' >&#10005;</span>
             </Card>
             <Card styleName='followStatsPopUpUserSection'>
-                <FollowStatUsers username='Nate Russell' />
-                <FollowStatUsers username='Nate Russell' />
-                <FollowStatUsers username='Nate Russell' />
-                <FollowStatUsers username='Nate Russell' />
-                <FollowStatUsers username='Nate Russell' />
-                <FollowStatUsers username='Nate Russell' />
-                <FollowStatUsers username='Nate Russell' />
-                <FollowStatUsers username='Nate Russell' />
-                <FollowStatUsers username='Nate Russell' />
-                <FollowStatUsers username='Nate Russell' />
+                <FollowStatUsers profileStatUser='followStatUser' profileImgHolder='followStatAvatar'
+                profileImg='followStatAvatarImg' profileUsernameHolder='followStatUsernameHold'
+                profileUsernameText='followStatUsername' profileUserRemoveBtn='followStatsRemove'
+                 username='Nate Russell' />
+
+<FollowStatUsers profileStatUser='followStatUser' profileImgHolder='followStatAvatar'
+                profileImg='followStatAvatarImg' profileUsernameHolder='followStatUsernameHold'
+                profileUsernameText='followStatUsername' profileUserRemoveBtn='followStatsRemove'
+                 username='Nate Russell' />
+
+<FollowStatUsers profileStatUser='followStatUser' profileImgHolder='followStatAvatar'
+                profileImg='followStatAvatarImg' profileUsernameHolder='followStatUsernameHold'
+                profileUsernameText='followStatUsername' profileUserRemoveBtn='followStatsRemove'
+                 username='Nate Russell' />
+
+<FollowStatUsers profileStatUser='followStatUser' profileImgHolder='followStatAvatar'
+                profileImg='followStatAvatarImg' profileUsernameHolder='followStatUsernameHold'
+                profileUsernameText='followStatUsername' profileUserRemoveBtn='followStatsRemove'
+                 username='Nate Russell' />
+                
             </Card>
         </Card>
     </section>

@@ -1,0 +1,58 @@
+.storiesHolder{
+    /* display: none; */
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top:0;
+    background-color: rgb(42, 42, 42);
+}
+
+.currentStory{
+    background: rgb(161, 161, 161);
+    height: 350px;
+    width: 300px;
+    margin: 5% auto;
+}
+
+.storiesUser{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-left: 2%;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.274);
+}
+
+.storiesAvatar{
+    height: 50px;
+    width: 50px;
+    margin-right: 2%;
+}
+.storiesAvatarImg{
+    height: 100%;
+    width: 100%;
+}
+
+.storiesUsernameHold{
+    display: flex;
+    justify-content: center;
+    height: fit-content;
+}
+
+.storiesUsername{
+    font-size:var(--tertiary-font-size);
+    font-weight: lighter;
+    height: fit-content;
+}
+
+.StoriesPopUpCross{
+    float: right;
+    margin: auto;
+    margin-right: 4%;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.StoriesPopUpCross:hover{
+    cursor: pointer;
+}

@@ -5,6 +5,7 @@ import UserImg from "../../features/profile/UserImg";
 import ProfilePosts from "../../features/profile/ProfilePosts";
 import './Profile.css'
 import ProfileInfoPopUp from "../../features/profile/ProfileInfoPopUp";
+import Stories from "../stories/Stories";
 
 export default function Profile(props) {
   return (
@@ -27,6 +28,7 @@ export default function Profile(props) {
           postBtn='profilePosts' favBtn='profileFavourites' likeBtn='profileLiked'
           postContainer='profilePostContainer noContent' />
           <ProfileInfoPopUp styleName='popUp none' />
+          <Stories />
     </Card>
   )
 }

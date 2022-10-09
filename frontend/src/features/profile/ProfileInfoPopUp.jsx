@@ -4,7 +4,7 @@ import AuthDateInput from "../authentication/AuthDateInput";
 
 export default function ProfileStatsPopUp(props) {
   return (
-    <section className="popUp">
+    <section className={props.styleName}>
         <Card styleName='profileUpdate'>
         <span className='followStatsPopUpCross' >&#10005;</span>
         <Card styleName='authAvatar'>

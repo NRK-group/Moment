@@ -8,10 +8,7 @@ import { useRef, useState } from 'react';
 const Comments = ({
     postId,
     bodyStyleName,
-    cardStyleName,
-    avatarSrc,
-    CommentsSrc,
-    CommentsAvatarSrc,
+    cardStyleName
 }) => {
     const dropdown = useRef(null);
     const [toggle, setToggle] = useState(true);
@@ -32,7 +29,7 @@ const Comments = ({
                 <div className='Comments'>
                     <div className='CommentsLeft'>
                         <div className='CommentsImg'>
-                            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU' />
+                            <img src='https://img.olympicchannel.com/images/image/private/t_16-9_360-203_2x/f_auto/v1538355600/primary/cbmqgtebnwmnww91w3tz' />
                         </div>
                         <div className='CommentsChat'>
                             <input></input>

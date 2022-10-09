@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import { useState } from 'react';
+import Modal from './features/Modal';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     return (
@@ -47,6 +48,7 @@ function App() {
                     <Route path='/newpost' element={<h1>Newpost</h1>} />
                     <Route path='/messages' element={<h1>Messages</h1>} />
                     <Route path='/groups' element={<h1>Groups</h1>} />
+                    <Route path='/modal' element={<Modal> <div className='ModalContent'/></Modal>} />
                     <Route
                         path='/notifications'
                         element={<h1>Notifications</h1>}

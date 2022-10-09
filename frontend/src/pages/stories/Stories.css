@@ -8,7 +8,11 @@
 }
 
 .currentStory{
-    background: rgb(161, 161, 161);
+    background: rgb(98, 98, 98);
+    background-image: url('./assets/prembackground.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
     height: 350px;
     width: 300px;
     margin: 5% auto;
@@ -22,7 +26,8 @@
     padding-left: 2%;
     border-radius: 5px;
     color: white;
-    background-color: rgba(0, 0, 0, 0.274);
+    background-color: rgba(0, 0, 0, 0.169);
+    z-index: 10;
 }
 
 .storiesAvatar{

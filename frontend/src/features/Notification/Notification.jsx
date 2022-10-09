@@ -15,10 +15,10 @@ export const Notification = () => {
                         </NavLink>
                         <NavLink to='/notifications/followrequest'>
                             <div className='notificationHeader'>
-                                Follow Request
+                                Follow
                             </div>
                         </NavLink>
-                        <NavLink to='/notifications/group'>
+                        <NavLink to='notifications/group'>
                             <div className='notificationHeader'>Group</div>
                         </NavLink>
                     </div>

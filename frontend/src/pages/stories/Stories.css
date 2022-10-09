@@ -9,7 +9,7 @@
 }
 
 .currentStory{
-    background: rgb(98, 98, 98);
+    background: rgba(32, 32, 32, 0.616);
     background-image: url('./assets/prembackground.png');
     background-repeat: no-repeat;
     background-position: center;
@@ -131,6 +131,6 @@
 
 .changeStoryBtns{
     width: 100vw;
-    transform: translateY(-55vh);
+    transform: translateY(30vh);
 }
 }

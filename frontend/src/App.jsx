@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
+import Profile from './pages/profile/Profile';
 import Comments from './features/Comments';
 import { useState } from 'react';
 import Modal from './features/Modal';
@@ -94,7 +95,12 @@ function App() {
                         path='/notifications'
                         element={<h1>Notifications</h1>}
                     />
-                    <Route path='/profile' element={<h1>Profile</h1>} />
+                    <Route path='/profile' element={<Profile 
+                        aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
+                        fullname='Nathaniel Russell'
+                        nickname='Nate'
+
+                     />} />
                 </Routes>
             </>
             <Footer />

@@ -15,8 +15,8 @@ export default function Profile(props) {
           <Card styleName='profileDetailContainer'>
             <h1 className='profileDetailText profileFullName'>{props.fullname}</h1>
             <h3 className='profileDetailText'>{props.nickname}</h3>
-            <button className="profileDetailBtn">Edit</button>
             <p class='profileAboutMe'>{props.aboutMe}</p>
+            <button className="profileDetailBtn">Edit</button>
           </Card>
           <ProfileStats styleName={'profileStats'} />
         </Card>
@@ -24,7 +24,7 @@ export default function Profile(props) {
       <ProfileStats styleName={'profileStats_1'} />
       <FollowStatsPopUp type='following' styleName='popUp none'/>
       <ProfilePosts contentSelector='profileContentSelector' 
-          postBtn='profilePosts' favBtn='profileFavourites'
+          postBtn='profilePosts' favBtn='profileFavourites' likeBtn='profileLiked'
           postContainer='profilePostContainer noContent' />
           <ProfileInfoPopUp styleName='popUp none' />
     </Card>

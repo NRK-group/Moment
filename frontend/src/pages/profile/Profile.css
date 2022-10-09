@@ -12,7 +12,7 @@
     height: fit-content;
     width: 75%;
     min-width: 500px;
-    margin: 3% auto 0;
+    margin: 1% auto 0;
 }
 
 .profileAvatarImg{
@@ -242,6 +242,13 @@ p{
     font-size: 95%;
 }
 
+.fa-heart{
+    display: flex;
+    align-items: center;
+    margin-right: 3%;
+    font-size: 95%;
+}
+
 
 
 .profilePostContainer{
@@ -377,6 +384,10 @@ p{
     .profileDetailText{
         font-size: var(--secondary-font-size);
     /* font-weight: 300; */
+    }
+
+    .profileAboutMe{
+        font-size: 80%;
     }
 
     .profileStats_1{

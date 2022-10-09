@@ -14,7 +14,7 @@ export default function FollowStatsPopUp(props) {
                 <FollowStatUsers profileStatUser='followStatUser' profileImgHolder='followStatAvatar'
                 profileImg='followStatAvatarImg' profileUsernameHolder='followStatUsernameHold'
                 profileUsernameText='followStatUsername' profileUserRemoveBtn='followStatsRemove'
-                 username='Nate Russell' />
+                 username='Nate Russell' crossIcon='none'/>
 
 <FollowStatUsers profileStatUser='followStatUser' profileImgHolder='followStatAvatar'
                 profileImg='followStatAvatarImg' profileUsernameHolder='followStatUsernameHold'

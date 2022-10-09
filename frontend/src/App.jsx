@@ -65,9 +65,31 @@ function App() {
                         }
                     />
                     <Route path='/groups' element={<h1>Groups</h1>} />
-                    <Route path='/comments' element={<Comments bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'/>} />
-                    <Route path='/modal' element={<Modal> <div className='ModalContent'/></Modal>} />
+                    <Route
+                        path='/comments'
+                        element={
+                            isMobile ? (
+                                <Comments
+                                    bodyStyleName='mobile'
+                                    cardStyleName='mobileCard'
+                                />
+                            ) : (
+                                <Comments
+                                    bodyStyleName='desktop'
+                                    cardStyleName='desktopCard'
+                                />
+                            )
+                        }
+                    />
+                    <Route
+                        path='/modal'
+                        element={
+                            <Modal>
+                                {' '}
+                                <div className='ModalContent' />
+                            </Modal>
+                        }
+                    />
                     <Route
                         path='/notifications'
                         element={<h1>Notifications</h1>}

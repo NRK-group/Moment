@@ -8,6 +8,7 @@ import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
 import { useState } from 'react';
+import { Notification } from './features/Notification/Notification';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     return (
@@ -64,16 +65,17 @@ function App() {
                         }
                     />
                     <Route path='/groups' element={<h1>Groups</h1>} />
+                    <Route path='/notifications' element={<Notification />} />
                     <Route
-                        path='/notifications'
-                        element={<h1>Notifications</h1>}
+                        path='/profile'
+                        element={
+                            <Profile
+                                aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
+                                fullname='Nathaniel Russell'
+                                nickname='Nate'
+                            />
+                        }
                     />
-                    <Route path='/profile' element={<Profile 
-                        aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
-                        fullname='Nathaniel Russell'
-                        nickname='Nate'
-
-                     />} />
                 </Routes>
             </>
             <Footer />

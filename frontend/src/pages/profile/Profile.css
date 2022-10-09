@@ -215,7 +215,6 @@ p{
 .profileContentSelector > * {
     display: flex;
     margin: auto;
-    font-size: 125%;
     padding-top: 1%;
 }
 
@@ -233,13 +232,13 @@ p{
 .fa-bookmark{
     display: flex;
     align-items: center;
-    margin-right: 2%;
+    margin-right: 3%;
     font-size: 95%;
 }
 .fa-table-list{
     display: flex;
     align-items: center;
-    margin-right: 2%;
+    margin-right: 3%;
     font-size: 95%;
 }
 

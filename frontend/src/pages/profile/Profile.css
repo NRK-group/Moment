@@ -126,13 +126,18 @@ p{
 }
 
 .followStatsPopUpCross{
-    font-weight: bold;
-    float: right;
-    margin-right: 2%;
     display: flex;
     text-align: center;
     justify-content: center;
-    height: 100%;
+    font-weight: bold;
+    float: right;
+    margin-right: 2%;
+    margin-top:1%;
+    height: fit-content;
+}
+
+.followStatsPopUpCross:hover{
+    cursor: pointer;
 }
 
 .followStatsPopUpUserSection{
@@ -190,6 +195,10 @@ p{
     margin-right: 5%;
 }
 
+.profilePostSection{
+    height: fit-content;
+}
+
 .profileContentSelector{
     display: flex;
     justify-content: center;
@@ -212,7 +221,7 @@ p{
 }
 
 .profilePosts{
-    font-weight: bold;
+    font-weight: 600;
     border-top: 2px solid black;
 
 
@@ -236,11 +245,12 @@ p{
 .profilePostContainer{
     margin: 2% auto;
     width: 75%;
-    height: 90%;
+    height: 50vh;
+    min-height: 275px;
     background-image: url('./assets/NothingToSee.png');
     background-repeat: no-repeat;
-    background-position-x: center;
-    background-position-y: 15%;
+    background-position: center;
+    /* background-position-y: 15%; */
     background-size: 30%;
     /* background-color: red; */
 }
@@ -249,7 +259,7 @@ p{
     .profileSection{
         min-width: 0;
         width: 100%;
-        /* height: 55%; */
+        /* height: 75%; */
     }
 
     .profileStats{
@@ -297,7 +307,7 @@ background-size: 60%;
         min-width: 206px;
     }
     .profileSection{
-        height: 20%;
+        height: 25%;
         min-height: 175px;
         margin: 5% auto 1%;
 
@@ -305,6 +315,10 @@ background-size: 60%;
 
     .profileDetails{
         height: 100%;
+    }
+
+    .profileStats_1{
+        margin-bottom: 8%;
     }
 
     .followStatsPopUp{

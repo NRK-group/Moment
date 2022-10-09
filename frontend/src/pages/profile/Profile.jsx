@@ -3,6 +3,7 @@ import Card from "../../components/card/Card";
 import FollowStatsPopUp from "../../features/profile/FollowStatsPopUp";
 import ProfileStats from "../../features/profile/ProfileStats";
 import UserImg from "../../features/profile/UserImg";
+import ProfilePosts from "../../features/profile/ProfilePosts";
 import './Profile.css'
 
 export default function Profile() {
@@ -23,14 +24,16 @@ export default function Profile() {
         </Card>
           <ProfileStats styleName={'profileStats_1'} />
           <FollowStatsPopUp type='following' />
+          <ProfilePosts contentSelector='profileContentSelector' 
+          postBtn='profilePosts' favBtn='profileFavourites'
+          postContainer='profilePostContainer' />
 
-          <Card styleName='profileContentSelector'>
+          {/* <Card styleName='profileContentSelector'>
             <span className="profilePosts"><i class="fa-solid fa-table-list"></i> Posts</span>
             <span className="profileFavourites"><i class="fa-solid fa-bookmark"></i> Favourites</span>
           </Card>
           <Card styleName='profilePostContainer'>
-
-          </Card>
+          </Card> */}
 
     </Card>
   )

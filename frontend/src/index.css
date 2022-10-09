@@ -1,6 +1,6 @@
 :root {
     font-family: 'Libre Franklin', sans-serif;
-    --heding-font-size: 1.6rem;
+    --heading-font-size: 1.2rem;
     --subheading-font-size: 1rem;
     --body-font-size: 1.6rem;
     --input-font-size: 1.6rem;
@@ -17,6 +17,7 @@
     --content-color: #2b2c34;
     --desktop-nav-height: 60px;
     --mobile-nav-height: 55px;
+    --sub-nav-height: 20px;
 }
 * {
     margin: 0;

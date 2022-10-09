@@ -72,16 +72,7 @@
 .sendMessageBoxContainer :nth-child(3) {
     font-size: var(--tertiary-font-size);
     color: var(--sedheading-color);
-    margin: 5px 0;
-}
-.sendMessageBoxContainer button {
-    all: unset;
-    cursor: pointer;
-    font-size: var(--tertiary-font-size);
-    background-color: var(--button-color);
-    color: var(--background-color);
-    padding: 5px 10px;
-    border-radius: 5px;
+    margin: 10px 0;
 }
 @media only screen and (min-width: 601px) {
     .chatBox {

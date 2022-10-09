@@ -19,6 +19,7 @@
     box-shadow: 0 8px 16px 0 rgba(203, 201, 201, 0.2);
 }
 
+
 .PostHeader {
     display: flex;
     height: 8%;
@@ -84,6 +85,11 @@
     display: flex;
     justify-content: space-between;
     height: 15%;
+}
+
+.PostContent p {
+    align-items:baseline;
+    justify-content: left;
 }
 
 .PostContentIconsLeft {

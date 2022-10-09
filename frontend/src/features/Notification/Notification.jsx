@@ -9,14 +9,14 @@ export const Notification = () => {
             <Card styleName='mobileCard'>
                 <div className='notificationsContainer'>
                     <div className='pageName'>Notifications</div>
-                    <div className='notificationsHeader'>
+                    <div className='notificationsHeader acy'>
                         <NavLink to='/notifications/general'>
-                            <div className='notificationHeader'>General</div>
+                            <div className='notificationHeader active'>
+                                General
+                            </div>
                         </NavLink>
                         <NavLink to='/notifications/followrequest'>
-                            <div className='notificationHeader'>
-                                Follow
-                            </div>
+                            <div className='notificationHeader'>Follow</div>
                         </NavLink>
                         <NavLink to='notifications/group'>
                             <div className='notificationHeader'>Group</div>

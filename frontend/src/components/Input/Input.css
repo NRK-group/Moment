@@ -2,6 +2,7 @@
     max-width: 270px;
     width: 100%;
     font-size: var(--tertiary-font-size);
+    height: 35px;
 }
 .searchContainer {
     display: flex;

@@ -4,10 +4,14 @@
     padding: 8px 16px;
     display: flex;
     font-size: var(--secondary-font-size);
+    cursor: pointer;
+}
+.miniUserCard:hover {
+    background-color: var(--secondary-background-color);
 }
 .miniUserCardImg {
-    height: 25px;
-    width: 25px;
+    height: 30px;
+    width: 30px;
 }
 .miniUserCardImgContainer {
     height: 44px;
@@ -24,6 +28,7 @@
 }
 .miniUserCardName {
     font-weight: 600;
+    font-size: var(--subheading-font-size);
 }
 .miniUserCardContent {
     font-size: var(--tertiary-font-size);
@@ -31,7 +36,7 @@
 }
 @media only screen and (min-width: 601px) {
     .miniUserCardImg {
-        height: 30px;
-        width: 30px;
+        height: 40px;
+        width: 40px;
     }
 }

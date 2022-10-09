@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
+import Comments from './features/Comments';
 import { useState } from 'react';
 import Modal from './features/Modal';
 function App() {
@@ -64,6 +65,8 @@ function App() {
                         }
                     />
                     <Route path='/groups' element={<h1>Groups</h1>} />
+                    <Route path='/comments' element={<Comments bodyStyleName='desktop'
+                                    cardStyleName='desktopCard'/>} />
                     <Route path='/modal' element={<Modal> <div className='ModalContent'/></Modal>} />
                     <Route
                         path='/notifications'

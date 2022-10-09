@@ -64,7 +64,6 @@
     display: flex;
     width: 80%;
     height: 30%;
-    /* background-color: aqua; */
     margin: 5vh auto;
     margin-top: min(5vh, 20px);
 }
@@ -100,7 +99,6 @@ p{
     position: fixed;
     left: 0;
     right: 0;
-    /* transform: translate(-65%, -55%); */
     transition: 150ms ease-in;
     margin: 7.5vh auto;
     height: 90%;
@@ -160,7 +158,6 @@ p{
 .followStatAvatarImg{
     width: 50px;
     height: 50px;
-    /* background-color: blue; */
 }
 
 .followStatAvatar {
@@ -246,13 +243,14 @@ p{
     margin: 2% auto;
     width: 75%;
     height: 50vh;
-    min-height: 275px;
+    min-height: 275px
+}
+
+.noContent{
     background-image: url('./assets/NothingToSee.png');
     background-repeat: no-repeat;
     background-position: center;
-    /* background-position-y: 15%; */
     background-size: 30%;
-    /* background-color: red; */
 }
 
 @media all and (max-width: 780px) {
@@ -280,7 +278,7 @@ p{
         margin: auto;
     }
 
-.profilePostContainer{
+.noContent{
 background-size: 60%;
 }
 

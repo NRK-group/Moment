@@ -68,7 +68,12 @@ function App() {
                         path='/notifications'
                         element={<h1>Notifications</h1>}
                     />
-                    <Route path='/profile' element={<Profile />} />
+                    <Route path='/profile' element={<Profile 
+                        aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
+                        fullname='Nathaniel Russell'
+                        nickname='Nate'
+
+                     />} />
                 </Routes>
             </>
             <Footer />

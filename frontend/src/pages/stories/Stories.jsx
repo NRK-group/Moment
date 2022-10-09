@@ -11,6 +11,11 @@ export default function Stories(props) {
                 profileUsernameText='storiesUsername' profileUserRemoveBtn='none'
                 username='Nate Russell' />
     </Card>
+    <Card styleName='changeStoryBtns'>
+        <span className="storyLeftBtn"><i class="fa-solid fa-arrow-left"></i></span>
+        <span className="storyRightBtn"><i class="fa-solid fa-arrow-right"></i></span>
+
+    </Card>
     </section>
   )
 }

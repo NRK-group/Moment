@@ -12,6 +12,7 @@
     height: 350px;
     width: 300px;
     margin: 5% auto;
+    border-radius: 5px;
 }
 
 .storiesUser{
@@ -19,6 +20,7 @@
     align-items: center;
     width: 100%;
     padding-left: 2%;
+    border-radius: 5px;
     color: white;
     background-color: rgba(0, 0, 0, 0.274);
 }
@@ -55,4 +57,26 @@
 
 .StoriesPopUpCross:hover{
     cursor: pointer;
+}
+
+.changeStoryBtns{
+    align-items: center;
+    width: 370px;
+    height: fit-content;
+    margin: auto;
+    transform: translateY(-250px);
+}
+
+.changeStoryBtns > span{
+
+    font-size: 1.6rem;
+    color: white;
+}
+
+.changeStoryBtns > span:hover{
+    cursor: pointer;
+}
+
+.storyRightBtn{
+    float: right;
 }

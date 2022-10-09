@@ -1,0 +1,425 @@
+.profileCard{
+    height: calc(100vh);
+    width: 100%;
+    margin: auto;
+    padding-top: 60px;
+    padding-bottom: 2%;
+    overflow: auto;
+}
+
+.profileSection{
+    display: flex;
+    height: fit-content;
+    width: 75%;
+    min-width: 500px;
+    margin: 1% auto 0;
+}
+
+.profileAvatarImg{
+    border: none;
+    height: 110%;
+    width: 110%;
+}
+
+.profileAvatar{
+    margin: 5%;
+    margin-top: 0;
+    height: 200px;
+    width: 200px;
+}
+
+.profileDetails{
+    width: 85%;
+    height: 100%;
+    min-height: 206px;
+    
+    padding: 3%;
+    padding-left: 0;
+}
+
+.profileDetailText {
+    width: fit-content;
+    margin: 2% auto;
+}
+
+.profileAboutMe{
+    font-weight: lighter;
+}
+
+.profileDetailBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 80px;
+    height: 25%;
+    min-height: 25px;
+    background-color: var(--button-color);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    margin: 2vh auto;
+    /* margin-top: min(2vh, 25px);
+    margin-bottom: min(2vh, 25px); */
+}
+
+.profileStats{
+    display: flex;
+    width: 80%;
+    height: 30%;
+    margin: 5vh auto;
+    margin-top: min(5vh, 20px);
+}
+
+.profileStats_1{
+    display: none;
+    margin-bottom: 5%;
+}
+
+.stats{
+    width: 30%;
+    margin: auto;
+}
+
+p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    font-weight: bold;
+}
+.none{
+    display: none;
+}
+.popUp{
+    /* display: none; */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.671);
+    top:0;
+}
+
+.followStatsPopUp{
+    position: fixed;
+    left: 0;
+    right: 0;
+    transition: 150ms ease-in;
+    margin: 7.5vh auto;
+    height: 90%;
+    min-height: 325px;
+    max-height: 390px;
+    width: 400px;
+    border-radius: 10px;
+    background-color: var(--background-color);
+    border: 2px solid var(--border-color)
+}
+
+.followStatsPopUpHeading{
+    display: flex;
+    height: 12%;
+    width: 100%;
+    border-bottom: 2px solid var(--subheading-color);
+    margin: auto;
+}
+
+.followStatsPopUpTitle{
+    width: fit-content;
+    margin: auto;
+}
+
+.followStatsPopUpCross{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    font-weight: bold;
+    float: right;
+    margin-right: 2%;
+    margin-top:1%;
+    height: fit-content;
+}
+
+.followStatsPopUpCross:hover{
+    cursor: pointer;
+}
+
+.followStatsPopUpUserSection{
+    height: 88%;
+    width: 100%;
+    overflow: auto;
+}
+
+
+
+.followStatUser{
+    display: flex;
+    /* justify-content: space-evenly; */
+    align-items: center;
+    width: 100%;
+    margin: 2% auto;
+    padding: 1%;
+}
+
+.followStatAvatarImg{
+    width: 50px;
+    height: 50px;
+}
+
+.followStatAvatar {
+    height: 100%;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+}
+
+.followStatUsernameHold{
+    width: fit-content;
+    padding-left: 4%
+}
+
+.followStatUsername{
+    width: fit-content;
+    font-size: var(--subheading-font-size);
+    font-weight: lighter;
+    /* margin-left: 2%; */
+    word-wrap: none;
+}
+
+.followStatsRemove{
+    width: 20%;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--button-color);
+    color: white;
+    /* float: right; */
+    margin-left: auto;
+    margin-right: 5%;
+}
+
+.profilePostSection{
+    height: fit-content;
+}
+
+.profileContentSelector{
+    display: flex;
+    justify-content: center;
+    border-top: 2px solid var(--subheading-color);
+    width: 75%;
+    min-width: 400px;
+    height: 10%;
+    margin: auto;
+}
+
+.profileContentSelector > * {
+    display: flex;
+    margin: auto;
+    padding-top: 1%;
+}
+
+.profileContentSelector > * :hover {
+    cursor: pointer;
+}
+
+.profilePosts{
+    font-weight: 600;
+    border-top: 2px solid black;
+
+
+}
+
+.fa-bookmark{
+    display: flex;
+    align-items: center;
+    margin-right: 3%;
+    font-size: 95%;
+}
+.fa-table-list{
+    display: flex;
+    align-items: center;
+    margin-right: 3%;
+    font-size: 95%;
+}
+
+.fa-heart{
+    display: flex;
+    align-items: center;
+    margin-right: 3%;
+    font-size: 95%;
+}
+
+
+
+.profilePostContainer{
+    margin: 2% auto;
+    width: 75%;
+    height: 50vh;
+    min-height: 205px
+}
+
+.noContent{
+    background-image: url('./assets/NothingToSee.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 30%;
+}
+
+.profileUpdate{
+    position: fixed;
+    left: 0;
+    right: 0;
+    transition: 150ms ease-in;
+    margin: 7.5vh auto;
+    height: 90%;
+    min-height: 325px;
+    /* max-height: 390px; */
+    width: 400px;
+    border-radius: 10px;
+    background-color: var(--background-color);
+    border: 2px solid var(--border-color);
+    overflow: auto;
+}
+
+.profileUpdate::-webkit-scrollbar{
+    width: 5%;
+}
+
+.profileAvatarBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    height: 10%;
+    width: 10%;
+    background-color: var(--button-color);
+    border: none;
+    color: white;
+    margin-bottom: 15%;
+    margin-left: 78%;
+    border-radius: 50%;
+}
+
+.profileInput{
+    height: 25%
+}
+
+.profileAttemptBtn{
+    background-color: var(--button-color);
+    color: white;
+    height: 7%;
+    width: 50%;
+}
+
+@media all and (max-width: 780px) {
+    .profileSection{
+        min-width: 0;
+        width: 100%;
+        /* height: 75%; */
+    }
+
+    .profileStats{
+        display: none;
+    }
+
+    .profileStats_1{
+        display: flex;
+        margin-top: 0;
+    }
+
+    .profileDetails{
+        display: flex;
+        justify-content: center;
+
+    }
+    .profileDetailContainer{
+        margin: auto;
+    }
+
+.noContent{
+    background-size: 40%;
+    height: fit-content;
+}
+
+.profileUpdate{
+    padding-bottom: 10%;
+}
+
+}
+
+@media all and (max-width: 480px) {
+    .profileCard{
+        padding-top: 3%;
+    }
+    
+    .profileAvatar{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        margin-right: 1vw;
+    }
+    .profileAvatarImg{
+        height: 110px;
+        width: 110px;
+    }
+    .profileFullName{
+        display: flex;
+        justify-content: center;
+        width: fit-content;
+        min-width: 206px;
+    }
+    .profileSection{
+        height: 30%;
+        min-height: 210px;
+        margin: 8% auto 1%;
+
+    }
+
+    .profileDetails{
+        height: 100%;
+    }
+
+    .profileDetailText{
+        font-size: var(--secondary-font-size);
+    /* font-weight: 300; */
+    }
+
+    .profileAboutMe{
+        font-size: 80%;
+    }
+
+    .profileStats_1{
+        margin: 2% auto 8%;
+    }
+
+    .followStatsPopUp{
+        max-height: none;
+        min-height: 0px;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .followStatsPopUpCross{
+        height: fit-content;
+        margin-top: 2%;
+    }
+
+.profileContentSelector{
+    height: 7%;
+    min-width: 0;
+    width: 85%;
+    }
+.profilePostContainer{
+    width: 100%;
+}
+
+.profileUpdate{
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    border-radius: 0;
+}
+}

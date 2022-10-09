@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Card from '../card/Card'
 import './Avatar.css';
 
 function Avatar({ avatarSrc, avatarAlt, styleName, name , avatarRedirect, avatarIcon }) {
@@ -7,6 +8,7 @@ function Avatar({ avatarSrc, avatarAlt, styleName, name , avatarRedirect, avatar
     const [nameS, setNameS] = useState(name);
     const [avatarIconS, setAvatarIconS] = useState(name);
     const [styleNameS, setStyleNameS] = useState(styleName);
+
 
     useEffect(() => {
         setSrc(avatarSrc)

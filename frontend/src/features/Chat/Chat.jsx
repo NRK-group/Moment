@@ -4,14 +4,7 @@ import Card from '../../components/card/Card';
 import SendMessageBox from './components/SendMessageBox';
 import { ChatUsersContainer } from './components/chatUsersContainer';
 const Chat = ({ bodyStyleName, cardStyleName }) => {
-    let users = [
-        {
-            img: '',
-            id: 1,
-            name: 'Firstname Lastname',
-            content: 'Hello • 1w ago',
-        },
-    ];
+    let users = [];
     let currentUserName = 'Moment';
     return (
         <Body styleName={bodyStyleName}>

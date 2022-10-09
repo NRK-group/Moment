@@ -1,3 +1,5 @@
+import { Button } from '../../../components/Button/Button';
+
 const SendMessageBox = () => {
     return (
         <div className='sendMessageBoxContainer'>
@@ -12,7 +14,7 @@ const SendMessageBox = () => {
             </div>
             <div>Your messages</div>
             <div>Send private photos and messages to a friend or group.</div>
-            <button>Send message</button>
+            <Button styleName='sendMessageBtn' content={'Send message'} />
         </div>
     );
 };

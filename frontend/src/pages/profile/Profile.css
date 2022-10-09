@@ -85,9 +85,11 @@ p{
     text-align: center; 
     font-weight: bold;
 }
-
-.popUp{
+.none{
     display: none;
+}
+.popUp{
+    /* display: none; */
     position: fixed;
     width: 100%;
     height: 100%;
@@ -253,6 +255,53 @@ p{
     background-size: 30%;
 }
 
+.profileUpdate{
+    position: fixed;
+    left: 0;
+    right: 0;
+    transition: 150ms ease-in;
+    margin: 7.5vh auto;
+    height: 90%;
+    min-height: 325px;
+    /* max-height: 390px; */
+    width: 400px;
+    border-radius: 10px;
+    background-color: var(--background-color);
+    border: 2px solid var(--border-color);
+    overflow: auto;
+}
+
+.profileUpdate::-webkit-scrollbar{
+    width: 5%;
+}
+
+.profileAvatarBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    height: 10%;
+    width: 10%;
+    background-color: var(--button-color);
+    border: none;
+    color: white;
+    margin-bottom: 15%;
+    margin-left: 78%;
+    border-radius: 50%;
+}
+
+.profileInput{
+    height: 25%
+}
+
+.profileAttemptBtn{
+    background-color: var(--button-color);
+    color: white;
+    height: 7%;
+    width: 50%;
+}
+
 @media all and (max-width: 780px) {
     .profileSection{
         min-width: 0;
@@ -280,6 +329,10 @@ p{
 
 .noContent{
 background-size: 60%;
+}
+
+.profileUpdate{
+    padding-bottom: 10%;
 }
 
 }
@@ -340,5 +393,12 @@ background-size: 60%;
     }
 .profilePostContainer{
     width: 100%;
+}
+
+.profileUpdate{
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    border-radius: 0;
 }
 }

@@ -3,7 +3,7 @@ import FollowStatUsers from './FollowStatUsers'
 
 export default function FollowStatsPopUp(props) {
   return (
-    <section className='popUp'>
+    <section className={props.styleName}>
 
         <Card styleName='followStatsPopUp' >
             <Card styleName='followStatsPopUpHeading'>

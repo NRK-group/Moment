@@ -4,6 +4,7 @@ import ProfileStats from "../../features/profile/ProfileStats";
 import UserImg from "../../features/profile/UserImg";
 import ProfilePosts from "../../features/profile/ProfilePosts";
 import './Profile.css'
+import ProfileInfoPopUp from "../../features/profile/ProfileInfoPopUp";
 
 export default function Profile(props) {
   return (
@@ -21,10 +22,11 @@ export default function Profile(props) {
         </Card>
       </Card>
       <ProfileStats styleName={'profileStats_1'} />
-      <FollowStatsPopUp type='following' />
+      <FollowStatsPopUp type='following' styleName='popUp none'/>
       <ProfilePosts contentSelector='profileContentSelector' 
           postBtn='profilePosts' favBtn='profileFavourites'
           postContainer='profilePostContainer noContent' />
+          <ProfileInfoPopUp />
     </Card>
   )
 }

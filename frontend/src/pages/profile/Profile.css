@@ -42,6 +42,10 @@
     margin: 2% auto;
 }
 
+.profileAboutMe{
+    font-weight: lighter;
+}
+
 .profileDetailBtn{
     display: flex;
     justify-content: center;
@@ -245,7 +249,7 @@ p{
     margin: 2% auto;
     width: 75%;
     height: 50vh;
-    min-height: 275px
+    min-height: 205px
 }
 
 .noContent{
@@ -328,7 +332,8 @@ p{
     }
 
 .noContent{
-background-size: 60%;
+    background-size: 40%;
+    height: fit-content;
 }
 
 .profileUpdate{
@@ -354,7 +359,9 @@ background-size: 60%;
         width: 110px;
     }
     .profileFullName{
-        font-size: var(--heding-font-size);
+        display: flex;
+        justify-content: center;
+        width: fit-content;
         min-width: 206px;
     }
     .profileSection{
@@ -366,6 +373,11 @@ background-size: 60%;
 
     .profileDetails{
         height: 100%;
+    }
+
+    .profileDetailText{
+        font-size: var(--secondary-font-size);
+    /* font-weight: 300; */
     }
 
     .profileStats_1{

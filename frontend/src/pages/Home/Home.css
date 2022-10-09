@@ -11,8 +11,7 @@
     margin: auto;
     height: 14vh;
     width: 22vw;
-    border-style: solid;
-    border-color: black;
+    border: 1px solid var(--terheading-color);
     overflow-x: scroll;
     display: flex;
     flex-direction: row;
@@ -22,15 +21,14 @@
     height: 65vh;
     width: 42vw;
     flex-direction: column;
-    border-style: solid;
-    border-color: blue;
+    border-top: 1px solid var(--terheading-color);
+   
 }
 
 .homePageProfile {
     width: 35vw;
     height: 50vh;
-    border-style: solid;
-    border-color: red;
+    border: 1px solid var(--terheading-color);
 }
 
 .homePageContainer {
@@ -41,14 +39,14 @@
     height: 65px;
     width: 65px;
     border-radius: 50%;
-    border: 3px solid rgb(27, 57, 205);
+    border: 3px solid rgb(255, 255, 255);
 }
 
 .AvatarUserProfile img {
     height: 65px;
     width: 65px;
     border-radius: 50%;
-    border: 3px solid rgb(27, 57, 205);
+    border: 3px solid rgb(255, 255, 255);
 }
 
 .AvatarUserProfile {
@@ -75,8 +73,6 @@
     .homePage {
         margin: 0%;
         width: 100vw;
-        border-style: solid;
-        border-color: green;
         height: 87%;
         overflow-y: scroll;
     }

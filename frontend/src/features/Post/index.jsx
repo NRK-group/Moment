@@ -4,6 +4,8 @@ import {
     LikeIcon,
     FavoriteIcon,
     FaceSmileIcon,
+    MessagesIcon,
+    CommentIcon,
 } from '../../components/Icons/Icons';
 import './Post.css';
 import { useRef, useState } from 'react';
@@ -14,6 +16,8 @@ export default function Post({
     postBodyImgSrc,
     postContent,
     avatarSrc,
+    likes,
+    commentsnum,
 }) {
     const dropdown = useRef(null);
     const [toggle, setToggle] = useState(true);
@@ -60,23 +64,27 @@ export default function Post({
                 </Card>
                 <Card styleName={'PostContent'}>
                     <div className='PostContentIcons'>
-                        <div className='PostContentIconLike'>
+                        <div className='PostContentIconsLeft'>
                             <LikeIcon />
-                            <p
-                                style={{
-                                    fontSize: 'var(--tertiary-font-size)',
-                                }}>
-                                0 Likes
-                            </p>
+                            <CommentIcon />
+                            <MessagesIcon />
                         </div>
                         <FavoriteIcon />
                     </div>
+                    <div>
+                        <p className='PostContentLikes'>
+                            {likes} Likes
+                        </p>
+                    </div>
                     <p className='PostContentText'>{postContent}</p>
+                    <p className='PostContentVBtn'>View all {commentsnum} comments</p>
+                    
                     <div className='PostContentIconsfooter'>
                         <FaceSmileIcon /> <p>Add a comment</p>
                     </div>
                 </Card>
             </Card>
+            <br />
         </>
     );
 }

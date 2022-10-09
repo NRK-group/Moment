@@ -51,8 +51,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 20%;
-    min-width: 80px;
+    width: 80px;
     height: 25%;
     min-height: 25px;
     background-color: var(--button-color);
@@ -60,8 +59,8 @@
     border-radius: 5px;
     color: white;
     margin: 2vh auto;
-    margin-top: min(2vh, 25px);
-    margin-bottom: min(2vh, 25px);
+    /* margin-top: min(2vh, 25px);
+    margin-bottom: min(2vh, 25px); */
 }
 
 .profileStats{

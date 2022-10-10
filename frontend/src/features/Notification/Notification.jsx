@@ -5,7 +5,11 @@ import Card from '../../components/card/Card';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 
 export const Notification = () => {
-    let users = [];
+    let users = [
+        { name: 'John', content: 'liked your post', optContent: '1h' },
+        { name: 'Jane', content: 'commented on your post' },
+        { name: 'John', content: 'liked your post' },
+    ];
     return (
         <Body styleName='mobile'>
             <Card styleName='mobileCard'>
@@ -26,15 +30,18 @@ export const Notification = () => {
                     </div>
                     <div className='notificationContentContainer'>
                         {users.length !== 0 ? (
-                            users.map(({ img, id, name, content }) => (
-                                <MiniUserCard
-                                    key={id}
-                                    img={img}
-                                    propsId={`chat` + id}
-                                    name={name}
-                                    content={content}
-                                />
-                            ))
+                            users.map(
+                                ({ img, id, name, content, optContent }) => (
+                                    <MiniUserCard
+                                        key={id}
+                                        img={img}
+                                        propsId={`chat` + id}
+                                        name={name}
+                                        content={content}
+                                        optContent={optContent}
+                                    />
+                                )
+                            )
                         ) : (
                             <div className='noNotifications'>
                                 No Notifications

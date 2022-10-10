@@ -1,0 +1,136 @@
+.storiesHolder{
+    /* display: none; */
+    display: flex;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top:0;
+    background-color: rgb(41, 41, 41);
+}
+
+.currentStory{
+    background: rgba(32, 32, 32, 0.616);
+    background-image: url('./assets/NothingToSee.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    height: 450px;
+    width: 300px;
+    margin: auto;
+    border-radius: 5px;
+}
+
+.storiesUser{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-left: 2%;
+    border-radius: 5px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.169);
+    z-index: 10;
+}
+
+.storiesAvatar{
+    height: 50px;
+    width: 50px;
+    margin-right: 2%;
+}
+.storiesAvatarImg{
+    height: 100%;
+    width: 100%;
+}
+
+.storiesUsernameHold{
+    display: flex;
+    justify-content: center;
+    height: fit-content;
+}
+
+.storiesUsername{
+    font-size:var(--tertiary-font-size);
+    font-weight: lighter;
+    height: fit-content;
+}
+
+.StoriesPopUpCross{
+    float: right;
+    margin: auto;
+    margin-right: 4%;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.StoriesPopUpCross:hover{
+    cursor: pointer;
+}
+
+.changeStoryBtns{
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    margin: auto;
+    transform: translateY(135px);
+}
+
+.changeStoryBtns > span{
+    font-size: 1.6rem;
+    color: white;
+    padding: 1%;
+}
+
+.changeStoryBtns > span:hover{
+    cursor: pointer;
+}
+
+.storyRightBtn{
+    float: right;
+}
+
+.smallStory{
+    display: flex;
+    align-items: center;
+    height: 350px;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.169);
+    margin: auto;
+    border-radius: 5px;
+    border: 2px solid var(--border-color);
+}
+
+.smallStoriesUser{
+    margin: auto;
+}
+
+.smallStoriesUser > * {
+    margin: 0% auto 7%;
+    color: white;
+}
+
+.smallStoriesUser > * > img{
+    background-color: white;
+    border-radius: 2px;
+}
+
+@media all and (max-width: 780px) {
+    .smallStory{
+        display: none;
+    }
+}
+
+@media all and (max-width: 480px) {
+.currentStory{
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+}
+
+.storiesUser{
+    padding-top: 1vh;
+}
+
+.changeStoryBtns{
+    width: 100vw;
+    transform: translateY(30vh);
+}
+}

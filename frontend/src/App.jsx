@@ -7,6 +7,7 @@ import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
+import Stories from './pages/stories/stories';
 import { useState } from 'react';
 import { Notification } from './features/Notification/Notification';
 function App() {
@@ -101,6 +102,7 @@ function App() {
                             />
                         }
                     />
+                    <Route path='/stories' element={<Stories />} />
                 </Routes>
             </>
             <Footer />

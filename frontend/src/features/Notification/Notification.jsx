@@ -25,15 +25,21 @@ export const Notification = () => {
                         </NavLink>
                     </div>
                     <div className='notificationContentContainer'>
-                        {users.map(({ img, id, name, content }) => (
-                            <MiniUserCard
-                                key={id}
-                                img={img}
-                                propsId={`chat` + id}
-                                name={name}
-                                content={content}
-                            />
-                        ))}
+                        {users.length !== 0 ? (
+                            users.map(({ img, id, name, content }) => (
+                                <MiniUserCard
+                                    key={id}
+                                    img={img}
+                                    propsId={`chat` + id}
+                                    name={name}
+                                    content={content}
+                                />
+                            ))
+                        ) : (
+                            <div className='noNotifications'>
+                                No Notifications
+                            </div>
+                        )}
                     </div>
                 </div>
             </Card>

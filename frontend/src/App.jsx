@@ -7,6 +7,7 @@ import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
+import Stories from './pages/stories/stories';
 import { useState } from 'react';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
@@ -74,6 +75,7 @@ function App() {
                         nickname='Nate'
 
                      />} />
+                     <Route path='/stories' element={<Stories />} />
                 </Routes>
             </>
             <Footer />

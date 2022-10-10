@@ -21,7 +21,7 @@
     align-items: center;
 }
 .notificationsHeader a {
-    all: unset;
+    text-decoration: none;
 }
 .notificationHeader {
     padding: 0 20px;
@@ -29,12 +29,14 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    color: var(--heading-color);
 }
-
-.notificationHeader.active {
-    background-color: var(--secondary-background-color);
-    border: 1px solid var(--terheading-color);
+.notifActive {
+    background-color: var(--background-color);
     border-radius: 10px 10px 0 0;
+    border: 1px solid var(--terheading-color);
+    border-bottom: none;
+    height: 22px;
 }
 .notificationContentContainer {
     width: 100%;

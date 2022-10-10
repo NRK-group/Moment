@@ -65,9 +65,16 @@ function App() {
                         }
                     />
                     <Route path='/groups' element={<h1>Groups</h1>} />
-                    <Route path='/notifications' element={<Notification />} />
+                    <Route path='notifications' element={<Notification />}>
+                        <Route path='general' element={<Notification />} />
+                        <Route
+                            path='followrequest'
+                            element={<Notification />}
+                        />
+                        <Route path='group' element={<Notification />} />
+                    </Route>
                     <Route
-                        path='/profile'
+                        path='profile'
                         element={
                             <Profile
                                 aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'

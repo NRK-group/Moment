@@ -17,8 +17,8 @@ export default function Stories(props) {
                 profileUsernameText='storiesUsername' profileUserRemoveBtn='none'
                 username='Nate Russell' crossIcon='StoriesPopUpCross' />
     <Card styleName='changeStoryBtns'>
-        <span className="storyLeftBtn"><i class="fa-solid fa-arrow-left"></i></span>
-        <span className="storyRightBtn"><i class="fa-solid fa-arrow-right"></i></span>
+        <span className="storyLeftBtn"><i className="fa-solid fa-arrow-left"></i></span>
+        <span className="storyRightBtn"><i className="fa-solid fa-arrow-right"></i></span>
     </Card>
     </Card>
     <Card styleName='nextStory smallStory'>

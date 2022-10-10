@@ -8,7 +8,7 @@ import {
     CommentIcon,
 } from '../../components/Icons/Icons';
 import './Post.css';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 export default function Post({
     name,
@@ -20,6 +20,8 @@ export default function Post({
     commentsnum,
 }) {
     const dropdown = useRef(null);
+    const PostContentText = useRef(null);
+
     const [toggle, setToggle] = useState(true);
 
     const OpenDropdownMenu = () => {
@@ -31,6 +33,7 @@ export default function Post({
             dropdown.current.style.display = 'none';
         }
     };
+
 
     return (
         <>
@@ -72,13 +75,15 @@ export default function Post({
                         <FavoriteIcon />
                     </div>
                     <div>
-                        <p className='PostContentLikes'>
-                            {likes} Likes
-                        </p>
+                        <p className='PostContentLikes'>{likes} Likes</p>
                     </div>
-                    <p className='PostContentText'>{postContent}</p>
-                    <p className='PostContentVBtn'>View all {commentsnum} comments</p>
-                    
+                    <p ref={PostContentText} className='PostContentText'>
+                        {postContent}
+                    </p>
+                    <p className='PostContentVBtn'>
+                        View all {commentsnum} comments
+                    </p>
+
                     <div className='PostContentIconsfooter'>
                         <FaceSmileIcon /> <p>Add a comment</p>
                     </div>

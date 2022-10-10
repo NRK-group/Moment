@@ -95,15 +95,6 @@ function App() {
                         }
                     />
                     <Route
-                        path='/modal'
-                        element={
-                            <Modal>
-                                {' '}
-                                <div className='ModalContent' />
-                            </Modal>
-                        }
-                    />
-                    <Route
                         path='notifications'
                         element={<Notification users={generalNotif} />}>
                         <Route

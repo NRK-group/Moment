@@ -1,7 +1,7 @@
 .CommentsChat {
     display: flex;
     background-color: var(--background-color);
-    width: 100%;
+    width: 50%;
     height: 10%;
     justify-content: center;
     align-items: center;
@@ -13,8 +13,9 @@
     display: flex;
 }
 
+
 .CommentsChatIcons input {
-    width: 400px;
+    width: 100px;
     margin-left: 4px;
    
 }

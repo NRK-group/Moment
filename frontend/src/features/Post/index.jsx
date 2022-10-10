@@ -1,9 +1,10 @@
 import Card from '../../components/card/Card';
+import { NavLink } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
+import ChatInput from '../../components/ChatInput';
 import {
     LikeIcon,
     FavoriteIcon,
-    FaceSmileIcon,
     MessagesIcon,
     CommentIcon,
 } from '../../components/Icons/Icons';
@@ -81,11 +82,14 @@ export default function Post({
                         {postContent}
                     </p>
                     <p className='PostContentVBtn'>
-                        View all {commentsnum} comments
+                    <NavLink to='/comments'>
+                    View all {commentsnum} comments
+                </NavLink>
+                       
                     </p>
-
+                   
                     <div className='PostContentIconsfooter'>
-                        <FaceSmileIcon /> <p>Add a comment</p>
+                    <ChatInput/>
                     </div>
                 </Card>
             </Card>

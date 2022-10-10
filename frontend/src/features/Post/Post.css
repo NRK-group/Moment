@@ -118,6 +118,10 @@
     cursor: pointer;
 }
 
+.PostContentVBtn a {
+    all: unset;
+}
+
 .PostContentIconsfooter {
     display: flex;
     font-size: var(--post-font-size);
@@ -130,6 +134,9 @@
 .PostContentIconsfooter .iconContainer {
     justify-content: left;
     margin-right: 0.61vw;
+}
+.PostContentIconsfooter .CommentsChatIcons input {
+width: 300px;
 }
 
 .PostAvatarUsers {
@@ -160,12 +167,19 @@
         width: 98vw;
     }
 
+    .PostContentIconsfooter .CommentsChatIcons input {
+        width: 250px;
+        }
+
     .PostContentIconsLeft .iconContainer {
         margin-right: 3vw;
     }
 }
 
 @media only screen and (max-width: 320px) {
+    .PostContentIconsfooter .CommentsChatIcons input {
+        width: 200px;
+        }
     .PostContainer {
         width: 320px;
     }

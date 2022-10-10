@@ -10,8 +10,19 @@ import Profile from './pages/profile/Profile';
 import Stories from './pages/stories/stories';
 import { useState } from 'react';
 import NewPost from './features/newpost/NewPost';
+import { Notification } from './features/Notification/Notification';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
+    let generalNotif = [
+        {
+            name: 'John',
+            id: 1,
+            content: 'liked your post',
+            optContent: '1h',
+        },
+    ];
+    let followrequest = [{ name: 'Ken' }];
+    let groupNotif = [];
     return (
         <div
             className='App'
@@ -67,16 +78,32 @@ function App() {
                     />
                     <Route path='/groups' element={<h1>Groups</h1>} />
                     <Route
-                        path='/notifications'
-                        element={<h1>Notifications</h1>}
+                        path='notifications'
+                        element={<Notification users={generalNotif} />}>
+                        <Route
+                            path='general'
+                            element={<Notification users={generalNotif} />}
+                        />
+                        <Route
+                            path='followrequest'
+                            element={<Notification users={followrequest} />}
+                        />
+                        <Route
+                            path='group'
+                            element={<Notification users={groupNotif} />}
+                        />
+                    </Route>
+                    <Route
+                        path='profile'
+                        element={
+                            <Profile
+                                aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
+                                fullname='Nathaniel Russell'
+                                nickname='Nate'
+                            />
+                        }
                     />
-                    <Route path='/profile' element={<Profile 
-                        aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
-                        fullname='Nathaniel Russell'
-                        nickname='Nate'
-
-                     />} />
-                     <Route path='/stories' element={<Stories />} />
+                    <Route path='/stories' element={<Stories />} />
                 </Routes>
             </>
             <Footer />

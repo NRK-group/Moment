@@ -24,13 +24,67 @@ export const Notification = () => {
             name: 'Moment',
             content: 'React on you post • 1w ago',
         },
+        {
+            id: 1,
+            img: './logo.svg',
+            name: 'Moment',
+            content: 'Liked your post • 1w ago',
+        },
+        {
+            id: 2,
+            img: './logo.svg',
+            name: 'Moment',
+            content: 'Commented on your post • 1w ago',
+        },
+        {
+            id: 3,
+            img: './logo.svg',
+            name: 'Moment',
+            content: 'React on you post • 1w ago',
+        },
+        {
+            id: 1,
+            img: './logo.svg',
+            name: 'Moment',
+            content: 'Liked your post • 1w ago',
+        },
+        {
+            id: 2,
+            img: './logo.svg',
+            name: 'Moment',
+            content: 'Commented on your post • 1w ago',
+        },
+        {
+            id: 3,
+            img: './logo.svg',
+            name: 'Moment',
+            content: 'React on you post • 1w ago',
+        },
+        {
+            id: 1,
+            img: './logo.svg',
+            name: 'Moment',
+            content: 'Liked your post • 1w ago',
+        },
+        {
+            id: 2,
+            img: './logo.svg',
+            name: 'Moment',
+            content: 'Commented on your post • 1w ago',
+        },
+        {
+            id: 3,
+            img: './logo.svg',
+            name: 'Moment',
+            content: 'React on you post • 1w ago',
+        },
     ];
     return (
         <Body styleName='mobile'>
             <Card styleName='mobileCard'>
                 <div className='notificationsContainer'>
                     <div className='pageName'>Notifications</div>
-                    <div className='notificationsHeader acy'>
+                    <div className='notificationsHeader'>
                         <NavLink to='/notifications/general'>
                             <div className='notificationHeader active'>
                                 General

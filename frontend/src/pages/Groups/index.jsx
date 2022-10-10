@@ -16,6 +16,7 @@ import { useRef } from 'react';
 function Groups({ bodyStyleName, cardStyleName }) {
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);
+    const GroupsPostsArea = useRef(null);
 
     const OpenGroupsLeftMenu = () => {
         GroupsLeftMenu.current.style.width = '670px';
@@ -33,6 +34,11 @@ function Groups({ bodyStyleName, cardStyleName }) {
         GroupsRightMenu.current.style.width = '0%';
     };
 
+    const Events = () => {
+        CloseGroupsRightMenu()
+        GroupsPostsArea.current.style.width = "100%"
+    }
+
     return (
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
@@ -46,16 +52,20 @@ function Groups({ bodyStyleName, cardStyleName }) {
                             <ChevronLeftIcon />
                         </span>
                         <div className='GroupsMenuHeader'>
-                        <h2>Groups</h2>
+                            <h2>Groups</h2>
                         </div>
-                        <MiniUserCard />
-                        <MiniUserCard />
-                        <MiniUserCard />
-                        <MiniUserCard />
-                        <MiniUserCard />
-                        <MiniUserCard />
+                        <div className='GroupsList'>
+                            <MiniUserCard name={'Go'} />
+                            <MiniUserCard name={'Fishing'} />
+                            <MiniUserCard name={'Racing'} />
+                        </div>
+                        <p
+                            style={{ marginTop: '12px', cursor: 'pointer' }}
+                            onClick={() => {Events()}}>
+                            Events
+                        </p>
                     </div>
-                    <div className='GroupsPostsArea'>
+                    <div ref={GroupsPostsArea} className='GroupsPostsArea'>
                         <Card styleName={'PostHeader'}>
                             <div style={{ display: 'flex' }}>
                                 <div

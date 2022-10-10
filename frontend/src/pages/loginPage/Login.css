@@ -49,7 +49,7 @@
     align-items: center;
     width: 85%;
     height: 11%;
-    margin: 4% auto;
+    margin: 5% auto;
     border-radius: 3px;
     border: 1px solid var(--subheading-color);
     padding: 1%;
@@ -70,7 +70,7 @@
 .inputBox span {
     position: absolute;
     z-index: 10;
-    margin-top: -10%;
+    margin-top: -11%;
     margin-left: 10%;
 }
 
@@ -78,7 +78,7 @@
 .inputBox input:focus ~ span {
     transition: 0.1s ease-in;
     color: var(--button-color);
-    transform: translateY(-95%);
+    transform: translateY(-135%);
     font-size: 0.75rem;
     padding: 0.5%;
     background-color: var(--background-color);
@@ -159,13 +159,17 @@ button:hover {
         width: fit-content;
     }
 
+    .loginInput{
+        margin: 6% auto;
+    }
+
     .inputBox span {
-        margin-top: -11%;
+        margin-top: -13%;
     }
 
     .inputBox input:valid ~ span,
     .inputBox input:focus ~ span {
-        transform: translateY(-90%);
+        transform: translateY(-125%);
     }
 }
 

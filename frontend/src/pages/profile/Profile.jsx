@@ -26,7 +26,7 @@ export default function Profile(props) {
       <ProfilePosts contentSelector='profileContentSelector' 
           postBtn='profilePosts' favBtn='profileFavourites' likeBtn='profileLiked'
           postContainer='profilePostContainer noContent' />
-          <ProfileInfoPopUp styleName='popUp none' />
+          <ProfileInfoPopUp styleName='popUp' />
     </Card>
   )
 }

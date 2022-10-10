@@ -369,6 +369,10 @@ p{
     .profileCard{
         padding-top: 3%;
     }
+
+    .authAvatar{
+        margin-top: 6%;
+    }
     
     .profileAvatar{
         display: flex;
@@ -440,5 +444,6 @@ p{
     height: 100%;
     margin-top: 0;
     border-radius: 0;
+    padding-bottom: 10vh;
 }
 }

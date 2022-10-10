@@ -151,8 +151,8 @@ margin-right: 1vw;
 .PostContainer {
     border: 1px solid var(--terheading-color);
     margin: auto;
-    height: 63vh;
-    width: 22vw;
+    width: 80%;
+    min-width: 400px;
 }
 
 @media only screen and (max-width: 600px) {

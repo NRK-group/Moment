@@ -10,7 +10,8 @@
 .homePageStory {
     margin: auto;
     height: 14vh;
-    width: 22vw;
+    max-width: 400px;
+    width: 100%;
     border: 1px solid var(--terheading-color);
     overflow-x: scroll;
     display: flex;
@@ -18,7 +19,7 @@
 }
 
 .homePagePostArea {
-    height: 65vh;
+    height: 100%;
     width: 42vw;
     flex-direction: column;
     border-top: 1px solid var(--terheading-color);
@@ -29,6 +30,7 @@
     width: 35vw;
     height: 50vh;
     border: 1px solid var(--terheading-color);
+    justify-content: center;
 }
 
 .homePageContainer {
@@ -73,7 +75,7 @@
     .homePage {
         margin: 0%;
         width: 100vw;
-        height: 87%;
+        height: 100%;
         overflow-y: scroll;
     }
 

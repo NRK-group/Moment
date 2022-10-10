@@ -53,7 +53,7 @@ export default function Profile(props) {
       </Card>
       </FollowStatsPopUp>
 
-      <FollowStatsPopUp type='Close Friends' styleName='popUp'>
+      <FollowStatsPopUp type='Close Friends' styleName='popUp none'>
         <CloseFriendsUsers outerContainer='profileCloseFriendsHolder' 
         innerTop='profileCurrentCloseFriends' innerTopHeading='' innerTopHeadingClass='profileCloseFriendsHeader'
         innerBottom='profileNotCloseFriends' innerBottomHeading='Followers' innerBottomHeadingClass='profileCloseFriendsHeader'/>

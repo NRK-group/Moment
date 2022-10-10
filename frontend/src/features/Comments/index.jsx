@@ -3,6 +3,9 @@ import Avatar from '../../components/Avatar';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
+import {
+    FaceSmileIcon,
+} from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 
 const Comments = ({
@@ -32,8 +35,10 @@ const Comments = ({
                             <img src='https://img.olympicchannel.com/images/image/private/t_16-9_360-203_2x/f_auto/v1538355600/primary/cbmqgtebnwmnww91w3tz' />
                         </div>
                         <div className='CommentsChat'>
+                         <div className='CommentsChatIcons'><FaceSmileIcon/>
                             <input></input>
-                            <button>Send</button>
+                            </div>   
+                            <p>Post</p>
                         </div>
                     </div>
 
@@ -76,8 +81,7 @@ const Comments = ({
                                 7,
                                 8,
                                 9,
-                                0,
-                                ,
+                                0, 
                                 64,
                                 5,
                                 3,

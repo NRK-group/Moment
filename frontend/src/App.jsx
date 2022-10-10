@@ -70,6 +70,7 @@ function App() {
                         path='/comments'
                         element={
                             isMobile ? (
+                                
                                 <Comments
                                     bodyStyleName='mobile'
                                     cardStyleName='mobileCard'

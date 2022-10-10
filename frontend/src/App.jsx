@@ -10,6 +10,7 @@ import Profile from './pages/profile/Profile';
 import Stories from './pages/stories/stories';
 import { useState } from 'react';
 import { Notification } from './features/Notification/Notification';
+import { Search } from './features/Search/Search';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     let generalNotif = [
@@ -57,7 +58,7 @@ function App() {
                             )
                         }
                     />
-                    <Route path='/search' element={<h1>Search</h1>} />
+                    <Route path='/search' element={<Search />} />
                     <Route path='/newpost' element={<h1>Newpost</h1>} />
                     <Route
                         path='/messages'

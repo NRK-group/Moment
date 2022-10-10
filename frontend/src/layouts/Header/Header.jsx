@@ -24,7 +24,11 @@ const Header = () => {
                         <use id='Moment' href='#img1' x='0' y='0' />
                     </svg>
                 </div>
-                <Input styleName={'search'} type={'search'} />
+                <Input
+                    styleName={'search'}
+                    type={'search'}
+                    placeholder='search'
+                />
                 <DesktopHeaderNav />
                 <MobileHeaderNav />
             </div>

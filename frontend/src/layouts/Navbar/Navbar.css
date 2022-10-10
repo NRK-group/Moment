@@ -6,7 +6,6 @@
     height: 100%;
     max-width: 600px;
     fill: var(--border-color);
-    background-color: var(--background-color);
 }
 .navbarSize {
     width: 30%;

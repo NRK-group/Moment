@@ -39,7 +39,7 @@ const MobileHeaderNav = () => {
         <div className='mobileNavContainer'>
             <div className='navbar navbarSize' id='mobileHeaderNav'>
                 <>
-                    <NavLink to='/notifications'>
+                    <NavLink to='/notifications/general'>
                         <NotificationsIcon />
                     </NavLink>
                     <NavLink to='/profile'>
@@ -71,7 +71,7 @@ const DesktopHeaderNav = () => {
                     <NavLink to='/groups'>
                         <GroupsIcon />
                     </NavLink>
-                    <NavLink to='/notifications'>
+                    <NavLink to='/notifications/general'>
                         <NotificationsIcon />
                     </NavLink>
                     <NavLink to='/profile'>

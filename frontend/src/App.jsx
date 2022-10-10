@@ -11,6 +11,16 @@ import { useState } from 'react';
 import { Notification } from './features/Notification/Notification';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
+    let generalNotif = [
+        {
+            name: 'John',
+            id: 1,
+            content: 'liked your post',
+            optContent: '1h',
+        },
+    ];
+    let followrequest = [{ name: 'Ken' }];
+    let groupNotif = [];
     return (
         <div
             className='App'
@@ -65,13 +75,21 @@ function App() {
                         }
                     />
                     <Route path='/groups' element={<h1>Groups</h1>} />
-                    <Route path='notifications' element={<Notification />}>
-                        <Route path='general' element={<Notification />} />
+                    <Route
+                        path='notifications'
+                        element={<Notification users={generalNotif} />}>
+                        <Route
+                            path='general'
+                            element={<Notification users={generalNotif} />}
+                        />
                         <Route
                             path='followrequest'
-                            element={<Notification />}
+                            element={<Notification users={followrequest} />}
                         />
-                        <Route path='group' element={<Notification />} />
+                        <Route
+                            path='group'
+                            element={<Notification users={groupNotif} />}
+                        />
                     </Route>
                     <Route
                         path='profile'

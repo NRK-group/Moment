@@ -33,6 +33,11 @@
     justify-content: center;
 }
 
+ .homePageProfile .AvatarUsers{
+    flex-direction: unset;
+justify-content: unset;
+ }
+
 .homePageContainer {
     display: flex;
 }
@@ -80,7 +85,9 @@
     }
 
     .homePageProfile {
-        display: none;
+        display: flex;
+        justify-content: left;
+        align-items: flex-end;
     }
 
     .homePageStory {

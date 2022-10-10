@@ -46,7 +46,13 @@ function Home({ bodyStyleName, cardStyleName }) {
                       
                         </div>
                         </div>
-                        <div className='homePageProfile'>homePageProfile</div>
+                        <div className='homePageProfile'>   <Avatar
+                                        avatarSrc={
+                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
+                                        }
+                                        styleName={'AvatarUsers'}
+                                        name={'ele'}
+                                    /></div>
                     </div>
                 </div>
             </Card>

@@ -93,6 +93,12 @@
         height: 350px;
         width: 450px;
     }
+
+    .newPostImgHolder{
+        width: 90%;
+
+    }
+    
     
 }
 
@@ -134,7 +140,7 @@
     }
 
     .newPostTextContent{
-        margin-top: 0;
+        margin-top: 2%;
         min-height: 140px;
     }
 }

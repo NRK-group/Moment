@@ -1,4 +1,5 @@
 import Card from "../../components/card/Card";
+import PrivacySelector from "../profile/PrivacySelector";
 import './NewPost.css'
 
 export default function NewPost() {
@@ -22,7 +23,8 @@ export default function NewPost() {
 
           <Card styleName='NewPostContentInput'>
             <textarea cols='100' rows='7' wrap='hard' className='newPostTextContent' maxlength='280' placeholder="What happened today ?" />
-
+            <PrivacySelector styleName='newPostPrivacySelector' closeFriends={true} />
+            <button styleName=''>Post</button>
           </Card>
 
         </Card>

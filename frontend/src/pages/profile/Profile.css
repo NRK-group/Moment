@@ -514,4 +514,8 @@ p{
     border-radius: 0;
     padding-bottom: 10vh;
 }
+
+.profileCloseFriendsHolder{
+    padding-bottom: 7vh;
+}
 }

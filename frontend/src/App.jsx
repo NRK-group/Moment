@@ -8,6 +8,7 @@ import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
 import Stories from './pages/stories/stories';
+import Groups from './pages/Groups';
 import { useState } from 'react';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
@@ -64,18 +65,37 @@ function App() {
                             )
                         }
                     />
-                    <Route path='/groups' element={<h1>Groups</h1>} />
+                    <Route
+                        path='/groups'
+                        element={
+                            isMobile ? (
+                                <Groups
+                                    bodyStyleName='mobile'
+                                    cardStyleName='mobileCard'
+                                />
+                            ) : (
+                                <Groups
+                                    bodyStyleName='desktop'
+                                    cardStyleName='desktopCard'
+                                />
+                            )
+                        }
+                    />
                     <Route
                         path='/notifications'
                         element={<h1>Notifications</h1>}
                     />
-                    <Route path='/profile' element={<Profile 
-                        aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
-                        fullname='Nathaniel Russell'
-                        nickname='Nate'
-
-                     />} />
-                     <Route path='/stories' element={<Stories />} />
+                    <Route
+                        path='/profile'
+                        element={
+                            <Profile
+                                aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
+                                fullname='Nathaniel Russell'
+                                nickname='Nate'
+                            />
+                        }
+                    />
+                    <Route path='/stories' element={<Stories />} />
                 </Routes>
             </>
             <Footer />

@@ -9,6 +9,7 @@ import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
 import Stories from './pages/stories/stories';
 import { useState } from 'react';
+import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
 function App() {
@@ -59,7 +60,7 @@ function App() {
                         }
                     />
                     <Route path='/search' element={<Search />} />
-                    <Route path='/newpost' element={<h1>Newpost</h1>} />
+                    <Route path='/newpost' element={<NewPost />} />
                     <Route
                         path='/messages'
                         element={

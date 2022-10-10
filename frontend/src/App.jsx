@@ -9,6 +9,7 @@ import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
 import Stories from './pages/stories/stories';
 import { useState } from 'react';
+import NewPost from './features/newpost/NewPost';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     return (
@@ -47,7 +48,7 @@ function App() {
                         }
                     />
                     <Route path='/search' element={<h1>Search</h1>} />
-                    <Route path='/newpost' element={<h1>Newpost</h1>} />
+                    <Route path='/newpost' element={<NewPost />} />
                     <Route
                         path='/messages'
                         element={

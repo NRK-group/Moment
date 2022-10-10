@@ -63,17 +63,7 @@
     padding-right: 5px;
     border: 3px solid var(--border-color);
 }
-.sendMessageBoxContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-.sendMessageBoxContainer :nth-child(3) {
-    font-size: var(--tertiary-font-size);
-    color: var(--sedheading-color);
-    margin: 10px 0;
-}
+
 @media only screen and (min-width: 601px) {
     .chatBox {
         border: 1px solid var(--terheading-color);

@@ -1,8 +1,9 @@
 import './Chat.css';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
-import SendMessageBox from './components/SendMessageBox';
+import SendMessageBox from '../Messages/components/SendMessageBox';
 import { ChatUsersContainer } from './components/chatUsersContainer';
+import { Messages } from '../Messages/Messages';
 const Chat = ({ bodyStyleName, cardStyleName }) => {
     let users = [];
     let currentUserName = 'Moment';
@@ -39,9 +40,7 @@ const Chat = ({ bodyStyleName, cardStyleName }) => {
                                 users={users}
                                 currentUserName={currentUserName}
                             />
-                            <div className='sendMessageContainer'>
-                                <SendMessageBox />
-                            </div>
+                            <Messages />
                         </div>
                     </div>
                 )}

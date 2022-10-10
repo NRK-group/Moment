@@ -48,7 +48,7 @@
 
 .profileButtonHolder{
     display: flex;
-    width: 35%;
+    width: 365px;
     margin: auto;
 
 }
@@ -517,5 +517,16 @@ p{
 
 .profileCloseFriendsHolder{
     padding-bottom: 7vh;
+}
+
+.profileButtonHolder{
+    display: block;
+    width: fit-content;
+}
+
+.profileButtonHolder > * {
+    width: 125px;
+    height: 30px;
+    font-size:0.9rem;
 }
 }

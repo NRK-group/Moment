@@ -46,3 +46,24 @@
     padding: 20px;
     overflow-y: scroll;
 }
+.noNotifications {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--heading-font-size);
+    color: var(--subheading-color);
+}
+.bellIcon {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid var(--subheading-color);
+    fill: var(--subheading-color);
+    margin-bottom: 20px;
+}

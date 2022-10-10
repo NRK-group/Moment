@@ -26,7 +26,7 @@ const Input = ({ styleName, placeholder, type }) => {
                         onBlur={onBlur}
                         className='input'
                         type='text'
-                        placeholder={'Search'}
+                        placeholder={placeholder}
                     />
                     {focused && (
                         <Icon>

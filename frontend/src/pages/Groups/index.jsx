@@ -1,58 +1,113 @@
 import './Groups.css';
-
 import Avatar from '../../components/Avatar';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
-import { useRef, useState } from 'react';
+import Post from '../../features/Post';
+import Input from '../../components/Input/Input';
+import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
+import {
+    ChevronRightIcon,
+    ChevronLeftIcon,
+    BarsIcon,
+    GroupsIcon,
+} from '../../components/Icons/Icons';
+import { useRef } from 'react';
 
 function Groups({ bodyStyleName, cardStyleName }) {
+    const GroupsLeftMenu = useRef(null);
+    const GroupsRightMenu = useRef(null);
 
-    const dropdown = useRef(null);
-    const [toggle, setToggle] = useState(true);
+    const OpenGroupsLeftMenu = () => {
+        GroupsLeftMenu.current.style.width = '670px';
+    };
 
-    const OpenDropdownMenu = () => {
-        setToggle(!toggle);
-        if (toggle) {
-            console.log('inside');
-            dropdown.current.style.display = 'block';
-        } else {
-            dropdown.current.style.display = 'none';
-        }
+    const CloseGroupsLeftMenu = () => {
+        GroupsLeftMenu.current.style.width = '0%';
+    };
+
+    const OpenGroupsRightMenu = () => {
+        GroupsRightMenu.current.style.width = '670px';
+    };
+
+    const CloseGroupsRightMenu = () => {
+        GroupsRightMenu.current.style.width = '0%';
     };
 
     return (
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
                 <div className='Groups'>
-                    <div className='GroupsLeftMenu'></div>
-                    <div className='GroupsPostsArea'>
-                    <Card styleName={'PostHeader'}>
-                    <div style={{ display: 'flex' }}>
-                        <Avatar
-                            avatarSrc={"https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png"}
-                            styleName={'PostAvatarUsers'}
-                        />
-
-                        <p style={{ marginLeft: '4px' }}>{name}</p>
-                    </div>
-
-                    <div className='PostHeaderMenu'>
-                        <button
-                            className='dropbtn'
-                            onClick={() => OpenDropdownMenu()}>
-                            <i className='fa-solid fa-ellipsis' />
-                        </button>
-                        <div ref={dropdown} className='dropdown-content'>
-                            <a href='#'>option 1</a>
-                            <a href='#'>option 2</a>
-                            <a href='#'>option 3</a>
+                    <div className='GroupsLeftMenu' ref={GroupsLeftMenu}>
+                        <span
+                            onClick={() => {
+                                CloseGroupsLeftMenu();
+                            }}
+                            className='GroupsLeftMenuIcon'>
+                            <ChevronLeftIcon />
+                        </span>
+                        <div className='GroupsMenuHeader'>
+                        <h2>Groups</h2>
                         </div>
+                        <MiniUserCard />
+                        <MiniUserCard />
+                        <MiniUserCard />
+                        <MiniUserCard />
+                        <MiniUserCard />
+                        <MiniUserCard />
                     </div>
-                </Card>
-                        
+                    <div className='GroupsPostsArea'>
+                        <Card styleName={'PostHeader'}>
+                            <div style={{ display: 'flex' }}>
+                                <div
+                                    className='GroupHeaderIcons'
+                                    onClick={() => {
+                                        OpenGroupsLeftMenu();
+                                    }}>
+                                    <BarsIcon />
+                                </div>
+                                <Avatar
+                                    avatarSrc={
+                                        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png'
+                                    }
+                                    styleName={'PostAvatarUsers'}
+                                />
+
+                                <p style={{ marginLeft: '4px' }}>{name}</p>
+                            </div>
+                            <div
+                                className='GroupHeaderIcons'
+                                onClick={() => {
+                                    OpenGroupsRightMenu();
+                                }}>
+                                <GroupsIcon />
+                            </div>
+                        </Card>
+
+                        <Post />
+                        <Post />
                     </div>
 
-                    <div className='GroupsRightMenu'></div>
+                    <div ref={GroupsRightMenu} className='GroupsRightMenu'>
+                        <span
+                            onClick={() => {
+                                CloseGroupsRightMenu();
+                            }}
+                            className='GroupsRightMenuIcon'>
+                            {' '}
+                            <ChevronRightIcon />{' '}
+                        </span>
+                        <div className='GroupsMenuHeader'>
+                            <Input
+                                styleName={'search'}
+                                type={'search'}
+                                placeholder={'Search User'}
+                            />
+                        </div>
+                        <MiniUserCard />
+                        <MiniUserCard />
+                        <MiniUserCard />
+                        <MiniUserCard />
+                    </div>
                 </div>
             </Card>
         </Body>

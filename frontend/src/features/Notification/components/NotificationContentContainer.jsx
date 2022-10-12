@@ -9,11 +9,11 @@ export const NotificationContentContainer = ({ notif }) => {
                     <MiniUserCard
                         key={id}
                         img={img}
-                        propsId={`chat` + id}
+                        propsId={`notif` + id}
                         name={name}
-                        content={content}
-                        optContent={optContent}
-                    />
+                        optContent={optContent}>
+                        {content}
+                    </MiniUserCard>
                 ))
             ) : (
                 <NoNotifications />

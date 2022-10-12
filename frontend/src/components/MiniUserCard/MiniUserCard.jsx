@@ -20,8 +20,7 @@ const MiniUserCard = ({ propsId, img, name, children, optContent }) => {
                         </span>
                     )}
                 </span>
-                {/* <span className='miniUserCardContent'>{child}</span> */}
-                {children}
+                <span className='miniUserCardContent'>{children}</span>
             </div>
         </div>
     );

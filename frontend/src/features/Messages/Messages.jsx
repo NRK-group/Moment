@@ -39,12 +39,6 @@ export const Messages = () => {
                     date={'11 October 2022 •17:46'}
                     content='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl sit amet aliquam aliquam, nisl nisl aliquam nisl, sit amet aliquam nisl nisl sit amet.'
                 />
-                <MiniUserCard name='Ricky'>
-                    <MessageContent
-                        date={'11 October 2022 •17:46'}
-                        content='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl sit amet aliquam aliquam, nisl nisl aliquam nisl, sit amet aliquam nisl nisl sit amet.'
-                    />
-                </MiniUserCard>
             </div>
             <div className='messageInputContainer'>
                 {/* this will be replace by the emoji btn */}

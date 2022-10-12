@@ -121,4 +121,5 @@ export {
     NotificationsIcon,
     ProfileIcon,
     WriteIcon,
+    UserIcon,
 };

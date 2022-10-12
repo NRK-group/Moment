@@ -13,6 +13,7 @@
 .icon {
     height: 22px;
     width: 22px;
+    cursor: pointer;
 }
 .navbar a {
     display: flex;

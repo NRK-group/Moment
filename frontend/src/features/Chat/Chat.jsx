@@ -26,7 +26,7 @@ const Chat = ({ bodyStyleName, cardStyleName }) => {
                         <div className='chatContainer'>
                             <div className='chatBox'>
                                 <div className='sendMessageContainer'>
-                                    <SendMessageBox />
+                                    <Messages />
                                 </div>
                             </div>
                         </div>

@@ -11,9 +11,10 @@ const Chat = ({ bodyStyleName, cardStyleName }) => {
             img: 'https://picsum.photos/200',
             id: 1,
             content: 'Hi',
+            Messages: [{ name: 'John', content: 'Hi' }],
         },
         {
-            name: 'John',
+            name: 'John long name long name aojshdjhasldhalskdhklashdlkas',
             img: 'https://picsum.photos/200',
             id: 2,
             content: 'Hi',
@@ -71,7 +72,7 @@ const Chat = ({ bodyStyleName, cardStyleName }) => {
                                 users={users}
                                 currentUserName={currentUserName}
                             />
-                            <Messages />
+                            <Messages msg={['hello']} name={users[1].name} />
                         </div>
                     </div>
                 )}

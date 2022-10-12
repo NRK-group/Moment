@@ -11,8 +11,10 @@ const MiniUserCard = ({ propsId, img, name, children, optContent }) => {
                 />
             </div>
             <div className='miniUserCardInfo'>
-                <span className='miniUserCardName'>
-                    {name}
+                <span>
+                    <div className='miniUserCardName longTextElipsis'>
+                        {name}
+                    </div>
                     {optContent && (
                         <span className='optContent'>
                             <span className='contentSep'>•</span>

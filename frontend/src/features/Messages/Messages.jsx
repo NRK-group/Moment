@@ -29,7 +29,7 @@ export const Messages = ({ name, img, msg }) => {
                 </div>
             </div>
             <div className='chatMessageContainer scrollbar-hidden'>
-                <MessageContainer name='Firstname' img='./logo.svg'>
+                <MessageContainer name='Firstname ajsdkjgasjdglajshgdjla;ksdklfnaskd;akldhk;asdk;asjgsjldgaljsgdljagsjldgasjldgajls' img='./logo.svg'>
                     <MessageContent
                         date={'11 October 2022 •17:46'}
                         content='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl sit amet aliquam aliquam, nisl nisl aliquam nisl, sit amet aliquam nisl nisl sit amet.'

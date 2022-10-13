@@ -38,23 +38,33 @@ const Chat = ({ bodyStyleName, cardStyleName }) => {
         //     content: 'Hi',
         // },
     ];
+    let msg = [{}];
     let currentUserName = 'Moment';
     return (
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
                 <div className='chatContainer'>
                     <div className='chatBox'>
-                        <ChatUsersContainer
-                            styleName='chatUsersContainer'
-                            users={users}
-                            currentUserName={currentUserName}
-                        />
-                        <div className='messagesContainer'>
-                            {/* <div className='sendMessageContainer'>
+                        {
+                            // users.length === 0 && (
+                            //     <div className='sendMessageContainer'>
+                            //         <SendMessageBox />
+                            //     </div>
+                            // )
+                            <ChatUsersContainer
+                                styleName='chatUsersContainer'
+                                users={users}
+                                currentUserName={currentUserName}
+                            />
+                        }
+                        {msg.length !== 0 && (
+                            <div className='messagesContainer'>
+                                {/* <div className='sendMessageContainer'>
                                 <SendMessageBox />
                             </div> */}
-                            <Messages msg={[]} name={users} />
-                        </div>
+                                <Messages msg={[]} name={users} />
+                            </div>
+                        )}
                     </div>
                 </div>
             </Card>

@@ -45,7 +45,7 @@ const Chat = ({ bodyStyleName, cardStyleName }) => {
                 <div className='chatContainer'>
                     <div className='chatBox'>
                         <ChatUsersContainer
-                            styleName='chatUsersContainerDesktop'
+                            styleName='chatUsersContainer'
                             users={users}
                             currentUserName={currentUserName}
                         />

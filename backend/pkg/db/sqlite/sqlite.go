@@ -5,12 +5,9 @@ import (
 	"fmt"
 	"log"
 
-	// "github.com/golang-migrate/migrate/database/sqlite3"
+	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/golang-migrate/migrate/v4"
-	// _ "github.com/golang-migrate/migrate/v4/source/github"
-	// _ "github.com/mattn/go-sqlite3"
 )
 
 func CreateDatabase() {

@@ -1,24 +1,22 @@
 CREATE TABLE IF NOT EXISTS "User" (
     "userId" TEXT NOT NULL PRIMARY KEY,
-    "sessionId" TEXT NOT NUll,
+    "sessionId" TEXT,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "nickName" TEXT,
     "email" TEXT NOT NULL,
-    "DOB" DATE,
+    "DOB" DATE NOT NULL,
     "avatar" TEXT,
     "aboutMe" TEXT,
-    "createdAt" DATETIME,
-    "isLoggedIn" BOOLEAN,
-    "isPublic" BOOLEAN,
-    "numFollowers" INTEGER,
-    "numFollowing" INTEGER,
-    "numPosts" INTEGER,
+    "createdAt" DATETIME NOT NULL,
+    "isLoggedIn" BOOLEAN DEFAULT 0,
+    "isPublic" BOOLEAN Default 1,
+    "numFollowers" INTEGER DEFAULT 0,
+    "numFollowing" INTEGER  DEFAULT 0,
+    "numPosts" INTEGER  DEFAULT 0,
     "password" TEXT NOT NULL,
         FOREIGN KEY ("sessionId") 
             REFERENCES "Session" ("sessionId")
-        FOREIGN KEY ("userId")
-            REFERENCES "Post" ("userId")
 );
 
 CREATE TABLE IF NOT EXISTS "Session"(

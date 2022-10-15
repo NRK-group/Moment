@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS "Post"(
     "groupId" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "image" TEXT,
-    "numLikes" INTEGER,
+    "numLikes" INTEGER DEFAULT 0,
     "createdAt" DATETIME NOT NULL,
         FOREIGN KEY ("userId") 
             REFERENCES "User" ("userId")
@@ -16,9 +16,9 @@ CREATE TABLE IF NOT EXISTS "Comment"(
     "commentId" TEXT NOT NULL PRIMARY KEY,
     "postId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "content" TEXT NOT NULL,
+    "content" NOT NULL,
     "image" TEXT,
-    "numLikes" INTEGER,
+    "numLikes" INTEGER DEFAULT 0,
     "createdAt" DATETIME NOT NULL,
         FOREIGN KEY ("postId") 
             REFERENCES "Post" ("postId")

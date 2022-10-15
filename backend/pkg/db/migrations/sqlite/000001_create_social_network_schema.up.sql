@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS "User" (
     "userId" TEXT NOT NULL PRIMARY KEY,
+    "sessionId" TEXT NOT NUll,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "nickName" TEXT,
@@ -13,14 +14,17 @@ CREATE TABLE IF NOT EXISTS "User" (
     "numFollowers" INTEGER,
     "numFollowing" INTEGER,
     "numPosts" INTEGER,
-    "sessionId" TEXT
+    "password" TEXT NOT NULL,
+        FOREIGN KEY ("sessionId") 
+            REFERENCES "Session" ("sessionId")
+        FOREIGN KEY ("userId")
+            REFERENCES "Post" ("userId")
 );
 
 CREATE TABLE IF NOT EXISTS "Session"(
     "sessionId" TEXT NOT NULL PRIMARY KEY,
+    "userId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL,
-    "userId" TEXT NOT NULL
+        FOREIGN KEY ("userId")
+            REFERENCES "User" ("userId")
 );
-
-
-

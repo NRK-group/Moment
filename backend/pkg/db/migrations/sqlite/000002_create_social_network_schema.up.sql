@@ -1,11 +1,15 @@
 CREATE TABLE IF NOT EXISTS "Post"(
     "postId" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
-    "createdAt" DATETIME NOT NULL,
+    "groupId" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "image" TEXT,
     "numLikes" INTEGER,
-    "groupId" TEXT
+    "createdAt" DATETIME NOT NULL,
+        FOREIGN KEY ("userId") 
+            REFERENCES "User" ("userId")
+        FOREIGN KEY ("groupId")
+            REFERENCES "Group" ("groupId")
 );
 
 CREATE TABLE IF NOT EXISTS "Comment"(
@@ -15,7 +19,11 @@ CREATE TABLE IF NOT EXISTS "Comment"(
     "content" TEXT NOT NULL,
     "image" TEXT,
     "numLikes" INTEGER,
-    "createdAt" DATETIME NOT NULL
+    "createdAt" DATETIME NOT NULL,
+        FOREIGN KEY ("postId") 
+            REFERENCES "Post" ("postId")
+        FOREIGN KEY ("userId") 
+            REFERENCES "User" ("userId")
 );
 
 CREATE TABLE IF NOT EXISTS "Group"(

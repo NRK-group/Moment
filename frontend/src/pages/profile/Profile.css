@@ -130,6 +130,8 @@ p{
 
 .followStatsPopUpCross{
     display: flex;
+    position: absolute;
+        right: 0;
     text-align: center;
     justify-content: center;
     font-weight: bold;
@@ -307,8 +309,24 @@ p{
 .profileAttemptBtn{
     background-color: var(--button-color);
     color: white;
-    height: 7%;
+    height: 5%;
+    min-height: 40px;
     width: 50%;
+}
+
+.profileInfoPrivacy{
+    width: 20%;
+    border-radius: 4px;
+    margin: 4% auto;
+    display: flex;
+    border: 1px solid var(--border-color);
+
+}
+
+.profileInfoPrivacy:focus{
+    outline: 2px solid var(--button-color);
+    border: none
+
 }
 
 @media all and (max-width: 780px) {
@@ -350,6 +368,10 @@ p{
 @media all and (max-width: 480px) {
     .profileCard{
         padding-top: 3%;
+    }
+
+    .authAvatar{
+        margin-top: 6%;
     }
     
     .profileAvatar{
@@ -405,6 +427,7 @@ p{
     .followStatsPopUpCross{
         height: fit-content;
         margin-top: 2%;
+        
     }
 
 .profileContentSelector{
@@ -421,5 +444,6 @@ p{
     height: 100%;
     margin-top: 0;
     border-radius: 0;
+    padding-bottom: 10vh;
 }
 }

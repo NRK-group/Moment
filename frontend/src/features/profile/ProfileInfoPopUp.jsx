@@ -1,6 +1,7 @@
 import Card from "../../components/card/Card";
 import AuthInput from "../authentication/AuthInput";
 import AuthDateInput from "../authentication/AuthDateInput";
+import PrivacySelector from "./PrivacySelector";
 
 export default function ProfileStatsPopUp(props) {
   return (
@@ -10,7 +11,8 @@ export default function ProfileStatsPopUp(props) {
         <Card styleName='authAvatar'>
         <button className='profileAvatarBtn'>+</button>
         </Card>
-        <AuthInput type='text' styleName='loginInput profileInput' />
+        <PrivacySelector styleName='profileInfoPrivacy'/>
+        <AuthInput type='text' styleName='loginInput profileInput' placeholder='First Name' />
         <AuthInput type='text' styleName='loginInput profileInput' placeholder='Last Name' />
         <AuthInput type='text' styleName='loginInput profileInput' placeholder='Nickname' />
         <AuthDateInput styleName='authDate' daySelector='authDay' monthSelector='authMonth' yearSelector='authYear'/>

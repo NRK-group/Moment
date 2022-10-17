@@ -33,7 +33,7 @@ func CreateDatabase(path string) *sql.DB {
 	return db
 }
 
-// MigrateDatabase migrates the database
+// MigrateDatabase migrates the database to the latest version
 //
 // soureURL: the url where the migrations are located
 //
@@ -42,11 +42,7 @@ func CreateDatabase(path string) *sql.DB {
 // databaseURL: the url where the database is located
 //
 //	ex: "sqlite3://./social_network.db"
-//
-// steps: the number of steps to migrate
-//
-//	ex: 1 (migrate 1 step from the current version) or -1 (migrate 1 step back from the current version)
-func MigrateDatabase(soureURL, databaseURL string, steps int) {
+func MigrateDatabase(soureURL, databaseURL string) {
 	m, err := migrate.New(soureURL, databaseURL)
 	if err != nil {
 		LogError("sqlite.go", "MigrateDatabase", err)
@@ -54,7 +50,7 @@ func MigrateDatabase(soureURL, databaseURL string, steps int) {
 	// m.Up() // migrate up to the latest version
 	// m.Down() // migrate down to the first version
 	// m.Steps(-1) // migrate down by one version
-	err = m.Steps(steps) // 1 is the step number to migrate up from the current version
+	err = m.Up() // 1 is the step number to migrate up from the current version
 	if err != nil {
 		LogError("sqlite.go", "MigrateDatabase", err)
 	}

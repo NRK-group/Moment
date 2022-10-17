@@ -8,6 +8,7 @@ import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
 import Stories from './pages/stories/stories';
+import Comments from './features/Comments';
 import { useState } from 'react';
 import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
@@ -78,6 +79,23 @@ function App() {
                         }
                     />
                     <Route path='/groups' element={<h1>Groups</h1>} />
+                    <Route
+                        path='/comments'
+                        element={
+                            isMobile ? (
+                                
+                                <Comments
+                                    bodyStyleName='mobile'
+                                    cardStyleName='mobileCard'
+                                />
+                            ) : (
+                                <Comments
+                                    bodyStyleName='desktop'
+                                    cardStyleName='desktopCard'
+                                />
+                            )
+                        }
+                    />
                     <Route
                         path='notifications'
                         element={<Notification users={generalNotif} />}>

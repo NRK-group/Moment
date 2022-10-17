@@ -8,28 +8,35 @@
 }
 
 .homePageStory {
+    margin: auto;
     height: 14vh;
-    width: 45vw;
-    border-style: solid;
-    border-color: black;
+    max-width: 400px;
+    width: 100%;
+    border: 1px solid var(--terheading-color);
     overflow-x: scroll;
     display: flex;
     flex-direction: row;
 }
 
 .homePagePostArea {
-    height: 65vh;
+    height: 100%;
+    width: 42vw;
     flex-direction: column;
-    border-style: solid;
-    border-color: blue;
+    border-top: 1px solid var(--terheading-color);
+   
 }
 
 .homePageProfile {
     width: 35vw;
     height: 50vh;
-    border-style: solid;
-    border-color: red;
+    border: 1px solid var(--terheading-color);
+    justify-content: center;
 }
+
+ .homePageProfile .AvatarUsers{
+    flex-direction: unset;
+justify-content: unset;
+ }
 
 .homePageContainer {
     display: flex;
@@ -39,14 +46,14 @@
     height: 65px;
     width: 65px;
     border-radius: 50%;
-    border: 3px solid rgb(27, 57, 205);
+    border: 3px solid rgb(255, 255, 255);
 }
 
 .AvatarUserProfile img {
     height: 65px;
     width: 65px;
     border-radius: 50%;
-    border: 3px solid rgb(27, 57, 205);
+    border: 3px solid rgb(255, 255, 255);
 }
 
 .AvatarUserProfile {
@@ -71,23 +78,23 @@
 
 @media only screen and (max-width: 600px) {
     .homePage {
+        flex-direction: column;
         margin: 0%;
         width: 100vw;
-        border-style: solid;
-        border-color: green;
-
+        height: 100%;
         overflow-y: scroll;
     }
 
     .homePageProfile {
-        display: none;
+       display: none;
     }
 
     .homePageStory {
-        width: 100vw;
+        width: 99vw;
     }
     .homePagePostArea {
         overflow-y: unset;
+        width: 99vw;
     }
 
     .AvatarUsers img {

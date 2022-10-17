@@ -10,6 +10,7 @@
 
 .newPostHeader{
     display: flex;
+    position: relative;
     width: 100%;
     height: 11%;
     padding: 0.5%;
@@ -24,9 +25,10 @@
 
 .newPostHeaderCross{
     width: fit-content;
+    position: absolute;
     font-size: 1.4rem;
-    float: right;
-    margin-right: 2%;
+    /* float: right; */
+    margin-left: 95%;
 }
 
 .newPostHeaderCross:hover {
@@ -135,7 +137,11 @@
 
     .newPostImgHolder{
         width: 90%;
+    }
 
+    .newPostHeaderCross{
+       margin-left: 93%; 
+       /* margin-: 2.5%; */
     }
     
     

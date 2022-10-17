@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 
 	"backend/pkg/db/sqlite"
@@ -9,12 +9,22 @@ import (
 )
 
 func main() {
-	db := sqlite.CreateDatabase("./social_network.db")                                         // this open or create the database
-	sqlite.MigrateDatabase("file://pkg/db/migrations/sqlite", "sqlite3://./social_network.db") // migrate the database
-	database := &handler.DB{DB: db}                                                            // create a database structs
-	http.HandleFunc("/", database.Home)
-	defer db.Close() // close the database
-	fmt.Println("Server is running on port 5070")
+	// this open or create the database
+	db := sqlite.CreateDatabase("./social_network.db")
+
+	// migrate the database
+	sqlite.MigrateDatabase("file://pkg/db/migrations/sqlite", "sqlite3://./social_network.db")
+
+	// initialize the database struct
+	database := &handler.DB{DB: db}
+
+	// close the database
+	defer db.Close()
+
+	// initialize the routes
+	http.HandleFunc("/", database.Home) // set the handler for the home route
+
+	// start the server
+	log.Println("Server is running on port 5070")
 	http.ListenAndServe(":5070", nil)
-	fmt.Println("setup")
 }

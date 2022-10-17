@@ -10,28 +10,7 @@ export default function FollowStatsPopUp(props) {
                 <h3 className='followStatsPopUpTitle'>{props.type}</h3>
                 <span className='followStatsPopUpCross' >&#10005;</span>
             </Card>
-            <Card styleName='followStatsPopUpUserSection'>
-                <FollowStatUsers profileStatUser='followStatUser' profileImgHolder='followStatAvatar'
-                profileImg='followStatAvatarImg' profileUsernameHolder='followStatUsernameHold'
-                profileUsernameText='followStatUsername' profileUserRemoveBtn='followStatsRemove'
-                 username='Nate Russell' crossIcon='none'/>
-
-<FollowStatUsers profileStatUser='followStatUser' profileImgHolder='followStatAvatar'
-                profileImg='followStatAvatarImg' profileUsernameHolder='followStatUsernameHold'
-                profileUsernameText='followStatUsername' profileUserRemoveBtn='followStatsRemove'
-                 username='Nate Russell' />
-
-<FollowStatUsers profileStatUser='followStatUser' profileImgHolder='followStatAvatar'
-                profileImg='followStatAvatarImg' profileUsernameHolder='followStatUsernameHold'
-                profileUsernameText='followStatUsername' profileUserRemoveBtn='followStatsRemove'
-                 username='Nate Russell' />
-
-<FollowStatUsers profileStatUser='followStatUser' profileImgHolder='followStatAvatar'
-                profileImg='followStatAvatarImg' profileUsernameHolder='followStatUsernameHold'
-                profileUsernameText='followStatUsername' profileUserRemoveBtn='followStatsRemove'
-                 username='Nate Russell' />
-                
-            </Card>
+            {props.children}
         </Card>
     </section>
   )

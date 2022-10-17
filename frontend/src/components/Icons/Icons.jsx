@@ -171,5 +171,6 @@ export {
     NotificationsIcon,
     ProfileIcon,
     WriteIcon,
+    UserIcon,
     CommentIcon,
 };

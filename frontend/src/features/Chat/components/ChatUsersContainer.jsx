@@ -11,9 +11,9 @@ export const ChatUsersContainer = ({ users, currentUserName, styleName }) => {
                         key={id}
                         img={img}
                         propsId={`chat` + id}
-                        name={name}
-                        content={content}
-                    />
+                        name={name}>
+                        {content}
+                    </MiniUserCard>
                 ))}
             </div>
         </div>

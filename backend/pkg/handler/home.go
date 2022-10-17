@@ -16,8 +16,8 @@ type DB struct {
 func (databse *DB) Home(w http.ResponseWriter, r *http.Request) {
 	// 'curl -v localhost:5070' run this command to see the response
 	// or open the browser and go to localhost:5070
-	w.WriteHeader(http.StatusOK)                       // 200
-	w.Write([]byte("Documentation"))                   // send here the api data
+	w.WriteHeader(http.StatusOK)     // 200
+	w.Write([]byte("Documentation")) // send here the api data
 	d, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Print(err) // log the error

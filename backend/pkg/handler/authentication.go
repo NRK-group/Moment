@@ -2,6 +2,6 @@ package handler
 
 import "net/http"
 
-func (databse *DB) Registeration(w http.ResponseWriter, r *http.Request) {
+func (DB *DB) Registration(w http.ResponseWriter, r *http.Request) {
 
 }

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 
 	"backend/pkg/db/sqlite"
@@ -115,7 +116,7 @@ func TestRegistration(t *testing.T) {
 		want := sampleUser
 		got := resultUser
 
-		if got != want {
+		if !reflect.DeepEqual(got, want) {
 			t.Errorf("want %v, got %v", want, got)
 		}
 	})

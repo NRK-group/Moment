@@ -3,6 +3,8 @@ package handler
 import "net/http"
 
 type User struct {
+	UserId string `json:"UserId"`
+	SessionId string `json:"SessionId"`
 	FirstName string `json:"FirstName"`
 	LastName string `json:"LastName"`
 	NickName string `json:"NickName"`
@@ -11,6 +13,7 @@ type User struct {
 	DateOfBirth string `json:"DateOfBirth"`
 	AboutMe string `json:"AboutMe"`
 	Avatar string `json:"Avatar"`
+	CreatedAt string `json:"CreatedAt"`
 }
 
 func (DB *DB) Registration(w http.ResponseWriter, r *http.Request) {

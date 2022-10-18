@@ -32,7 +32,6 @@ func (DB DB) Registration(w http.ResponseWriter, r *http.Request) {
 	//Check if registration is correct
 	if r.Method == "POST" {
 		//Get the body of the request
-
 		
 	}
 }

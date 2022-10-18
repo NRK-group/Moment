@@ -87,7 +87,8 @@ func TestRegistration(t *testing.T) {
 
 		// Now check if the data is added
 		rows, err := DB.DB.Query(`SELECT * FROM User WHERE Email = ?`, sampleUser.Email)
-		var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password string
+		var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, password string
+		var isLoggedIn, isPublic, numFollowers, numFollowing, numPosts int
 		var resultUser *handler.User
 		for rows.Next() {
 			rows.Scan(&userId, &sessionId, &firstName, &lastName, &nickName, &email, &DOB, &avatar, &aboutMe, &createdAt, &isLoggedIn, &isPublic, &numFollowers, &numFollowing, &numPosts, &password)

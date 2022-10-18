@@ -25,6 +25,24 @@ function App() {
     ];
     let followrequest = [{ name: 'Ken' }];
     let groupNotif = [];
+
+    // for websocket
+    let socket = new WebSocket('ws://' + 'localhost:5070' + '/ws');
+    console.log('Attempting Connection...');
+
+    socket.onopen = () => {
+        console.log('Successfully Connected');
+        socket.send('Hi From the Client!');
+    };
+
+    socket.onclose = (event) => {
+        console.log('Socket Closed Connection: ', event);
+        socket.send('Client Closed!');
+    };
+
+    socket.onerror = (error) => {
+        console.log('Socket Error: ', error);
+    };
     return (
         <div
             className='App'
@@ -83,7 +101,6 @@ function App() {
                         path='/comments'
                         element={
                             isMobile ? (
-                                
                                 <Comments
                                     bodyStyleName='mobile'
                                     cardStyleName='mobileCard'

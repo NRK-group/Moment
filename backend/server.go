@@ -23,6 +23,7 @@ func main() {
 
 	// initialize the routes
 	http.HandleFunc("/", database.Home) // set the handler for the home route
+	http.HandleFunc("/ws", handler.WsEndpoint)
 
 	// start the server
 	log.Println("Server is running on port 5070")

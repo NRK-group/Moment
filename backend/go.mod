@@ -2,7 +2,10 @@ module backend
 
 go 1.19
 
-require github.com/golang-migrate/migrate/v4 v4.15.2
+require (
+	github.com/golang-migrate/migrate/v4 v4.15.2
+	github.com/gorilla/websocket v1.5.0
+)
 
 require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect

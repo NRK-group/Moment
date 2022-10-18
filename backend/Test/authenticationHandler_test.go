@@ -3,12 +3,12 @@ package Test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"backend/pkg/db/sqlite"
+	"backend/pkg/functions"
 	"backend/pkg/handler"
 )
 
@@ -69,6 +69,7 @@ func TestRegistration(t *testing.T) {
 		sampleUser := &handler.User{
 			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: "test@test.com", Password: "TestPass",
 			DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "abc", SessionId: "abc",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
 
 		// Marhsal the struct to a slice of bytes
@@ -90,7 +91,6 @@ func TestRegistration(t *testing.T) {
 		var resultUser *handler.User
 		for rows.Next() {
 			rows.Scan(&userId, &sessionId, &firstName, &lastName, &nickName, &email, &DOB, &avatar, &aboutMe, &createdAt, &isLoggedIn, &isPublic, &numFollowers, &numFollowing, &numPosts, &password)
-			fmt.Println(userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password)
 			resultUser = &handler.User{
 				UserId:      userId,
 				SessionId:   sessionId,
@@ -104,6 +104,12 @@ func TestRegistration(t *testing.T) {
 				CreatedAt:   createdAt,
 				Password:    password,
 			}
+		}
+
+
+		sampleUser.Password, err = functions.HashPassword(sampleUser.Password) 
+		if err != nil  {
+			t.Errorf("Error hashing the password %v", err)
 		}
 		want := sampleUser
 		got := resultUser

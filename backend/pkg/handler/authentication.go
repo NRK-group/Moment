@@ -1,6 +1,9 @@
 package handler
 
-import "net/http"
+import (
+	"net/http"
+	// "backend/pkg/queries"
+)
 
 type User struct {
 	UserId string `json:"UserId"`
@@ -14,17 +17,18 @@ type User struct {
 	AboutMe string `json:"AboutMe"`
 	Avatar string `json:"Avatar"`
 	CreatedAt string `json:"CreatedAt"`
-	IsLoggedIn string `json:"IsLoggedIn"`
-	IsPublic string `json:"IsPublic"`
-	NumFollowers string `json:"NumFollowers"`
-	NumFollowing string `json:"NumFollowing"`
-	NumPosts string `json:"NumPosts"`
+	IsLoggedIn int `json:"IsLoggedIn"`
+	IsPublic int `json:"IsPublic"`
+	NumFollowers int `json:"NumFollowers"`
+	NumFollowing int `json:"NumFollowing"`
+	NumPosts int `json:"NumPosts"`
 }
 
-func (DB *DB) Registration(w http.ResponseWriter, r *http.Request) {
+func (DB DB) Registration(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/registration" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 	}
 
 	//Check if registration is correct
+
 }

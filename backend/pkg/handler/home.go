@@ -7,13 +7,11 @@ import (
 	"log"
 	"net/http"
 )
-
 type DB struct {
-	*sql.DB
+	DB *sql.DB
 }
-
 // Home is the handler for the documentation
-func (databse *DB) Home(w http.ResponseWriter, r *http.Request) {
+func (databse DB) Home(w http.ResponseWriter, r *http.Request) {
 	// 'curl -v localhost:5070' run this command to see the response
 	// or open the browser and go to localhost:5070
 	w.WriteHeader(http.StatusOK)                       // 200

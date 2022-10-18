@@ -4,11 +4,9 @@ import (
 	"database/sql"
 	"net/http"
 )
-
 type DB struct {
-	*sql.DB
+	DB *sql.DB
 }
-
 // Home is the handler for the documentation
 func (database *DB) Home(w http.ResponseWriter, r *http.Request) {
 	// 'curl -v localhost:5070' run this command to see the response

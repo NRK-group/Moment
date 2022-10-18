@@ -14,6 +14,11 @@ type User struct {
 	AboutMe string `json:"AboutMe"`
 	Avatar string `json:"Avatar"`
 	CreatedAt string `json:"CreatedAt"`
+	IsLoggedIn string `json:"IsLoggedIn"`
+	IsPublic string `json:"IsPublic"`
+	NumFollowers string `json:"NumFollowers"`
+	NumFollowing string `json:"NumFollowing"`
+	NumPosts string `json:"NumPosts"`
 }
 
 func (DB *DB) Registration(w http.ResponseWriter, r *http.Request) {

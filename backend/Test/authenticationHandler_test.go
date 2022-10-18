@@ -71,20 +71,20 @@ func TestRegistration(t *testing.T) {
 			DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "abc", SessionId: "abc",
 		}
 
-		//Marhsal the struct to a slice of bytes
+		// Marhsal the struct to a slice of bytes
 		sampleUserBytes, err := json.Marshal(sampleUser)
 		if err != nil {
 			t.Errorf("Error marshalling the sampleUser")
 		}
 
-		//Create the bytes into a reader
+		// Create the bytes into a reader
 		testReq := bytes.NewReader(sampleUserBytes)
 
 		req := httptest.NewRequest(http.MethodPost, "/registration", testReq)
 		w := httptest.NewRecorder()
 		DB.Registration(w, req)
 
-		//Now check if the data is added
+		// Now check if the data is added
 		rows, err := DB.DB.Query(`SELECT * FROM User WHERE Email = ?`, sampleUser.Email)
 		var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password string
 		var resultUser *handler.User
@@ -92,25 +92,24 @@ func TestRegistration(t *testing.T) {
 			rows.Scan(&userId, &sessionId, &firstName, &lastName, &nickName, &email, &DOB, &avatar, &aboutMe, &createdAt, &isLoggedIn, &isPublic, &numFollowers, &numFollowing, &numPosts, &password)
 			fmt.Println(userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password)
 			resultUser = &handler.User{
-				UserId: userId,
-				SessionId: sessionId,
-				FirstName: firstName,
-				LastName: lastName,
-				NickName: nickName,
-				Email: email,
+				UserId:      userId,
+				SessionId:   sessionId,
+				FirstName:   firstName,
+				LastName:    lastName,
+				NickName:    nickName,
+				Email:       email,
 				DateOfBirth: DOB,
-				Avatar: avatar,
-				AboutMe: aboutMe,
-				CreatedAt: createdAt,
-				Password: password,
+				Avatar:      avatar,
+				AboutMe:     aboutMe,
+				CreatedAt:   createdAt,
+				Password:    password,
 			}
 		}
 		want := sampleUser
-		got:= resultUser
+		got := resultUser
 
 		if got != want {
 			t.Errorf("want %v, got %v", want, got)
 		}
-
 	})
 }

@@ -6,10 +6,13 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"reflect"
+	"strconv"
 	"testing"
 
 	"backend/pkg/db/sqlite"
 	"backend/pkg/handler"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 func TestRegistration(t *testing.T) {
@@ -67,8 +70,8 @@ func TestRegistration(t *testing.T) {
 
 		// Create the struct that will be inserted
 		sampleUser := &handler.User{
-			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: "handlertest@test.com", Password: "TestPass",
-			DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
+			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: "handlertest@" + uuid.NewV4().String(), Password: "TestPass",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
 
@@ -102,17 +105,16 @@ func TestRegistration(t *testing.T) {
 				DateOfBirth: DOB,
 				Avatar:      avatar,
 				AboutMe:     aboutMe,
-				CreatedAt:   createdAt,
+				CreatedAt:   "",
 				Password:    password,
 			}
 		}
 
-
-		// sampleUser.Password = strconv.FormatBool(functions.CheckPasswordHash(sampleUser.Password, resultUser.Password)) 
-		// if err != nil  {
-		// 	t.Errorf("Error hashing the password %v", err)
-		// }
-		// resultUser.Password = "true"
+		sampleUser.Password = strconv.FormatBool(handler.CheckPasswordHash(sampleUser.Password, resultUser.Password))
+		if err != nil  {
+			t.Errorf("Error hashing the password %v", err)
+		}
+		resultUser.Password = "true"
 
 		want := sampleUser
 		got := resultUser

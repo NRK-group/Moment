@@ -1,14 +1,14 @@
 package Test
 
 import (
-	"backend/pkg/functions"
-	"backend/pkg/handler"
 	"bytes"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
 	"testing"
+
+	"backend/pkg/handler"
 )
 
 func TestGetBody(t *testing.T) {
@@ -27,12 +27,12 @@ func TestGetBody(t *testing.T) {
 		// Create the bytes into a reader
 		testReq := bytes.NewReader(sampleUserBytes)
 
-		//Create a struct to get the result
+		// Create a struct to get the result
 		var resultUser handler.User
-		//Create a request
+		// Create a request
 		req := httptest.NewRequest(http.MethodPost, "/", testReq)
 		w := httptest.NewRecorder()
-		errBody := functions.GetBody(&resultUser, w, req)
+		errBody := handler.GetBody(&resultUser, w, req)
 
 		if errBody != nil {
 			t.Errorf("Error getting body from request: %v", errBody)
@@ -44,20 +44,17 @@ func TestGetBody(t *testing.T) {
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("want %v, got %v", want, got)
 		}
-
-
 	})
 	t.Run("Getting bad body from the request", func(t *testing.T) {
-		//Create a get request so that there is not body
+		// Create a get request so that there is not body
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		w := httptest.NewRecorder()
 		var resultUser handler.User
 
-		err := functions.GetBody(resultUser, w, req)
-		//If the error is nil the function hasn't registered there is an invalid body
+		err := handler.GetBody(resultUser, w, req)
+		// If the error is nil the function hasn't registered there is an invalid body
 		if err == nil {
 			t.Errorf("Error expected instead got %v", err)
 		}
 	})
-
 }

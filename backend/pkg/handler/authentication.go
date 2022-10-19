@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"backend/pkg/functions"
+	"fmt"
 	"net/http"
 	// "backend/pkg/queries"
 )
@@ -31,7 +33,10 @@ func (DB DB) Registration(w http.ResponseWriter, r *http.Request) {
 
 	//Check if registration is correct
 	if r.Method == "POST" {
+		var newUser User
 		//Get the body of the request
+		functions.GetBody(&newUser, w, r)
+		//Insert the new user into the database
 		
 	}
 }

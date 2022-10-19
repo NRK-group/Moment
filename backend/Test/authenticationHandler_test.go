@@ -23,7 +23,7 @@ func TestRegistration(t *testing.T) {
 		// Create the database struct
 		DB := &handler.DB{DB: database}
 
-		req := httptest.NewRequest(http.MethodPost, "/registration", nil)
+		req := httptest.NewRequest(http.MethodGet, "/registration", nil)
 		w := httptest.NewRecorder()
 
 		DB.Registration(w, req)
@@ -44,7 +44,7 @@ func TestRegistration(t *testing.T) {
 		// Create the database struct
 		DB := &handler.DB{DB: database}
 
-		req := httptest.NewRequest(http.MethodPost, "/badUrl", nil)
+		req := httptest.NewRequest(http.MethodGet, "/badUrl", nil)
 		w := httptest.NewRecorder()
 
 		DB.Registration(w, req)
@@ -113,6 +113,7 @@ func TestRegistration(t *testing.T) {
 		// 	t.Errorf("Error hashing the password %v", err)
 		// }
 		// resultUser.Password = "true"
+
 		want := sampleUser
 		got := resultUser
 

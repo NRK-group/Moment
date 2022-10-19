@@ -77,7 +77,7 @@ func TestInsertUser(t *testing.T) {
 		DB := &handler.DB{DB: database}
 		sampleUser := &handler.User{
 			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: randEmail, Password: "InsertUser",
-			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0001-01-01T00:00:00Z", UserId: "-", SessionId: "-",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
 		err := DB.InsertUser(*sampleUser)

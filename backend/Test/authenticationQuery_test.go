@@ -1,7 +1,7 @@
 package Test
 
 import (
-	"reflect"
+	"fmt"
 	"strconv"
 	"testing"
 
@@ -10,6 +10,32 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 )
+
+var tests = []handler.User {
+	{FirstName: "", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
+	DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+
+	{FirstName: "Length", LastName: "", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
+	DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+
+	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "", Password: "Length",
+	DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+
+	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "",
+	DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+
+	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
+	DateOfBirth: "", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+
+	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
+	DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
+	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+}
 
 func TestInsertUser(t *testing.T) {
 	randEmail := "insertUSer@"+uuid.NewV4().String()
@@ -62,7 +88,7 @@ func TestInsertUser(t *testing.T) {
 		want := sampleUser
 		got := resultUser
 
-		if !reflect.DeepEqual(got, want) {
+		if *got != *want {
 			t.Errorf("want %v, \n got %v", want, got)
 		}
 	})
@@ -85,4 +111,42 @@ func TestInsertUser(t *testing.T) {
 			t.Errorf("Error Catching already used email %v", err)
 		}
 	})
+	t.Run("Check the length of neccesary values cant be 0", func(t *testing.T) {
+		// Create the database that will be used for testing
+		database := sqlite.CreateDatabase("./social_network_test.db")
+
+		// migrate the database
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
+
+		// Create the database struct
+		DB := &handler.DB{DB: database}
+		sampleUser := &handler.User{
+			FirstName: "", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
+			DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+		err := DB.InsertUser(*sampleUser)
+		if err == nil {
+			t.Errorf("Error Catching already used empty values %v", err)
+		}
+	})
+	t.Run("Check the length of neccesary values cant be 0", func(t *testing.T) {
+		// Create the database that will be used for testing
+		database := sqlite.CreateDatabase("./social_network_test.db")
+		// migrate the database
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
+
+		// Create the database struct
+		DB := &handler.DB{DB: database}
+
+		for _, s := range tests {
+			err := DB.InsertUser(s)
+			fmt.Println("CURRENT ", s)
+			fmt.Println()
+		if err == nil {
+			t.Errorf("Error Catching empty values %v", err)
+		}
+		}
+	})
+
 }

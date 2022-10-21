@@ -45,7 +45,7 @@ func TestGetBody(t *testing.T) {
 			t.Errorf("want %v, got %v", want, got)
 		}
 	})
-	t.Run("Getting bad body from the request", func(t *testing.T) {
+	t.Run("Getting invalid body from the request", func(t *testing.T) {
 		// Create a get request so that there is not body
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		w := httptest.NewRecorder()

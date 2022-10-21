@@ -32,6 +32,7 @@ type User struct {
 	NumPosts     int    `json:"NumPosts"`
 }
 
+//Registration is a handler where all registration functions are done
 func (DB *DB) Registration(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/registration" {
 		http.Error(w, "404 not found", http.StatusNotFound)
@@ -51,6 +52,7 @@ func (DB *DB) Registration(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//InsertUser is a method that inserts a new user into the database
 func (DB DB) InsertUser(newUser User) error {
 	// Create a uuid for the user Id
 	newUser.UserId = uuid.NewV4().String()
@@ -80,16 +82,19 @@ func (DB DB) InsertUser(newUser User) error {
 	return nil
 }
 
+//HashPassword hashes a string so it cannot be read
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
 }
 
+//CheckPasswordHash Checks if a plaintext string and a hashed string are the same
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
 
+//GetBody marshalls the body of a request into a struct 
 func GetBody(b interface{}, w http.ResponseWriter, r *http.Request) error {
 	err := json.NewDecoder(r.Body).Decode(&b) // unmarshall the userdata
 	if err != nil {

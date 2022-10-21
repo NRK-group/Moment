@@ -2,9 +2,11 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -54,12 +56,15 @@ func (DB DB) InsertUser(newUser User) error {
 	newUser.UserId = uuid.NewV4().String()
 	// Create the sql INSERT statement
 	stmt, err := DB.DB.Prepare(`INSERT INTO User values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-	if err != nil {
+	if err != nil  {
 		fmt.Println("Error preparing inserting user into the db: ", err)
 		return err
 	}
 	// Hash the password and get the current time
 	var hashErr error
+	if !ValidPassword(newUser.Password) {
+		return errors.New("Invalid Password")
+	}
 	newUser.Password, hashErr = HashPassword(newUser.Password)
 	if hashErr != nil {
 		log.Print("Error hashing password", hashErr)
@@ -93,4 +98,17 @@ func GetBody(b interface{}, w http.ResponseWriter, r *http.Request) error {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
 	return err
+}
+
+//ValidPassword checks that the password input is valid and passes the requirements
+func ValidPassword(password string) bool {
+	//Check the length of the password is valid
+	if len(password) < 8 || len(password) > 16 {
+		return false
+	}
+	//Check the password contains lower and uppercase values
+	if strings.ToLower(password) == password || strings.ToUpper(password) == password {
+		return false
+	}
+	return true
 }

@@ -16,12 +16,11 @@ CREATE TABLE IF NOT EXISTS "User" (
     "numFollowers" INTEGER DEFAULT 0,
     "numFollowing" INTEGER  DEFAULT 0,
     "numPosts" INTEGER  DEFAULT 0,
-    "password" TEXT NOT NULL,
+    "password" TEXT NOT NULL CHARACTER(30),
         FOREIGN KEY ("sessionId") 
             REFERENCES "Session" ("sessionId")
     CHECK (length("firstname")>=1)
     CHECK (length("lastname")>=1)
-    CHECK (length("nickname")>=1)
     CHECK (length("email")>=1)
     CHECK (length("DOB")>=1)
     CHECK (length("createdAt")>=1)

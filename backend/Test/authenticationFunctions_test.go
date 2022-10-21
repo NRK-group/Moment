@@ -58,3 +58,39 @@ func TestGetBody(t *testing.T) {
 		}
 	})
 }
+
+var VALID_PASSWORDS = []string{
+	"ValidPassword123",
+	"ValidPas",
+	"ValidPassword123",
+}
+
+var INVALID_PASSWORDS = []string{
+	"invalidpassword1",
+	"INVALIDPASSWORD1",
+	"invalid",
+	"Invalidbecauseitistoolong",
+}
+
+func TestValidPassword(t *testing.T){
+	t.Run("Testing with valid passwords", func(t *testing.T) {
+		for _, v := range VALID_PASSWORDS {
+			got := handler.ValidPassword(v)
+			want := true
+			if got != want {
+				t.Errorf("expected: %v, got %v ", want, got)
+			}
+		}
+
+	})
+	t.Run("Testing with invalid passwords", func(t *testing.T) {
+		for _, v := range INVALID_PASSWORDS {
+			got := handler.ValidPassword(v)
+			want := false
+			if got != want {
+				t.Errorf("expected: %v, got %v ", want, got)
+			}
+		}
+
+	})
+}

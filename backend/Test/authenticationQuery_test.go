@@ -13,27 +13,27 @@ import (
 
 var tests = []handler.User {
 	{FirstName: "", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
-	DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+	DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
 	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
 
 	{FirstName: "Length", LastName: "", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
-	DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+	DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
 	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
 
 	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "", Password: "Length",
-	DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+	DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
 	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
 
 	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "",
-	DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+	DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
 	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
 
 	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
-	DateOfBirth: "", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
+	DateOfBirth: "", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
 	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
 
 	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
-	DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
+	DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
 	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
 }
 
@@ -139,9 +139,9 @@ func TestInsertUser(t *testing.T) {
 		// Create the database struct
 		DB := &handler.DB{DB: database}
 
-		for _, s := range tests {
+		for i, s := range tests {
 			err := DB.InsertUser(s)
-			fmt.Println("CURRENT ", s)
+			fmt.Println("Index:", i, "CURRENT ", s)
 			fmt.Println()
 		if err == nil {
 			t.Errorf("Error Catching empty values %v", err)

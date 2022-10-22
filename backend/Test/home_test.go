@@ -1,12 +1,11 @@
-package main
+package Test
 
 import (
+	"backend/pkg/db/sqlite"
+	"backend/pkg/handler"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"backend/pkg/db/sqlite"
-	"backend/pkg/handler"
 )
 
 func TestGetHome(t *testing.T) {

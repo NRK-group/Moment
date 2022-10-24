@@ -136,6 +136,21 @@ func ValidPassword(password string) bool {
 
 func (DB *DB) GetUser(email, password string) (bool, string) {
 	//Query the db to see if a user exsists with the inpit email
+	rows, err := DB.DB.Query(`SELECT (email, password) From User WHERE email = ?`, email)
+	if err != nil {
+		fmt.Println("Error querying the db: ", err)
+		return false, "Error querying the db"
+	}
+	counter := 0
+
+	for rows.Next() {
+		counter++
+	}
+
+	if counter == 0 {
+		return false, "Account not found"
+	}
+
 
 	//If not return false with msg
 

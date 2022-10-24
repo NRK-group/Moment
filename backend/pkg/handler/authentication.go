@@ -32,10 +32,24 @@ type User struct {
 	NumPosts     int    `json:"NumPosts"`
 }
 
-//Registration is a handler where all registration functions are done
+// Login is a handler which checks if a the login credentials input by a user are valid
+func (DB *DB) Login(w http.ResponseWriter, r *http.Request) {
+	//Confirm the path is correct
+	if r.URL.Path != "/login" {
+		http.Error(w, "404 not found", http.StatusNotFound)
+		return
+	}
+
+	if r.Method == "POST" {
+		
+	}
+}
+
+// Registration is a handler where all registration functions are done
 func (DB *DB) Registration(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/registration" {
 		http.Error(w, "404 not found", http.StatusNotFound)
+		return
 	}
 
 	// Check if registration is correct
@@ -52,13 +66,13 @@ func (DB *DB) Registration(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//InsertUser is a method that inserts a new user into the database
+// InsertUser is a method that inserts a new user into the database
 func (DB DB) InsertUser(newUser User) error {
 	// Create a uuid for the user Id
 	newUser.UserId = uuid.NewV4().String()
 	// Create the sql INSERT statement
 	stmt, err := DB.DB.Prepare(`INSERT INTO User values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-	if err != nil  {
+	if err != nil {
 		fmt.Println("Error preparing inserting user into the db: ", err)
 		return err
 	}
@@ -82,19 +96,19 @@ func (DB DB) InsertUser(newUser User) error {
 	return nil
 }
 
-//HashPassword hashes a string so it cannot be read
+// HashPassword hashes a string so it cannot be read
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
 }
 
-//CheckPasswordHash Checks if a plaintext string and a hashed string are the same
+// CheckPasswordHash Checks if a plaintext string and a hashed string are the same
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
 
-//GetBody marshalls the body of a request into a struct 
+// GetBody marshalls the body of a request into a struct
 func GetBody(b interface{}, w http.ResponseWriter, r *http.Request) error {
 	err := json.NewDecoder(r.Body).Decode(&b) // unmarshall the userdata
 	if err != nil {
@@ -105,13 +119,13 @@ func GetBody(b interface{}, w http.ResponseWriter, r *http.Request) error {
 	return err
 }
 
-//ValidPassword checks that the password input is valid and passes the requirements
+// ValidPassword checks that the password input is valid and passes the requirements
 func ValidPassword(password string) bool {
-	//Check the length of the password is valid
+	// Check the length of the password is valid
 	if len(password) < 8 || len(password) > 16 {
 		return false
 	}
-	//Check the password contains lower and uppercase values
+	// Check the password contains lower and uppercase values
 	if strings.ToLower(password) == password || strings.ToUpper(password) == password {
 		return false
 	}

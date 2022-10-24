@@ -151,12 +151,12 @@ func (database *DB) AllPost(uID string) ([]Post, error) {
 func (database *DB) CreatePost(userID, groupId, image, content string) (string, error) {
 	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
 	postID := uuid.NewV4()
-	stmt, _ := database.Prepare(`
+	stmt, _ := database.DB.Prepare(`
 		INSERT INTO Post (postId, userId, groupId, content, image, numLikes, createdAt ) values (?, ?, ?, ?, ?, ?, ?)
 	`)
 	_, err := stmt.Exec(postID, userID, groupId, content, image, 0, createdAt)
-	fmt.Println("inside Create Post", err)
 	if err != nil {
+		fmt.Println("inside Create Post", err)
 		return "", err
 	}
 	return postID.String(), nil

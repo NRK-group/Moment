@@ -34,14 +34,14 @@ type User struct {
 
 // Login is a handler which checks if a the login credentials input by a user are valid
 func (DB *DB) Login(w http.ResponseWriter, r *http.Request) {
-	//Confirm the path is correct
+	// Confirm the path is correct
 	if r.URL.Path != "/login" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
 
 	if r.Method == "POST" {
-		//Check the credentials are correct
+		// Check the credentials are correct
 	}
 }
 
@@ -135,31 +135,27 @@ func ValidPassword(password string) bool {
 //
 
 func (DB *DB) GetUser(email, password string) (bool, string) {
-	//Query the db to see if a user exsists with the inpit email
-	rows, err := DB.DB.Query(`SELECT (email, password) From User WHERE email = ?`, email)
+	// Query the db to see if a user exsists with the inpit email
+	rows, err := DB.DB.Query(`SELECT password FROM User WHERE email = ?`, email)
 	if err != nil {
 		fmt.Println("Error querying the db: ", err)
 		return false, "Error querying the db"
 	}
 	counter := 0
-
+	var pass string
 	for rows.Next() {
 		counter++
+		rows.Scan(&pass)
 	}
-
+	// If not return false with msg
 	if counter == 0 {
 		return false, "Account not found"
 	}
-
-
-	//If not return false with msg
-
-
-	//Check if the password input is correct
-
-	//If not return false with msg
-
-
-
-	return false, ""
+	fmt.Println("PASSWORD === ", pass)
+	// Check if the password input is correct
+	if CheckPasswordHash(password, pass) {
+		return true, "Valid Login"
+	}
+	// If not return false with msg
+	return false, "Incorrect Password"
 }

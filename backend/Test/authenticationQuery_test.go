@@ -148,5 +148,41 @@ func TestInsertUser(t *testing.T) {
 		}
 		}
 	})
+}
 
+func TestGetUser(t *testing.T) {
+	testEmail := "GetUser@" + uuid.NewV4().String()
+	t.Run("Check with correct credentials", func(t *testing.T) {
+		// Create the database that will be used for testing
+		database := sqlite.CreateDatabase("./social_network_test.db")
+
+		// migrate the database
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
+
+		// Create the database struct
+		DB := &handler.DB{DB: database}
+
+		sampleUser := &handler.User{
+			FirstName: "GetUser", LastName: "GetUser", NickName: "GetUser", Email: testEmail, Password: "GetUser",
+			DateOfBirth: "GetUser", AboutMe: "GetUser", Avatar: "GetUser", CreatedAt: "GetUser", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+
+		err := DB.InsertUser(*sampleUser)
+
+		if err != nil {
+			t.Errorf("Error Inserting the test user to the db")
+		}
+
+		//Now check if the value is input to the db
+		wantStr := "Valid Credentials"
+		wantBool := true
+
+		gotBool, gotStr := DB.GetUser(sampleUser.Email, sampleUser.Password)
+
+		if gotBool != wantBool && gotStr != wantStr {
+			t.Errorf("Got: %v %v, Want: %v %v", gotBool, gotStr, wantBool, wantStr)
+		}
+
+	})
 }

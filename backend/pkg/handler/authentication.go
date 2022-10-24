@@ -41,7 +41,7 @@ func (DB *DB) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == "POST" {
-		
+		//Check the credentials are correct
 	}
 }
 
@@ -130,4 +130,21 @@ func ValidPassword(password string) bool {
 		return false
 	}
 	return true
+}
+
+//
+
+func (DB *DB) GetUser(email, password string) (bool, string) {
+	//Query the db to see if a user exsists with the inpit email
+
+	//If not return false with msg
+
+
+	//Check if the password input is correct
+
+	//If not return false with msg
+
+
+
+	return false, ""
 }

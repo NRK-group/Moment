@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS "Event"(
         FOREIGN KEY ("userId") 
             REFERENCES "User" ("userId")
         FOREIGN KEY ("groupId")
-            REFERENCES "Group" ("groupId")
+            REFERENCES "Groups" ("groupId")
 );
 CREATE TABLE IF NOT EXISTS "Follower"(
     "followingId" TEXT NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS "GroupMember"(
     "userId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL,
     FOREIGN KEY ("groupId") 
-        REFERENCES "Group" ("groupId"),
+        REFERENCES "Groups" ("groupId"),
     FOREIGN KEY ("userId")
         REFERENCES "User" ("userId")
 );

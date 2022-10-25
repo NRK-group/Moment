@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"backend/pkg/handler"
-	"backend/pkg/post"
+	"backend/pkg/group"
 	"backend/pkg/structs"
 )
 
@@ -62,8 +62,8 @@ func TestHealthCheckGroupHttpPost(t *testing.T) {
 func TestCreateGroup(t *testing.T) {
 	t.Run("Insert Post to DB", func(t *testing.T) {
 		database := DatabaseSetup()
-		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", GroupID: "3233234", Admin: "wasfdfgfd"}
-		//str, err := post.CreatePost(post1.UserID, post1.Content, post1.GroupID, post1.Image, database)
+		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
+		str, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		fmt.Println(str)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
@@ -72,9 +72,8 @@ func TestCreateGroup(t *testing.T) {
 
 	t.Run("Read all Posts from the DB", func(t *testing.T) {
 		database := DatabaseSetup()
-
-		posts, err := post.AllPost("6t78t8t87", database)
-		fmt.Println(posts)
+		groups, err := group.AllGroups("6t78t8t87", database)
+		fmt.Println(groups)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}

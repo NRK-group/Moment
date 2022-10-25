@@ -15,7 +15,7 @@ func AllGroups(uID string, database *structs.DB) ([]structs.Group, error) {
 	var group structs.Group
 	var groups []structs.Group
 	var err error
-	rows, err := database.DB.Query("SELECT * FROM Group ")
+	rows, err := database.DB.Query("SELECT * FROM Groups ")
 	if err != nil {
 		fmt.Print(err)
 		return nil, err
@@ -41,7 +41,7 @@ func CreateGroup(name, description, admin string, database *structs.DB) (string,
 	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
 	groupId := uuid.NewV4()
 	stmt, _ := database.DB.Prepare(`
-		INSERT INTO Group (groupId, admin, name, description, createdAt ) values (?, ?, ?, ?, ?)
+		INSERT INTO Groups (groupId, admin, name, description, createdAt ) values (?, ?, ?, ?, ?)
 	`)
 	_, err := stmt.Exec(groupId, admin, name, description, createdAt)
 	if err != nil {

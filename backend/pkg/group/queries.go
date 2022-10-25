@@ -1,0 +1,52 @@
+package group
+
+import (
+	"fmt"
+	"time"
+
+	"backend/pkg/structs"
+
+	uuid "github.com/satori/go.uuid"
+)
+
+// AllGroups
+// return all groups
+func AllGroups(uID string, database *structs.DB) ([]structs.Group, error) {
+	var group structs.Group
+	var groups []structs.Group
+	var err error
+	rows, err := database.DB.Query("SELECT * FROM Group ")
+	if err != nil {
+		fmt.Print(err)
+		return nil, err
+	}
+	var groupId, admin, name, description, createdAt string
+	for rows.Next() {
+		rows.Scan(&groupId, &admin, &name, &description, &createdAt)
+		group = structs.Group{
+			CreatedAt:   createdAt,
+			Name:        name,
+			GroupID:     groupId,
+			Description: description,
+			Admin:       admin,
+		}
+		groups = append([]structs.Group{group}, groups...)
+	}
+	return groups, nil
+}
+
+// CreateGroup
+// is a method of database that add a group.
+func CreateGroup(name, description, admin string, database *structs.DB) (string, error) {
+	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
+	groupId := uuid.NewV4()
+	stmt, _ := database.DB.Prepare(`
+		INSERT INTO Group (groupId, admin, name, description, createdAt ) values (?, ?, ?, ?, ?)
+	`)
+	_, err := stmt.Exec(groupId, admin, name, description, createdAt)
+	if err != nil {
+		fmt.Println("inside Create Group", err)
+		return "", err
+	}
+	return groupId.String(), nil
+}

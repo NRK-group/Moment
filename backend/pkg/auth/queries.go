@@ -67,3 +67,16 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	}
 	return nil
 }
+
+func UpdateSessionId(email, value string, DB structs.DB) error {
+	stmt, err := DB.DB.Prepare(`UPDATE User SET sessionId = ? WHERE email = ?`)
+	if err != nil {
+		fmt.Println("Error preparing inserting user into the db: ", err)
+		return err
+	}
+	_, updateErr := stmt.Exec(value, email)
+	if updateErr != nil {
+		fmt.Println("Error executing update sessionID")
+	}
+	return updateErr
+}

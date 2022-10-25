@@ -4,6 +4,8 @@ import (
 	"backend/pkg/auth"
 	"backend/pkg/structs"
 	"net/http"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 //Login is a handler that vlidates the credentials input by a user
@@ -12,7 +14,6 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
-
 	if r.Method == "POST" {
 		var userLogin structs.User
 		err := GetBody(&userLogin, w, r)
@@ -20,7 +21,21 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-
+		successfulLogin, validationMsg := auth.CheckCredentials(userLogin.Email, userLogin.Password, DB.Env) //Validate the logn creds
+		if !successfulLogin { //If credentials are invalid retrun unauthorized error and message
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte(validationMsg))
+			return
+		}
+		sessionErr := auth.UpdateSessionId(userLogin.Email, uuid.NewV4().String(), *DB.Env)//Create a sessionID
+		if sessionErr != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Error Validating Login"))
+			return
+		}
+		//Create the cookie
+		w.Write([]byte(validationMsg))
+		return
 	}
 }
 

@@ -83,17 +83,16 @@ func TestCreateGroup(t *testing.T) {
 func TestPostHandlerMakeAGroup(t *testing.T) {
 	database := DatabaseSetup()
 
-	post1 := structs.Post{UserID: "3232131221", Content: "hey2", GroupID: "3233234", Image: "wasfdfgfd"}
-	body, _ := json.Marshal(post1)
+	group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
+	body, _ := json.Marshal(group1)
 
-	req, err := http.NewRequest("POST", "/post", bytes.NewBuffer(body))
+	req, err := http.NewRequest("POST", "/group", bytes.NewBuffer(body))
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	Env := &handler.Env{Env: database}
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(Env.Post)
+	handler := http.HandlerFunc(Env.Group)
 	handler.ServeHTTP(rr, req)
 	expected := rr.Body.String()
 	expectedStr := "successfully posted"
@@ -106,17 +105,17 @@ func TestPostHandlerMakeAGroup(t *testing.T) {
 func TestPostHandlerGettingAllGroups(t *testing.T) {
 	database := DatabaseSetup()
 
-	req, err := http.NewRequest("GET", "/post", nil)
+	req, err := http.NewRequest("GET", "/group", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	rr := httptest.NewRecorder()
 	Env := &handler.Env{Env: database}
-	handler := http.HandlerFunc(Env.Post)
+	handler := http.HandlerFunc(Env.Group)
 	handler.ServeHTTP(rr, req)
 	fmt.Println(rr.Body.String())
 	expected := http.StatusOK
-	if status := rr.Code; status != expected && strings.Contains(rr.Body.String(), "PostID") {
+	if status := rr.Code; status != expected && strings.Contains(rr.Body.String(), "GroupID") {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)
 	}

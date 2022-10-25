@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 
@@ -18,14 +17,14 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		posts, err := post.AllPost("6t78t8t87", database.Env)
 		if err != nil {
-			fmt.Print(err)
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 		marshallPosts, err := json.Marshal(posts)
 		if err != nil {
-			fmt.Println("Error marshalling the data: ", err)
+			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
+			w.WriteHeader(http.StatusInternalServerError)
 		}
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "application/json")
@@ -36,9 +35,7 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 		var postData structs.Post
 		GetBody(&postData, w, r)
 		_, postErr := post.CreatePost(postData.UserID, postData.Content, postData.GroupID, postData.Image, database.Env)
-		fmt.Println("----postData")
 		if postErr != nil {
-			fmt.Print("postErr - ", postErr)
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
@@ -48,6 +45,5 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 		io.WriteString(w, "successfully posted")
 		return
 	}
-
 	http.Error(w, "400 Bad Request.", http.StatusBadRequest)
 }

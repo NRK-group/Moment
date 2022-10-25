@@ -96,7 +96,7 @@ func TestRegistration(t *testing.T) {
 		// Now check if the data is added by querying the database manually and getting the specific user
 
 		var resultUser structs.User
-		auth.GetUser(sampleUser.Email, &resultUser, *Env.Env)
+		auth.GetUser("email", sampleUser.Email, &resultUser, *Env.Env)
 		resultUser.UserId = "-"
 		resultUser.CreatedAt = ""
 

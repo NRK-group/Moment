@@ -80,3 +80,32 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 	}
 	return updateErr
 }
+
+func GetUser(value string, result *structs.User, DB structs.DB) error {
+	rows, err := DB.DB.Query(`SELECT * FROM User WHERE email = ?`, value)
+	if err != nil {
+		fmt.Println("Error selecting data from db")
+		return err
+	}
+	var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, password string
+	var isLoggedIn, isPublic, numFollowers, numFollowing, numPosts int
+	
+		for rows.Next() {
+			fmt.Println("SEARCHING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+			rows.Scan(&userId, &sessionId, &firstName, &lastName, &nickName, &email, &DOB, &avatar, &aboutMe, &createdAt, &isLoggedIn, &isPublic, &numFollowers, &numFollowing, &numPosts, &password)
+			*result = structs.User{
+				UserId:      userId,
+				SessionId:   sessionId,
+				FirstName:   firstName,
+				LastName:    lastName,
+				NickName:    nickName,
+				Email:       email,
+				DateOfBirth: DOB,
+				Avatar:      avatar,
+				AboutMe:     aboutMe,
+				CreatedAt:   createdAt,
+				Password:    password,
+			}
+		}
+	return nil
+}

@@ -218,3 +218,69 @@ func TestCheckCredentials(t *testing.T) {
 		}
 	})
 }
+
+func TestGetUser(t *testing.T){
+	randEmail:= uuid.NewV4().String()
+	t.Run("Getting valid user", func(t *testing.T) {
+		database := sqlite.CreateDatabase("./social_network_test.db")
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")// migrate the database
+		DB := &structs.DB{DB: database}// Create the database struct
+
+		sampleUser := &structs.User{
+			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: randEmail, Password: "InsertUser",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+		err := auth.InsertUser(*sampleUser, *DB)
+		if err != nil {
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+		var got structs.User
+		getErr := auth.GetUser(randEmail, &got, *DB)
+		if getErr != nil {
+			t.Errorf("Error getting the user from the database")
+		}
+		got.CreatedAt="-"
+		got.UserId="-"
+		sampleUser.Password = strconv.FormatBool(auth.CheckPasswordHash(sampleUser.Password, got.Password))
+		if err != nil {
+			t.Errorf("Error hashing the password %v", err)
+		}
+		got.Password = "true"
+
+		if got != *sampleUser {
+			t.Errorf("got: %v. Want: %v.", got, *sampleUser)
+		}
+	})
+	t.Run("Getting User that doesnt exsist", func(t *testing.T) {
+		database := sqlite.CreateDatabase("./social_network_test.db")
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")// migrate the database
+		DB := &structs.DB{DB: database}// Create the database struct
+
+		sampleUser := &structs.User{
+			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: randEmail, Password: "InsertUser",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+		err := auth.InsertUser(*sampleUser, *DB)
+		if err != nil {
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+		var got structs.User
+		getErr := auth.GetUser(randEmail, &got, *DB)
+		if getErr != nil {
+			t.Errorf("Error getting the user from the database")
+		}
+		got.CreatedAt="-"
+		got.UserId="-"
+		sampleUser.Password = strconv.FormatBool(auth.CheckPasswordHash(sampleUser.Password, got.Password))
+		if err != nil {
+			t.Errorf("Error hashing the password %v", err)
+		}
+		got.Password = "true"
+
+		if got != *sampleUser {
+			t.Errorf("got: %v. Want: %v.", got, *sampleUser)
+		}
+	})
+}

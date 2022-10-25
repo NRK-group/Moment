@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"strconv"
 	"testing"
 
@@ -109,7 +108,7 @@ func TestRegistration(t *testing.T) {
 		want := sampleUser
 		got := resultUser
 
-		if !reflect.DeepEqual(got, want) {
+		if got != *want {
 			t.Errorf("want %v, got %v", want, got)
 		}
 	})

@@ -74,7 +74,7 @@ var INVALID_PASSWORDS = []string{
 	"Invalidbecauseitistoolong",
 }
 
-func TestValidPassword(t *testing.T){
+func TestValidPassword(t *testing.T) {
 	t.Run("Testing with valid passwords", func(t *testing.T) {
 		for _, v := range VALID_PASSWORDS {
 			got := auth.ValidPassword(v)
@@ -83,7 +83,6 @@ func TestValidPassword(t *testing.T){
 				t.Errorf("expected: %v, got %v ", want, got)
 			}
 		}
-
 	})
 	t.Run("Testing with invalid passwords", func(t *testing.T) {
 		for _, v := range INVALID_PASSWORDS {
@@ -93,6 +92,5 @@ func TestValidPassword(t *testing.T){
 				t.Errorf("expected: %v, got %v ", want, got)
 			}
 		}
-
 	})
 }

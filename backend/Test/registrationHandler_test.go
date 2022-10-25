@@ -94,26 +94,11 @@ func TestRegistration(t *testing.T) {
 		Env.Registration(w, req)
 
 		// Now check if the data is added by querying the database manually and getting the specific user
-		rows, err := DB.DB.Query(`SELECT * FROM User WHERE Email = ?`, sampleUser.Email)
-		var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, password string
-		var isLoggedIn, isPublic, numFollowers, numFollowing, numPosts int
-		var resultUser *structs.User
-		for rows.Next() {
-			rows.Scan(&userId, &sessionId, &firstName, &lastName, &nickName, &email, &DOB, &avatar, &aboutMe, &createdAt, &isLoggedIn, &isPublic, &numFollowers, &numFollowing, &numPosts, &password)
-			resultUser = &structs.User{
-				UserId:      "-",
-				SessionId:   sessionId,
-				FirstName:   firstName,
-				LastName:    lastName,
-				NickName:    nickName,
-				Email:       email,
-				DateOfBirth: DOB,
-				Avatar:      avatar,
-				AboutMe:     aboutMe,
-				CreatedAt:   "",
-				Password:    password,
-			}
-		}
+
+		var resultUser structs.User
+		auth.GetUser("email", sampleUser.Email, &resultUser, *Env.Env)
+		resultUser.UserId = "-"
+		resultUser.CreatedAt = ""
 
 		sampleUser.Password = strconv.FormatBool(auth.CheckPasswordHash(sampleUser.Password, resultUser.Password))
 		if err != nil {

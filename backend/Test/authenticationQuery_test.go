@@ -59,6 +59,7 @@ func TestInsertUser(t *testing.T) {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 
+		//Query the db to check if the user was inserted
 		rows, err := DB.DB.Query(`SELECT * FROM User WHERE Email = ?`, sampleUser.Email)
 		var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password string
 		var resultUser *structs.User
@@ -93,7 +94,7 @@ func TestInsertUser(t *testing.T) {
 			t.Errorf("want %v, \n got %v", want, got)
 		}
 	})
-	t.Run("inserting a user wiht used email to the db", func(t *testing.T) {
+	t.Run("inserting a user with used email to the db", func(t *testing.T) {
 		// Create the database that will be used for testing
 		database := sqlite.CreateDatabase("./social_network_test.db")
 
@@ -112,26 +113,7 @@ func TestInsertUser(t *testing.T) {
 			t.Errorf("Error Catching already used email %v", err)
 		}
 	})
-	t.Run("Check the length of neccesary values cant be 0", func(t *testing.T) {
-		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
-
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// Create the database struct
-		DB := &structs.DB{DB: database}
-		sampleUser := &structs.User{
-			FirstName: "", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
-			DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
-			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-		}
-		err := auth.InsertUser(*sampleUser, *DB)
-		if err == nil {
-			t.Errorf("Error Catching already used empty values %v", err)
-		}
-	})
-	t.Run("Check the length of neccesary values cant be 0", func(t *testing.T) {
+	t.Run("Check the length of neccesary values can't be 0", func(t *testing.T) {
 		// Create the database that will be used for testing
 		database := sqlite.CreateDatabase("./social_network_test.db")
 		// migrate the database
@@ -233,6 +215,51 @@ func TestCheckCredentials(t *testing.T) {
 
 		if gotBool != wantBool && gotStr != wantStr {
 			t.Errorf("Got: %v %v, Want: %v %v", gotBool, gotStr, wantBool, wantStr)
+		}
+	})
+}
+
+func TestGetUser(t *testing.T){
+	randEmail:= uuid.NewV4().String()
+	t.Run("Getting valid user", func(t *testing.T) {
+		database := sqlite.CreateDatabase("./social_network_test.db")
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")// migrate the database
+		DB := &structs.DB{DB: database}// Create the database struct
+
+		sampleUser := &structs.User{
+			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: randEmail, Password: "InsertUser",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+		err := auth.InsertUser(*sampleUser, *DB)
+		if err != nil {
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+		var got structs.User
+		getErr := auth.GetUser(`email`, randEmail, &got, *DB)
+		if getErr != nil {
+			t.Errorf("Error getting the user from the database")
+		}
+		got.CreatedAt="-"
+		got.UserId="-"
+		sampleUser.Password = strconv.FormatBool(auth.CheckPasswordHash(sampleUser.Password, got.Password))
+		if err != nil {
+			t.Errorf("Error hashing the password %v", err)
+		}
+		got.Password = "true"
+
+		if got != *sampleUser {
+			t.Errorf("got: %v. Want: %v.", got, *sampleUser)
+		}
+	})
+	t.Run("Getting User that doesnt exsist", func(t *testing.T) {
+		database := sqlite.CreateDatabase("./social_network_test.db")
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")// migrate the database
+		DB := &structs.DB{DB: database}// Create the database struct
+		var got structs.User
+		getErr := auth.GetUser("email", "", &got, *DB)
+		if getErr == nil {
+			t.Errorf("Error recognising invalid user details")
 		}
 	})
 }

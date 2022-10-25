@@ -25,7 +25,14 @@ func main() {
 
 	// initialize the routes
 	http.HandleFunc("/", database.Home) // set the handler for the home route
-	http.HandleFunc("/ws", handler.WsEndpoint)
+
+	// handler for the websocket
+	hub := handler.NewHub()
+	go hub.LogConns()
+	go hub.Run()
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		handler.ServeWs(hub, w, r)
+	})
 
 	// start the server
 	log.Println("Server is running on port 5070")

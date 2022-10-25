@@ -10,9 +10,9 @@ import (
 	"testing"
 
 	"backend/pkg/db/sqlite"
-	"backend/pkg/structs"
-	"backend/pkg/post"
 	"backend/pkg/handler"
+	"backend/pkg/post"
+	"backend/pkg/structs"
 
 	"github.com/stretchr/testify/assert"
 )

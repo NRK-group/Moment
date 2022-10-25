@@ -2,40 +2,42 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
-	"backend/pkg/post"
+	"backend/pkg/group"
 	"backend/pkg/structs"
 )
 
-func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/post" {
+func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/group" {
 		http.Error(w, "404 not found.", http.StatusNotFound)
 		return
 	}
 	if r.Method == "GET" {
-		posts, err := post.AllPost("6t78t8t87", database.Env)
+		groups, err := group.AllGroups("fdsfdsff", database.Env)
 		if err != nil {
+			fmt.Print(err)
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		marshallPosts, err := json.Marshal(posts)
+		marshallPosts, err := json.Marshal(groups)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(marshallPosts)
+		w.Write([]byte(marshallPosts))
 		return
 	}
+
 	if r.Method == "POST" {
-		var postData structs.Post
-		GetBody(&postData, w, r)
-		_, postErr := post.CreatePost(postData.UserID, postData.Content, postData.GroupID, postData.Image, database.Env)
-		if postErr != nil {
+		var groupData structs.Group
+		GetBody(&groupData, w, r)
+		_, groupErr := group.CreateGroup(groupData.Name, groupData.Description, groupData.Admin, database.Env)
+		if groupErr != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
 			return

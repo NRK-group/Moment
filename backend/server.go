@@ -26,6 +26,7 @@ func main() {
 	// initialize the routes
 	http.HandleFunc("/", database.Home) 
 	http.HandleFunc("/post", database.Post) 
+	http.HandleFunc("/group", database.Group) 
 
 	// start the server
 	log.Println("Server is running on port 5070")

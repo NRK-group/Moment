@@ -3,8 +3,6 @@ package handler
 import (
 	"backend/pkg/auth"
 	"backend/pkg/structs"
-	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -30,18 +28,6 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 }
 
 
-
-
-// GetBody marshalls the body of a request into a struct
-func GetBody(b interface{}, w http.ResponseWriter, r *http.Request) error {
-	err := json.NewDecoder(r.Body).Decode(&b) // unmarshall the userdata
-	if err != nil {
-		fmt.Print(err)
-		http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
-		w.WriteHeader(http.StatusInternalServerError)
-	}
-	return err
-}
 
 
 

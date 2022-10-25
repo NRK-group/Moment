@@ -24,7 +24,8 @@ func main() {
 	defer networkDb.Close()
 
 	// initialize the routes
-	http.HandleFunc("/", database.Home) // set the handler for the home route
+	http.HandleFunc("/", database.Home) 
+	http.HandleFunc("/post", database.Post) 
 
 	// start the server
 	log.Println("Server is running on port 5070")

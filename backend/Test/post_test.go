@@ -6,22 +6,24 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"testing"
 	"strings"
+	"testing"
 
 	"backend/pkg/db/sqlite"
+	"backend/pkg/structs"
+	"backend/pkg/post"
 	"backend/pkg/handler"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func DatabaseSetup() *handler.DB {
+func DatabaseSetup() *structs.DB {
 	// this open or create the database
 	db := sqlite.CreateDatabase("./social_network_test.db")
 	// migrate the database
 	sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
 	// initialize the database struct
-	database := &handler.DB{DB: db}
+	database := &structs.DB{DB: db}
 
 	return database
 }
@@ -34,9 +36,10 @@ func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	Env := &handler.Env{Env: database}
 	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(database.Post)
+	handler := http.HandlerFunc(Env.Post)
 	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
 	// directly and pass in our Request and ResponseRecorder.
 	handler.ServeHTTP(rr, req)
@@ -62,8 +65,8 @@ func TestHealthCheckPostHttpPost(t *testing.T) {
 func TestCreatePost(t *testing.T) {
 	t.Run("Insert Post to DB", func(t *testing.T) {
 		database := DatabaseSetup()
-		post := &handler.Post{UserID: "3232131221", Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
-		str, err := database.CreatePost(post.UserID, post.Content, post.GroupID, post.Image)
+		post1 := structs.Post{UserID: "3232131221", Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
+		str, err := post.CreatePost(post1.UserID, post1.Content, post1.GroupID, post1.Image, database)
 		fmt.Println(str)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
@@ -72,8 +75,8 @@ func TestCreatePost(t *testing.T) {
 
 	t.Run("Read all Posts from the DB", func(t *testing.T) {
 		database := DatabaseSetup()
-	
-		posts, err := database.AllPost("6t78t8t87")
+
+		posts, err := post.AllPost("6t78t8t87", database)
 		fmt.Println(posts)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
@@ -84,15 +87,17 @@ func TestCreatePost(t *testing.T) {
 func TestPostHandlerMakeAPost(t *testing.T) {
 	database := DatabaseSetup()
 
-	post1 := &handler.Post{UserID: "3232131221", Content: "hey2", GroupID: "3233234", Image: "wasfdfgfd"}
+	post1 := structs.Post{UserID: "3232131221", Content: "hey2", GroupID: "3233234", Image: "wasfdfgfd"}
 	body, _ := json.Marshal(post1)
 
 	req, err := http.NewRequest("POST", "/post", bytes.NewBuffer(body))
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	Env := &handler.Env{Env: database}
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(database.Post)
+	handler := http.HandlerFunc(Env.Post)
 	handler.ServeHTTP(rr, req)
 	expected := rr.Body.String()
 	expectedStr := "successfully posted"
@@ -110,7 +115,8 @@ func TestPostHandlerGettingAllPost(t *testing.T) {
 		t.Fatal(err)
 	}
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(database.Post)
+	Env := &handler.Env{Env: database}
+	handler := http.HandlerFunc(Env.Post)
 	handler.ServeHTTP(rr, req)
 	fmt.Println(rr.Body.String())
 	expected := http.StatusOK
@@ -119,4 +125,3 @@ func TestPostHandlerGettingAllPost(t *testing.T) {
 			rr.Body.String(), expected)
 	}
 }
-

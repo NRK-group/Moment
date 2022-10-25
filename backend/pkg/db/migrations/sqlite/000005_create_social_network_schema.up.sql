@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS "Message"(
     receiverId TEXT,
     groupId TEXT,
     senderId TEXT NOT NULL,
+    senderImage TEXT,
     content TEXT NOT NULL,
     createdAt DATETIME NOT NULL,
     FOREIGN KEY ("receiverId")

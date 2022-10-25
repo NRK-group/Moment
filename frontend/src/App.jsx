@@ -9,12 +9,13 @@ import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
 import Stories from './pages/stories/stories';
 import Comments from './features/Comments';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
+    let socket;
     let generalNotif = [
         {
             name: 'John',
@@ -27,123 +28,116 @@ function App() {
     let groupNotif = [];
 
     // for websocket
-    let socket = new WebSocket('ws://' + 'localhost:5070' + '/ws');
-    console.log('Attempting Connection...');
-
-    socket.onopen = () => {
-        console.log('Successfully Connected');
-        socket.send('Hi From the Client!');
+    const CreateWebSocket = () => {
+        socket = new WebSocket('ws://' + 'localhost:8080' + '/ws');
+        console.log('Attempting Connection...');
     };
-
-    socket.onclose = (event) => {
-        console.log('Socket Closed Connection: ', event);
-        socket.send('Client Closed!');
-    };
-
-    socket.onerror = (error) => {
-        console.log('Socket Error: ', error);
-    };
+    CreateWebSocket();
     return (
-        <div
-            className='App'
-            ref={(boxRef) => {
-                boxRef &&
-                    console.log(
-                        boxRef.getBoundingClientRect().width,
-                        boxRef.getBoundingClientRect().width >= 600
-                    );
-                return (
+        socket && (
+            <div
+                className='App'
+                ref={(boxRef) => {
                     boxRef &&
-                    setIsMobile(boxRef.getBoundingClientRect().width < 600)
-                );
-            }}>
-            <Header />
-            {/* <Login /> */}
-            {/* <Registration /> */}
-            <>
-                <Routes>
-                    <Route
-                        path='/home'
-                        element={
-                            isMobile ? (
-                                <Home
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
-                            ) : (
-                                <Home
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                            )
-                        }
-                    />
-                    <Route path='/search' element={<Search />} />
-                    <Route path='/newpost' element={<NewPost />} />
-                    <Route
-                        path='/messages'
-                        element={
-                            isMobile ? (
-                                <Chat
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
-                            ) : (
-                                <Chat
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                            )
-                        }
-                    />
-                    <Route path='/groups' element={<h1>Groups</h1>} />
-                    <Route
-                        path='/comments'
-                        element={
-                            isMobile ? (
-                                <Comments
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
-                            ) : (
-                                <Comments
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                            )
-                        }
-                    />
-                    <Route
-                        path='notifications'
-                        element={<Notification users={generalNotif} />}>
+                        console.log(
+                            boxRef.getBoundingClientRect().width,
+                            boxRef.getBoundingClientRect().width >= 600
+                        );
+                    return (
+                        boxRef &&
+                        setIsMobile(boxRef.getBoundingClientRect().width < 600)
+                    );
+                }}>
+                <Header />
+                {/* <Login /> */}
+                {/* <Registration /> */}
+                <>
+                    <Routes>
                         <Route
-                            path='general'
-                            element={<Notification users={generalNotif} />}
+                            path='/home'
+                            element={
+                                isMobile ? (
+                                    <Home
+                                        bodyStyleName='mobile'
+                                        cardStyleName='mobileCard'
+                                    />
+                                ) : (
+                                    <Home
+                                        bodyStyleName='desktop'
+                                        cardStyleName='desktopCard'
+                                    />
+                                )
+                            }
+                        />
+                        <Route path='/search' element={<Search />} />
+                        <Route path='/newpost' element={<NewPost />} />
+                        <Route
+                            path='/messages'
+                            element={
+                                isMobile ? (
+                                    <Chat
+                                        bodyStyleName='mobile'
+                                        cardStyleName='mobileCard'
+                                        socket={socket}
+                                    />
+                                ) : (
+                                    <Chat
+                                        bodyStyleName='desktop'
+                                        cardStyleName='desktopCard'
+                                        socket={socket}
+                                    />
+                                )
+                            }
+                        />
+                        <Route path='/groups' element={<h1>Groups</h1>} />
+                        <Route
+                            path='/comments'
+                            element={
+                                isMobile ? (
+                                    <Comments
+                                        bodyStyleName='mobile'
+                                        cardStyleName='mobileCard'
+                                    />
+                                ) : (
+                                    <Comments
+                                        bodyStyleName='desktop'
+                                        cardStyleName='desktopCard'
+                                    />
+                                )
+                            }
                         />
                         <Route
-                            path='followrequest'
-                            element={<Notification users={followrequest} />}
-                        />
-                        <Route
-                            path='group'
-                            element={<Notification users={groupNotif} />}
-                        />
-                    </Route>
-                    <Route
-                        path='profile'
-                        element={
-                            <Profile
-                                aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
-                                fullname='Nathaniel Russell'
-                                nickname='Nate'
+                            path='notifications'
+                            element={<Notification users={generalNotif} />}>
+                            <Route
+                                path='general'
+                                element={<Notification users={generalNotif} />}
                             />
-                        }
-                    />
-                    <Route path='/stories' element={<Stories />} />
-                </Routes>
-            </>
-            <Footer />
-        </div>
+                            <Route
+                                path='followrequest'
+                                element={<Notification users={followrequest} />}
+                            />
+                            <Route
+                                path='group'
+                                element={<Notification users={groupNotif} />}
+                            />
+                        </Route>
+                        <Route
+                            path='profile'
+                            element={
+                                <Profile
+                                    aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
+                                    fullname='Nathaniel Russell'
+                                    nickname='Nate'
+                                />
+                            }
+                        />
+                        <Route path='/stories' element={<Stories />} />
+                    </Routes>
+                </>
+                <Footer />
+            </div>
+        )
     );
 }
 

@@ -21,7 +21,7 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		successfulLogin, validationMsg := auth.CheckCredentials(userLogin.Email, userLogin.Password, DB.Env) //Validate the logn creds
+		successfulLogin, validationMsg := auth.CheckCredentials(userLogin.Email, userLogin.Password, DB.Env) //Validate the login creds
 		if !successfulLogin { //If credentials are invalid retrun unauthorized error and message
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte(validationMsg))
@@ -33,11 +33,12 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("Error Validating Login"))
 			return
 		}
-		//Create the cookie
+		auth.CreateCookie(w, userLogin.Email, DB.Env)//Create the cookie
 		w.Write([]byte(validationMsg))
 		return
 	}
 }
+
 
 // Registration is a handler where all registration functions are done
 func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {

@@ -146,30 +146,4 @@ func TestLogin(t *testing.T) {
 			t.Errorf("got %v", got)
 		}
 	})
-	// t.Run("Check for cookie after valid login", func(t *testing.T) {
-	// 	// Create the database that will be used for testing
-	// 	database := sqlite.CreateDatabase("./social_network_test.db")
-
-	// 	// migrate the database
-	// 	sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-	// 	// Create the database struct
-	// 	DB := &structs.DB{DB: database}
-	// 	Env := handler.Env{Env: DB}
-	// 	sampleUser := &structs.User{
-	// 		Email: testEmail, Password: "Password123",
-	// 	}
-	// 	sampleUserBytes, err := json.Marshal(sampleUser)
-	// 	if err != nil {
-	// 		t.Errorf("Error marshalling the sampleUser")
-	// 	}
-	// 	testReq := bytes.NewReader(sampleUserBytes) // Create the bytes into a reader
-	// 	req := httptest.NewRequest(http.MethodPost, "/login", testReq)
-	// 	w := httptest.NewRecorder()
-	// 	Env.Login(w, req)
-	// 	if w.Body.String() != "Valid Login" {
-	// 		t.Errorf("Error validating login")
-	// 	}
-
-	// })
 }

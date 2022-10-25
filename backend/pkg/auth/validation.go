@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"backend/pkg/structs"
 	"net/http"
 	"strings"
 	"time"
@@ -34,10 +35,13 @@ func CheckPasswordHash(password, hash string) bool {
 }
 
 // CreateCookie creates a cookie for the specified responsewriter
-func CreateCookie(w http.ResponseWriter, email string) {
+func CreateCookie(w http.ResponseWriter, email string, DB *structs.DB) {
+	var result structs.User
+	GetUser("email", email, &result, *DB)
+	cookieName := result.UserId + "&" + result.Email + "&" + result.SessionId
 	http.SetCookie(w, &http.Cookie{
 		Name:    "session_token",
-		Value:   "",
+		Value:   cookieName,
 		Expires: time.Now().Add(24 * time.Hour),
 	})
 }

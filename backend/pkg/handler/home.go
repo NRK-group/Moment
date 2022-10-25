@@ -2,12 +2,26 @@ package handler
 
 import (
 	"backend/pkg/structs"
+	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
 type Env struct{
 	Env *structs.DB
 }
+
+// GetBody marshalls the body of a request into a struct, b must be a struct
+func GetBody(b interface{}, w http.ResponseWriter, r *http.Request) error {
+	err := json.NewDecoder(r.Body).Decode(&b) // unmarshall the userdata
+	if err != nil {
+		fmt.Print(err)
+		http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+	return err
+}
+
 // Home is the handler for the documentation
 func (database *Env) Home(w http.ResponseWriter, r *http.Request) {
 	// 'curl -v localhost:5070' run this command to see the response

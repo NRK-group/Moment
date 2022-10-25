@@ -1,16 +1,15 @@
 package handler
 
 import (
-	"database/sql"
+	"backend/pkg/structs"
 	"net/http"
 )
 
-type DB struct {
-	DB *sql.DB
+type Env struct{
+	Env *structs.DB
 }
-
 // Home is the handler for the documentation
-func (database *DB) Home(w http.ResponseWriter, r *http.Request) {
+func (database *Env) Home(w http.ResponseWriter, r *http.Request) {
 	// 'curl -v localhost:5070' run this command to see the response
 	// or open the browser and go to localhost:5070
 	if r.URL.Path != "/" {

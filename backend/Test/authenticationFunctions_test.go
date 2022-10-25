@@ -8,13 +8,15 @@ import (
 	"reflect"
 	"testing"
 
+	"backend/pkg/auth"
 	"backend/pkg/handler"
+	"backend/pkg/structs"
 )
 
 func TestGetBody(t *testing.T) {
 	t.Run("Getting valid body from the request", func(t *testing.T) {
 		// Create the struct that will be inserted
-		sampleUser := handler.User{
+		sampleUser := structs.User{
 			FirstName: "GetBodyTest", LastName: "GetBodyTest",
 		}
 
@@ -28,7 +30,7 @@ func TestGetBody(t *testing.T) {
 		testReq := bytes.NewReader(sampleUserBytes)
 
 		// Create a struct to get the result
-		var resultUser handler.User
+		var resultUser structs.User
 		// Create a request
 		req := httptest.NewRequest(http.MethodPost, "/", testReq)
 		w := httptest.NewRecorder()
@@ -49,7 +51,7 @@ func TestGetBody(t *testing.T) {
 		// Create a get request so that there is not body
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		w := httptest.NewRecorder()
-		var resultUser handler.User
+		var resultUser structs.User
 
 		err := handler.GetBody(resultUser, w, req)
 		// If the error is nil the function hasn't registered there is an invalid body
@@ -75,7 +77,7 @@ var INVALID_PASSWORDS = []string{
 func TestValidPassword(t *testing.T){
 	t.Run("Testing with valid passwords", func(t *testing.T) {
 		for _, v := range VALID_PASSWORDS {
-			got := handler.ValidPassword(v)
+			got := auth.ValidPassword(v)
 			want := true
 			if got != want {
 				t.Errorf("expected: %v, got %v ", want, got)
@@ -85,7 +87,7 @@ func TestValidPassword(t *testing.T){
 	})
 	t.Run("Testing with invalid passwords", func(t *testing.T) {
 		for _, v := range INVALID_PASSWORDS {
-			got := handler.ValidPassword(v)
+			got := auth.ValidPassword(v)
 			want := false
 			if got != want {
 				t.Errorf("expected: %v, got %v ", want, got)

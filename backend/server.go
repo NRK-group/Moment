@@ -6,20 +6,22 @@ import (
 
 	"backend/pkg/db/sqlite"
 	"backend/pkg/handler"
+	"backend/pkg/structs"
 )
 
 func main() {
 	// this open or create the database
-	db := sqlite.CreateDatabase("./social_network.db")
+	networkDb := sqlite.CreateDatabase("./social_network.db")
 
 	// migrate the database
 	sqlite.MigrateDatabase("file://pkg/db/migrations/sqlite", "sqlite3://./social_network.db")
 
 	// initialize the database struct
-	database := &handler.DB{DB: db}
+	data := &structs.DB{DB: networkDb}
+	database := &handler.Env{Env: data}
 
 	// close the database
-	defer db.Close()
+	defer networkDb.Close()
 
 	// initialize the routes
 	http.HandleFunc("/", database.Home) // set the handler for the home route

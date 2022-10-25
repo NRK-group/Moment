@@ -59,6 +59,7 @@ func TestInsertUser(t *testing.T) {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 
+		//Query the db to check if the user was inserted
 		rows, err := DB.DB.Query(`SELECT * FROM User WHERE Email = ?`, sampleUser.Email)
 		var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password string
 		var resultUser *structs.User
@@ -93,7 +94,7 @@ func TestInsertUser(t *testing.T) {
 			t.Errorf("want %v, \n got %v", want, got)
 		}
 	})
-	t.Run("inserting a user wiht used email to the db", func(t *testing.T) {
+	t.Run("inserting a user with used email to the db", func(t *testing.T) {
 		// Create the database that will be used for testing
 		database := sqlite.CreateDatabase("./social_network_test.db")
 
@@ -112,26 +113,7 @@ func TestInsertUser(t *testing.T) {
 			t.Errorf("Error Catching already used email %v", err)
 		}
 	})
-	t.Run("Check the length of neccesary values cant be 0", func(t *testing.T) {
-		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
-
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// Create the database struct
-		DB := &structs.DB{DB: database}
-		sampleUser := &structs.User{
-			FirstName: "", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
-			DateOfBirth: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "Length", UserId: "-", SessionId: "-",
-			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-		}
-		err := auth.InsertUser(*sampleUser, *DB)
-		if err == nil {
-			t.Errorf("Error Catching already used empty values %v", err)
-		}
-	})
-	t.Run("Check the length of neccesary values cant be 0", func(t *testing.T) {
+	t.Run("Check the length of neccesary values can't be 0", func(t *testing.T) {
 		// Create the database that will be used for testing
 		database := sqlite.CreateDatabase("./social_network_test.db")
 		// migrate the database

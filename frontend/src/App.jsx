@@ -29,7 +29,7 @@ function App() {
 
     // for websocket
     const CreateWebSocket = () => {
-        socket = new WebSocket('ws://' + 'localhost:8080' + '/ws');
+        socket = new WebSocket('ws://' + 'localhost:5070' + '/ws');
         console.log('Attempting Connection...');
     };
     CreateWebSocket();

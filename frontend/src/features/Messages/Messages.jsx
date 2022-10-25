@@ -5,21 +5,26 @@ import { MessagesIcon, UserIcon } from '../../components/Icons/Icons';
 import { MessageContainer } from './components/messageContainer';
 import { MessageContent } from './components/MessageContent';
 import { ProfileIcon } from '../../components/Icons/Icons';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useEffect } from 'react';
+
 export const Messages = ({ name, img, msg, socket }) => {
     let messageInput = useRef();
-    console.log(socket);
-    const sendMessage = () => {
+    let chatBox = useRef();
+    const [messages, setMessages] = useState(msg);
+    const sendMessage = (e) => {
+        e.preventDefault();
+        console.log('hello e', e.target);
         if (messageInput.current.value !== '') {
-            console.log(
-                JSON.stringify({
-                    type: 'message', // message, notification, followrequest
-                    receiver: name, //name of the receiver
-                    sender: 'Moment', // change this to current user
-                    img: img, // img of the sender
-                    content: messageInput.current.value, // content of the message
-                })
-            );
+            // console.log(
+            //     JSON.stringify({
+            //         type: 'message', // message, notification, followrequest
+            //         receiver: name, //name of the receiver
+            //         sender: 'Moment', // change this to current user
+            //         img: img, // img of the sender
+            //         content: messageInput.current.value, // content of the message
+            //     })
+            // );
             socket.send(
                 JSON.stringify({
                     type: 'message', // message, notification, followrequest
@@ -30,10 +35,28 @@ export const Messages = ({ name, img, msg, socket }) => {
                 })
             );
             messageInput.current.value = '';
+            chatBox.current.scroll({
+                top: chatBox.current.scrollHeight,
+            });
         }
     };
+    useEffect(() => {
+        chatBox.current.scroll({ top: chatBox.current.scrollHeight });
+    }, [messages]);
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            sendMessage(e);
+            return;
+        }
+        // socket.send(
+        //     JSON.stringify({
+        //         type: 'typing', // message, notification, followrequest
+        //         body: "I'm typing",
+        //     })
+        // );
+    };
     socket.onmessage = (event) => {
-        console.log(event.data);
+        setMessages((messages) => [...messages, JSON.parse(event.data)]);
     };
     return (
         <>
@@ -57,11 +80,11 @@ export const Messages = ({ name, img, msg, socket }) => {
                     <MessagesIcon />
                 </div>
             </div>
-            <div className='chatMessageContainer scrollbar-hidden'>
-                {msg.map((message) => {
+            <div className='chatMessageContainer' ref={chatBox}>
+                {messages.map((message, i) => {
                     return (
                         <MessageContainer
-                            key={message.id}
+                            key={message + i}
                             message={message}
                             name={name}>
                             <MessageContent
@@ -90,13 +113,13 @@ export const Messages = ({ name, img, msg, socket }) => {
                         placeholder='message'
                         styleName='messageInput'></Input> */}
                     <div className='messageInput'>
-                        <form>
-                            <textarea
-                                id=''
-                                rows='2'
-                                placeholder='message'
-                                ref={messageInput}></textarea>
-                        </form>
+                        <textarea
+                            type='submit'
+                            id=''
+                            rows='2'
+                            placeholder='message'
+                            ref={messageInput}
+                            onKeyDown={handleKeyDown}></textarea>
                     </div>
                     <div onClick={sendMessage}>
                         <MessagesIcon />

@@ -33,13 +33,11 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-//CreateCookie creates a cookie for the specified responsewriter
+// CreateCookie creates a cookie for the specified responsewriter
 func CreateCookie(w http.ResponseWriter, email string) {
-	
 	http.SetCookie(w, &http.Cookie{
 		Name:    "session_token",
 		Value:   "",
 		Expires: time.Now().Add(24 * time.Hour),
 	})
 }
-

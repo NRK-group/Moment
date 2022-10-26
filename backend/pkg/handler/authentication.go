@@ -39,7 +39,6 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 // Registration is a handler where all registration functions are done
 func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/registration" {

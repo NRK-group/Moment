@@ -27,7 +27,7 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(validationMsg))
 			return
 		}
-		sessionErr := auth.UpdateSessionId(userLogin.Email, uuid.NewV4().String(), *DB.Env, &userLogin)//Create a sessionID
+		sessionErr := auth.UpdateSessionId(userLogin.Email, uuid.NewV4().String(), *DB.Env)//Create a sessionID
 		if sessionErr != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("Error Validating Login"))

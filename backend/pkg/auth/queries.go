@@ -68,7 +68,9 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	return nil
 }
 
-func UpdateSessionId(email, value string, DB structs.DB, user *structs.User) error {
+func UpdateSessionId(email, value string, DB structs.DB) error {
+	var result structs.User
+	GetUser("email", email, &result, DB)
 	stmt, err := DB.DB.Prepare(`UPDATE User SET sessionId = ? WHERE email = ?`) // Update the session ID in the user table
 	if err != nil {
 		fmt.Println("Error preparing inserting user into the db: ", err)
@@ -81,19 +83,24 @@ func UpdateSessionId(email, value string, DB structs.DB, user *structs.User) err
 	}
 	
 	if value == "-" {
-		stmt, err := DB.DB.Prepare(`DELETE FROM Session WHERE userId = ?`)//remove the session to the session table
+		stmt, err := DB.DB.Prepare(`DELETE FROM UserSessions WHERE userId = ?`)//remove the session to the session table
 		if err != nil {
 			fmt.Println("Error Preparing Delete statement")
 			return err
 		}
-		stmt.Exec(user.UserId)
+		stmt.Exec(result.UserId)
 	} else {
-		stmt, err := DB.DB.Prepare(`INSERT INTO Session values (?, ?, ?)`)//Add the value to the db
+		stmt, err := DB.DB.Prepare(`INSERT INTO UserSessions values (?, ?, ?)`)//Add the value to the db
 		if err != nil {
 			fmt.Println("Error Preparing Delete statement")
 			return err
 		}
-		stmt.Exec(user.SessionId, user.UserId, time.Now().String())
+		fmt.Println()
+		fmt.Println()
+		fmt.Println("---------INSERT VALUES: ",value, result.UserId, time.Now().String(),)
+		fmt.Println()
+		fmt.Println()
+		stmt.Exec(value, result.UserId, time.Now().String())
 	}
 	return nil
 }

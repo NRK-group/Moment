@@ -8,15 +8,11 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-
-	
 	"backend/pkg/structs"
 	"backend/pkg/post"
 	"backend/pkg/handler"
-
 	"github.com/stretchr/testify/assert"
 )
-
 
 func TestHealthCheckCommetsHandlerHttpGet(t *testing.T) {
 	database := DatabaseSetup()

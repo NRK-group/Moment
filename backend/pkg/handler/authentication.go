@@ -39,6 +39,16 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/logout" {
+		http.Error(w, "404 not found", http.StatusNotFound)
+		return
+	}
+
+	if r.Method == "GET" {
+		
+	}
+}
 
 // Registration is a handler where all registration functions are done
 func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {

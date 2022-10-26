@@ -59,16 +59,15 @@ func TestRemoveCookie(t *testing.T) {
 	var result structs.User
 	auth.GetUser("email", testEmail, &result, *DB)
 	auth.CreateCookie(recorder, testEmail, DB, result) // Create the cookie
-
-	_ = &http.Request{Header: http.Header{"Cookie": recorder.HeaderMap["Set-Cookie"]}}
-
 	recorderDeleted := httptest.NewRecorder() // Drop a cookie on the recorder.
 
 	auth.RemoveCookie(recorderDeleted, "session_token") // Now try removing the cookie
 	requestDeleted := &http.Request{Header: http.Header{"Cookie": recorderDeleted.HeaderMap["Set-Cookie"]}}
-	cookie, err := requestDeleted.Cookie("session_token")     // Check if the cookie has been removed
-	if err == nil {
-		fmt.Println("!!!!!!!!!!!!!!!!----------- :", cookie.MaxAge)
+	cookie, err := requestDeleted.Cookie("session_token")  // Check if the cookie has been removed
+	got := cookie.Value
+	want := ""
+	if got != want {
+		fmt.Println("!!!!!!!!!!!!!!!!----------- :", cookie.Value)
 		t.Errorf("cookie found when should be deleted")
 	}
 }

@@ -327,15 +327,12 @@ func TestUpdateSessionId(t *testing.T) {
 		}
 		// Get the results from the session Id table
 		rows, querErr := DB.DB.Query(`SELECT * FROM UserSessions WHERE userId = ?`, result.UserId)
-		fmt.Println("RESULT USER ID: ", result.UserId)
 		if querErr != nil {
 			t.Errorf("Error accessing the table")
 			return
 		}
 		var gotsess, gotuser, date string
 		for rows.Next() {
-			fmt.Println()
-			fmt.Println("SCANNING!!!!")
 			rows.Scan(&gotsess, &gotuser, &date)
 		}
 

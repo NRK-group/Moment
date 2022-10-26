@@ -95,11 +95,6 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 			fmt.Println("Error Preparing Delete statement")
 			return err
 		}
-		fmt.Println()
-		fmt.Println()
-		fmt.Println("---------INSERT VALUES: ",value, result.UserId, time.Now().String(),)
-		fmt.Println()
-		fmt.Println()
 		stmt.Exec(value, result.UserId, time.Now().String())
 	}
 	return nil

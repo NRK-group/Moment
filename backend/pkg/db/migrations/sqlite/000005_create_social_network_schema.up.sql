@@ -1,20 +1,27 @@
-CREATE TABLE IF NOT EXISTS "Message"(
+CREATE TABLE IF NOT EXISTS "PrivateMessage"(
     messageId TEXT NOT NULL PRIMARY KEY,
-    chatId TEXT,
-    receiverId TEXT,
-    groupId TEXT,
     senderId TEXT NOT NULL,
-    senderImage TEXT,
+    receiverId TEXT NOT NULL,
     content TEXT NOT NULL,
     createdAt DATETIME NOT NULL,
+    FOREIGN KEY ("senderId")
+        REFERENCES "User" ("userId"),
     FOREIGN KEY ("receiverId")
-        REFERENCES "User"("userId"),
+        REFERENCES "User" ("userId")
+);
+CREATE TABLE IF NOT EXISTS "GroupMessage"(
+    messageId TEXT NOT NULL PRIMARY KEY,
+    groupId TEXT NOT NULL,
+    senderId TEXT NOT NULL,
+    content TEXT NOT NULL,
+    createdAt DATETIME NOT NULL,
+    FOREIGN KEY ("groupId")
+        REFERENCES "Group"("groupId"),
     FOREIGN KEY ("senderId")
         REFERENCES "User"("userId")
 );
 CREATE TABLE IF NOT EXISTS "Chat"(
     chatId TEXT NOT NULL PRIMARY KEY,
-    name TEXT,
     user1 TEXT NOT NULL,
     user2 TEXT NOT NULL,
     FOREIGN KEY ("user1")

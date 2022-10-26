@@ -81,16 +81,15 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 		fmt.Println("Error executing update sessionID")
 		return updateErr
 	}
-	
 	if value == "-" {
-		stmt, err := DB.DB.Prepare(`DELETE FROM UserSessions WHERE userId = ?`)//remove the session to the session table
+		stmt, err := DB.DB.Prepare(`DELETE FROM UserSessions WHERE userId = ?`) // remove the session to the session table
 		if err != nil {
 			fmt.Println("Error Preparing Delete statement")
 			return err
 		}
 		stmt.Exec(result.UserId)
 	} else {
-		stmt, err := DB.DB.Prepare(`INSERT INTO UserSessions values (?, ?, ?)`)//Add the value to the db
+		stmt, err := DB.DB.Prepare(`INSERT INTO UserSessions values (?, ?, ?)`) // Add the value to the db
 		if err != nil {
 			fmt.Println("Error Preparing Delete statement")
 			return err
@@ -106,26 +105,26 @@ func GetUser(datatype, value string, result *structs.User, DB structs.DB) error 
 		fmt.Println("Error selecting data from db")
 		return err
 	}
-	var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, password string
-	var isLoggedIn, isPublic, numFollowers, numFollowing, numPosts int
 	nothing := true
-
 	for rows.Next() {
 		nothing = false
-		rows.Scan(&userId, &sessionId, &firstName, &lastName, &nickName, &email, &DOB, &avatar, &aboutMe, &createdAt, &isLoggedIn, &isPublic, &numFollowers, &numFollowing, &numPosts, &password)
-		*result = structs.User{
-			UserId:      userId,
-			SessionId:   sessionId,
-			FirstName:   firstName,
-			LastName:    lastName,
-			NickName:    nickName,
-			Email:       email,
-			DateOfBirth: DOB,
-			Avatar:      avatar,
-			AboutMe:     aboutMe,
-			CreatedAt:   createdAt,
-			Password:    password,
-		}
+		rows.Scan(
+			&result.UserId,
+			&result.SessionId,
+			&result.FirstName,
+			&result.LastName,
+			&result.NickName,
+			&result.Email,
+			&result.DateOfBirth,
+			&result.Avatar,
+			&result.AboutMe,
+			&result.CreatedAt,
+			&result.IsLoggedIn,
+			&result.IsPublic,
+			&result.NumFollowers,
+			&result.NumFollowing,
+			&result.NumPosts,
+			&result.Password)
 	}
 	if nothing {//No users were found
 		return errors.New("No user found")

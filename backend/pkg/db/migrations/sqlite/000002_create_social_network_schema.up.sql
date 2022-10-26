@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS "Post"(
         FOREIGN KEY ("userId") 
             REFERENCES "User" ("userId")
         FOREIGN KEY ("groupId")
-            REFERENCES "Group" ("groupId")
+            REFERENCES "Groups" ("groupId")
 );
 
 CREATE TABLE IF NOT EXISTS "Comment"(
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "Comment"(
             REFERENCES "User" ("userId")
 );
 
-CREATE TABLE IF NOT EXISTS "Group"(
+CREATE TABLE IF NOT EXISTS "Groups"(
     "groupId" TEXT NOT NULL PRIMARY KEY,
     "admin" TEXT NOT NULL,
     "name" TEXT NOT NULL,

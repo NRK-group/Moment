@@ -3,9 +3,9 @@ DROP TABLE IF EXISTS "User";
 CREATE TABLE IF NOT EXISTS "User" (
     "userId" TEXT NOT NULL PRIMARY KEY,
     "sessionId" TEXT,
-    "firstName" TEXT CHARACTER(30) NOT NULL,
-    "lastName" TEXT CHARACTER(30) NOT NULL,
-    "nickName" TEXT CHARACTER(30),
+    "firstName" CHARACTER(30) NOT NULL,
+    "lastName" CHARACTER(30) NOT NULL,
+    "nickName" CHARACTER(30),
     "email" TEXT NOT NULL UNIQUE,
     "DOB" DATE NOT NULL,
     "avatar" TEXT,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "User" (
     "numFollowers" INTEGER DEFAULT 0,
     "numFollowing" INTEGER  DEFAULT 0,
     "numPosts" INTEGER  DEFAULT 0,
-    "password" TEXT NOT NULL CHARACTER(30),
+    "password" CHARACTER(30) NOT NULL,
         FOREIGN KEY ("sessionId") 
             REFERENCES "Session" ("sessionId")
     CHECK (length("firstname")>=1)
@@ -25,4 +25,5 @@ CREATE TABLE IF NOT EXISTS "User" (
     CHECK (length("DOB")>=1)
     CHECK (length("createdAt")>=1)
     CHECK (length("password")>=1)
+    
 );

@@ -67,3 +67,68 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	}
 	return nil
 }
+
+func UpdateSessionId(email, value string, DB structs.DB) error {
+	var result structs.User
+	GetUser("email", email, &result, DB)
+	stmt, err := DB.DB.Prepare(`UPDATE User SET sessionId = ? WHERE email = ?`) // Update the session ID in the user table
+	if err != nil {
+		fmt.Println("Error preparing inserting user into the db: ", err)
+		return err
+	}
+	_, updateErr := stmt.Exec(value, email)
+	if updateErr != nil {
+		fmt.Println("Error executing update sessionID")
+		return updateErr
+	}
+	
+	if value == "-" {
+		stmt, err := DB.DB.Prepare(`DELETE FROM UserSessions WHERE userId = ?`)//remove the session to the session table
+		if err != nil {
+			fmt.Println("Error Preparing Delete statement")
+			return err
+		}
+		stmt.Exec(result.UserId)
+	} else {
+		stmt, err := DB.DB.Prepare(`INSERT INTO UserSessions values (?, ?, ?)`)//Add the value to the db
+		if err != nil {
+			fmt.Println("Error Preparing Delete statement")
+			return err
+		}
+		stmt.Exec(value, result.UserId, time.Now().String())
+	}
+	return nil
+}
+
+func GetUser(datatype, value string, result *structs.User, DB structs.DB) error {
+	rows, err := DB.DB.Query(`SELECT * FROM User WHERE `+datatype+` = ?`, value)
+	if err != nil {
+		fmt.Println("Error selecting data from db")
+		return err
+	}
+	var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, password string
+	var isLoggedIn, isPublic, numFollowers, numFollowing, numPosts int
+	nothing := true
+
+	for rows.Next() {
+		nothing = false
+		rows.Scan(&userId, &sessionId, &firstName, &lastName, &nickName, &email, &DOB, &avatar, &aboutMe, &createdAt, &isLoggedIn, &isPublic, &numFollowers, &numFollowing, &numPosts, &password)
+		*result = structs.User{
+			UserId:      userId,
+			SessionId:   sessionId,
+			FirstName:   firstName,
+			LastName:    lastName,
+			NickName:    nickName,
+			Email:       email,
+			DateOfBirth: DOB,
+			Avatar:      avatar,
+			AboutMe:     aboutMe,
+			CreatedAt:   createdAt,
+			Password:    password,
+		}
+	}
+	if nothing {
+		return errors.New("No user found")
+	}
+	return nil
+}

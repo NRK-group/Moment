@@ -25,7 +25,9 @@ func main() {
 	defer networkDb.Close()
 
 	// initialize the routes
-	http.HandleFunc("/", database.Home) // set the handler for the home route
+	http.HandleFunc("/", database.Home) 
+	http.HandleFunc("/post", database.Post) 
+	http.HandleFunc("/group", database.Group) 
 
 	// handler for the websocket
 	hub := wSocket.NewHub()

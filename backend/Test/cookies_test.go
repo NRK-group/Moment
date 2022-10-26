@@ -3,6 +3,7 @@ package Test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -65,8 +66,9 @@ func TestRemoveCookie(t *testing.T) {
 
 	auth.RemoveCookie(recorderDeleted, "session_token") // Now try removing the cookie
 	requestDeleted := &http.Request{Header: http.Header{"Cookie": recorderDeleted.HeaderMap["Set-Cookie"]}}
-	_, err = requestDeleted.Cookie("session_token")     // Chck if the cookie has been removed
+	cookie, err := requestDeleted.Cookie("session_token")     // Check if the cookie has been removed
 	if err == nil {
+		fmt.Println("!!!!!!!!!!!!!!!!----------- :", cookie.MaxAge)
 		t.Errorf("cookie found when should be deleted")
 	}
 }

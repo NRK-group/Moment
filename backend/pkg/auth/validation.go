@@ -1,10 +1,7 @@
 package auth
 
 import (
-	"backend/pkg/structs"
-	"net/http"
 	"strings"
-	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -32,14 +29,4 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
-}
-
-// CreateCookie creates a cookie for the specified responsewriter
-func CreateCookie(w http.ResponseWriter, email string, DB *structs.DB, user structs.User) {
-	cookieName := user.UserId + "&" + user.Email + "&" + user.SessionId
-	http.SetCookie(w, &http.Cookie{
-		Name:    "session_token",
-		Value:   cookieName,
-		Expires: time.Now().Add(24 * time.Hour),
-	})
 }

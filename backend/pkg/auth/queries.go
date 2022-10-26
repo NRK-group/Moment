@@ -81,9 +81,19 @@ func UpdateSessionId(email, value string, DB structs.DB, user *structs.User) err
 	}
 	
 	if value == "-" {
-		//remove the session to the session table
+		stmt, err := DB.DB.Prepare(`DELETE FROM Session WHERE userId = ?`)//remove the session to the session table
+		if err != nil {
+			fmt.Println("Error Preparing Delete statement")
+			return err
+		}
+		stmt.Exec(user.UserId)
 	} else {
-		//Add the value to the db
+		stmt, err := DB.DB.Prepare(`INSERT INTO Session values (?, ?, ?)`)//Add the value to the db
+		if err != nil {
+			fmt.Println("Error Preparing Delete statement")
+			return err
+		}
+		stmt.Exec(user.SessionId, user.UserId, time.Now().String())
 	}
 	return nil
 }

@@ -38,7 +38,7 @@ const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
         //     content: 'Hi',
         // },
     ];
-    let msg = [{}];
+    let msg = [];
     let currentUserName = 'Moment';
     return (
         <Body styleName={bodyStyleName}>
@@ -57,18 +57,17 @@ const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
                                 currentUserName={currentUserName}
                             />
                         }
-                        {msg.length !== 0 && (
-                            <div className='messagesContainer'>
-                                {/* <div className='sendMessageContainer'>
+
+                        <div className='messagesContainer'>
+                            {/* <div className='sendMessageContainer'>
                                 <SendMessageBox />
                             </div> */}
-                                <Messages
-                                    msg={msg} // all the messages
-                                    name={'John'} //change to current receiver
-                                    socket={socket}
-                                />
-                            </div>
-                        )}
+                            <Messages
+                                msg={msg} // all the messages
+                                name={'John'} //change to current receiver
+                                socket={socket}
+                            />
+                        </div>
                     </div>
                 </div>
             </Card>

@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 export const Messages = ({ name, img, msg, socket }) => {
     let messageInput = useRef();
     let chatBox = useRef();
+    let isTyping = useRef();
     const [messages, setMessages] = useState(msg);
     const sendMessage = (e) => {
         e.preventDefault();
@@ -28,16 +29,14 @@ export const Messages = ({ name, img, msg, socket }) => {
             socket.send(
                 JSON.stringify({
                     type: 'message', // message, notification, followrequest
-                    receiver: name, //name of the receiver
-                    sender: 'Moment', // change this to current user
-                    img: img, // img of the sender
+                    receiver: name, //change to the id of the receiver
+                    sender: 'Moment', //chnage to current userid
+                    img: './logo.svg', // img of the sender
                     content: messageInput.current.value, // content of the message
+                    createAt: new Date().toLocaleString(),
                 })
             );
             messageInput.current.value = '';
-            chatBox.current.scroll({
-                top: chatBox.current.scrollHeight,
-            });
         }
     };
     useEffect(() => {
@@ -48,15 +47,29 @@ export const Messages = ({ name, img, msg, socket }) => {
             sendMessage(e);
             return;
         }
-        // socket.send(
-        //     JSON.stringify({
-        //         type: 'typing', // message, notification, followrequest
-        //         body: "I'm typing",
-        //     })
-        // );
+        socket.send(
+            JSON.stringify({
+                type: 'typing', // message, notification, followrequest
+                sender: 'Moment', // senderid
+                receiver: name, // receiverid
+            })
+        );
     };
     socket.onmessage = (event) => {
-        setMessages((messages) => [...messages, JSON.parse(event.data)]);
+        if (event.data) {
+            let data = JSON.parse(event.data);
+            if (data.type === 'message') {
+                setMessages((messages) => [...messages, data]);
+            }
+            if (data.type === 'typing') {
+                console.log(data);
+                //change the typing status
+                isTyping.current.style.display = 'block';
+                setTimeout(() => {
+                    isTyping.current.style.display = 'none';
+                }, 5000);
+            }
+        }
     };
     return (
         <>
@@ -80,16 +93,21 @@ export const Messages = ({ name, img, msg, socket }) => {
                     <MessagesIcon />
                 </div>
             </div>
-            <div className='chatMessageContainer' ref={chatBox}>
+            <div
+                className='chatMessageContainer scrollbar-hidden'
+                ref={chatBox}>
                 {messages.map((message, i) => {
+                    let date = message.createAt.split(',')[0];
+                    let time = message.createAt.split(',')[1];
                     return (
                         <MessageContainer
                             key={message + i}
                             message={message}
-                            name={name}>
+                            name={name}
+                            img={message.img}>
                             <MessageContent
-                                date={'11 October 2022 •17:46'}
-                                content='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl sit amet aliquam aliquam, nisl nisl aliquam nisl, sit amet aliquam nisl nisl sit amet.'
+                                date={date + ' • ' + time}
+                                content={message.content}
                             />
                         </MessageContainer>
                     );
@@ -102,6 +120,11 @@ export const Messages = ({ name, img, msg, socket }) => {
                         content='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl sit amet aliquam aliquam, nisl nisl aliquam nisl, sit amet aliquam nisl nisl sit amet.'
                     />
                 </MessageContainer> */}
+            </div>
+            <div className='isTypingContainer'>
+                <div
+                    className='isTyping'
+                    ref={isTyping}>{`${name} typing . . . `}</div>
             </div>
             <div className='messageInputContainer'>
                 {/* this will be replace by the emoji btn */}

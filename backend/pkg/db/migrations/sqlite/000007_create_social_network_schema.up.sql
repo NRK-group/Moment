@@ -25,4 +25,5 @@ CREATE TABLE IF NOT EXISTS "User" (
     CHECK (length("DOB")>=1)
     CHECK (length("createdAt")>=1)
     CHECK (length("password")>=1)
+    
 );

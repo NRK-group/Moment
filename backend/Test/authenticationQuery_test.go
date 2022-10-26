@@ -12,34 +12,46 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-var tests = []structs.User {
-	{FirstName: "", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
-	DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
-	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+var tests = []structs.User{
+	{
+		FirstName: "", LastName: "Length", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "Length",
+		DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	},
 
-	{FirstName: "Length", LastName: "", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
-	DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
-	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+	{
+		FirstName: "Length", LastName: "", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "Length",
+		DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	},
 
-	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "", Password: "Length",
-	DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
-	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+	{
+		FirstName: "Length", LastName: "Length", NickName: "Length", Email: "", Password: "Length",
+		DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	},
 
-	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "",
-	DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
-	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+	{
+		FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "",
+		DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	},
 
-	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
-	DateOfBirth: "", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
-	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+	{
+		FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "Length",
+		DateOfBirth: "", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	},
 
-	{FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length"+uuid.NewV4().String(), Password: "Length",
-	DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
-	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,},
+	{
+		FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "Length",
+		DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	},
 }
 
 func TestInsertUser(t *testing.T) {
-	randEmail := "insertUSer@"+uuid.NewV4().String()
+	randEmail := "insertUSer@" + uuid.NewV4().String()
 	t.Run("Insert valid user to DB", func(t *testing.T) {
 		// Create the database that will be used for testing
 		database := sqlite.CreateDatabase("./social_network_test.db")
@@ -59,7 +71,7 @@ func TestInsertUser(t *testing.T) {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 
-		//Query the db to check if the user was inserted
+		// Query the db to check if the user was inserted
 		rows, err := DB.DB.Query(`SELECT * FROM User WHERE Email = ?`, sampleUser.Email)
 		var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password string
 		var resultUser *structs.User
@@ -126,9 +138,9 @@ func TestInsertUser(t *testing.T) {
 			err := auth.InsertUser(s, *DB)
 			fmt.Println("Index:", i, "CURRENT ", s)
 			fmt.Println()
-		if err == nil {
-			t.Errorf("Error Catching empty values %v", err)
-		}
+			if err == nil {
+				t.Errorf("Error Catching empty values %v", err)
+			}
 		}
 	})
 }
@@ -152,7 +164,7 @@ func TestCheckCredentials(t *testing.T) {
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
 
-		//Now check if the value is input to the db
+		// Now check if the value is input to the db
 		wantStr := "Account not found"
 		wantBool := false
 
@@ -181,12 +193,11 @@ func TestCheckCredentials(t *testing.T) {
 		}
 
 		err := auth.InsertUser(*sampleUser, *DB)
-
 		if err != nil {
 			t.Errorf("Error Inserting the test user to the db")
 		}
 
-		//Now check if the value is input to the db
+		// Now check if the value is input to the db
 		wantStr := "Valid Login"
 		wantBool := true
 
@@ -207,7 +218,7 @@ func TestCheckCredentials(t *testing.T) {
 		// Create the database struct
 		DB := &structs.DB{DB: database}
 
-		//Now check if the value is input to the db
+		// Now check if the value is input to the db
 		wantStr := "Incorrect Password"
 		wantBool := false
 
@@ -219,12 +230,12 @@ func TestCheckCredentials(t *testing.T) {
 	})
 }
 
-func TestGetUser(t *testing.T){
-	randEmail:= uuid.NewV4().String()
+func TestGetUser(t *testing.T) {
+	randEmail := uuid.NewV4().String()
 	t.Run("Getting valid user", func(t *testing.T) {
 		database := sqlite.CreateDatabase("./social_network_test.db")
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")// migrate the database
-		DB := &structs.DB{DB: database}// Create the database struct
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
+		DB := &structs.DB{DB: database}                                                                    // Create the database struct
 
 		sampleUser := &structs.User{
 			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: randEmail, Password: "InsertUser",
@@ -240,8 +251,8 @@ func TestGetUser(t *testing.T){
 		if getErr != nil {
 			t.Errorf("Error getting the user from the database")
 		}
-		got.CreatedAt="-"
-		got.UserId="-"
+		got.CreatedAt = "-"
+		got.UserId = "-"
 		sampleUser.Password = strconv.FormatBool(auth.CheckPasswordHash(sampleUser.Password, got.Password))
 		if err != nil {
 			t.Errorf("Error hashing the password %v", err)
@@ -254,12 +265,140 @@ func TestGetUser(t *testing.T){
 	})
 	t.Run("Getting User that doesnt exsist", func(t *testing.T) {
 		database := sqlite.CreateDatabase("./social_network_test.db")
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")// migrate the database
-		DB := &structs.DB{DB: database}// Create the database struct
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
+		DB := &structs.DB{DB: database}                                                                    // Create the database struct
 		var got structs.User
 		getErr := auth.GetUser("email", "", &got, *DB)
 		if getErr == nil {
 			t.Errorf("Error recognising invalid user details")
 		}
+	})
+}
+
+func TestUpdateSessionId(t *testing.T) {
+	t.Run("Adding session to user in user table", func(t *testing.T) {
+		database := sqlite.CreateDatabase("./social_network_test.db")
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
+		DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		randEmail := uuid.NewV4().String()
+		sampleUser := &structs.User{
+			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+		err := auth.InsertUser(*sampleUser, *DB)
+		if err != nil {
+			t.Errorf("Error inserting the new user to the db")
+		}
+		newSess := uuid.NewV4().String()
+		auth.UpdateSessionId(randEmail, newSess, *DB)
+		var result structs.User
+		getErr := auth.GetUser("email", randEmail, &result, *DB)
+		if getErr != nil {
+			t.Errorf("Error getting the new user")
+		}
+		got := result.SessionId
+		want := newSess
+
+		if got != want {
+			t.Errorf("Got: %v. Want: %v.", got, want)
+		}
+	})
+	t.Run("adding the session to the session table", func(t *testing.T) {
+		database := sqlite.CreateDatabase("./social_network_test.db")
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
+		DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		randEmail := uuid.NewV4().String()
+		sampleUser := &structs.User{
+			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+		err := auth.InsertUser(*sampleUser, *DB)
+		if err != nil {
+			t.Errorf("Error inserting the new user to the db")
+		}
+		newSess := uuid.NewV4().String()
+		auth.UpdateSessionId(randEmail, newSess, *DB)
+		var result structs.User
+		getErr := auth.GetUser("email", randEmail, &result, *DB)
+		if getErr != nil {
+			t.Errorf("Error getting the new user")
+		}
+		// Get the results from the session Id table
+		rows, querErr := DB.DB.Query(`SELECT * FROM UserSessions WHERE userId = ?`, result.UserId)
+		if querErr != nil {
+			t.Errorf("Error accessing the table")
+			return
+		}
+		var gotsess, gotuser, date string
+		for rows.Next() {
+			rows.Scan(&gotsess, &gotuser, &date)
+		}
+
+		if gotsess != newSess || gotuser != result.UserId {
+			t.Errorf("Got: %v %v. Want: %v, %v.", gotsess, gotuser, newSess, result.UserId)
+		}
+	})
+	t.Run("Removing session from the user table", func(t *testing.T) {
+		database := sqlite.CreateDatabase("./social_network_test.db")
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
+		DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		randEmail := uuid.NewV4().String()
+		sampleUser := &structs.User{
+			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+		err := auth.InsertUser(*sampleUser, *DB)
+		if err != nil {
+			t.Errorf("Error inserting the new user to the db")
+		}
+		auth.UpdateSessionId(randEmail, "-", *DB)
+
+		var result structs.User
+		getErr := auth.GetUser("email", randEmail, &result, *DB)
+		if getErr != nil {
+			t.Errorf("Error getting the new user")
+		}
+		got := result.SessionId
+		want := "-"
+
+		if got != want {
+			t.Errorf("Got: %v. Want: %v.", got, want)
+		}
+	})
+
+	t.Run("Removing the session from the session table", func(t *testing.T) {
+		database := sqlite.CreateDatabase("./social_network_test.db")
+		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
+		DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		randEmail := uuid.NewV4().String()//Create a new email
+		sampleUser := &structs.User{
+			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}//Create a sample user to insert
+		err := auth.InsertUser(*sampleUser, *DB)
+		if err != nil {
+			t.Errorf("Error inserting the new user to the db")
+		}
+		newSess := uuid.NewV4().String()
+		auth.UpdateSessionId(randEmail, newSess, *DB)//Add the session to the db
+		auth.UpdateSessionId(randEmail, "-", *DB)//Now get rid of the session from the session table
+		var result structs.User
+		auth.GetUser("email", randEmail, &result, *DB)
+		rows, _ := DB.DB.Query(`SELECT * FROM UserSessions WHERE userId = ?`, result.UserId)//Check the row doesnt exsist
+		counter := 0
+		for rows.Next() {
+			counter++
+		}
+		got := counter
+		want := 0
+		if counter != want {
+			t.Errorf("Got: %v. Want: %v.", got, want)
+		}
+
+
 	})
 }

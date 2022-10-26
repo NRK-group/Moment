@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS "User" (
             REFERENCES "Session" ("sessionId")
 );
 
-CREATE TABLE IF NOT EXISTS "Session"(
+CREATE TABLE IF NOT EXISTS "UserSessions"(
     "sessionId" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL,

@@ -33,7 +33,7 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("Error Validating Login"))
 			return
 		}
-		auth.CreateCookie(w, userLogin.Email, DB.Env)//Create the cookie
+		auth.CreateCookie(w, userLogin.Email, DB.Env, userLogin)//Create the cookie
 		w.Write([]byte(validationMsg))
 		return
 	}

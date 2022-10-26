@@ -127,7 +127,7 @@ func GetUser(datatype, value string, result *structs.User, DB structs.DB) error 
 			Password:    password,
 		}
 	}
-	if nothing {
+	if nothing {//No users were found
 		return errors.New("No user found")
 	}
 	return nil

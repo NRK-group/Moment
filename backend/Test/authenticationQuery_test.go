@@ -93,7 +93,6 @@ func TestInsertUser(t *testing.T) {
 				Password:    password,
 			}
 		}
-
 		sampleUser.Password = strconv.FormatBool(auth.CheckPasswordHash(sampleUser.Password, resultUser.Password))
 		if err != nil {
 			t.Errorf("Error hashing the password %v", err)

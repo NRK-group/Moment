@@ -68,7 +68,7 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	return nil
 }
 
-func UpdateSessionId(email, value string, DB structs.DB) error {
+func UpdateSessionId(email, value string, DB structs.DB, user *structs.User) error {
 	stmt, err := DB.DB.Prepare(`UPDATE User SET sessionId = ? WHERE email = ?`) // Update the session ID in the user table
 	if err != nil {
 		fmt.Println("Error preparing inserting user into the db: ", err)
@@ -79,7 +79,12 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 		fmt.Println("Error executing update sessionID")
 		return updateErr
 	}
-	// Add the new session to the session table
+	
+	if value == "-" {
+		//remove the session to the session table
+	} else {
+		//Add the value to the db
+	}
 	return nil
 }
 

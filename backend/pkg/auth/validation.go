@@ -35,10 +35,8 @@ func CheckPasswordHash(password, hash string) bool {
 }
 
 // CreateCookie creates a cookie for the specified responsewriter
-func CreateCookie(w http.ResponseWriter, email string, DB *structs.DB) {
-	var result structs.User
-	GetUser("email", email, &result, *DB)
-	cookieName := result.UserId + "&" + result.Email + "&" + result.SessionId
+func CreateCookie(w http.ResponseWriter, email string, DB *structs.DB, user structs.User) {
+	cookieName := user.UserId + "&" + user.Email + "&" + user.SessionId
 	http.SetCookie(w, &http.Cookie{
 		Name:    "session_token",
 		Value:   cookieName,

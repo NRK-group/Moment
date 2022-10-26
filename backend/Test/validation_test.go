@@ -138,7 +138,9 @@ func TestCreateCookie(t *testing.T) {
 	Env.Login(w, req)
 
 	recorder := httptest.NewRecorder() // Drop a cookie on the recorder.
-	auth.CreateCookie(recorder, testEmail, DB)
+	var result structs.User
+	auth.GetUser("email", testEmail,&result, *DB)
+	auth.CreateCookie(recorder, testEmail, DB, result)
 
 	request := &http.Request{Header: http.Header{"Cookie": recorder.HeaderMap["Set-Cookie"]}}
 	cookie, err := request.Cookie("session_token") 
@@ -149,8 +151,7 @@ func TestCreateCookie(t *testing.T) {
 	// The cookie should be equal to the userId + email + sessionId
 
 	// Get the userId & sessionId
-	var result structs.User
-	auth.GetUser("email", testEmail, &result, *DB)
+	
 	want := result.UserId + "&" + result.Email + "&" + result.SessionId
 	got := cookie.Value
 	if want != got {

@@ -7,6 +7,7 @@ import (
 	"backend/pkg/db/sqlite"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
+	wSocket "backend/pkg/websocket"
 )
 
 func main() {
@@ -27,7 +28,7 @@ func main() {
 	http.HandleFunc("/", database.Home) // set the handler for the home route
 
 	// handler for the websocket
-	hub := handler.NewHub()
+	hub := wSocket.NewHub()
 	go hub.LogConns()
 	go hub.Run()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {

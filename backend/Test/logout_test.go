@@ -99,7 +99,7 @@ func TestLogout(t *testing.T) {
 		Env.Login(w, req)
 
 		//Remove the cookie and check if it has been removed
-		auth.RemoveCookie(w)
+		// auth.RemoveCookie(w)
 
 		
 	})

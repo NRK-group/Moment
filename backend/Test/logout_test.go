@@ -1,15 +1,17 @@
 package Test
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
 	"backend/pkg/auth"
 	"backend/pkg/db/sqlite"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
-	"bytes"
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
-	"testing"
 
 	uuid "github.com/satori/go.uuid"
 )
@@ -75,12 +77,13 @@ func TestLogout(t *testing.T) {
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
+		fmt.Println("INSERTING FOR THIS TEST")
 		err := auth.InsertUser(*sampleUser, *DB)
 		if err != nil {
 			t.Errorf("Error inserting the new user to the db")
 		}
 
-		//Now Log the user in
+		// Now Log the user in
 		// Create the struct that will be inserted
 		testUser := &structs.User{
 			Email: randEmail, Password: "logoutRemove1",
@@ -94,10 +97,10 @@ func TestLogout(t *testing.T) {
 		// Create the bytes into a reader
 		testReq := bytes.NewReader(sampleUserBytes)
 
-		req := httptest.NewRequest(http.MethodPost, "/logout", testReq)
+		req := httptest.NewRequest(http.MethodPost, "/login", testReq)
 		w := httptest.NewRecorder()
-		Env.Login(w ,req)
-		//request the logout handler
+		Env.Login(w, req)
+		// request the logout handler
 		// request1 := &http.Request{Header: http.Header{"Cookie": w.HeaderMap["Set-Cookie"]}}
 
 		// c, err := request1.Cookie("session_token")
@@ -107,7 +110,7 @@ func TestLogout(t *testing.T) {
 		// }
 		// fmt.Println("Cookie VALUE : ", c.Value)
 
-		Env.Logout(w, req)
+		// Env.Logout(w, req)
 
 		request := &http.Request{Header: http.Header{"Cookie": w.Header()["Set-Cookie"]}}
 		cookie, err := request.Cookie("session_token")
@@ -120,9 +123,5 @@ func TestLogout(t *testing.T) {
 		if got != want {
 			t.Errorf("got: %v. Want: %v.", got, want)
 		}
-
-
-		
 	})
-
 }

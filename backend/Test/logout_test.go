@@ -68,7 +68,7 @@ func TestLogout(t *testing.T) {
 
 		// Create the database struct
 		DB := &structs.DB{DB: database}
-		// Env := handler.Env{Env: DB}
+		Env := handler.Env{Env: DB}
 		randEmail := uuid.NewV4().String()
 		sampleUser := &structs.User{
 			FirstName: "LogoutRemove", LastName: "LogoutRemove", NickName: "LogoutRemove", Email: randEmail, Password: "LogoutRemove1",
@@ -94,15 +94,33 @@ func TestLogout(t *testing.T) {
 		// Create the bytes into a reader
 		testReq := bytes.NewReader(sampleUserBytes)
 
-		// req := httptest.NewRequest(http.MethodPost, "/login", testReq)
+		req := httptest.NewRequest(http.MethodPost, "/logout", testReq)
 		w := httptest.NewRecorder()
-		err = auth.CreateCookie(w, randEmail, DB)
+		Env.Login(w ,req)
+		//request the logout handler
+		// request1 := &http.Request{Header: http.Header{"Cookie": w.HeaderMap["Set-Cookie"]}}
+
+		// c, err := request1.Cookie("session_token")
+		// if err != nil {
+		// 	t.Errorf("Cookie Name: %v", err)
+		// 	return
+		// }
+		// fmt.Println("Cookie VALUE : ", c.Value)
+
+		Env.Logout(w, req)
+
+		request := &http.Request{Header: http.Header{"Cookie": w.Header()["Set-Cookie"]}}
+		cookie, err := request.Cookie("session_token")
 		if err != nil {
-			t.Errorf("error creating the cookie")
+			t.Errorf("Error accessing the cookie: %v", err)
 		}
 
-		//Remove the cookie and check if it has been removed
-		auth.RemoveCookie(w)
+		got := cookie.Value
+		want := ""
+		if got != want {
+			t.Errorf("got: %v. Want: %v.", got, want)
+		}
+
 
 		
 	})

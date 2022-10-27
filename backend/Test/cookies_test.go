@@ -62,7 +62,7 @@ func TestRemoveCookie(t *testing.T) {
 	recorderDeleted := httptest.NewRecorder() // Drop a cookie on the recorder.
 
 	auth.RemoveCookie(recorderDeleted) // Now try removing the cookie
-	requestDeleted := &http.Request{Header: http.Header{"Cookie": recorderDeleted.HeaderMap["Set-Cookie"]}}
+	requestDeleted := &http.Request{Header: http.Header{"Cookie": recorderDeleted.Header()["Set-Cookie"]}}
 	cookie, err := requestDeleted.Cookie("session_token")  // Check if the cookie has been removed
 	got := cookie.Value
 	want := ""
@@ -115,7 +115,7 @@ func TestCreateCookie(t *testing.T) {
 	auth.GetUser("email", testEmail, &result, *DB)
 	auth.CreateCookie(recorder, testEmail, DB)
 
-	request := &http.Request{Header: http.Header{"Cookie": recorder.HeaderMap["Set-Cookie"]}}
+	request := &http.Request{Header: http.Header{"Cookie": recorder.Header()["Set-Cookie"]}}
 	cookie, err := request.Cookie("session_token")
 	if err != nil {
 		t.Errorf("Error accessing cookie")

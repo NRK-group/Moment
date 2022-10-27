@@ -115,7 +115,7 @@ func AllUserEvent(userId string, database *structs.DB) ([]structs.Event, error) 
 	return events, nil
 }
 
-func AddEven(groupId string, event structs.Event, database *structs.DB) (string, error) {
+func AddEvent(groupId string, event structs.Event, database *structs.DB) (string, error) {
 	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
 	eventId := uuid.NewV4()
 

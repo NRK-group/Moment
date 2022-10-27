@@ -2,6 +2,7 @@ package auth
 
 import (
 	"backend/pkg/structs"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -19,6 +20,7 @@ func CreateCookie(w http.ResponseWriter, email string, DB *structs.DB) error{
 		Value:   cookieName,
 		Expires: time.Now().Add(24 * time.Hour),
 	})
+	fmt.Println("-!-!-!-!-!-!-!-!-!-!-!-!----  Cookie Created: " + time.Now().String())
 	return nil
 }
 

@@ -71,13 +71,12 @@ func TestLogout(t *testing.T) {
 		// Create the database struct
 		DB := &structs.DB{DB: database}
 		Env := handler.Env{Env: DB}
-		randEmail := uuid.NewV4().String()
+		randEmail := "removeCookie@" + uuid.NewV4().String() + ".com"
 		sampleUser := &structs.User{
 			FirstName: "LogoutRemove", LastName: "LogoutRemove", NickName: "LogoutRemove", Email: randEmail, Password: "LogoutRemove1",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
-		fmt.Println("INSERTING FOR THIS TEST")
 		err := auth.InsertUser(*sampleUser, *DB)
 		if err != nil {
 			t.Errorf("Error inserting the new user to the db")
@@ -86,7 +85,7 @@ func TestLogout(t *testing.T) {
 		// Now Log the user in
 		// Create the struct that will be inserted
 		testUser := &structs.User{
-			Email: randEmail, Password: "logoutRemove1",
+			Email: randEmail, Password: "LogoutRemove1",
 		}
 		// Marshal the struct to bytes
 		sampleUserBytes, err := json.Marshal(testUser)
@@ -101,16 +100,16 @@ func TestLogout(t *testing.T) {
 		w := httptest.NewRecorder()
 		Env.Login(w, req)
 		// request the logout handler
-		// request1 := &http.Request{Header: http.Header{"Cookie": w.HeaderMap["Set-Cookie"]}}
+		request1 := &http.Request{Header: http.Header{"Cookie": w.HeaderMap["Set-Cookie"]}}
 
-		// c, err := request1.Cookie("session_token")
-		// if err != nil {
-		// 	t.Errorf("Cookie Name: %v", err)
-		// 	return
-		// }
-		// fmt.Println("Cookie VALUE : ", c.Value)
+		c, err := request1.Cookie("session_token")
+		if err != nil {
+			t.Errorf("Cookie Name: %v", err)
+			return
+		}
+		fmt.Println("COOKIE MADE === :", c)
 
-		// Env.Logout(w, req)
+		Env.Logout(w, req)
 
 		request := &http.Request{Header: http.Header{"Cookie": w.Header()["Set-Cookie"]}}
 		cookie, err := request.Cookie("session_token")
@@ -120,7 +119,7 @@ func TestLogout(t *testing.T) {
 
 		got := cookie.Value
 		want := ""
-		if got != want {
+		if got != want  {
 			t.Errorf("got: %v. Want: %v.", got, want)
 		}
 	})

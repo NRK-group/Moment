@@ -24,7 +24,7 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		successfulLogin, validationMsg := auth.CheckCredentials(userLogin.Email, userLogin.Password, DB.Env) // Validate the login creds
-		if !successfulLogin {        
+		if !successfulLogin {
 			http.Error(w, validationMsg, http.StatusUnauthorized)
 			return
 		}
@@ -33,7 +33,7 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
 			return
 		}
-		err = auth.CreateCookie(w, userLogin.Email, DB.Env)//Create the cookie
+		err = auth.CreateCookie(w, userLogin.Email, DB.Env) // Create the cookie
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
@@ -42,20 +42,31 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
 func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/logout" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
 	if r.Method == "GET" {
-		_, err := r.Cookie("session_token")//Remove the cookie
-		if err == nil {// Cookie is present so remove
+		c, err := r.Cookie("session_token") // Access the cookie
+		cookieName := c.Value
+		if err == nil { // Cookie is present so remove
 			http.SetCookie(w, &http.Cookie{Name: "session_token", Value: "", Expires: time.Now()})
-		} else {// The user isnt logged in 
+		} else { // The user isnt logged in
 			http.Error(w, "401 unauthorized", http.StatusUnauthorized)
 			return
 		}
-		//Update the sessionId update in users table and remove from sessions table 
+		emailSlc, slcErr := auth.SliceCookie(cookieName)
+		if slcErr != nil {
+			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+		}
+
+		// Update the sessionId update in users table and remove from sessions table
+		err = auth.UpdateSessionId(emailSlc[1], "-", *DB.Env)
+		if err != nil {
+			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+		}
 		w.WriteHeader(200)
 		return
 	}

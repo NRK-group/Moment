@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -29,4 +30,14 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+func SliceCookie(cookie string) ([]string, error) {
+	if strings.Contains(cookie, "&") {
+		emailSlc := strings.Split(cookie, "&")
+		if len(emailSlc) == 3 {
+			return emailSlc, nil
+		}
+	}
+	return []string{}, errors.New("Invalid Cookie")
 }

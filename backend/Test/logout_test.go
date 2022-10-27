@@ -33,7 +33,6 @@ func TestLogout(t *testing.T) {
 		Env.Logout(w, req)
 		want := 400
 		got := w.Code
-
 		if got != want {
 			t.Errorf("Expected %v got %v", want, got)
 		}

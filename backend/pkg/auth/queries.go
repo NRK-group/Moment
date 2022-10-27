@@ -66,10 +66,32 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	}
 	return nil
 }
+func Update(table, set, to, where, id string, DB structs.DB) error {
+	update := "UPDATE " + table + " SET " + set + " = '" + to + "' WHERE " + where + " = '" + id + "'"
+	stmt, _ := DB.DB.Prepare(update)
+	_, err := stmt.Exec()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func  Delete(table, where, value string, DB structs.DB) error {
+	dlt := "DELETE FROM " + table + " WHERE " + where
+	stmt, err := DB.DB.Prepare(dlt + " = (?)")
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(value)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func UpdateSessionId(email, value string, DB structs.DB) error {
 	var result structs.User
 	GetUser("email", email, &result, DB)
+	// sessionID := result.SessionId
 	stmt, err := DB.DB.Prepare(`UPDATE User SET sessionId = ? WHERE email = ?`) // Update the session ID in the user table
 	if err != nil {
 		fmt.Println("Error preparing inserting user into the db: ", err)
@@ -80,14 +102,23 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 		fmt.Println("Error executing update sessionID")
 		return updateErr
 	}
-	if value == "-" {
-		stmt, err := DB.DB.Prepare(`DELETE FROM UserSessions WHERE userId = ?`) // remove the session to the session table
-		if err != nil {
-			fmt.Println("Error Preparing Delete statement")
-			return err
-		}
-		stmt.Exec(result.UserId)
-	} else {
+	err = Delete("UserSesions", "userId", result.UserId, DB)
+	if err != nil {
+		return err
+	}
+	// delStmt, err := DB.DB.Prepare(`DELETE FROM UserSessions WHERE userId = ?`) // remove the session to the session table
+	// if err != nil {
+	// 	fmt.Println("Error Preparing Delete statement")
+	// 	return err
+	// }
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("USERID ===== ", result.UserId)
+	fmt.Println("Value: ", value)
+	fmt.Println()
+
+	// delStmt.Exec(sessionID)
+	if value != "-" {
 		stmt, err := DB.DB.Prepare(`INSERT INTO UserSessions values (?, ?, ?)`) // Add the value to the db
 		if err != nil {
 			fmt.Println("Error Preparing Delete statement")
@@ -125,7 +156,7 @@ func GetUser(datatype, value string, result *structs.User, DB structs.DB) error 
 			&result.NumPosts,
 			&result.Password)
 	}
-	if nothing {//No users were found
+	if nothing { // No users were found
 		return errors.New("No user found")
 	}
 	return nil

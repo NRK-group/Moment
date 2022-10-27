@@ -50,18 +50,16 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method == "GET" {
 		c, err := r.Cookie("session_token") // Access the cookie
-		cookieName := c.Value
 		if err == nil { // Cookie is present so remove
 			http.SetCookie(w, &http.Cookie{Name: "session_token", Value: "", Expires: time.Now()})
-		} else { // The user isnt logged in
-			http.Error(w, "401 unauthorized", http.StatusUnauthorized)
-			return
-		}
-		emailSlc, slcErr := auth.SliceCookie(cookieName)
+			} else { // The user isnt logged in
+				http.Error(w, "401 unauthorized", http.StatusUnauthorized)
+				return
+			}
+		emailSlc, slcErr := auth.SliceCookie(c.Value)
 		if slcErr != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 		}
-
 		// Update the sessionId update in users table and remove from sessions table
 		err = auth.UpdateSessionId(emailSlc[1], "-", *DB.Env)
 		if err != nil {

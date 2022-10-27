@@ -16,8 +16,8 @@ import (
 )
 
 var (
-	testEmail     = "validCreds@" + uuid.NewV4().String()
-	loginAttempts = [][]string{{"Account not found", "InvalidEmail@false.com", "Password123"}, {"Valid Login", testEmail, "Password123"}, {"Incorrect Password", testEmail, "IncorrectPassword"}}
+	logTestEmail   = "validCreds@" + uuid.NewV4().String()
+	loginAttempts = [][]string{{"Account not found\n", "InvalidEmail@false.com", "Password123"}, {"Valid Login", logTestEmail, "Password123"}, {"Incorrect Password\n", logTestEmail, "IncorrectPassword"}}
 )
 
 func TestLogin(t *testing.T) {
@@ -76,7 +76,7 @@ func TestLogin(t *testing.T) {
 		DB := &structs.DB{DB: database}
 		Env := handler.Env{Env: DB}
 		inputUser := &structs.User{
-			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: testEmail, Password: "Password123",
+			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: logTestEmail, Password: "Password123",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
@@ -103,7 +103,7 @@ func TestLogin(t *testing.T) {
 			req := httptest.NewRequest(http.MethodPost, "/login", testReq)
 			w := httptest.NewRecorder()
 			Env.Login(w, req)
-			want := value[0]
+			want := value[0] 
 			got := w.Body.String()
 			
 			if got != want {
@@ -122,7 +122,7 @@ func TestLogin(t *testing.T) {
 		DB := &structs.DB{DB: database}
 		Env := handler.Env{Env: DB}
 		sampleUser := &structs.User{
-			Email: testEmail, Password: "Password123",
+			Email: logTestEmail, Password: "Password123",
 		}
 		sampleUserBytes, err := json.Marshal(sampleUser)
 		if err != nil {
@@ -133,7 +133,7 @@ func TestLogin(t *testing.T) {
 		w := httptest.NewRecorder()
 		Env.Login(w, req)
 		//Check if sessionId for the user has been created
-		rows, sessionErr := Env.Env.DB.Query(`SELECT sessionId FROM User WHERE email = ?`, testEmail)
+		rows, sessionErr := Env.Env.DB.Query(`SELECT sessionId FROM User WHERE email = ?`, logTestEmail)
 		if sessionErr != nil {
 			t.Errorf("Error selecting sessionId from the database")
 		}

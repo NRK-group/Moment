@@ -1,14 +1,15 @@
 package handler
 
 import (
+	"net/http"
+
 	"backend/pkg/auth"
 	"backend/pkg/structs"
-	"net/http"
 
 	uuid "github.com/satori/go.uuid"
 )
 
-//Login is a handler that vlidates the credentials input by a user
+// Login is a handler that vlidates the credentials input by a user
 func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/login" {
 		http.Error(w, "404 not found", http.StatusNotFound)
@@ -21,24 +22,25 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		successfulLogin, validationMsg := auth.CheckCredentials(userLogin.Email, userLogin.Password, DB.Env) //Validate the login creds
-		if !successfulLogin { //If credentials are invalid retrun unauthorized error and message
-			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte(validationMsg))
+		successfulLogin, validationMsg := auth.CheckCredentials(userLogin.Email, userLogin.Password, DB.Env) // Validate the login creds
+		if !successfulLogin {                                                                                // If credentials are invalid retrun unauthorized error and message
+			http.Error(w, validationMsg, http.StatusUnauthorized)
 			return
 		}
-		sessionErr := auth.UpdateSessionId(userLogin.Email, uuid.NewV4().String(), *DB.Env)//Create a sessionID
+		sessionErr := auth.UpdateSessionId(userLogin.Email, uuid.NewV4().String(), *DB.Env) // Create a sessionID
 		if sessionErr != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Error Validating Login"))
+			http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
 			return
 		}
-		auth.CreateCookie(w, userLogin.Email, DB.Env, userLogin)//Create the cookie
+		err = auth.CreateCookie(w, userLogin.Email, DB.Env)//Create the cookie
+		if err != nil {
+			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+			return
+		}
 		w.Write([]byte(validationMsg))
 		return
 	}
 }
-
 
 // Registration is a handler where all registration functions are done
 func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
@@ -63,8 +65,3 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
-
-
-
-
-

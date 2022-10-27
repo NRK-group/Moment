@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS "PrivateMessage";
+DROP TABLE IF EXISTS "GroupMessage";
+DROP TABLE IF EXISTS "Chat";

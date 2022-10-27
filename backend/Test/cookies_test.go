@@ -16,7 +16,7 @@ import (
 )
 
 func TestRemoveCookie(t *testing.T) {
-	testEmail = "cookie@" + uuid.NewV4().String()
+	testEmail := "cookie@" + uuid.NewV4().String()
 	// Create a new user and log them in
 	// Create the database that will be used for testing
 	database := sqlite.CreateDatabase("./social_network_test.db")
@@ -72,7 +72,7 @@ func TestRemoveCookie(t *testing.T) {
 }
 
 func TestCreateCookie(t *testing.T) {
-	testEmail = "cookie@" + uuid.NewV4().String()
+	testEmail := "cookie@" + uuid.NewV4().String()
 	// Create a new user and log them in
 	// Create the database that will be used for testing
 	database := sqlite.CreateDatabase("./social_network_test.db")

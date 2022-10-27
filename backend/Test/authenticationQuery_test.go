@@ -1,7 +1,6 @@
 package Test
 
 import (
-	"fmt"
 	"strconv"
 	"testing"
 
@@ -133,10 +132,8 @@ func TestInsertUser(t *testing.T) {
 		// Create the database struct
 		DB := &structs.DB{DB: database}
 
-		for i, s := range tests {
+		for _, s := range tests {
 			err := auth.InsertUser(s, *DB)
-			fmt.Println("Index:", i, "CURRENT ", s)
-			fmt.Println()
 			if err == nil {
 				t.Errorf("Error Catching empty values %v", err)
 			}
@@ -372,22 +369,22 @@ func TestUpdateSessionId(t *testing.T) {
 		database := sqlite.CreateDatabase("./social_network_test.db")
 		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
 		DB := &structs.DB{DB: database}                                                                    // Create the database struct
-		randEmail := uuid.NewV4().String()//Create a new email
+		randEmail := uuid.NewV4().String()                                                                 // Create a new email
 		sampleUser := &structs.User{
 			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-		}//Create a sample user to insert
+		} // Create a sample user to insert
 		err := auth.InsertUser(*sampleUser, *DB)
 		if err != nil {
 			t.Errorf("Error inserting the new user to the db")
 		}
 		newSess := uuid.NewV4().String()
-		auth.UpdateSessionId(randEmail, newSess, *DB)//Add the session to the db
-		auth.UpdateSessionId(randEmail, "-", *DB)//Now get rid of the session from the session table
+		auth.UpdateSessionId(randEmail, newSess, *DB) // Add the session to the db
+		auth.UpdateSessionId(randEmail, "-", *DB)     // Now get rid of the session from the session table
 		var result structs.User
 		auth.GetUser("email", randEmail, &result, *DB)
-		rows, _ := DB.DB.Query(`SELECT * FROM UserSessions WHERE userId = ?`, result.UserId)//Check the row doesnt exsist
+		rows, _ := DB.DB.Query(`SELECT * FROM UserSessions WHERE userId = ?`, result.UserId) // Check the row doesnt exsist
 		counter := 0
 		for rows.Next() {
 			counter++
@@ -397,7 +394,5 @@ func TestUpdateSessionId(t *testing.T) {
 		if counter != want {
 			t.Errorf("Got: %v. Want: %v.", got, want)
 		}
-
-
 	})
 }

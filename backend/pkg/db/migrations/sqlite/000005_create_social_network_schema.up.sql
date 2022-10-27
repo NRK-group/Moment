@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS "PrivateMessage"(
     messageId TEXT NOT NULL PRIMARY KEY,
     senderId TEXT NOT NULL,
     receiverId TEXT NOT NULL,
+    chatId TEXT NOT NULL,
     content TEXT NOT NULL,
     createdAt DATETIME NOT NULL,
     FOREIGN KEY ("senderId")

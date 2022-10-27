@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -12,13 +13,10 @@ import (
 const (
 	// Time allowed to write a message to the peer.
 	WriteWait = 10 * time.Second
-
 	// Time allowed to read the next pong message from the peer.
 	PongWait = 60 * time.Second
-
 	// Send pings to peer with this period. Must be less than pongWait.
 	PingPeriod = (PongWait * 9) / 10
-
 	// Maximum message size allowed from peer.
 	MaxMessageSize = 1024
 )
@@ -43,6 +41,18 @@ type Client struct {
 	// Buffered channel of outbound messages.
 	Send chan []byte
 }
+type Message struct {
+	MessageId string `json:"messageId"`
+	// MessageType is the type of the message
+	// It can be "privateMessage", "groupMessage", or "typing"
+	MessageType string `json:"type"`
+	ReceiverId  string `json:"receiverId"`
+	SenderId    string `json:"senderId"`
+	ChatId      string `json:"chatId"`
+	Img         string `json:"img"`
+	Content     string `json:"content"`
+	CreateAt    string `json:"createAt"`
+}
 
 // readPump pumps messages from the websocket connection to the hub.
 //
@@ -66,8 +76,21 @@ func (c *Client) ReadPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, Newline, Space, -1))
-		fmt.Print("message: ", string(message))
-		c.Hub.Broadcast <- message
+		fmt.Println("Before Unmarshal message: ", string(message))
+		var msg Message
+		json.Unmarshal(message, &msg)
+		// fmt.Print("msg: ", msg)
+		if msg.MessageType == "privateMessage" {
+			fmt.Println("privateMessage", msg)
+			c.Hub.Broadcast <- message
+		}
+		if msg.MessageType == "groupMessage" {
+			c.Hub.Broadcast <- message
+		}
+		if msg.MessageType == "typing" {
+			fmt.Println("typing", msg)
+			c.Hub.Broadcast <- message
+		}
 	}
 }
 
@@ -97,7 +120,6 @@ func (c *Client) WritePump() {
 				return
 			}
 			w.Write(message)
-
 			// Add queued chat messages to the current websocket message.
 			n := len(c.Send)
 			for i := 0; i < n; i++ {

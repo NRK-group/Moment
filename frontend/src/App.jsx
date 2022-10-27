@@ -16,6 +16,8 @@ import { Search } from './features/Search/Search';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     let socket;
+    //random userid
+    const user = Math.floor(Math.random() * 5);
     let generalNotif = [
         {
             name: 'John',
@@ -78,12 +80,14 @@ function App() {
                                     <Chat
                                         bodyStyleName='mobile'
                                         cardStyleName='mobileCard'
+                                        user={user}
                                         socket={socket}
                                     />
                                 ) : (
                                     <Chat
                                         bodyStyleName='desktop'
                                         cardStyleName='desktopCard'
+                                        user={user}
                                         socket={socket}
                                     />
                                 )

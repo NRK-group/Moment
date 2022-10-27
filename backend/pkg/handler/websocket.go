@@ -3,6 +3,7 @@ package handler
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	wSocket "backend/pkg/websocket"
 )
@@ -16,7 +17,7 @@ func ServeWs(hub *wSocket.Hub, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// UserId will be replaced by the user id from the cookie
-	client := &wSocket.Client{Hub: hub, UserId: "123", Conn: conn, Send: make(chan []byte, 1024)}
+	client := &wSocket.Client{Hub: hub, UserId: strconv.Itoa(len(hub.Clients)), Conn: conn, Send: make(chan []byte, 1024)}
 	client.Hub.Register <- client
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.

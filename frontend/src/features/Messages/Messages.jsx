@@ -7,15 +7,15 @@ import { MessageContent } from './components/MessageContent';
 import { ProfileIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-export const Messages = ({ name, img, msg, socket }) => {
+export const Messages = ({ name, img, msg, socket, currentUserName }) => {
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
     const [messages, setMessages] = useState(msg);
     const sendMessage = (e) => {
         e.preventDefault();
-        console.log('hello e', e.target);
         if (messageInput.current.value !== '') {
             // console.log(
             //     JSON.stringify({
@@ -26,11 +26,15 @@ export const Messages = ({ name, img, msg, socket }) => {
             //         content: messageInput.current.value, // content of the message
             //     })
             // );
+            //generate uuid for each message
+            let messageId = uuidv4();
             socket.send(
                 JSON.stringify({
-                    type: 'message', // message, notification, followrequest
-                    receiver: name, //change to the id of the receiver
-                    sender: 'Moment', //chnage to current userid
+                    messageId: messageId,
+                    type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
+                    receiverId: name + '', //change to the id of the receiver
+                    senderId: currentUserName + '', //chnage to current userid
+                    chatId: '1', //change to the chat id
                     img: './logo.svg', // img of the sender
                     content: messageInput.current.value, // content of the message
                     createAt: new Date().toLocaleString(),
@@ -50,19 +54,19 @@ export const Messages = ({ name, img, msg, socket }) => {
         socket.send(
             JSON.stringify({
                 type: 'typing', // message, notification, followrequest
-                sender: 'Moment', // senderid
-                receiver: name, // receiverid
+                senderId: currentUserName + '', // senderid
+                receiverId: name + '', //change to the id of the receiver
             })
         );
     };
     socket.onmessage = (event) => {
         if (event.data) {
             let data = JSON.parse(event.data);
-            if (data.type === 'message') {
+            if (data.type === 'privateMessage') {
                 setMessages((messages) => [...messages, data]);
             }
             if (data.type === 'typing') {
-                console.log(data);
+                isTyping.current.innerText = `${data.senderId} is typing...`;
                 //change the typing status
                 isTyping.current.style.display = 'block';
                 setTimeout(() => {
@@ -103,7 +107,7 @@ export const Messages = ({ name, img, msg, socket }) => {
                         <MessageContainer
                             key={message + i}
                             message={message}
-                            name={name}
+                            name={message.senderId}
                             img={message.img}>
                             <MessageContent
                                 date={date + ' • ' + time}
@@ -122,9 +126,7 @@ export const Messages = ({ name, img, msg, socket }) => {
                 </MessageContainer> */}
             </div>
             <div className='isTypingContainer'>
-                <div
-                    className='isTyping'
-                    ref={isTyping}>{`${name} typing . . . `}</div>
+                <div className='isTyping' ref={isTyping}></div>
             </div>
             <div className='messageInputContainer'>
                 {/* this will be replace by the emoji btn */}

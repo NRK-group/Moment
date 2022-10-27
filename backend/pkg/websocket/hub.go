@@ -33,10 +33,7 @@ func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.Register:
-			// check if client is already registered
-			if _, ok := h.Clients[client]; !ok {
-				h.Clients[client] = true
-			}
+			h.Clients[client] = true
 		case client := <-h.Unregister:
 			if _, ok := h.Clients[client]; ok {
 				delete(h.Clients, client)

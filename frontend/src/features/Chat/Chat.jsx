@@ -4,7 +4,7 @@ import Card from '../../components/card/Card';
 import SendMessageBox from '../Messages/components/SendMessageBox';
 import { ChatUsersContainer } from './components/chatUsersContainer';
 import { Messages } from '../Messages/Messages';
-const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
+const Chat = ({ bodyStyleName, cardStyleName, socket, user }) => {
     console.log('chat', socket);
     let users = [
         {
@@ -39,7 +39,6 @@ const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
         // },
     ];
     let msg = [];
-    let currentUserName = 'Moment';
     return (
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
@@ -54,17 +53,17 @@ const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
                             <ChatUsersContainer
                                 styleName='chatUsersContainer'
                                 users={users}
-                                currentUserName={currentUserName}
+                                currentUserName={user}
                             />
                         }
-
                         <div className='messagesContainer'>
                             {/* <div className='sendMessageContainer'>
                                 <SendMessageBox />
                             </div> */}
                             <Messages
+                                currentUserName={user}
                                 msg={msg} // all the messages
-                                name={'John'} //change to current receiver
+                                name={Math.floor(Math.random() * 5) + 1} //change to current receiver
                                 socket={socket}
                             />
                         </div>

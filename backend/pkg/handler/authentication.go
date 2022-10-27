@@ -24,17 +24,19 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 		}
 		successfulLogin, validationMsg := auth.CheckCredentials(userLogin.Email, userLogin.Password, DB.Env) // Validate the login creds
 		if !successfulLogin {                                                                                // If credentials are invalid retrun unauthorized error and message
-			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte(validationMsg))
+			http.Error(w, "401 Unauthorized ", http.StatusUnauthorized)
 			return
 		}
 		sessionErr := auth.UpdateSessionId(userLogin.Email, uuid.NewV4().String(), *DB.Env) // Create a sessionID
 		if sessionErr != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Error Validating Login"))
+			http.Error(w, "401 Unauthorized ", http.StatusUnauthorized)
 			return
 		}
-		auth.CreateCookie(w, userLogin.Email, DB.Env)//Create the cookie
+		err = auth.CreateCookie(w, userLogin.Email, DB.Env)//Create the cookie
+		if err != nil {
+			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+			return
+		}
 		w.Write([]byte(validationMsg))
 		return
 	}

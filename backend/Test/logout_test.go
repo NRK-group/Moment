@@ -3,7 +3,6 @@ package Test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -28,7 +27,7 @@ func TestLogout(t *testing.T) {
 		DB := &structs.DB{DB: database}
 		Env := handler.Env{Env: DB}
 
-		req := httptest.NewRequest(http.MethodGet, "/logout", nil)
+		req := httptest.NewRequest(http.MethodPut, "/logout", nil)
 		w := httptest.NewRecorder()
 
 		Env.Logout(w, req)
@@ -50,7 +49,7 @@ func TestLogout(t *testing.T) {
 		DB := &structs.DB{DB: database}
 		Env := handler.Env{Env: DB}
 
-		req := httptest.NewRequest(http.MethodGet, "/InvalidPath", nil)
+		req := httptest.NewRequest(http.MethodPut, "/InvalidPath", nil)
 		w := httptest.NewRecorder()
 
 		Env.Logout(w, req)
@@ -98,28 +97,33 @@ func TestLogout(t *testing.T) {
 
 		req := httptest.NewRequest(http.MethodPost, "/login", testReq)
 		w := httptest.NewRecorder()
-		Env.Login(w, req)
-		// request the logout handler
-		request1 := &http.Request{Header: http.Header{"Cookie": w.HeaderMap["Set-Cookie"]}}
 
-		c, err := request1.Cookie("session_token")
+		Env.Login(w, req)
+		auth.CreateCookie(w, testUser.Email, DB)
+		// request the logout handler
+		req.Header = http.Header{"Cookie": w.HeaderMap["Set-Cookie"]}
+
+		_, err = req.Cookie("session_token")
 		if err != nil {
 			t.Errorf("Cookie Name: %v", err)
 			return
 		}
-		fmt.Println("COOKIE MADE === :", c)
 
-		Env.Logout(w, req)
+		request := httptest.NewRequest(http.MethodGet, "/logout", nil)
+		request.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+		wr := httptest.NewRecorder()
+		Env.Logout(wr, request)
 
-		request := &http.Request{Header: http.Header{"Cookie": w.Header()["Set-Cookie"]}}
-		cookie, err := request.Cookie("session_token")
+		result := &http.Request{Header: http.Header{"Cookie": wr.Header()["Set-Cookie"]}}
+		cookie, err := result.Cookie("session_token")
 		if err != nil {
 			t.Errorf("Error accessing the cookie: %v", err)
+			return
 		}
 
 		got := cookie.Value
 		want := ""
-		if got != want  {
+		if got != want {
 			t.Errorf("got: %v. Want: %v.", got, want)
 		}
 	})

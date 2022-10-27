@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	"backend/pkg/auth"
 	"backend/pkg/structs"
@@ -46,10 +47,19 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
-
 	if r.Method == "GET" {
-		//Remove the cookie
+		_, err := r.Cookie("session_token")//Remove the cookie
+		if err == nil {// Cookie is present so remove
+			http.SetCookie(w, &http.Cookie{Name: "session_token", Value: "", Expires: time.Now()})
+		} else {// The user isnt logged in 
+			http.Error(w, "401 unauthorized", http.StatusUnauthorized)
+			return
+		}
+		//Update the sessionId update in users table and remove from sessions table 
+		w.WriteHeader(200)
+		return
 	}
+	http.Error(w, "400 Bad Request", http.StatusBadRequest)
 }
 
 // Registration is a handler where all registration functions are done

@@ -52,6 +52,27 @@ func AddEventParticipant(eventId, userId string, database *structs.DB) (string, 
 	return eventId, nil
 }
 
+func CheckIfUserAlreadyInEvent(eventId, userId string, database *structs.DB) (string, error) {
+	var holder structs.EventParticipant
+
+	rows, err := database.DB.Query("SELECT userID FROM EventParticipant WHERE eventId = '" + eventId + "' AND userId = '" + userId + "'")
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	for rows.Next() {
+		rows.Scan(&holder.UserId)
+	}
+	if holder.UserId == "" {
+		eventIdStr, err := AddEventParticipant(eventId, userId, database)
+		fmt.Println(err)
+		return eventIdStr, err
+	}
+
+	return userId, nil
+}
+
 func AllEventParticipant(eventId string, database *structs.DB) ([]structs.EventParticipant, error) {
 	var eventParticipant structs.EventParticipant
 	var eventParticipants []structs.EventParticipant

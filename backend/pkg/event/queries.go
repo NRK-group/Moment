@@ -37,6 +37,21 @@ func AllEventByGroup(groupId string, database *structs.DB) ([]structs.Event, err
 	return events, nil
 }
 
+func AddEventParticipant(eventId, userId string, database *structs.DB) (string, error) {
+	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
+
+	stmt, _ := database.DB.Prepare(`
+	INSERT INTO EventParticipant values (?, ?, ?)
+`)
+
+	_, err := stmt.Exec(eventId, userId, createdAt)
+	if err != nil {
+		fmt.Println("inside Create Add Event Participant", err)
+		return "", err
+	}
+	return eventId, nil
+}
+
 func AllEventParticipant(eventId string, database *structs.DB) ([]structs.EventParticipant, error) {
 	var eventParticipant structs.EventParticipant
 	var eventParticipants []structs.EventParticipant

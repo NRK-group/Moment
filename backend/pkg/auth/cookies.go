@@ -2,7 +2,6 @@ package auth
 
 import (
 	"backend/pkg/structs"
-	"fmt"
 	"net/http"
 	"time"
 )

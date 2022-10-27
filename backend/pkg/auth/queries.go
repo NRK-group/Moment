@@ -29,7 +29,6 @@ func CheckCredentials(email, password string, DB *structs.DB) (bool, string) {
 	if counter == 0 {
 		return false, "Account not found"
 	}
-	fmt.Println("PASSWORD === ", pass)
 	// Check if the password input is correct
 	if CheckPasswordHash(password, pass) {
 		return true, "Valid Login"

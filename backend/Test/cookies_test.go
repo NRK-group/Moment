@@ -3,7 +3,6 @@ package Test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -59,6 +58,7 @@ func TestRemoveCookie(t *testing.T) {
 	var result structs.User
 	auth.GetUser("email", testEmail, &result, *DB)
 	auth.CreateCookie(recorder, testEmail, DB) // Create the cookie
+
 	recorderDeleted := httptest.NewRecorder() // Drop a cookie on the recorder.
 
 	auth.RemoveCookie(recorderDeleted, "session_token") // Now try removing the cookie
@@ -67,7 +67,6 @@ func TestRemoveCookie(t *testing.T) {
 	got := cookie.Value
 	want := ""
 	if got != want {
-		fmt.Println("!!!!!!!!!!!!!!!!----------- :", cookie.Value)
 		t.Errorf("cookie found when should be deleted")
 	}
 }

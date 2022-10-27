@@ -31,7 +31,7 @@ func TestLogout(t *testing.T) {
 		w := httptest.NewRecorder()
 
 		Env.Logout(w, req)
-		want := 200
+		want := 400
 		got := w.Code
 
 		if got != want {

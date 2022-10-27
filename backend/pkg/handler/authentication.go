@@ -48,6 +48,7 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == "GET" {
+		//Remove the cookie
 	}
 }
 

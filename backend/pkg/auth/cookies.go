@@ -23,7 +23,7 @@ func CreateCookie(w http.ResponseWriter, email string, DB *structs.DB) error{
 }
 
 //RemoveCookie removes a cookie with a specific name
-func RemoveCookie(w http.ResponseWriter, cookieName string) {
+func RemoveCookie(w http.ResponseWriter) {
 	c := &http.Cookie{Name: "session_token", MaxAge: 0, Expires: time.Now()}
 	http.SetCookie(w, c)
 }

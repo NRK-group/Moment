@@ -61,7 +61,7 @@ func TestRemoveCookie(t *testing.T) {
 
 	recorderDeleted := httptest.NewRecorder() // Drop a cookie on the recorder.
 
-	auth.RemoveCookie(recorderDeleted, "session_token") // Now try removing the cookie
+	auth.RemoveCookie(recorderDeleted) // Now try removing the cookie
 	requestDeleted := &http.Request{Header: http.Header{"Cookie": recorderDeleted.HeaderMap["Set-Cookie"]}}
 	cookie, err := requestDeleted.Cookie("session_token")  // Check if the cookie has been removed
 	got := cookie.Value

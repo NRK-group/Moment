@@ -68,7 +68,7 @@ func TestLogout(t *testing.T) {
 
 		// Create the database struct
 		DB := &structs.DB{DB: database}
-		Env := handler.Env{Env: DB}
+		// Env := handler.Env{Env: DB}
 		randEmail := uuid.NewV4().String()
 		sampleUser := &structs.User{
 			FirstName: "LogoutRemove", LastName: "LogoutRemove", NickName: "LogoutRemove", Email: randEmail, Password: "LogoutRemove1",
@@ -94,12 +94,15 @@ func TestLogout(t *testing.T) {
 		// Create the bytes into a reader
 		testReq := bytes.NewReader(sampleUserBytes)
 
-		req := httptest.NewRequest(http.MethodPost, "/login", testReq)
+		// req := httptest.NewRequest(http.MethodPost, "/login", testReq)
 		w := httptest.NewRecorder()
-		Env.Login(w, req)
+		err = auth.CreateCookie(w, randEmail, DB)
+		if err != nil {
+			t.Errorf("error creating the cookie")
+		}
 
 		//Remove the cookie and check if it has been removed
-		// auth.RemoveCookie(w)
+		auth.RemoveCookie(w)
 
 		
 	})

@@ -3,7 +3,6 @@ package Test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -17,7 +16,7 @@ import (
 )
 
 func TestRemoveCookie(t *testing.T) {
-	testEmail = "cookie@" + uuid.NewV4().String()
+	testEmail := "cookie@" + uuid.NewV4().String()
 	// Create a new user and log them in
 	// Create the database that will be used for testing
 	database := sqlite.CreateDatabase("./social_network_test.db")
@@ -58,7 +57,8 @@ func TestRemoveCookie(t *testing.T) {
 	recorder := httptest.NewRecorder() // Drop a cookie on the recorder.
 	var result structs.User
 	auth.GetUser("email", testEmail, &result, *DB)
-	auth.CreateCookie(recorder, testEmail, DB, result) // Create the cookie
+	auth.CreateCookie(recorder, testEmail, DB) // Create the cookie
+
 	recorderDeleted := httptest.NewRecorder() // Drop a cookie on the recorder.
 
 	auth.RemoveCookie(recorderDeleted, "session_token") // Now try removing the cookie
@@ -67,13 +67,12 @@ func TestRemoveCookie(t *testing.T) {
 	got := cookie.Value
 	want := ""
 	if got != want {
-		fmt.Println("!!!!!!!!!!!!!!!!----------- :", cookie.Value)
 		t.Errorf("cookie found when should be deleted")
 	}
 }
 
 func TestCreateCookie(t *testing.T) {
-	testEmail = "cookie@" + uuid.NewV4().String()
+	testEmail := "cookie@" + uuid.NewV4().String()
 	// Create a new user and log them in
 	// Create the database that will be used for testing
 	database := sqlite.CreateDatabase("./social_network_test.db")
@@ -114,7 +113,7 @@ func TestCreateCookie(t *testing.T) {
 	recorder := httptest.NewRecorder() // Drop a cookie on the recorder.
 	var result structs.User
 	auth.GetUser("email", testEmail, &result, *DB)
-	auth.CreateCookie(recorder, testEmail, DB, result)
+	auth.CreateCookie(recorder, testEmail, DB)
 
 	request := &http.Request{Header: http.Header{"Cookie": recorder.HeaderMap["Set-Cookie"]}}
 	cookie, err := request.Cookie("session_token")

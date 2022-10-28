@@ -14,6 +14,7 @@ import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
 import Validation from './components/Validation/Validation';
+import CheckCookie from './components/Validation/Valid';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     let generalNotif = [
@@ -40,7 +41,7 @@ function App() {
                     setIsMobile(boxRef.getBoundingClientRect().width < 600)
                 );
             }}>
-            <Header />
+            {CheckCookie() ?? <Header />}
 
             <>
                 <Routes>
@@ -181,7 +182,7 @@ function App() {
                     />
                 </Routes>
             </>
-            <Footer />
+            {CheckCookie() ?? <Footer />}
         </div>
     );
 }

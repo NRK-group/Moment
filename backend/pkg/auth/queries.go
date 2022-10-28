@@ -66,16 +66,8 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	}
 	return nil
 }
-func Update(table, set, to, where, id string, DB structs.DB) error {
-	update := "UPDATE " + table + " SET " + set + " = '" + to + "' WHERE " + where + " = '" + id + "'"
-	stmt, _ := DB.DB.Prepare(update)
-	_, err := stmt.Exec()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-func  Delete(table, where, value string, DB structs.DB) error {
+
+func Delete(table, where, value string, DB structs.DB) error {
 	dlt := "DELETE FROM " + table + " WHERE " + where
 	stmt, err := DB.DB.Prepare(dlt + " = (?)")
 	if err != nil {
@@ -90,44 +82,32 @@ func  Delete(table, where, value string, DB structs.DB) error {
 
 func UpdateSessionId(email, value string, DB structs.DB) error {
 	var result structs.User
-	GetUser("email", email, &result, DB)
-	// sessionID := result.SessionId
+	err := GetUser("email", email, &result, DB)
+	if err != nil {
+		log.Println("Error getting the user profile details in updatesessionId func: ", err)
+		return err
+	}
 	stmt, err := DB.DB.Prepare(`UPDATE User SET sessionId = ? WHERE email = ?`) // Update the session ID in the user table
 	if err != nil {
 		fmt.Println("Error preparing inserting user into the db: ", err)
 		return err
 	}
-	_, updateErr := stmt.Exec(value, email)
-	if updateErr != nil {
+	_, err = stmt.Exec(value, email)
+	if err != nil {
 		fmt.Println("Error executing update sessionID")
-		return updateErr
+		return err
 	}
 	err = Delete("UserSessions", "userId", result.UserId, DB)
 	if err != nil {
 		return err
 	}
-	// delStmt, err := DB.DB.Prepare(`DELETE FROM UserSessions WHERE userId = ?`) // remove the session to the session table
-	// if err != nil {
-	// 	fmt.Println("Error Preparing Delete statement")
-	// 	return err
-	// }
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("USERID ===== ", result.UserId)
-	fmt.Println("Value: ", value)
-	fmt.Println()
-
-	// delStmt.Exec(sessionID)
 	if value != "-" {
-		fmt.Println("INSERTING INTO USER SESSIONS")
 		stmt, err := DB.DB.Prepare(`INSERT INTO UserSessions values (?, ?, ?)`) // Add the value to the db
 		if err != nil {
 			fmt.Println("Error Preparing Delete statement")
 			return err
 		}
 		stmt.Exec(value, result.UserId, time.Now().String())
-	} else {
-		fmt.Println("Session removed")
 	}
 	return nil
 }

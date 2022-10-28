@@ -38,7 +38,7 @@ func AllGroups(uID string, database *structs.DB) ([]structs.Group, error) {
 // CreateGroup
 // is a method of database that add a group.
 func CreateGroup(name, description, admin string, database *structs.DB) (string, error) {
-	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
+	createdAt := time.Now().String()
 	groupId := uuid.NewV4()
 	stmt, _ := database.DB.Prepare(`
 		INSERT INTO Groups (groupId, admin, name, description, createdAt ) values (?, ?, ?, ?, ?)

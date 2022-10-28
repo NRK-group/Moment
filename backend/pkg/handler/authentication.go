@@ -11,7 +11,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// Login is a handler that vlidates the credentials input by a user
+// Login is a handler that validates the credentials input by a user
 func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/login" {
 		http.Error(w, "404 not found", http.StatusNotFound)
@@ -44,7 +44,7 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-
+//Logout is a handler that runs all functions to logout the user
 func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/logout" {
 		http.Error(w, "404 not found", http.StatusNotFound)
@@ -75,7 +75,6 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Error(w, "400 Bad Request", http.StatusBadRequest)
 }
-
 // Registration is a handler where all registration functions are done
 func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/registration" {

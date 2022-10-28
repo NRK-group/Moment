@@ -67,6 +67,7 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	return nil
 }
 
+//Delete is used to delet a row from a specefied table
 func Delete(table, where, value string, DB structs.DB) error {
 	dlt := "DELETE FROM " + table + " WHERE " + where
 	stmt, err := DB.DB.Prepare(dlt + " = (?)")
@@ -79,7 +80,7 @@ func Delete(table, where, value string, DB structs.DB) error {
 	}
 	return nil
 }
-
+//UpdateSessionId 
 func UpdateSessionId(email, value string, DB structs.DB) error {
 	var result structs.User
 	err := GetUser("email", email, &result, DB)
@@ -111,7 +112,7 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 	}
 	return nil
 }
-
+//Getuser is a function which queries the user table and gets the data from each column
 func GetUser(datatype, value string, result *structs.User, DB structs.DB) error {
 	rows, err := DB.DB.Query(`SELECT * FROM User WHERE `+datatype+` = ?`, value)
 	if err != nil {

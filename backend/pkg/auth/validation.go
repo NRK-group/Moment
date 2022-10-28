@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -8,12 +9,10 @@ import (
 
 // ValidPassword checks that the password input is valid and passes the requirements
 func ValidPassword(password string) bool {
-	// Check the length of the password is valid
-	if len(password) < 8 || len(password) > 16 {
+	if len(password) < 8 || len(password) > 16 {// Check the length of the password is valid
 		return false
 	}
-	// Check the password contains lower and uppercase values
-	if strings.ToLower(password) == password || strings.ToUpper(password) == password {
+	if strings.ToLower(password) == password || strings.ToUpper(password) == password {// Check the password contains lower and uppercase values
 		return false
 	}
 	return true
@@ -29,4 +28,15 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+//SliceCookie takes in the cookie and checks if it is valid to slice. If it can be a sliced a a slice of strings is returned containing the userId, email and sessionId
+func SliceCookie(cookie string) ([]string, error) {
+	if strings.Contains(cookie, "&") {
+		emailSlc := strings.Split(cookie, "&")
+		if len(emailSlc) == 3 {
+			return emailSlc, nil
+		}
+	}
+	return []string{}, errors.New("Invalid Cookie")
 }

@@ -135,4 +135,46 @@ func TestFollow(t *testing.T) {
 			t.Errorf("got %v, want %v", err, nil)
 		}
 	})
+	t.Run("Get num of following", func(t *testing.T) {
+		// Create the users that will be used for testing
+		email := "hello" + uuid.NewV4().String() + "@test.com"
+		inputUser := &structs.User{
+			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: email, Password: "Password123",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 5, NumFollowing: 5, NumPosts: 0,
+		}
+		auth.InsertUser(*inputUser, *database)
+		var result structs.User
+		auth.GetUser("email", email, &result, *database)
+		num, err := follow.GetNumOfFollowing(result.UserId, database)
+		if err != nil {
+			t.Errorf("got %v, want %v", err, nil)
+		}
+		got := num
+		want := 5
+		if got != want {
+			t.Errorf("got %v, want %v", got, want)
+		}
+	})
+	t.Run("Get num of following", func(t *testing.T) {
+		// Create the users that will be used for testing
+		email := "hello" + uuid.NewV4().String() + "@test.com"
+		inputUser := &structs.User{
+			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: email, Password: "Password123",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 5, NumFollowing: 5, NumPosts: 0,
+		}
+		auth.InsertUser(*inputUser, *database)
+		var result structs.User
+		auth.GetUser("email", email, &result, *database)
+		num, err := follow.GetNumOfFollowers(result.UserId, database)
+		if err != nil {
+			t.Errorf("got %v, want %v", err, nil)
+		}
+		got := num
+		want := 5
+		if got != want {
+			t.Errorf("got %v, want %v", got, want)
+		}
+	})
 }

@@ -109,6 +109,92 @@ func InsertFollowNotif(followerId, followingId, status string, database *structs
 	return nil
 }
 
+// GetNumOfFollowing will get the number of users the current user is following
+//
+// Params:
+//
+//	userId: the id of the user who is following - current user
+//	database: the database to get the number of following from
+func GetNumOfFollowing(userId string, database *structs.DB) (int, error) {
+	stmt, err := database.DB.Query("SELECT numFollowing FROM User WHERE userId = ?", userId)
+	if err != nil {
+		l.LogMessage("follow.go", "GetNumOfFollowing", err)
+		return 0, nil
+	}
+	var user structs.User
+	for stmt.Next() {
+		stmt.Scan(
+			&user.NumFollowing,
+		)
+	}
+	l.LogMessage("follow.go", "GetNumOfFollowing", user)
+	return user.NumFollowing, nil
+}
+
+// GetNumOfFollowers will get the number of users following the current user
+//
+// Params:
+//
+//	userId: the id of the user who is being followed - current user
+//	database: the database to get the number of followers from
+func GetNumOfFollowers(userId string, database *structs.DB) (int, error) {
+	stmt, err := database.DB.Query("SELECT numFollowers FROM User WHERE userId = ?", userId)
+	if err != nil {
+		l.LogMessage("follow.go", "GetNumOfFollowers", err)
+		return 0, nil
+	}
+	var user structs.User
+	for stmt.Next() {
+		stmt.Scan(
+			&user.NumFollowers,
+		)
+	}
+	l.LogMessage("follow.go", "GetNumOfFollowers", user)
+	return user.NumFollowers, nil
+}
+
+// UpdateNumOfFollowing will update the number of users the current user is following
+//
+// Params:
+//
+//	userId: the id of the user who is following - current user
+//	numFollowing: the number of users the current user is following
+//	database: the database to update the number of following in
+func UpdateNumOfFollowing(userId string, numFollowing int, database *structs.DB) error {
+	stmt, err := database.DB.Prepare("UPDATE User SET numFollowing = ? WHERE userId = ?")
+	if err != nil {
+		l.LogMessage("follow.go", "UpdateNumOfFollowing", err)
+		return err
+	}
+	_, err = stmt.Exec(numFollowing, userId)
+	if err != nil {
+		l.LogMessage("follow.go", "UpdateNumOfFollowing", err)
+		return err
+	}
+	return nil
+}
+
+// UpdateNumOfFollowers will update the number of users following the current user
+//
+// Params:
+//
+//	userId: the id of the user who is being followed - current user
+//	numFollowers: the number of users following the current user
+//	database: the database to update the number of followers in
+func UpdateNumOfFollowers(userId string, numFollowers int, database *structs.DB) error {
+	stmt, err := database.DB.Prepare("UPDATE User SET numFollowers = ? WHERE userId = ?")
+	if err != nil {
+		l.LogMessage("follow.go", "UpdateNumOfFollowers", err)
+		return err
+	}
+	_, err = stmt.Exec(numFollowers, userId)
+	if err != nil {
+		l.LogMessage("follow.go", "UpdateNumOfFollowers", err)
+		return err
+	}
+	return nil
+}
+
 // FollowUser will follow a user if the user does not already follow the other user
 // and delete the follow if the user does follow the other user
 //
@@ -122,10 +208,18 @@ func InsertFollowNotif(followerId, followingId, status string, database *structs
 func FollowUser(followerId, followingId string, database *structs.DB) (string, error) {
 	if CheckIfFollow(followerId, followingId, database) {
 		DeleteFollow(followerId, followingId, database)
+		currentUserNumOfFollowing, _ := GetNumOfFollowing(followerId, database)
+		UpdateNumOfFollowing(followerId, currentUserNumOfFollowing-1, database)
+		otherUserNumOfFollowers, _ := GetNumOfFollowers(followingId, database)
+		UpdateNumOfFollowers(followingId, otherUserNumOfFollowers-1, database)
 		return "unfollow", nil
 	}
 	if helper.CheckUserIfPublic(followingId, database) {
 		InsertFollow(followerId, followingId, database)
+		currentUserNumOfFollowing, _ := GetNumOfFollowing(followerId, database)
+		UpdateNumOfFollowing(followerId, currentUserNumOfFollowing+1, database)
+		otherUserNumOfFollowers, _ := GetNumOfFollowers(followingId, database)
+		UpdateNumOfFollowers(followingId, otherUserNumOfFollowers+1, database)
 		InsertFollowNotif(followerId, followingId, "follow", database)
 		return "follow", nil
 	}

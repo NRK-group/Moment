@@ -4,14 +4,12 @@ import (
 	"testing"
 
 	"backend/pkg/auth"
-	"backend/pkg/db/sqlite"
 	"backend/pkg/helper"
 	"backend/pkg/structs"
 )
 
 func TestHelper(t *testing.T) {
-	database := &structs.DB{DB: sqlite.CreateDatabase("./social_network_test.db")}
-	sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
+	database := DatabaseSetup()
 	email := logTestEmail
 	inputUser := &structs.User{
 		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: email, Password: "Password123",
@@ -22,10 +20,10 @@ func TestHelper(t *testing.T) {
 	var result structs.User
 	auth.GetUser("email", email, &result, *database)
 	t.Run("Check user privacy", func(t *testing.T) {
-		got := helper.CheckUserPrivacy(result.UserId, database)
-		want := "public"
+		got := helper.CheckUserIfPublic(result.UserId, database)
+		want := true
 		if got != want {
-			t.Errorf("got %q, want %q", got, want)
+			t.Errorf("got %v want %v", got, want)
 		}
 	})
 }

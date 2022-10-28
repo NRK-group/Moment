@@ -1,6 +1,7 @@
 package event
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -38,8 +39,9 @@ func AllEventByGroup(groupId string, database *structs.DB) ([]structs.Event, err
 }
 
 func AddEventParticipant(eventId, userId string, database *structs.DB) (string, error) {
+	
+	
 	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
-
 	stmt, _ := database.DB.Prepare(`
 	INSERT INTO EventParticipant values (?, ?, ?)
 `)
@@ -52,25 +54,23 @@ func AddEventParticipant(eventId, userId string, database *structs.DB) (string, 
 	return eventId, nil
 }
 
-func CheckIfUserAlreadyInEvent(eventId, userId string, database *structs.DB) (string, error) {
+func CheckIfUserInEventAndIfNotAddThem(eventId, userId string, database *structs.DB) (bool, error) {
 	var holder structs.EventParticipant
 
 	rows, err := database.DB.Query("SELECT userID FROM EventParticipant WHERE eventId = '" + eventId + "' AND userId = '" + userId + "'")
 	if err != nil {
 		fmt.Println(err)
-		return "", err
+		return false, err
 	}
-
 	for rows.Next() {
 		rows.Scan(&holder.UserId)
 	}
 	if holder.UserId == "" {
-		eventIdStr, err := AddEventParticipant(eventId, userId, database)
+		_, err := AddEventParticipant(eventId, userId, database)
 		fmt.Println(err)
-		return eventIdStr, err
+		return true, err
 	}
-
-	return userId, nil
+	return false, errors.New("already a participant")
 }
 
 func AllEventParticipant(eventId string, database *structs.DB) ([]structs.EventParticipant, error) {

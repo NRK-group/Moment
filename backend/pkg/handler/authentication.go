@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -30,6 +31,7 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 		}
 		sessionErr := auth.UpdateSessionId(userLogin.Email, uuid.NewV4().String(), *DB.Env) // Create a sessionID
 		if sessionErr != nil {
+			fmt.Println("ERROR HERE === ", sessionErr)
 			http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
 			return
 		}
@@ -49,6 +51,7 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if r.Method == "GET" {
+		fmt.Println("-------------------------!!!!____!!!!____!11 === LOGGING OUT 0 ")
 		c, err := r.Cookie("session_token") // Access the cookie
 		if err == nil { // Cookie is present so remove
 			http.SetCookie(w, &http.Cookie{Name: "session_token", Value: "", Expires: time.Now()})
@@ -59,11 +62,13 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 		emailSlc, slcErr := auth.SliceCookie(c.Value)
 		if slcErr != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+			return
 		}
 		// Update the sessionId update in users table and remove from sessions table
 		err = auth.UpdateSessionId(emailSlc[1], "-", *DB.Env)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+			return
 		}
 		w.WriteHeader(200)
 		return

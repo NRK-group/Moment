@@ -102,7 +102,7 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 		fmt.Println("Error executing update sessionID")
 		return updateErr
 	}
-	err = Delete("UserSesions", "userId", result.UserId, DB)
+	err = Delete("UserSessions", "userId", result.UserId, DB)
 	if err != nil {
 		return err
 	}
@@ -119,12 +119,15 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 
 	// delStmt.Exec(sessionID)
 	if value != "-" {
+		fmt.Println("INSERTING INTO USER SESSIONS")
 		stmt, err := DB.DB.Prepare(`INSERT INTO UserSessions values (?, ?, ?)`) // Add the value to the db
 		if err != nil {
 			fmt.Println("Error Preparing Delete statement")
 			return err
 		}
 		stmt.Exec(value, result.UserId, time.Now().String())
+	} else {
+		fmt.Println("Session removed")
 	}
 	return nil
 }

@@ -195,6 +195,28 @@ func UpdateNumOfFollowers(userId string, numFollowers int, database *structs.DB)
 	return nil
 }
 
+// UpdateFollowNotifStatus will update the status of a follow notification
+//
+// Params:
+//
+//	followerId: the id of the user who is following - current user
+//	followingId: the id of the user who is being followed - other user
+//	status: the status of the follow (follow or pending)
+//	database: the database to update the follow notification status in
+func UpdateFollowNotifStatus(followerId, followingId, status string, database *structs.DB) error {
+	stmt, err := database.DB.Prepare("UPDATE FollowNotif SET status = ? WHERE userId = ? AND followingId = ?")
+	if err != nil {
+		l.LogMessage("follow.go", "UpdateFollowNotifStatus", err)
+		return err
+	}
+	_, err = stmt.Exec(status, followerId, followingId)
+	if err != nil {
+		l.LogMessage("follow.go", "UpdateFollowNotifStatus", err)
+		return err
+	}
+	return nil
+}
+
 // FollowUser will follow a user if the user does not already follow the other user
 // and delete the follow if the user does follow the other user
 //
@@ -226,3 +248,31 @@ func FollowUser(followerId, followingId string, database *structs.DB) (string, e
 	InsertFollowNotif(followerId, followingId, "pending", database)
 	return "pending", nil
 }
+
+// AcceptFollow will accept a follow request from another user
+//
+// Params:
+//
+//	followerId: the id of the user who is following - other user
+//	followingId: the id of the user who is being followed - current user
+//	database: the database to insert the follow into
+func AcceptFollow(followerId, followingId string, database *structs.DB) {
+	InsertFollow(followerId, followingId, database)
+	currentUserNumOfFollowing, _ := GetNumOfFollowing(followerId, database)
+	UpdateNumOfFollowing(followerId, currentUserNumOfFollowing+1, database)
+	otherUserNumOfFollowers, _ := GetNumOfFollowers(followingId, database)
+	UpdateNumOfFollowers(followingId, otherUserNumOfFollowers+1, database)
+	UpdateFollowNotifStatus(followerId, followingId, "follow", database)
+}
+
+// DeclineFollow will decline a follow request from another user
+//
+// Params:
+//
+//	followerId: the id of the user who is following - other user
+//	followingId: the id of the user who is being followed - current user
+//	database: the database to insert the follow into
+func DeclineFollow(followerId, followingId string, database *structs.DB) {
+	DeleteFollow(followerId, followingId, database)
+}
+

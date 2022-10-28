@@ -41,43 +41,30 @@ function App() {
                 );
             }}>
             <Header />
-            {/* <Login /> */}
-            {/* <Registration /> */}
+
             <>
                 <Routes>
-                    <Route
-                        path='/'
-                        element={
-                            <Validation>
-                                <Login />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/register'
-                        element={
-                            <Validation>
-                                <Registration />
-                            </Validation>
-                        }
-                    />
+                    <Route path='/' element={<Login />} />
+                    <Route path='/register' element={<Registration />} />
 
                     <Route
                         path='/home'
                         element={
-                            <Validation>
-                                isMobile ? (
-                                <Home
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
-                                ) : (
-                                <Home
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                                )
-                            </Validation>
+                            isMobile ? (
+                                <Validation>
+                                    <Home
+                                        bodyStyleName='mobile'
+                                        cardStyleName='mobileCard'
+                                    />
+                                </Validation>
+                            ) : (
+                                <Validation>
+                                    <Home
+                                        bodyStyleName='desktop'
+                                        cardStyleName='desktopCard'
+                                    />
+                                </Validation>
+                            )
                         }
                     />
                     <Route
@@ -114,7 +101,14 @@ function App() {
                             </Validation>
                         }
                     />
-                    <Route path='/groups' element={<h1>Groups</h1>} />
+                    <Route
+                        path='/groups'
+                        element={
+                            <Validation>
+                                <h1>Groups</h1>
+                            </Validation>
+                        }
+                    />
                     <Route
                         path='/comments'
                         element={

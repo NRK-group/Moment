@@ -4,6 +4,7 @@ import AuthInput from '../../features/authentication/AuthInput';
 import './Login.css';
 import ValidateLoginAttempt from './ValidateLogin';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Card from '../../components/card/Card';
 
@@ -11,6 +12,7 @@ export default function Login() {
     let email = useRef(),
         password = useRef(),
         errMsg = useRef();
+    let navigate = useNavigate();
 
     return (
         <AuthCard>
@@ -34,7 +36,7 @@ export default function Login() {
                         email.current.value,
                         password.current.value,
                         errMsg.current
-                    )
+                    ) ?? navigate('/home')
                 }>
                 Log in
             </button>

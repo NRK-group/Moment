@@ -17,7 +17,7 @@ import (
 
 var (
 	logTestEmail   = "validCreds@" + uuid.NewV4().String()
-	loginAttempts = [][]string{{"Account not found\n", "InvalidEmail@false.com", "Password123"}, {"Valid Login", logTestEmail, "Password123"}, {"Incorrect Password\n", logTestEmail, "IncorrectPassword"}}
+	loginAttempts = [][]string{{"Account not found", "InvalidEmail@false.com", "Password123"}, {"Valid Login", logTestEmail, "Password123"}, {"Incorrect Password", logTestEmail, "IncorrectPassword"}}
 )
 
 func TestLogin(t *testing.T) {

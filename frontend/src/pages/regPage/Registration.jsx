@@ -22,7 +22,7 @@ export default function Registration() {
         <button className="loginInput loginAttemptBtn">Register</button>
 
 
-        <AuthAlternative question='Already have an account?' option='Log in' /> 
+        <AuthAlternative question='Already have an account?' option='Log in' redirect='/' /> 
     </AuthCard>
   )
 }

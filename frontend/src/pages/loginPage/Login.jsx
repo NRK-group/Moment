@@ -38,7 +38,6 @@ export default function Login() {
                      password.current.value,
                      errMsg.current) ? navigate('/home') : null;
                 }
-              
                 }>
                 Log in
             </button>

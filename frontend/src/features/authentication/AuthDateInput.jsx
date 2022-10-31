@@ -16,13 +16,13 @@ export default function AuthDateInput(props) {
     }
   return (
     <Card styleName={props.styleName}>
-    <select className={props.daySelector}>
+    <select className={props.daySelector} ref={props.dayRef}>
         {DAYS}
     </select>
-    <select className={props.monthSelector}>
+    <select className={props.monthSelector} ref={props.monthRef}>
         {MONTH_OPTIONS}
     </select>
-    <select className={props.yearSelector}>
+    <select className={props.yearSelector} ref={props.yearRef}>
         {YEARS}
     </select>
     </Card>

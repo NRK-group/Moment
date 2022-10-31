@@ -4,7 +4,7 @@ import AuthInput from "../../features/authentication/AuthInput"
 import './Login.css'
 
 export default function Login() {
-
+  
   return (
 
       <AuthCard >

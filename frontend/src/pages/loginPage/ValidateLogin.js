@@ -17,19 +17,18 @@ function mixedCase(str) {
     return true;
 }
 
-export default function ValidateLoginAttempt(email, password, errMsg) {
+ export default async function ValidateLoginAttempt (email, password, errMsg) {
     if (!CheckCreds(email, password)) {
         errMsg.innerHTML = 'Incorrect email or password';
-        return false//Display the error message to client
+        return false; //Display the error message to client
     }
     const LOGIN_CREDS = {
         //Make the obj with the login details
         Email: email,
         Password: password,
     };
-    let auth = true;
     // Send the data to the server to be validated by login handler
-    fetch('http://localhost:5070/login', {
+    let auth = await fetch('http://localhost:5070/login', {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -40,12 +39,13 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
         .then(async (response) => {
             return await response.text();
         })
-        .then((resp) => {
+        .then(async(resp) => {
+            
             if (resp !== 'Valid Login') {
                 errMsg.innerHTML = resp;
-                console.log("INSIDE");
-                auth = false;
+                return false;
             }
+            return true
         });
     return auth;
 }

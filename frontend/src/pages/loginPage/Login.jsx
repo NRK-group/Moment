@@ -13,6 +13,7 @@ export default function Login() {
         password = useRef(),
         errMsg = useRef();
     let navigate = useNavigate();
+    let authenticate
 
     return (
         <AuthCard>
@@ -31,12 +32,13 @@ export default function Login() {
             <Card styleName='errMsgHolder' refr={errMsg} />
             <button
                 className='loginInput loginAttemptBtn'
-                onClick={() =>
-                    ValidateLoginAttempt(
-                        email.current.value,
-                        password.current.value,
-                        errMsg.current
-                    ) ?? navigate('/home')
+                onClick={async () => {
+                  await ValidateLoginAttempt(
+                     email.current.value,
+                     password.current.value,
+                     errMsg.current) ? navigate('/home') : null;
+                }
+              
                 }>
                 Log in
             </button>

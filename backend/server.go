@@ -28,6 +28,8 @@ func main() {
 	http.HandleFunc("/post", database.Post) 
 	http.HandleFunc("/group", database.Group) 
 	http.HandleFunc("/event", database.Event) 
+	http.HandleFunc("/login", database.Login) 
+
 
 	// start the server
 	log.Println("Server is running on port 5070")

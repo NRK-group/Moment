@@ -4,6 +4,7 @@ import AuthInput from '../../features/authentication/AuthInput';
 import './Login.css';
 import ValidateLoginAttempt from './ValidateLogin';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Card from '../../components/card/Card';
 
@@ -11,6 +12,8 @@ export default function Login() {
     let email = useRef(),
         password = useRef(),
         errMsg = useRef();
+    let navigate = useNavigate();
+    let authenticate
 
     return (
         <AuthCard>
@@ -29,12 +32,12 @@ export default function Login() {
             <Card styleName='errMsgHolder' refr={errMsg} />
             <button
                 className='loginInput loginAttemptBtn'
-                onClick={() =>
-                    ValidateLoginAttempt(
-                        email.current.value,
-                        password.current.value,
-                        errMsg.current
-                    )
+                onClick={async () => {
+                  await ValidateLoginAttempt(
+                     email.current.value,
+                     password.current.value,
+                     errMsg.current) ? navigate('/home') : null;
+                }
                 }>
                 Log in
             </button>

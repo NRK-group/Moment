@@ -1,11 +1,9 @@
-const emailInput, passwordInput
-function CheckCreds() {
+function CheckCreds(email, password) {
     //Check the values inside the login input fields
-    emailInput = document.querySelector('.loginEmailInput'), passwordInput = document.querySelector('.loginPasswordInput')
-    if (passwordInput.value.length < 8 || passwordInput.value.length > 16 || !mixedCase(passwordInput.value)) return [false, "Incorrect Password"]//Check the password isn't too short
+    if (password.length < 8 || password.length > 16 || !mixedCase(password)) return false //Check the password isn't too short
     //Check the email is valid
-    if (!ValidateEmail(emailInput.value)) return [false, "Account not found"]
-    return [true, "Valid entry", emailInput, passwordInput]
+    if (!ValidateEmail(email)) return false
+    return true
 }  
 function ValidateEmail(email) {
     var re = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -17,15 +15,25 @@ function mixedCase(str) {
     return true
 }
 
-function ValidateLoginAttempt() {
-    if (!CheckCreds()[0]) { //Display the error message to client
-        return
-    }
-    
+export default function ValidateLoginAttempt(email, password, errMsg) {
+    if (!CheckCreds(email, password)) return errMsg.innerHTML = 'Incorrect email or password' //return "Incorrect Email or Password" //Display the error message to client
+    errMsg.innerHTML=''
     const LOGIN_CREDS = {//Make the obj with the login details
-        Email:  emailInput.value,
-        Password: passwordInput.value
+        Email:  email,
+        Password: password
     }
+    console.log(LOGIN_CREDS)
     //Send the data to the server to be validated by login handler
-    fetch('/login')
+    // fetch('/login', {
+    //     method: "POST",
+    //     headers : {
+    //         Accept: 'application/json',
+    //             'Content-Type': 'application/json',
+    //     }, 
+    //     body: JSON.stringify(LOGIN_CREDS)
+    // }).then(async response => {
+    //     return await response.json()
+    // }).then(resp => {
+    //     console.log({resp})
+    // })
 }

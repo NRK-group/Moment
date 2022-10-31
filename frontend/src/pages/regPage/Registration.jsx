@@ -5,6 +5,7 @@ import AuthCard from '../../features/authentication/AuthCard';
 import AuthDateInput from '../../features/authentication/AuthDateInput';
 import AuthInput from '../../features/authentication/AuthInput';
 import SendRegistration from './ValidRegistration';
+
 import './Registration.css';
 
 export default function Registration() {
@@ -89,6 +90,7 @@ export default function Registration() {
                         monthRef.current.value,
                         yearRef.current.value
                     )
+
                 }>
                 Register
             </button>

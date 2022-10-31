@@ -6,7 +6,7 @@ function CheckCreds(email, password) {
     if (!ValidateEmail(email)) return false;
     return true;
 }
-function ValidateEmail(email) {
+export function ValidateEmail(email) {
     var re =
         /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     return re.test(email);

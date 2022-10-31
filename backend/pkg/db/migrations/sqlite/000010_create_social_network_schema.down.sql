@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS "EventNotif";
+DROP TABLE IF EXISTS "InviteNotif";
+DROP TABLE IF EXISTS "GeneralNotif";

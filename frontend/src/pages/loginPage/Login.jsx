@@ -4,9 +4,15 @@ import AuthInput from "../../features/authentication/AuthInput"
 import './Login.css'
 import ValidateLoginAttempt from './ValidateLogin'
 import { useRef } from "react"
+import { useNavigate } from 'react-router-dom';
+
+
 import Card from "../../components/card/Card"
 
 export default function Login() {
+  const navigate = useNavigate();
+
+
 
   let email = useRef(), password = useRef(), errMsg = useRef()
   
@@ -24,7 +30,7 @@ export default function Login() {
           <button className="externalBtn loginGoogle"><i className="fa-brands fa-google"></i> Google</button>
           </span>
 
-          <AuthAlternative question={`Don't have an account?`} option='Register'/>
+          <AuthAlternative question={`Don't have an account?`} option='Register' redirect='/register'/>
       </ AuthCard>
 
   )

@@ -1,5 +1,6 @@
 .inputText{
     pointer-events: none;
+    background-color: #ffffff00;
 }
 
 .authAvatarBtn{

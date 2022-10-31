@@ -13,6 +13,8 @@ import { useState } from 'react';
 import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
+import Validation from './components/Validation/Validation';
+import CheckCookie from './components/Validation/Valid';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     let generalNotif = [
@@ -39,93 +41,148 @@ function App() {
                     setIsMobile(boxRef.getBoundingClientRect().width < 600)
                 );
             }}>
-            <Header />
-            {/* <Login /> */}
-            {/* <Registration /> */}
+            {CheckCookie() ?? <Header />}
+
             <>
                 <Routes>
+                    <Route path='/' element={<Login />} />
+                    <Route path='/register' element={<Registration />} />
+
                     <Route
                         path='/home'
                         element={
                             isMobile ? (
-                                <Home
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
+                                <Validation>
+                                    <Home
+                                        bodyStyleName='mobile'
+                                        cardStyleName='mobileCard'
+                                    />
+                                </Validation>
                             ) : (
-                                <Home
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
+                                <Validation>
+                                    <Home
+                                        bodyStyleName='desktop'
+                                        cardStyleName='desktopCard'
+                                    />
+                                </Validation>
                             )
                         }
                     />
-                    <Route path='/search' element={<Search />} />
-                    <Route path='/newpost' element={<NewPost />} />
+                    <Route
+                        path='/search'
+                        element={
+                            <Validation>
+                                <Search />
+                            </Validation>
+                        }
+                    />
+                    <Route
+                        path='/newpost'
+                        element={
+                            <Validation>
+                                <NewPost />
+                            </Validation>
+                        }
+                    />
                     <Route
                         path='/messages'
                         element={
-                            isMobile ? (
+                            <Validation>
+                                isMobile ? (
                                 <Chat
                                     bodyStyleName='mobile'
                                     cardStyleName='mobileCard'
                                 />
-                            ) : (
+                                ) : (
                                 <Chat
                                     bodyStyleName='desktop'
                                     cardStyleName='desktopCard'
                                 />
-                            )
+                                )
+                            </Validation>
                         }
                     />
-                    <Route path='/groups' element={<h1>Groups</h1>} />
+                    <Route
+                        path='/groups'
+                        element={
+                            <Validation>
+                                <h1>Groups</h1>
+                            </Validation>
+                        }
+                    />
                     <Route
                         path='/comments'
                         element={
-                            isMobile ? (
-                                
+                            <Validation>
+                                isMobile ? (
                                 <Comments
                                     bodyStyleName='mobile'
                                     cardStyleName='mobileCard'
                                 />
-                            ) : (
+                                ) : (
                                 <Comments
                                     bodyStyleName='desktop'
                                     cardStyleName='desktopCard'
                                 />
-                            )
+                                )
+                            </Validation>
                         }
                     />
                     <Route
                         path='notifications'
-                        element={<Notification users={generalNotif} />}>
+                        element={
+                            <Validation>
+                                <Notification users={generalNotif} />
+                            </Validation>
+                        }>
                         <Route
                             path='general'
-                            element={<Notification users={generalNotif} />}
+                            element={
+                                <Validation>
+                                    <Notification users={generalNotif} />
+                                </Validation>
+                            }
                         />
                         <Route
                             path='followrequest'
-                            element={<Notification users={followrequest} />}
+                            element={
+                                <Validation>
+                                    <Notification users={followrequest} />
+                                </Validation>
+                            }
                         />
                         <Route
                             path='group'
-                            element={<Notification users={groupNotif} />}
+                            element={
+                                <Validation>
+                                    <Notification users={groupNotif} />
+                                </Validation>
+                            }
                         />
                     </Route>
                     <Route
                         path='profile'
                         element={
-                            <Profile
-                                aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
-                                fullname='Nathaniel Russell'
-                                nickname='Nate'
-                            />
+                            <Validation>
+                                <Profile
+                                    aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
+                                    fullname='Nathaniel Russell'
+                                    nickname='Nate'
+                                />
+                            </Validation>
                         }
                     />
-                    <Route path='/stories' element={<Stories />} />
+                    <Route
+                        path='/stories'
+                        element={
+                            <Validation>
+                                <Stories />
+                            </Validation>
+                        }
+                    />
                 </Routes>
             </>
-            <Footer />
+            {CheckCookie() ?? <Footer />}
         </div>
     );
 }

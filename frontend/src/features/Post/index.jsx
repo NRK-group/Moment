@@ -1,7 +1,7 @@
 import Card from '../../components/card/Card';
-import { NavLink } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
 import ChatInput from '../../components/ChatInput';
+import { useNavigate } from 'react-router-dom';
 import {
     LikeIcon,
     FavoriteIcon,
@@ -9,7 +9,7 @@ import {
     CommentIcon,
 } from '../../components/Icons/Icons';
 import './Post.css';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 
 export default function Post({
     name,
@@ -19,9 +19,11 @@ export default function Post({
     avatarSrc,
     likes,
     commentsnum,
+    postId,
 }) {
     const dropdown = useRef(null);
     const PostContentText = useRef(null);
+    const navigate = useNavigate();
 
     const [toggle, setToggle] = useState(true);
 
@@ -35,6 +37,19 @@ export default function Post({
         }
     };
 
+    const OpenCommets = (postId) => {
+        navigate('/comments', {
+            state: {
+                postId: postId,
+                postBodyText: postBodyText,
+                postBodyImgSrc: postBodyImgSrc,
+                postContent: postContent,
+                likes: likes,
+                avatarSrc: avatarSrc,
+                name: name,
+            },
+        });
+    };
 
     return (
         <>
@@ -82,14 +97,13 @@ export default function Post({
                         {postContent}
                     </p>
                     <p className='PostContentVBtn'>
-                    <NavLink to='/comments'>
-                    View all {commentsnum} comments
-                </NavLink>
-                       
+                        <a onClick={() => OpenCommets(postId)}>
+                            View all {commentsnum} comments
+                        </a>
                     </p>
-                   
+
                     <div className='PostContentIconsfooter'>
-                    <ChatInput/>
+                        <ChatInput />
                     </div>
                 </Card>
             </Card>

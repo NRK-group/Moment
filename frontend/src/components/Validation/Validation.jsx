@@ -7,12 +7,12 @@ export default function Validation(props) {
     const [valid, setValid] = useState(true);
     console.log('YOUR ARE CALLING VALIDATION', CheckCookie());
     //if cookie is valid show children else redirect
-    useEffect(() => {
-        setValid(CheckCookie());
-        if (!valid) {
-            navigate('/');
-        }
-    }, [valid]);
+    // useEffect(() => {
+    //     setValid(CheckCookie());
+    //     if (!valid) {
+    //         navigate('/');
+    //     }
+    // }, [valid]);
 
     return props.children;
 }

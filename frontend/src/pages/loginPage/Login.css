@@ -81,7 +81,7 @@
 
 .inputBox span {
     position: absolute;
-    z-index: 10;
+    z-index: 0;
     margin-top: -11%;
     margin-left: 10%;
 }

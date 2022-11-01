@@ -12,7 +12,7 @@ func TestCreateMember(t *testing.T) {
 
 	//----------- Setup -------------------
 	grouoIdTest := "dhgfhfdj"
-	userIdTest := "esfesfesf"
+	userIdTest := "esfesfes5f"+time.Now().String()
 	database := DatabaseSetup()
 	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
 	stmt, _ := database.DB.Prepare(`
@@ -24,8 +24,6 @@ func TestCreateMember(t *testing.T) {
 		fmt.Println("inside AddMember", err3)
 		return 
 	}
-
-
 
 	t.Run("Add member to group", func(t *testing.T) {
 		str, err := member.AddMember(grouoIdTest, userIdTest, database)
@@ -54,6 +52,18 @@ func TestCreateMember(t *testing.T) {
 		str, err := member.AddMember("grouoIdTest", userIdTest, database)
 		fmt.Println(str)
 		if err != nil {
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+	})
+
+	t.Run("Add member to the same group", func(t *testing.T) {
+		str, err := member.AddMember(grouoIdTest, userIdTest, database)
+		fmt.Println(err)
+
+		want := false
+		got := str
+
+		if got != want {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 	})

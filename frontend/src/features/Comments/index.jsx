@@ -3,16 +3,20 @@ import Avatar from '../../components/Avatar';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
-import {
-    FaceSmileIcon,
-} from '../../components/Icons/Icons';
-import { useRef, useState } from 'react';
+import { FaceSmileIcon } from '../../components/Icons/Icons';
+import { useRef, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
-const Comments = ({
-    postId,
-    bodyStyleName,
-    cardStyleName
-}) => {
+const Comments = ({ bodyStyleName, cardStyleName }) => {
+
+
+    const { state } = useLocation();
+    useEffect(() => {
+        console.log({ state });
+    }, []);
+
+   
+
     const dropdown = useRef(null);
     const [toggle, setToggle] = useState(true);
 
@@ -32,12 +36,13 @@ const Comments = ({
                 <div className='Comments'>
                     <div className='CommentsLeft'>
                         <div className='CommentsImg'>
-                            <img src='https://img.olympicchannel.com/images/image/private/t_16-9_360-203_2x/f_auto/v1538355600/primary/cbmqgtebnwmnww91w3tz' />
+                            <img src={state.postBodyImgSrc} />
                         </div>
                         <div className='CommentsChat'>
-                         <div className='CommentsChatIcons'><FaceSmileIcon/>
-                            <input></input>
-                            </div>   
+                            <div className='CommentsChatIcons'>
+                                <FaceSmileIcon />
+                                <input></input>
+                            </div>
                             <p>Post</p>
                         </div>
                     </div>
@@ -72,26 +77,8 @@ const Comments = ({
                         </Card>
                         <div className='CommentsSectionUsers'>
                             {[
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                0, 
-                                64,
-                                5,
-                                3,
-                                4,
-                                3,
-                                5,
-                                56,
-                                54,
-                                34,
-                                43,
+                                1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 64, 5, 3, 4, 3, 5,
+                                56, 54, 34, 43,
                             ].map((ele) => (
                                 <MiniUserCard
                                     img={

@@ -48,3 +48,4 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Error(w, "400 Bad Request.", http.StatusBadRequest)
 }
+

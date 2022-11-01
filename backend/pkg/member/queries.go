@@ -133,3 +133,24 @@ func DeclineMemberNotif(groupId, userId, receiverId string, database *structs.DB
 	}
 	return nil
 }
+
+// GetMemberNotif
+//
+// Param:
+//
+// userId: the id of the user
+// database: the database
+func GetMemberNotif(userId string, database *structs.DB) ([]structs.MemberNotif, error) {
+	rows, err := database.DB.Query("SELECT * FROM InviteNotif WHERE receiverId = '" + userId + "'")
+	var memberNotif structs.MemberNotif
+	var memberNotifs []structs.MemberNotif
+	if err != nil {
+		l.LogMessage("Member.go", "GetMemberNotif", err)
+		return memberNotifs, err
+	}
+	for rows.Next() {
+		rows.Scan(&memberNotif.GroupId, &memberNotif.UserId, &memberNotif.ReceiverId, &memberNotif.CreatedAt, &memberNotif.TypeNotif, &memberNotif.Status, &memberNotif.Read)
+		memberNotifs = append([]structs.MemberNotif{memberNotif}, memberNotifs...)
+	}
+	return memberNotifs, nil
+}

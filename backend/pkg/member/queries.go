@@ -94,3 +94,25 @@ func AddMemberNotif(groupId, userId, receiverId, typeNotif string, database *str
 	}
 	return nil
 }
+
+// AcceptMemberNotif
+//
+// Param:
+//
+// groupId: the id of the group
+// userId: the id of the user
+// receiverId: the id of the user that will receive the invitation
+// database: the database
+func AcceptMemberNotif(groupId, userId, receiverId string, database *structs.DB) error {
+	AddMember(groupId, userId, database)
+	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND userId = ? AND receiverId = ?")
+	if err != nil {
+		l.LogMessage("Member.go", "AcceptMemberNotif", err)
+	}
+	_, err = stmt.Exec("accepted", groupId, userId, receiverId)
+	if err != nil {
+		l.LogMessage("Member.go", "AcceptMemberNotif", err)
+		return err
+	}
+	return nil
+}

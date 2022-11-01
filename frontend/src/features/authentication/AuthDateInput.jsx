@@ -1,30 +1,22 @@
-import Card from "../../components/card/Card"
+import Card from '../../components/card/Card';
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function AuthDateInput(props) {
-    const DAYS = [], MONTH_OPTIONS = [], MONTHS=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], YEARS = []
-    for (let i=1; i<=31; i++){
-        DAYS.push(<option key={i}>{i}</option>)
-    }
+    const [startDate, setStartDate] = useState(new Date());
+  
+    return (
+        // <Card styleName={props.styleName}>
+            <DatePicker 
+      selected={new Date(new Date().setFullYear(new Date().getFullYear() - 20))} 
+      onChange={date => setStartDate(date)} 
+      dateFormat='dd/MM/yyyy'
+      minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 13)).getFullYear()}
+      ref={props.dayRef}
+    />
+        // </Card>
+    );
+  }
 
-    MONTHS.forEach((elem) => {
-        MONTH_OPTIONS.push(<option key={elem}>{elem}</option>)
-    })
-    
-
-    for (let i= +(new Date().getFullYear()); i >= 1904; i--){
-        YEARS.push(<option key={i}>{i}</option>)
-    }
-  return (
-    <Card styleName={props.styleName}>
-    <select className={props.daySelector} ref={props.dayRef}>
-        {DAYS}
-    </select>
-    <select className={props.monthSelector} ref={props.monthRef}>
-        {MONTH_OPTIONS}
-    </select>
-    <select className={props.yearSelector} ref={props.yearRef}>
-        {YEARS}
-    </select>
-    </Card>
-  )
-}

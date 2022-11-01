@@ -5,6 +5,10 @@ import AuthCard from '../../features/authentication/AuthCard';
 import AuthDateInput from '../../features/authentication/AuthDateInput';
 import AuthInput from '../../features/authentication/AuthInput';
 import SendRegistration from './ValidRegistration';
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 import './Registration.css';
 
@@ -28,6 +32,7 @@ export default function Registration() {
                 type='text'
                 styleName='loginInput'
                 placeholder='First Name'
+                maxDate
                 refr={fisrtName}
             />
             <AuthInput
@@ -42,15 +47,14 @@ export default function Registration() {
                 placeholder='Nickname'
                 refr={nickName}
             />
-            <AuthDateInput
-                styleName='authDate'
-                daySelector='authDay'
-                monthSelector='authMonth'
-                yearSelector='authYear'
-                dayRef={dayRef}
-                monthRef={monthRef}
-                yearRef={yearRef}
-            />
+            <DatePicker 
+      selected={new Date(new Date().setFullYear(new Date().getFullYear() - 20))} 
+      onChange={date => setStartDate(date)} 
+      dateFormat='dd/MM/yyyy'
+      minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 13)).getFullYear()}
+      ref={dayRef}
+      className
+    />
             <AuthInput
                 type='textarea'
                 styleName='loginInput'
@@ -86,9 +90,7 @@ export default function Registration() {
                         regEmail.current.value,
                         regPassword.current.value,
                         regConfirm.current.value,
-                        dayRef.current.value,
-                        monthRef.current.value,
-                        yearRef.current.value
+                        dayRef.current
                     )
 
                 }>

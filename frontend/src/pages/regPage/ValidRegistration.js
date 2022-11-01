@@ -1,8 +1,8 @@
 import {ValidateEmail} from "../loginPage/ValidateLogin";
-// import { isValid } from 'date-fns'
-export default function SendRegistration(first, last, nick, about, email, password, confirmPassword, day, month, year) {
-    console.log(first, last, nick, about, email, password, confirmPassword, day, month, year)
-    ValidateRegistrationInfo(first, last, nick, about, email, password, confirmPassword, day, month, year)
+
+export default function SendRegistration(first, last, nick, about, email, password, confirmPassword, day) {
+    console.log(first, last, nick, about, email, password, confirmPassword, {day})
+    // ValidateRegistrationInfo(first, last, nick, about, email, password, confirmPassword, day, month, year)
 }
 
 function OnlyLetters(str) {
@@ -16,7 +16,7 @@ function ValidDate(day, month, year) {
 }
 
 // isValid(new Date(14, "FEB", 2022))
-ValidDate(14, "FEB", 2022)
+// ValidDate(14, "FEB", 2022)
 
 
 function ValidateRegistrationInfo(first, last, nick, about, email, password, confirmPassword, day, month, year) {

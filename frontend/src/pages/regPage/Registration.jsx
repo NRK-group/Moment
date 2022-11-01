@@ -22,7 +22,8 @@ export default function Registration() {
         aboutMe = useRef(),
         regEmail = useRef(),
         regPassword = useRef(),
-        regConfirm = useRef();
+        regConfirm = useRef(),
+        regErrMsg = useRef();
 
     return (
         <AuthCard>
@@ -81,10 +82,12 @@ export default function Registration() {
                 placeholder='Confirm Password'
                 refr={regConfirm}
             />
+            <Card styleName='errMsgHolder' refr={regErrMsg} />
+
             <button
                 className='loginInput loginAttemptBtn'
                 onClick={() =>
-                    SendRegistration(
+                    SendRegistration([
                         fisrtName.current.value,
                         lastName.current.value,
                         nickName.current.value,
@@ -92,7 +95,7 @@ export default function Registration() {
                         regEmail.current.value,
                         regPassword.current.value,
                         regConfirm.current.value,
-                        startDate
+                        startDate], regErrMsg.current
                     )
                 }>
                 Register

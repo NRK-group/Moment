@@ -116,3 +116,20 @@ func AcceptMemberNotif(groupId, userId, receiverId string, database *structs.DB)
 	}
 	return nil
 }
+
+// DeclineMemberNotif
+//
+// Param:
+//
+// groupId: the id of the group
+// userId: the id of the user
+// receiverId: the id of the user that will receive the invitation
+// database: the database
+func DeclineMemberNotif(groupId, userId, receiverId string, database *structs.DB) error {
+	_, err := database.DB.Exec("DELETE FROM InviteNotif WHERE groupId = ? AND userId = ? AND receiverId = ?", groupId, userId, receiverId)
+	if err != nil {
+		l.LogMessage("Member.go", "DeclineMemberNotif", err)
+		return err
+	}
+	return nil
+}

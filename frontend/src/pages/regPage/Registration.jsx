@@ -13,15 +13,17 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './Registration.css';
 
 export default function Registration() {
-    const [startDate, setStartDate] = useState(new Date(new Date().setFullYear(new Date().getFullYear() - 20)));
+    const [startDate, setStartDate] = useState(
+        new Date(new Date().setFullYear(new Date().getFullYear() - 13))
+    );
     let fisrtName = useRef(),
         lastName = useRef(),
         nickName = useRef(),
         aboutMe = useRef(),
         regEmail = useRef(),
         regPassword = useRef(),
-        regConfirm = useRef()
-        
+        regConfirm = useRef();
+
     return (
         <AuthCard>
             <Card styleName='authAvatar'>
@@ -41,18 +43,20 @@ export default function Registration() {
                 refr={lastName}
             />
             <AuthInput
-                type='text'
                 styleName='loginInput'
+                type='text'
                 placeholder='Nickname'
                 refr={nickName}
             />
-            <DatePicker 
-      selected={startDate} 
-      onChange={date => setStartDate(date)} 
-      dateFormat='dd/MM/yyyy'
-      minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 13)).getFullYear()}
-      className='authDate'
-    />
+            <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                dateFormat='dd/MM/yyyy'
+                minDate={new Date(
+                    new Date().setFullYear(new Date().getFullYear() - 13)
+                ).getFullYear()}
+                className='authDate'
+            />
             <AuthInput
                 type='textarea'
                 styleName='loginInput'
@@ -90,7 +94,6 @@ export default function Registration() {
                         regConfirm.current.value,
                         startDate
                     )
-
                 }>
                 Register
             </button>

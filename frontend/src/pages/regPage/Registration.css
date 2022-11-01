@@ -14,8 +14,8 @@
     background-color: var(--button-color);
     border: none;
     color: white;
-    margin-bottom: 21%;
-    margin-left: 68%;
+    margin-bottom: 18%;
+    margin-left: 75%;
     border-radius: 50%;
 }
 
@@ -38,6 +38,7 @@
 
 .authDate{
     display: flex;
+    justify-content: center;
     width: 85%;
     margin: auto;
     z-index: 1;

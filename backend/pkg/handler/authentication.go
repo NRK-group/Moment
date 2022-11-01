@@ -23,7 +23,7 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/login" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
-	} 
+	}
 	SetupCorsResponse(w)
 	if r.Method == "POST" {
 		var userLogin structs.User
@@ -91,6 +91,7 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
+	SetupCorsResponse(w)
 	// Check if registration is correct
 	if r.Method == "POST" {
 		var newUser structs.User

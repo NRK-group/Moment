@@ -16,6 +16,8 @@ func SetupCorsResponse(w http.ResponseWriter) {
 	(w).Header().Set("Access-Control-Allow-Origin", "*")
 	(w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	(w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
+	(w).Header().Set("Access-Control-Allow-Credentials", "true")
+
 }
 
 // Login is a handler that validates the credentials input by a user
@@ -47,6 +49,11 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
+		fmt.Println()
+		fmt.Println()
+		fmt.Println("CREATING THE COOKIE !!!!!!!!!", w.Header()["Set-Cookie"])
+		fmt.Println()
+		fmt.Println()
 		w.Header().Add("Content-Type", "application/text")
 		io.WriteString(w, validationMsg)
 		return

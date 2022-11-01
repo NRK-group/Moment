@@ -5,14 +5,16 @@ export default function Validation(props) {
     const navigate = useNavigate();
     //Query the endpoint and check if the cookie present is valid
     const [valid, setValid] = useState(true);
-    console.log('YOUR ARE CALLING VALIDATION', CheckCookie());
+    console.log('YOUR ARE CALLING VALIDATION');
     //if cookie is valid show children else redirect
-    useEffect(() => {
-        setValid(CheckCookie());
-        if (!valid) {
-            navigate('/');
-        }
-    }, [valid]);
+    // setValid();
+    // CheckCookie(setValid);
+    // console.log({valid})
+    // if (!valid) {
+    //     navigate('/');
+    //     return;
+    // }
+    // console.log(props.children, valid.then(resp => resp).then(response => response));
 
     return props.children;
 }

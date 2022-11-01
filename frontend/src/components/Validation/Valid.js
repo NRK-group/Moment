@@ -1,8 +1,17 @@
-export default function CheckCookie() {
-    //Send a get request to check if the user is valid
-    let valid = false
-    fetch("/validate").then(async resp => {
-        valid = resp.json().valid
+
+export default function CheckCookie(setter) {
+    //Send a get request to check if the user is valid----let result = await 
+    fetch("http://localhost:5070/validate", {crossDomain:true}).then( resp => {
+        return resp.text()
+    }).then(response => {
+        console.log(response)
+        if (response === 'Validated'){
+            setter(true)
+            return
+        }
+        setter(false)
+        return
     })
-    return valid
+    // console.log(result)
+    // return result
 }

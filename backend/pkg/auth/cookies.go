@@ -20,6 +20,7 @@ func CreateCookie(w http.ResponseWriter, email string, DB *structs.DB) error {
 		Value:   cookieName,
 		Expires: time.Now().Add(24 * time.Hour),
 	})
+
 	return nil
 }
 

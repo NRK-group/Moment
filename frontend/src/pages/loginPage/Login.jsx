@@ -8,12 +8,15 @@ import { useNavigate } from 'react-router-dom';
 
 import Card from '../../components/card/Card';
 
-export default function Login() {
+export default function Login({auth}) {
     let email = useRef(),
         password = useRef(),
         errMsg = useRef();
     let navigate = useNavigate();
-    let authenticate
+    function successfulLogin() {
+        navigate('/home')
+        auth(true)
+    }
 
     return (
         <AuthCard>
@@ -32,11 +35,14 @@ export default function Login() {
             <Card styleName='errMsgHolder' refr={errMsg} />
             <button
                 className='loginInput loginAttemptBtn'
-                onClick={async () => {
-                  await ValidateLoginAttempt(
+                onClick={ () => {
+                   ValidateLoginAttempt(
                      email.current.value,
                      password.current.value,
-                     errMsg.current) ? navigate('/home') : null;
+                     errMsg.current).then(resp => {
+                        console.log(resp)
+                        if (resp) successfulLogin()
+                     })
                 }
                 }>
                 Log in

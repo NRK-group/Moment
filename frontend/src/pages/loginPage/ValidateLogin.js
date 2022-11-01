@@ -1,7 +1,9 @@
 function CheckCreds(email, password) {
     //Check the values inside the login input fields
-    if (password.length < 8 || password.length > 16 || !mixedCase(password))
-        return false; //Check the password isn't too short
+    //Check the password isn't too short
+    if (password.length < 8 || password.length > 16 || !mixedCase(password)) {
+        return false;
+    }
     //Check the email is valid
     if (!ValidateEmail(email)) return false;
     return true;
@@ -17,8 +19,10 @@ function mixedCase(str) {
     return true;
 }
 
- export default async function ValidateLoginAttempt (email, password, errMsg) {
+export default function ValidateLoginAttempt(email, password, errMsg) {
+    console.log('CHECKING', CheckCreds(email, password));
     if (!CheckCreds(email, password)) {
+        console.log('WRONG DETAILS', CheckCreds(email, password));
         errMsg.innerHTML = 'Incorrect email or password';
         return false; //Display the error message to client
     }
@@ -28,7 +32,9 @@ function mixedCase(str) {
         Password: password,
     };
     // Send the data to the server to be validated by login handler
-    let auth = await fetch('http://localhost:5070/login', {
+    console.log('FETCHING IN LOGIN');
+    let auth = fetch('http://localhost:5070/login', {
+        crossDomain: true,
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -36,16 +42,17 @@ function mixedCase(str) {
         },
         body: JSON.stringify(LOGIN_CREDS),
     })
-        .then(async (response) => {
-            return await response.text();
+        .then((response) => {
+            return response.text();
         })
-        .then(async(resp) => {
-            
+        .then((resp) => {
+        console.log("THIRD RESPONSE")
             if (resp !== 'Valid Login') {
                 errMsg.innerHTML = resp;
                 return false;
             }
-            return true
+            if (resp === 'Valid Login') return true;
         });
+        console.log({auth})
     return auth;
 }

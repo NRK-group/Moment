@@ -16,7 +16,8 @@ export default async function SendRegistration(values, div) {
         Password:values[5],
         DateOfBirth: values[7],
     }
-    console.log(JSON.stringify(REG_DETAILS));
+    console.log("FETCHING IN REG");
+
     let registered = await fetch('http://localhost:5070/registration', {
         method: 'POST',
         headers: {

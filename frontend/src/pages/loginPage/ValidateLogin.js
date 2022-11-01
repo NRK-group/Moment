@@ -35,6 +35,7 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
     console.log('FETCHING IN LOGIN');
     let auth = fetch('http://localhost:5070/login', {
         crossDomain: true,
+        credentials: 'include',
         method: 'POST',
         headers: {
             Accept: 'application/json',

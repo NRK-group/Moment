@@ -66,7 +66,7 @@ func GetMembers(groupId string, database *structs.DB) ([]structs.Member, error) 
 // receiverId: the id of the user that will receive the invitation
 // type: the type of the invitation (join, invite)
 // database: the database
-func AddMemberNotif(groupId, userId, receiverId, typeNotif string, database *structs.DB) error {
+func AddInvitationNotif(groupId, userId, receiverId, typeNotif string, database *structs.DB) error {
 	createdAt := time.Now().String()
 	// check if the groupid and ReceiverId exists already
 	rows, err := database.DB.Query("SELECT receiverId FROM InviteNotif WHERE groupId = '" + groupId + "' AND receiverId = '" + receiverId + "'")
@@ -103,7 +103,7 @@ func AddMemberNotif(groupId, userId, receiverId, typeNotif string, database *str
 // userId: the id of the user
 // receiverId: the id of the user that will receive the invitation
 // database: the database
-func AcceptMemberNotif(groupId, userId, receiverId string, database *structs.DB) error {
+func AcceptInvitationNotif(groupId, userId, receiverId string, database *structs.DB) error {
 	AddMember(groupId, userId, database)
 	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND userId = ? AND receiverId = ?")
 	if err != nil {
@@ -125,7 +125,7 @@ func AcceptMemberNotif(groupId, userId, receiverId string, database *structs.DB)
 // userId: the id of the user
 // receiverId: the id of the user that will receive the invitation
 // database: the database
-func DeclineMemberNotif(groupId, userId, receiverId string, database *structs.DB) error {
+func DeclineInvitationNotif(groupId, userId, receiverId string, database *structs.DB) error {
 	_, err := database.DB.Exec("DELETE FROM InviteNotif WHERE groupId = ? AND userId = ? AND receiverId = ?", groupId, userId, receiverId)
 	if err != nil {
 		l.LogMessage("Member.go", "DeclineMemberNotif", err)
@@ -140,7 +140,7 @@ func DeclineMemberNotif(groupId, userId, receiverId string, database *structs.DB
 //
 // userId: the id of the user
 // database: the database
-func GetMemberNotif(userId string, database *structs.DB) ([]structs.MemberNotif, error) {
+func GetInvitationNotif(userId string, database *structs.DB) ([]structs.MemberNotif, error) {
 	rows, err := database.DB.Query("SELECT * FROM InviteNotif WHERE receiverId = '" + userId + "'")
 	var memberNotif structs.MemberNotif
 	var memberNotifs []structs.MemberNotif

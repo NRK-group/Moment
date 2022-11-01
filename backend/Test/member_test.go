@@ -56,28 +56,28 @@ func TestCreateMember(t *testing.T) {
 		}
 	})
 	t.Run("Add invite notif", func(t *testing.T) {
-		err := member.AddMemberNotif(grouoIdTest, userIdTest, receiverId, "invite", database)
+		err := member.AddInvitationNotif(grouoIdTest, userIdTest, receiverId, "invite", database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 	})
 	t.Run("Accept invite notif", func(t *testing.T) {
-		err := member.AcceptMemberNotif(grouoIdTest, userIdTest, receiverId, database)
+		err := member.AcceptInvitationNotif(grouoIdTest, userIdTest, receiverId, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 	})
-	member.AddMemberNotif(grouoIdTest, "Hello1", "Member1", "invite", database)
-	member.AddMemberNotif(grouoIdTest, "Hello2", "Member1", "invite", database)
+	member.AddInvitationNotif(grouoIdTest, "Hello1", "Member1", "invite", database)
+	member.AddInvitationNotif(grouoIdTest, "Hello2", "Member1", "invite", database)
 	t.Run("Get all member notif of the user", func(t *testing.T) {
-		notif, err := member.GetMemberNotif("Member1", database)
+		notif, err := member.GetInvitationNotif("Member1", database)
 		l.LogMessage("TestGetMemberNotif", "GetMemberNotif", notif)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 	})
 	t.Run("Decline member notif", func(t *testing.T) {
-		err := member.DeclineMemberNotif(grouoIdTest, userIdTest, receiverId, database)
+		err := member.DeclineInvitationNotif(grouoIdTest, userIdTest, receiverId, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}

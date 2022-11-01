@@ -40,11 +40,9 @@
     display: flex;
     width: 85%;
     margin: auto;
+    z-index: 1;
 }
 
-.authDate > * {
-    z-index: 50;
-}
 
 select::-webkit-scrollbar{
     width: 10px;

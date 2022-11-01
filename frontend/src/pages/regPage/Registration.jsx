@@ -53,7 +53,7 @@ export default function Registration() {
       dateFormat='dd/MM/yyyy'
       minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 13)).getFullYear()}
       ref={dayRef}
-      className
+      className='authDate'
     />
             <AuthInput
                 type='textarea'

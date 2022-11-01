@@ -43,10 +43,12 @@ func main() {
 	defer networkDb.Close()
 	twentyPost(data)
 	// initialize the routes
-	http.HandleFunc("/", database.Home)
-	http.HandleFunc("/post", database.Post)
-	http.HandleFunc("/group", database.Group)
-	http.HandleFunc("/event", database.Event)
+	http.HandleFunc("/", database.Home) 
+	http.HandleFunc("/post", database.Post) 
+	http.HandleFunc("/group", database.Group) 
+	http.HandleFunc("/event", database.Event) 
+	http.HandleFunc("/login", database.Login) 
+
 
 	// start the server
 	log.Println("Server is running on port 5070")

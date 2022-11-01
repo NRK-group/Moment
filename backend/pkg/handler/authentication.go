@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 
@@ -11,12 +12,19 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+func SetupCorsResponse(w http.ResponseWriter) {
+	(w).Header().Set("Access-Control-Allow-Origin", "*")
+	(w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
+}
+
 // Login is a handler that validates the credentials input by a user
 func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/login" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
-	}
+	} 
+	SetupCorsResponse(w)
 	if r.Method == "POST" {
 		var userLogin structs.User
 		err := GetBody(&userLogin, w, r)
@@ -26,13 +34,12 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 		}
 		successfulLogin, validationMsg := auth.CheckCredentials(userLogin.Email, userLogin.Password, DB.Env) // Validate the login creds
 		if !successfulLogin {
-			http.Error(w, validationMsg, http.StatusUnauthorized)
+			io.WriteString(w, validationMsg)
 			return
 		}
 		sessionErr := auth.UpdateSessionId(userLogin.Email, uuid.NewV4().String(), *DB.Env) // Create a sessionID
 		if sessionErr != nil {
-			fmt.Println("ERROR HERE === ", sessionErr)
-			http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+			io.WriteString(w, validationMsg)
 			return
 		}
 		err = auth.CreateCookie(w, userLogin.Email, DB.Env) // Create the cookie
@@ -40,11 +47,13 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		w.Write([]byte(validationMsg))
+		w.Header().Add("Content-Type", "application/text")
+		io.WriteString(w, validationMsg)
 		return
 	}
 }
-//Logout is a handler that runs all functions to logout the user
+
+// Logout is a handler that runs all functions to logout the user
 func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/logout" {
 		http.Error(w, "404 not found", http.StatusNotFound)
@@ -53,12 +62,12 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		fmt.Println("-------------------------!!!!____!!!!____!11 === LOGGING OUT 0 ")
 		c, err := r.Cookie("session_token") // Access the cookie
-		if err == nil { // Cookie is present so remove
+		if err == nil {                     // Cookie is present so remove
 			http.SetCookie(w, &http.Cookie{Name: "session_token", Value: "", Expires: time.Now()})
-			} else { // The user isnt logged in
-				http.Error(w, "401 unauthorized", http.StatusUnauthorized)
-				return
-			}
+		} else { // The user isnt logged in
+			http.Error(w, "401 unauthorized", http.StatusUnauthorized)
+			return
+		}
 		emailSlc, slcErr := auth.SliceCookie(c.Value)
 		if slcErr != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
@@ -75,6 +84,7 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Error(w, "400 Bad Request", http.StatusBadRequest)
 }
+
 // Registration is a handler where all registration functions are done
 func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/registration" {

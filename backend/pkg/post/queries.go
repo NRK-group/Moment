@@ -21,6 +21,7 @@ func  AllPost(uID string, database *structs.DB) ([]structs.Post, error) {
 		fmt.Print(err)
 		return nil, err
 	}
+	
 	var numLikes int
 	var postId, userId, groupId, content, image, createdAt string
 	for rows.Next() {
@@ -33,8 +34,9 @@ func  AllPost(uID string, database *structs.DB) ([]structs.Post, error) {
 			Content:      content,
 			Image:        image,
 			NumLikes:     numLikes,
-			NumOfComment: len(commets.GetComments(postId, database)),
 		}
+		arr , _ := commets.GetComments(postId, database)
+		post.NumOfComment = len(arr)
 		posts = append([]structs.Post{post}, posts...)
 	}
 

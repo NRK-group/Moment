@@ -56,6 +56,18 @@
     font-size: 1.2rem;
 }
 
+.errMsgHolder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: red; */
+    width: 85%;
+    height: 5px;
+    margin: auto;
+    color: red;
+    font-weight: bold;
+}
+
 .inputBox {
     position: relative;
     width: 100%;

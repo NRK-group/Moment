@@ -37,7 +37,17 @@ export default function Post({
         }
     };
 
-    const OpenCommets = (postId) => {
+    const OpenCommets = async (postId) => {
+        let comments = await fetch('http://localhost:5070/comment', {
+            method: 'POST',
+            body: JSON.stringify({ PostID: postId }),
+        }).then(async (response) => {
+            let resp = await response.json();
+            return resp
+        }).finally((resp)=> console.log("hjfjyfvjhv", resp))
+
+        
+
         navigate('/comments', {
             state: {
                 postId: postId,
@@ -47,6 +57,7 @@ export default function Post({
                 likes: likes,
                 avatarSrc: avatarSrc,
                 name: name,
+                comments: comments,
             },
         });
     };

@@ -66,6 +66,7 @@ func main() {
 	http.HandleFunc("/group", database.Group) 
 	http.HandleFunc("/event", database.Event) 
 	http.HandleFunc("/login", database.Login) 
+	http.HandleFunc("/comment", database.Comment) 
 	http.HandleFunc("/registration", database.Registration)
 
 	// start the server

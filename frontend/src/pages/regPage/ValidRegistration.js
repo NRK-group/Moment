@@ -1,14 +1,33 @@
 import {ValidateEmail} from "../loginPage/ValidateLogin";
 
-export default function SendRegistration(values, div) {
-    // ValidateRegistrationInfo(first, last, nick, about, email, password, confirmPassword, day, month, year)
+export default async function SendRegistration(values, div) {
     let result = ValidateRegistrationInfo(values)
-    console.log(result)
     if (!result[0]) {
         div.innerHTML = result[1]
         return
     }
-    console.log("PASSED")
+    //Send registration request to the backend
+    const REG_DETAILS = {
+        FirstName : values[0],
+        LastName: values[1],
+        NickName: values[2],
+        AboutMe: values[3],
+        Email: values[4],
+        Password:values[5],
+        DateOfBirth: values[7],
+    }
+    console.log(JSON.stringify(REG_DETAILS));
+    let registered = await fetch('http://localhost:5070/registration', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(REG_DETAILS),
+    })
+    .then(async response => {
+        return await response.json()
+    })
 }
 
 function OnlyLetters(str) {
@@ -17,7 +36,6 @@ function OnlyLetters(str) {
 function ValidateRegistrationInfo(args) {
     console.log({args})
     const FULL = args.every((element, i) => {//Check if any values are empty (EXCEPT NICKNAME AND ABOUT ME)
-        console.log({element} , i);
         if  (i == (args.length - 1)) return true
         if (element.trim().length === 0) return false
         return true

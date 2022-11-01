@@ -13,16 +13,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './Registration.css';
 
 export default function Registration() {
+    const [startDate, setStartDate] = useState(new Date(new Date().setFullYear(new Date().getFullYear() - 20)));
     let fisrtName = useRef(),
         lastName = useRef(),
         nickName = useRef(),
         aboutMe = useRef(),
         regEmail = useRef(),
         regPassword = useRef(),
-        regConfirm = useRef(),
-        dayRef = useRef(),
-        monthRef = useRef(),
-        yearRef = useRef();
+        regConfirm = useRef()
+        
     return (
         <AuthCard>
             <Card styleName='authAvatar'>
@@ -48,11 +47,10 @@ export default function Registration() {
                 refr={nickName}
             />
             <DatePicker 
-      selected={new Date(new Date().setFullYear(new Date().getFullYear() - 20))} 
+      selected={startDate} 
       onChange={date => setStartDate(date)} 
       dateFormat='dd/MM/yyyy'
       minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 13)).getFullYear()}
-      ref={dayRef}
       className='authDate'
     />
             <AuthInput
@@ -90,7 +88,7 @@ export default function Registration() {
                         regEmail.current.value,
                         regPassword.current.value,
                         regConfirm.current.value,
-                        dayRef.current
+                        startDate
                     )
 
                 }>

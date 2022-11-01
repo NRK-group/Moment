@@ -14,6 +14,8 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 not found.", http.StatusNotFound)
 		return
 	}
+	SetupCorsResponse(w, r)
+	
 	if r.Method == "GET" {
 		posts, err := post.AllPost("6t78t8t87", database.Env)
 		if err != nil {
@@ -46,4 +48,10 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Error(w, "400 Bad Request.", http.StatusBadRequest)
+}
+
+func SetupCorsResponse(w http.ResponseWriter, req *http.Request) {
+	(w).Header().Set("Access-Control-Allow-Origin", "*")
+	(w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
 }

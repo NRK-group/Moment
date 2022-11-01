@@ -1,6 +1,7 @@
 package member
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -8,25 +9,38 @@ import (
 )
 
 // Add member to a group.
-func AddMember(groupId, userId string, database *structs.DB) (string, error) {
-	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
+func AddMember(groupId, userId string, database *structs.DB) (bool, error) {
+	var member structs.Member
 
-	//check if the group exist
-	group, err1 := GetMembers(groupId, database) 
-	 if err1 != nil || len(group) <= 0 {
+	createdAt := time.Now().String()
+	// check if the group exist
+	group, err1 := GetMembers(groupId, database)
+	if err1 != nil || len(group) <= 0 {
 		fmt.Println("Error inside AddMember")
-		return "error - group doesn't exist", err1
+		return false, err1
 	}
+	rows, err := database.DB.Query("SELECT userID FROM GroupMember WHERE groupId = '" + groupId + "' AND userId = '" + userId + "'")
+	if err != nil {
+		fmt.Println(err)
+		return false, err
+	}
+	for rows.Next() {
+		rows.Scan(&member.UserId)
+	}
+	if member.UserId == "" {
 
-	stmt, _ := database.DB.Prepare(`
+		stmt, _ := database.DB.Prepare(`
 		INSERT INTO GroupMember values (?, ?, ?)
 	`)
-	_, err := stmt.Exec(groupId, userId, createdAt)
-	if err != nil {
-		fmt.Println("inside AddMember", err)
-		return "", err
+		_, err := stmt.Exec(groupId, userId, createdAt)
+		if err != nil {
+			fmt.Println("inside AddMember", err)
+			return false, err
+		}
+	} else {
+		return false, errors.New("user already exist")
 	}
-	return groupId, nil
+	return true, nil
 }
 
 // Get Members

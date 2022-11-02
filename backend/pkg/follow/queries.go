@@ -276,3 +276,13 @@ func DeclineFollow(followerId, followingId string, database *structs.DB) {
 	DeleteFollow(followerId, followingId, database)
 }
 
+// GetFollowNotif will get the follow notification for the current user
+//
+//	returns a slice of follow notifications and error
+//
+// Params:
+//
+//	userId: the id of the user who is being followed - current user
+//	database: the database to get the follow notifications from
+func GetFollowerNotif(userId string, database *structs.DB) {
+}

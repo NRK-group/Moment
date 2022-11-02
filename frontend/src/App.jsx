@@ -18,8 +18,8 @@ import CheckCookie from './components/Validation/Valid';
 import { useEffect } from 'react';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
-    const [authorised, setAuthorised] = useState(false)
-    console.log({authorised})
+    const [authorised, setAuthorised] = useState(false);
+    console.log({ authorised });
     let generalNotif = [
         {
             name: 'John',
@@ -44,33 +44,35 @@ function App() {
                     setIsMobile(boxRef.getBoundingClientRect().width < 600)
                 );
             }}>
-            {authorised && <Header />}
+            {
+                <Validation>
+                    <Header />
+                </Validation>
+            }
 
             <>
                 <Routes>
-                    <Route path='/' element={<Login auth={setAuthorised}/>} />
+                    <Route path='/' element={<Login auth={setAuthorised} />} />
                     <Route path='/register' element={<Registration />} />
 
                     <Route
                         path='/home'
                         element={
                             isMobile ? (
-                                    <Validation>
-                                <Home
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
-                                    </Validation>
-                                ) : (
-                                    <Validation>
-
-                                <Home
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                                    </ Validation>
-
-                                )
+                                <Validation>
+                                    <Home
+                                        bodyStyleName='mobile'
+                                        cardStyleName='mobileCard'
+                                    />
+                                </Validation>
+                            ) : (
+                                <Validation>
+                                    <Home
+                                        bodyStyleName='desktop'
+                                        cardStyleName='desktopCard'
+                                    />
+                                </Validation>
+                            )
                         }
                     />
                     <Route
@@ -187,7 +189,11 @@ function App() {
                     />
                 </Routes>
             </>
-            {authorised ? <Footer /> : <></>}
+            {
+                <Validation>
+                    <Footer />
+                </Validation>
+            }
         </div>
     );
 }

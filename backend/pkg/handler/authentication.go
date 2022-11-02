@@ -43,24 +43,24 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			io.WriteString(w, validationMsg)
 			return
 		}
-		// err = auth.CreateCookie(w, userLogin.Email, DB.Env) // Create the cookie
-		// if err != nil {
-		// 	http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
-		// 	return
-		// }
+		err = auth.CreateCookie(w, userLogin.Email, DB.Env) // Create the cookie
+		if err != nil {
+			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+			return
+		}
 
-		var user structs.User
-		auth.GetUser("email", userLogin.Email, &user, *DB.Env)
+		// var user structs.User
+		// auth.GetUser("email", userLogin.Email, &user, *DB.Env)
 		
-		cookieName := user.UserId + "&" + user.Email + "&" + user.SessionId
-		http.SetCookie(w, &http.Cookie{
-			Name:    "session_token",
-			Value:   cookieName,
-			Expires: time.Now().Add(24 * time.Hour),
-			SameSite: http.SameSiteNoneMode,
-			// Path: "/",
-			Secure: true,
-		})
+		// cookieName := user.UserId + "&" + user.Email + "&" + user.SessionId
+		// http.SetCookie(w, &http.Cookie{
+		// 	Name:    "session_token",
+		// 	Value:   cookieName,
+		// 	Expires: time.Now().Add(24 * time.Hour),
+		// 	SameSite: http.SameSiteNoneMode,
+		// 	// Path: "/",
+		// 	Secure: true,
+		// })
 		fmt.Println()
 		fmt.Println()
 		fmt.Println("CREATING THE COOKIE !!!!!!!!!", w.Header()["Set-Cookie"])

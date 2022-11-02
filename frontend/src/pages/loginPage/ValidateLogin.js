@@ -34,7 +34,7 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
     // Send the data to the server to be validated by login handler
     console.log('FETCHING IN LOGIN');
     let auth = fetch('http://localhost:5070/login', {
-        crossDomain: true,
+        // crossDomain: true,
         credentials: 'include',
         method: 'POST',
         headers: {

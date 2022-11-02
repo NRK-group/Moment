@@ -15,7 +15,11 @@ func (database *Env) Validate(w http.ResponseWriter, r *http.Request) {
 	}
 	SetupCorsResponse(w)
 	w.Header().Add("Content-Type", "application/text")
-	fmt.Println("------VALIDATING")
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("------VALIDATING: ", r)
+	fmt.Println()
+	fmt.Println()
 	if r.Method == "GET" {
 		c, err := r.Cookie("session_token")
 		if err != nil {

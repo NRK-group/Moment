@@ -7,11 +7,11 @@ type Member struct {
 }
 
 type MemberNotif struct {
-	GroupId    string
-	UserId     string
-	ReceiverId string
-	CreatedAt  string
-	TypeNotif  string
-	Status     string
-	Read       int
+	GroupId    string `json:"groupId"`
+	UserId     string `json:"userId"`
+	ReceiverId string `json:"receiverId"`
+	CreatedAt  string `json:"createdAt"`
+	TypeNotif  string `json:"typeNotif"`
+	Status     string `json:"status"`
+	Read       int    `json:"read"`
 }

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -13,9 +12,10 @@ import (
 )
 
 func SetupCorsResponse(w http.ResponseWriter) {
-	(w).Header().Set("Access-Control-Allow-Origin", "*")
+	(w).Header().Set("Access-Control-Allow-Origin", "http://localhost:8070")
 	(w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	(w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
+	(w).Header().Set("Access-Control-Allow-Credentials", "true")
 }
 
 // Login is a handler that validates the credentials input by a user
@@ -60,7 +60,6 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if r.Method == "GET" {
-		fmt.Println("-------------------------!!!!____!!!!____!11 === LOGGING OUT 0 ")
 		c, err := r.Cookie("session_token") // Access the cookie
 		if err == nil {                     // Cookie is present so remove
 			http.SetCookie(w, &http.Cookie{Name: "session_token", Value: "", Expires: time.Now()})
@@ -73,8 +72,8 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		// Update the sessionId update in users table and remove from sessions table
-		err = auth.UpdateSessionId(emailSlc[1], "-", *DB.Env)
+
+		err = auth.UpdateSessionId(emailSlc[1], "-", *DB.Env)// Update the sessionId update in users table and remove from sessions table
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return

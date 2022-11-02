@@ -6,11 +6,13 @@ import (
 	"backend/pkg/auth"
 	"backend/pkg/helper"
 	"backend/pkg/structs"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 func TestHelper(t *testing.T) {
 	database := DatabaseSetup()
-	email := logTestEmail
+	email := "Helper" + uuid.NewV4().String() + "@test.com"
 	inputUser := &structs.User{
 		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: email, Password: "Password123",
 		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",

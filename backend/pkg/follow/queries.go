@@ -284,5 +284,7 @@ func DeclineFollow(followerId, followingId string, database *structs.DB) {
 //
 //	userId: the id of the user who is being followed - current user
 //	database: the database to get the follow notifications from
-func GetFollowerNotif(userId string, database *structs.DB) {
+func GetFollowerNotif(userId string, database *structs.DB) []structs.FollowerNotif {
+	var followerNotif []structs.FollowerNotif
+	return followerNotif
 }

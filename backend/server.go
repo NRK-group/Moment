@@ -30,6 +30,8 @@ func main() {
 	http.HandleFunc("/event", database.Event) 
 	http.HandleFunc("/login", database.Login) 
 	http.HandleFunc("/registration", database.Registration)
+	http.HandleFunc("/validate", database.Validate)
+
 
 
 	// start the server

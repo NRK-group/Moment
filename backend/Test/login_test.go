@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	logTestEmail   = "validCreds@" + uuid.NewV4().String()
+	logTestEmail   = "validCreds" + uuid.NewV4().String() + "@test.com"
 	loginAttempts = [][]string{{"Account not found", "InvalidEmail@false.com", "Password123"}, {"Valid Login", logTestEmail, "Password123"}, {"Incorrect Password", logTestEmail, "IncorrectPassword"}}
 )
 

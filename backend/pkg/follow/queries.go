@@ -276,3 +276,30 @@ func DeclineFollow(followerId, followingId string, database *structs.DB) {
 	DeleteFollow(followerId, followingId, database)
 }
 
+// GetFollowNotifs will get the follow notification for the current user
+//
+//	returns a slice of follow notifications and error
+//
+// Params:
+//
+//	userId: the id of the user who is being followed - current user
+//	database: the database to get the follow notifications from
+func GetFollowingNotifs(userId string, database *structs.DB) ([]structs.FollowerNotif, error) {
+	var followerNotif structs.FollowerNotif
+	var followerNotifs []structs.FollowerNotif
+	rows, err := database.DB.Query("SELECT * FROM FollowNotif WHERE followingId = ?", userId)
+	if err != nil {
+		l.LogMessage("follow.go", "GetFollowerNotif", err)
+		return nil, err
+	}
+	for rows.Next() {
+		err = rows.Scan(&followerNotif.UserId, &followerNotif.FollowingId, &followerNotif.Status, &followerNotif.CreatedAt, &followerNotif.Read)
+		if err != nil {
+			l.LogMessage("follow.go", "GetFollowerNotif", err)
+			return nil, err
+		}
+		followerNotifs = append([]structs.FollowerNotif{followerNotif}, followerNotifs...)
+	}
+	l.LogMessage("follow.go", "GetFollowerNotif", followerNotifs)
+	return followerNotifs, nil
+}

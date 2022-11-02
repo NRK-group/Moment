@@ -96,12 +96,12 @@ func CheckIfFollow(followerId, followingId string, database *structs.DB) bool {
 //	database: the database to insert the follow notification into
 func InsertFollowNotif(followerId, followingId, status string, database *structs.DB) error {
 	createdAt := time.Now().String()
-	stmt, err := database.DB.Prepare("INSERT INTO FollowNotif (userId, followingId, status, createdAt, unread) VALUES (?, ?, ?, ?, ?)")
+	stmt, err := database.DB.Prepare("INSERT INTO FollowNotif (userId, followingId, status, createdAt, read) VALUES (?, ?, ?, ?, ?)")
 	if err != nil {
 		l.LogMessage("follow.go", "InsertFollowNotif", err)
 		return err
 	}
-	_, err = stmt.Exec(followerId, followingId, status, createdAt, true)
+	_, err = stmt.Exec(followerId, followingId, status, createdAt, 0)
 	if err != nil {
 		l.LogMessage("follow.go", "InsertFollowNotif", err)
 		return err

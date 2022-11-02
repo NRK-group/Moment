@@ -14,12 +14,10 @@ import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
 import Validation from './components/Validation/Validation';
-import CheckCookie from './components/Validation/Valid';
 import { useEffect } from 'react';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     const [authorised, setAuthorised] = useState(false);
-    console.log({ authorised });
     let generalNotif = [
         {
             name: 'John',

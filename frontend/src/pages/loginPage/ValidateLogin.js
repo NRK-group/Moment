@@ -20,9 +20,7 @@ function mixedCase(str) {
 }
 
 export default function ValidateLoginAttempt(email, password, errMsg) {
-    console.log('CHECKING', CheckCreds(email, password));
     if (!CheckCreds(email, password)) {
-        console.log('WRONG DETAILS', CheckCreds(email, password));
         errMsg.innerHTML = 'Incorrect email or password';
         return false; //Display the error message to client
     }
@@ -32,9 +30,7 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
         Password: password,
     };
     // Send the data to the server to be validated by login handler
-    console.log('FETCHING IN LOGIN');
     let auth = fetch('http://localhost:5070/login', {
-        // crossDomain: true,
         credentials: 'include',
         method: 'POST',
         headers: {
@@ -47,13 +43,11 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
             return response.text();
         })
         .then((resp) => {
-        console.log("THIRD RESPONSE")
             if (resp !== 'Valid Login') {
                 errMsg.innerHTML = resp;
                 return false;
             }
             if (resp === 'Valid Login') return true;
         });
-        console.log({auth})
     return auth;
 }

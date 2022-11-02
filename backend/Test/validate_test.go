@@ -55,7 +55,7 @@ func TestValidate(t *testing.T) {
 
 		Env.Validate(wr, request)
 
-		want := "401 Unauthorized\n"
+		want := "Unauthorized"
 		got := wr.Body.String()
 		if got != want {
 			t.Errorf("Got %v, want %v,", got, want)

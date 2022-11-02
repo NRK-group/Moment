@@ -14,9 +14,6 @@ func SetupCorsResponse(w http.ResponseWriter) {
 	(w).Header().Set("Access-Control-Allow-Credentials", "true")
 }
 
-
-
-
 // Registration is a handler where all registration functions are done
 func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/registration" {
@@ -33,6 +30,8 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
+		//Validate the user input here
+		
 		// Insert the new user into the database
 		err := auth.InsertUser(newUser, *DB.Env)
 		if err != nil {

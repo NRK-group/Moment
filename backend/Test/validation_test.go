@@ -95,3 +95,27 @@ func TestValidPassword(t *testing.T) {
 	})
 }
 
+var emailtests = []string{"valid@email.com", "valid@email.co.uk", }
+var invalidEmails = []string{"invalidemail.c", "invalid@email","Invalid.email@com", "Invalid" }
+
+func TestValidEmail(t *testing.T) {
+	t.Run("Testing valid emails", func(t *testing.T) {
+		for _, v := range emailtests {
+			got := auth.ValidEmail(v)
+			want := true
+			if got != want {
+				t.Errorf("Error cehcking valid email: got %v -- want %v", got, want)
+			}
+
+		}
+	})
+	t.Run("Testing valid emails", func(t *testing.T) {
+		for _, v := range invalidEmails {
+			got := auth.ValidEmail(v)
+			want := false
+			if got != want {
+				t.Errorf("Error cehcking valid email: got %v -- want %v ===== %v", got, want, v)
+			}
+		}
+	})
+}

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"net/mail"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -39,4 +40,14 @@ func SliceCookie(cookie string) ([]string, error) {
 		}
 	}
 	return []string{}, errors.New("Invalid Cookie")
+}
+
+func ValidEmail(email string) bool{
+	_, err := mail.ParseAddress(email)
+    if err != nil {
+        return false
+    }
+	//now check if there is no full stop
+
+    return true
 }

@@ -9,7 +9,7 @@ import (
 // clients.
 type Hub struct {
 	// Registered clients.
-	Clients map[*Client]bool
+	Clients map[string]*Client
 	// Inbound messages from the clients.
 	Broadcast chan []byte
 	// Register requests from the clients.
@@ -24,7 +24,7 @@ func NewHub() *Hub {
 		Broadcast:  make(chan []byte),
 		Register:   make(chan *Client),
 		Unregister: make(chan *Client),
-		Clients:    make(map[*Client]bool),
+		Clients:    make(map[string]*Client),
 	}
 }
 
@@ -33,19 +33,19 @@ func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.Register:
-			h.Clients[client] = true
+			h.Clients[client.UserId] = client
 		case client := <-h.Unregister:
-			if _, ok := h.Clients[client]; ok {
-				delete(h.Clients, client)
+			if _, ok := h.Clients[client.UserId]; ok {
+				delete(h.Clients, client.UserId)
 				close(client.Send)
 			}
 		case message := <-h.Broadcast:
-			for client := range h.Clients {
+			for userId, client := range h.Clients {
 				select {
 				case client.Send <- message:
 				default:
 					close(client.Send)
-					delete(h.Clients, client)
+					delete(h.Clients, userId)
 				}
 			}
 		}
@@ -55,8 +55,10 @@ func (h *Hub) Run() {
 func (h *Hub) LogConns() {
 	for {
 		fmt.Println(len(h.Clients), "clients connected")
-		for client := range h.Clients {
-			fmt.Printf("client %v have %v connections\n", client.UserId, len(h.Clients))
+		for userId, client := range h.Clients {
+			fmt.Printf("client %v have %v connections\n", userId, len(h.Clients))
+			fmt.Println()
+			fmt.Printf("client %v conn is %v\n", userId, client.Conn)
 		}
 		fmt.Println()
 		time.Sleep(1 * time.Second)

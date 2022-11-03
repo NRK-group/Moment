@@ -11,20 +11,21 @@ import (
 // Add member to a group.
 func AddMember(groupId, userId string, database *structs.DB) (string, error) {
 	createdAt := time.Now().String()
-
 	// check if the group exist
-	group, err1 := GetMembers(groupId, database)
-	if err1 != nil || len(group) <= 0 {
-		fmt.Println("Error inside AddMember")
-		return "error - group doesn't exist", err1
-	}
-
-	stmt, _ := database.DB.Prepare(`
-		INSERT INTO GroupMember values (?, ?, ?)
-	`)
-	_, err := stmt.Exec(groupId, userId, createdAt)
+	// decide for the future of the this code
+	// group, err1 := GetMembers(groupId, database)
+	// if err1 != nil || len(group) <= 0 {
+	// 	fmt.Println("Error inside AddMember")
+	// 	return "error - group doesn't exist", err1
+	// }
+	stmt, err := database.DB.Prepare("INSERT INTO GroupMember values (?, ?, ?)")
 	if err != nil {
-		fmt.Println("inside AddMember", err)
+		l.LogMessage("Member.go", "AddMember", err)
+		return "", err
+	}
+	_, err = stmt.Exec(groupId, userId, createdAt)
+	if err != nil {
+		l.LogMessage("Member.go", "AddMember", err)
 		return "", err
 	}
 	return groupId, nil

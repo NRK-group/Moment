@@ -15,7 +15,6 @@ import (
 )
 
 func TestHealthCheckEventHttpGet(t *testing.T) {
-	database := DatabaseSetup()
 	req := httptest.NewRequest(http.MethodGet, "/event", nil)
 	w := httptest.NewRecorder()
 
@@ -30,7 +29,6 @@ func TestHealthCheckEventHttpGet(t *testing.T) {
 }
 
 func TestHealthCheckEventHttpPost(t *testing.T) {
-	database := DatabaseSetup()
 	req := httptest.NewRequest(http.MethodPost, "/event", nil)
 	w := httptest.NewRecorder()
 

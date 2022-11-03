@@ -10,7 +10,6 @@ import (
 
 func TestCreateCommets(t *testing.T) {
 	t.Run("Insert Post to DB", func(t *testing.T) {
-		database := DatabaseSetup()
 		content := "test23"
 		post1 := structs.Post{UserID: "3232131221", Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
 		postId, err := post.CreatePost(post1.UserID, post1.Content, post1.GroupID, post1.Image, database)

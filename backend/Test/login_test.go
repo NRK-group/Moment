@@ -22,13 +22,7 @@ var (
 func TestLogin(t *testing.T) {
 	t.Run("Request with valid enpoint", func(t *testing.T) {
 		// Create the database that will be used for testing
-		// database := sqlite.CreateDatabase("./social_network_test.db")
 
-		// // migrate the database
-		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// // Create the database struct
-		// DB := &structs.DB{DB: database}
 		Env := handler.Env{Env: database}
 
 		req := httptest.NewRequest(http.MethodGet, "/login", nil)
@@ -44,13 +38,6 @@ func TestLogin(t *testing.T) {
 	})
 	t.Run("Request with invalid enpoint", func(t *testing.T) {
 		// Create the database that will be used for testing
-		// database := sqlite.CreateDatabase("./social_network_test.db")
-
-		// // migrate the database
-		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// // Create the database struct
-		// DB := &structs.DB{DB: database}
 		Env := handler.Env{Env: database}
 
 		req := httptest.NewRequest(http.MethodGet, "/invalid", nil)
@@ -66,13 +53,7 @@ func TestLogin(t *testing.T) {
 	})
 	t.Run("Login with valid and invalid credentials", func(t *testing.T) {
 		// // Create the database that will be used for testing
-		// database := sqlite.CreateDatabase("./social_network_test.db")
 
-		// // migrate the database
-		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// // Create the database struct
-		// DB := &structs.DB{DB: database}
 		Env := handler.Env{Env: database}
 		inputUser := &structs.User{
 			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: logTestEmail, Password: "Password123",
@@ -112,13 +93,6 @@ func TestLogin(t *testing.T) {
 	})
 	t.Run("Create a session ID for the logged in user", func(t *testing.T) {
 		// Create the database that will be used for testing
-		// database := sqlite.CreateDatabase("./social_network_test.db")
-
-		// // migrate the database
-		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// // Create the database struct
-		// DB := &structs.DB{DB: database}
 		Env := handler.Env{Env: database}
 		sampleUser := &structs.User{
 			Email: logTestEmail, Password: "Password123",

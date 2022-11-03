@@ -272,9 +272,7 @@ func TestGetUser(t *testing.T) {
 
 func TestUpdateSessionId(t *testing.T) {
 	t.Run("Adding session to user in user table", func(t *testing.T) {
-		// database := sqlite.CreateDatabase("./social_network_test.db")
-		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
-		// DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		                                                                   // Create the database struct
 		randEmail := uuid.NewV4().String()
 		sampleUser := &structs.User{
 			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
@@ -300,9 +298,6 @@ func TestUpdateSessionId(t *testing.T) {
 		}
 	})
 	t.Run("adding the session to the session table", func(t *testing.T) {
-		// database := sqlite.CreateDatabase("./social_network_test.db")
-		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
-		// DB := &structs.DB{DB: database}                                                                    // Create the database struct
 		randEmail := uuid.NewV4().String()
 		sampleUser := &structs.User{
 			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
@@ -336,9 +331,7 @@ func TestUpdateSessionId(t *testing.T) {
 		}
 	})
 	t.Run("Removing session from the user table", func(t *testing.T) {
-		// database := sqlite.CreateDatabase("./social_network_test.db")
-		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
-		// DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		// Create the database struct
 		randEmail := uuid.NewV4().String()
 		sampleUser := &structs.User{
 			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
@@ -365,9 +358,7 @@ func TestUpdateSessionId(t *testing.T) {
 	})
 
 	t.Run("Removing the session from the session table", func(t *testing.T) {
-		// database := sqlite.CreateDatabase("./social_network_test.db")
-		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
-		// DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		// Create the database struct
 		randEmail := uuid.NewV4().String() // Create a new email
 		sampleUser := &structs.User{
 			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",

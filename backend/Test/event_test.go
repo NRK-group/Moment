@@ -13,7 +13,6 @@ import (
 )
 
 func TestHealthCheckEventHttpGet(t *testing.T) {
-	// database := DatabaseSetup()
 	req := httptest.NewRequest(http.MethodGet, "/event", nil)
 	w := httptest.NewRecorder()
 
@@ -28,7 +27,6 @@ func TestHealthCheckEventHttpGet(t *testing.T) {
 }
 
 func TestHealthCheckEventHttpPost(t *testing.T) {
-	// database := DatabaseSetup()
 	req := httptest.NewRequest(http.MethodPost, "/event", nil)
 	w := httptest.NewRecorder()
 
@@ -44,8 +42,6 @@ func TestHealthCheckEventHttpPost(t *testing.T) {
 
 func TestCreateEvent(t *testing.T) {
 	t.Run("Creating a Event", func(t *testing.T) {
-		// database := DatabaseSetup()
-
 		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if errg != nil {
@@ -61,7 +57,6 @@ func TestCreateEvent(t *testing.T) {
 	})
 
 	t.Run("Get all Events of a group", func(t *testing.T) {
-		// database := DatabaseSetup()
 		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: "wasfdfgfd2"}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if errg != nil {
@@ -88,7 +83,6 @@ func TestCreateEvent(t *testing.T) {
 	})
 
 	t.Run("Add user to Events", func(t *testing.T) {
-		// database := DatabaseSetup()
 		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: "wasfdfgfd2"}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if errg != nil {
@@ -117,7 +111,6 @@ func TestCreateEvent(t *testing.T) {
 	})
 
 	t.Run("Add user that already in a Events", func(t *testing.T) {
-		// database := DatabaseSetup()
 		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: "wasfdfgfd2"}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if errg != nil {

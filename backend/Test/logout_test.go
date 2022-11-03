@@ -128,13 +128,6 @@ func TestLogout(t *testing.T) {
 	})
 	t.Run("Remove user from session table", func(t *testing.T) {
 		// Create the database that will be used for testing
-		// database := sqlite.CreateDatabase("./social_network_test.db")
-
-		// // migrate the database
-		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// // Create the database struct
-		// DB := &structs.DB{DB: database}
 		Env := handler.Env{Env: database}
 		randEmail := "removeCookie@" + uuid.NewV4().String() + ".com"
 		sampleUser := &structs.User{

@@ -16,15 +16,7 @@ import (
 
 func TestRemoveCookie(t *testing.T) {
 	testEmail := "cookie@" + uuid.NewV4().String()
-	// // Create a new user and log them in
-	// // Create the database that will be used for testing
-	// database := sqlite.CreateDatabase("./social_network_test.db")
 
-	// // migrate the database
-	// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-	// // Create the database struct
-	// DB := &structs.DB{DB: database}
 	Env := handler.Env{Env: database}
 	inputUser := &structs.User{
 		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: testEmail, Password: "Password123",
@@ -72,15 +64,7 @@ func TestRemoveCookie(t *testing.T) {
 
 func TestCreateCookie(t *testing.T) {
 	testEmail := "cookie@" + uuid.NewV4().String()
-	// Create a new user and log them in
-	// Create the database that will be used for testing
-	// database := sqlite.CreateDatabase("./social_network_test.db")
-
-	// // migrate the database
-	// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
 	// // Create the database struct
-	// DB := &structs.DB{DB: database}
 	Env := handler.Env{Env: database}
 	inputUser := &structs.User{
 		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: testEmail, Password: "Password123",

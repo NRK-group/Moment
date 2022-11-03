@@ -3,7 +3,6 @@ package Test
 import (
 	"bytes"
 	"encoding/json"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -19,7 +18,6 @@ func TestGetBody(t *testing.T) {
 		sampleUser := structs.User{
 			FirstName: "GetBodyTest", LastName: "GetBodyTest",
 		}
-
 		// Marhsal the struct to a slice of bytes
 		sampleUserBytes, err := json.Marshal(sampleUser)
 		if err != nil {
@@ -40,8 +38,6 @@ func TestGetBody(t *testing.T) {
 			t.Errorf("Error getting body from request: %v", errBody)
 		}
 
-		log.Println("----------------VALID BODY")
-
 		got := resultUser
 		want := sampleUser
 
@@ -54,9 +50,8 @@ func TestGetBody(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		w := httptest.NewRecorder()
 		var resultUser structs.User
-		
+
 		got := handler.GetBody(resultUser, w, req)
-		log.Println("----------------INVALID BODY: ", got)
 		var want error
 		want = nil
 		// If the error is nil the function hasn't registered there is an invalid body

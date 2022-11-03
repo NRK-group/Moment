@@ -108,8 +108,6 @@ func TestPostHandlerMakeAPost(t *testing.T) {
 }
 
 func TestPostHandlerGettingAllPost(t *testing.T) {
-	// database := DatabaseSetup()
-
 	req, err := http.NewRequest("GET", "/post", nil)
 	if err != nil {
 		t.Fatal(err)

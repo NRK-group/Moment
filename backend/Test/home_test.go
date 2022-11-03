@@ -42,7 +42,6 @@ func TestGetHome(t *testing.T) {
 
 func TestPostHome(t *testing.T) {
 	// initialize the database struct with a mock database
-	// database := &structs.DB{DB: sqlite.CreateDatabase("./social_network_test.db")}
 	Env := handler.Env{Env: database}
 
 	request := httptest.NewRequest(http.MethodPost, "/", nil) // create a request

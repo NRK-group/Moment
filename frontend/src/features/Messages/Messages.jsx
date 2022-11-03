@@ -59,22 +59,24 @@ export const Messages = ({ name, img, msg, socket, currentUserName }) => {
             })
         );
     };
-    socket.onmessage = (event) => {
-        if (event.data) {
-            let data = JSON.parse(event.data);
-            if (data.type === 'privateMessage') {
-                setMessages((messages) => [...messages, data]);
+    if (socket) {
+        socket.onmessage = (event) => {
+            if (event.data) {
+                let data = JSON.parse(event.data);
+                if (data.type === 'privateMessage') {
+                    setMessages((messages) => [...messages, data]);
+                }
+                if (data.type === 'typing') {
+                    isTyping.current.innerText = `${data.senderId} is typing...`;
+                    //change the typing status
+                    isTyping.current.style.display = 'block';
+                    setTimeout(() => {
+                        isTyping.current.style.display = 'none';
+                    }, 5000);
+                }
             }
-            if (data.type === 'typing') {
-                isTyping.current.innerText = `${data.senderId} is typing...`;
-                //change the typing status
-                isTyping.current.style.display = 'block';
-                setTimeout(() => {
-                    isTyping.current.style.display = 'none';
-                }, 5000);
-            }
-        }
-    };
+        };
+    }
     return (
         <>
             <div className='chatMessageContainerHeader'>

@@ -220,3 +220,26 @@ func InsertEventNotification(eventId, userId string, database *structs.DB) error
 	}
 	return nil
 }
+
+// GetEventNotifications is a function that gets all the notifications for a user
+//
+// Parameters:
+//
+//	userId: the id of the user
+//	database: the database
+func GetEventNotifications(userId string, database *structs.DB) ([]structs.EventNotification, error) {
+	rows, err := database.DB.Query("SELECT * FROM EventNotif WHERE userId = '" + userId + "'")
+	if err != nil {
+		l.LogMessage("Event.go", "GetEventNotifications", err)
+		return nil, err
+	}
+	var eventNotifcation structs.EventNotification
+	var eventNotifcations []structs.EventNotification
+	for rows.Next() {
+		rows.Scan(&eventNotifcation.EventId, &eventNotifcation.UserId, &eventNotifcation.Read)
+		eventNotifcations = append([]structs.EventNotification{eventNotifcation}, eventNotifcations...)
+	}
+	l.LogMessage("Event.go", "GetEventNotifications", len(eventNotifcations))
+	l.LogMessage("Event.go", "GetEventNotifications", eventNotifcations)
+	return eventNotifcations, nil
+}

@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"backend/pkg/auth"
-	"backend/pkg/db/sqlite"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
 
@@ -17,16 +16,8 @@ import (
 
 func TestRemoveCookie(t *testing.T) {
 	testEmail := "cookie@" + uuid.NewV4().String()
-	// Create a new user and log them in
-	// Create the database that will be used for testing
-	database := sqlite.CreateDatabase("./social_network_test.db")
 
-	// migrate the database
-	sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-	// Create the database struct
-	DB := &structs.DB{DB: database}
-	Env := handler.Env{Env: DB}
+	Env := handler.Env{Env: database}
 	inputUser := &structs.User{
 		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: testEmail, Password: "Password123",
 		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
@@ -56,14 +47,14 @@ func TestRemoveCookie(t *testing.T) {
 
 	recorder := httptest.NewRecorder() // Drop a cookie on the recorder.
 	var result structs.User
-	auth.GetUser("email", testEmail, &result, *DB)
-	auth.CreateCookie(recorder, testEmail, DB) // Create the cookie
+	auth.GetUser("email", testEmail, &result, *database)
+	auth.CreateCookie(recorder, testEmail, database) // Create the cookie
 
 	recorderDeleted := httptest.NewRecorder() // Drop a cookie on the recorder.
 
 	auth.RemoveCookie(recorderDeleted) // Now try removing the cookie
 	requestDeleted := &http.Request{Header: http.Header{"Cookie": recorderDeleted.Header()["Set-Cookie"]}}
-	cookie, err := requestDeleted.Cookie("session_token")  // Check if the cookie has been removed
+	cookie, err := requestDeleted.Cookie("session_token") // Check if the cookie has been removed
 	got := cookie.Value
 	want := ""
 	if got != want {
@@ -73,16 +64,8 @@ func TestRemoveCookie(t *testing.T) {
 
 func TestCreateCookie(t *testing.T) {
 	testEmail := "cookie@" + uuid.NewV4().String()
-	// Create a new user and log them in
-	// Create the database that will be used for testing
-	database := sqlite.CreateDatabase("./social_network_test.db")
-
-	// migrate the database
-	sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-	// Create the database struct
-	DB := &structs.DB{DB: database}
-	Env := handler.Env{Env: DB}
+	// // Create the database struct
+	Env := handler.Env{Env: database}
 	inputUser := &structs.User{
 		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: testEmail, Password: "Password123",
 		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
@@ -112,8 +95,8 @@ func TestCreateCookie(t *testing.T) {
 
 	recorder := httptest.NewRecorder() // Drop a cookie on the recorder.
 	var result structs.User
-	auth.GetUser("email", testEmail, &result, *DB)
-	auth.CreateCookie(recorder, testEmail, DB)
+	auth.GetUser("email", testEmail, &result, *database)
+	auth.CreateCookie(recorder, testEmail, database)
 
 	request := &http.Request{Header: http.Header{"Cookie": recorder.Header()["Set-Cookie"]}}
 	cookie, err := request.Cookie("session_token")

@@ -16,10 +16,13 @@ func CreateCookie(w http.ResponseWriter, email string, DB *structs.DB) error {
 	}
 	cookieName := user.UserId + "&" + user.Email + "&" + user.SessionId
 	http.SetCookie(w, &http.Cookie{
-		Name:    "session_token",
-		Value:   cookieName,
-		Expires: time.Now().Add(24 * time.Hour),
+		Name:     "session_token",
+		Value:    cookieName,
+		Expires:  time.Now().Add(24 * time.Hour),
+		Secure:   true,
+		SameSite: http.SameSiteNoneMode,
 	})
+
 	return nil
 }
 

@@ -16,7 +16,7 @@ export default async function SendRegistration(values, div) {
         Password:values[5],
         DateOfBirth: values[7],
     }
-    console.log(JSON.stringify(REG_DETAILS));
+
     let registered = await fetch('http://localhost:5070/registration', {
         method: 'POST',
         headers: {
@@ -34,7 +34,6 @@ function OnlyLetters(str) {
      return /^[A-Za-z-]*$/.test(str);
 }
 function ValidateRegistrationInfo(args) {
-    console.log({args})
     const FULL = args.every((element, i) => {//Check if any values are empty (EXCEPT NICKNAME AND ABOUT ME)
         if  (i == (args.length - 1)) return true
         if (element.trim().length === 0) return false

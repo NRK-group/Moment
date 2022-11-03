@@ -96,12 +96,12 @@ func CheckIfFollow(followerId, followingId string, database *structs.DB) bool {
 //	database: the database to insert the follow notification into
 func InsertFollowNotif(followerId, followingId, status string, database *structs.DB) error {
 	createdAt := time.Now().String()
-	stmt, err := database.DB.Prepare("INSERT INTO FollowNotif (userId, followingId, status, createdAt, unread) VALUES (?, ?, ?, ?, ?)")
+	stmt, err := database.DB.Prepare("INSERT INTO FollowNotif (userId, followingId, status, createdAt, read) VALUES (?, ?, ?, ?, ?)")
 	if err != nil {
 		l.LogMessage("follow.go", "InsertFollowNotif", err)
 		return err
 	}
-	_, err = stmt.Exec(followerId, followingId, status, createdAt, true)
+	_, err = stmt.Exec(followerId, followingId, status, createdAt, 0)
 	if err != nil {
 		l.LogMessage("follow.go", "InsertFollowNotif", err)
 		return err
@@ -276,3 +276,30 @@ func DeclineFollow(followerId, followingId string, database *structs.DB) {
 	DeleteFollow(followerId, followingId, database)
 }
 
+// GetFollowNotifs will get the follow notification for the current user
+//
+//	returns a slice of follow notifications and error
+//
+// Params:
+//
+//	userId: the id of the user who is being followed - current user
+//	database: the database to get the follow notifications from
+func GetFollowingNotifs(userId string, database *structs.DB) ([]structs.FollowerNotif, error) {
+	var followerNotif structs.FollowerNotif
+	var followerNotifs []structs.FollowerNotif
+	rows, err := database.DB.Query("SELECT * FROM FollowNotif WHERE followingId = ?", userId)
+	if err != nil {
+		l.LogMessage("follow.go", "GetFollowerNotif", err)
+		return nil, err
+	}
+	for rows.Next() {
+		err = rows.Scan(&followerNotif.UserId, &followerNotif.FollowingId, &followerNotif.Status, &followerNotif.CreatedAt, &followerNotif.Read)
+		if err != nil {
+			l.LogMessage("follow.go", "GetFollowerNotif", err)
+			return nil, err
+		}
+		followerNotifs = append([]structs.FollowerNotif{followerNotif}, followerNotifs...)
+	}
+	l.LogMessage("follow.go", "GetFollowerNotif", followerNotifs)
+	return followerNotifs, nil
+}

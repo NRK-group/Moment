@@ -14,9 +14,10 @@ import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
 import Validation from './components/Validation/Validation';
-import CheckCookie from './components/Validation/Valid';
+import { useEffect } from 'react';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
+    const [authorised, setAuthorised] = useState(false);
     let generalNotif = [
         {
             name: 'John',
@@ -41,11 +42,15 @@ function App() {
                     setIsMobile(boxRef.getBoundingClientRect().width < 600)
                 );
             }}>
-            {CheckCookie() ?? <Header />}
+            {
+                <Validation>
+                    <Header />
+                </Validation>
+            }
 
             <>
                 <Routes>
-                    <Route path='/' element={<Login />} />
+                    <Route path='/' element={<Login auth={setAuthorised} />} />
                     <Route path='/register' element={<Registration />} />
 
                     <Route
@@ -182,7 +187,11 @@ function App() {
                     />
                 </Routes>
             </>
-            {CheckCookie() ?? <Footer />}
+            {
+                <Validation>
+                    <Footer />
+                </Validation>
+            }
         </div>
     );
 }

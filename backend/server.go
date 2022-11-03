@@ -68,6 +68,8 @@ func main() {
 	http.HandleFunc("/login", database.Login) 
 	http.HandleFunc("/comment", database.Comment) 
 	http.HandleFunc("/registration", database.Registration)
+	http.HandleFunc("/validate", database.Validate)
+
 
 	// start the server
 	log.Println("Server is running on port 5070")

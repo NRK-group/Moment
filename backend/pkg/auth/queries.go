@@ -11,29 +11,24 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// CheckCredentials validates the credentials entered by the user
+// CheckCredentials accepts the email and password a user inputs and checks whether the login credentials are valid.
+//A boolean value and a string message are returned specifiying if the login was successful
 func CheckCredentials(email, password string, DB *structs.DB) (bool, string) {
-	// Query the db to see if a user exsists with the inpit email
 	rows, err := DB.DB.Query(`SELECT password FROM User WHERE email = ?`, email)
 	if err != nil {
 		fmt.Println("Error querying the db: ", err)
 		return false, "Error querying the db"
 	}
-	counter := 0
 	var pass string
 	for rows.Next() {
-		counter++
 		rows.Scan(&pass)
 	}
-	// If not return false with msg
-	if counter == 0 {
+	if pass == "" {
 		return false, "Account not found"
 	}
-	// Check if the password input is correct
 	if CheckPasswordHash(password, pass) {
 		return true, "Valid Login"
 	}
-	// If not return false with msg
 	return false, "Incorrect Password"
 }
 
@@ -67,7 +62,7 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	return nil
 }
 
-//Delete is used to delet a row from a specefied table
+// Delete is used to delet a row from a specefied table
 func Delete(table, where, value string, DB structs.DB) error {
 	dlt := "DELETE FROM " + table + " WHERE " + where
 	stmt, err := DB.DB.Prepare(dlt + " = (?)")
@@ -80,7 +75,8 @@ func Delete(table, where, value string, DB structs.DB) error {
 	}
 	return nil
 }
-//UpdateSessionId 
+
+// UpdateSessionId
 func UpdateSessionId(email, value string, DB structs.DB) error {
 	var result structs.User
 	err := GetUser("email", email, &result, DB)
@@ -112,7 +108,8 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 	}
 	return nil
 }
-//Getuser is a function which queries the user table and gets the data from each column
+
+// Getuser is a function which queries the user table and gets the data from each column
 func GetUser(datatype, value string, result *structs.User, DB structs.DB) error {
 	rows, err := DB.DB.Query(`SELECT * FROM User WHERE `+datatype+` = ?`, value)
 	if err != nil {
@@ -144,4 +141,17 @@ func GetUser(datatype, value string, result *structs.User, DB structs.DB) error 
 		return errors.New("No user found")
 	}
 	return nil
+}
+
+func CheckSession(session, user string, DB structs.DB) (bool, error) {
+	rows, err := DB.DB.Query(`SELECT * FROM UserSessions WHERE sessionId = ? and userId = ?`, session, user)
+	if err != nil {
+		log.Println("Error selecting from the db")
+		return false, err
+	}
+	valid := false
+	for rows.Next() {
+		valid = true
+	}
+	return valid, nil
 }

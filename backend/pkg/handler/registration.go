@@ -21,26 +21,24 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	SetupCorsResponse(w)
-	// Check if registration is correct
-	if r.Method == "POST" {
+	if r.Method == "POST" { // Check if registration is correct
 		var newUser structs.User
-		// Get the body of the request
-		bodyErr := GetBody(&newUser, w, r)
+		bodyErr := GetBody(&newUser, w, r) // Get the body of the request
 		if bodyErr != nil {
-			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+			w.Write([]byte("500 Internal Server Error"))
 			return
 		}
-		// Validate the user input here
-		msg, valid := auth.ValidateValues(newUser.FirstName, newUser.LastName, newUser.Email, newUser.Password)
+		msg, valid := auth.ValidateValues(newUser.FirstName, newUser.LastName, newUser.Email, newUser.Password) // Validate the user input here
 		if !valid {
 			w.Write([]byte(msg))
 			return
 		}
-		// Insert the new user into the database
-		err := auth.InsertUser(newUser, *DB.Env)
+		// auth.Capitalise(&newUser) // Make all values lowercase
+		err := auth.InsertUser(newUser, *DB.Env) // Insert the new user into the database
 		if err != nil {
-			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+			w.Write([]byte("500 Internal Server Error"))
 			return
 		}
+		w.Write([]byte("Successfully Registered"))
 	}
 }

@@ -133,11 +133,22 @@ func TestValidValues(t *testing.T) {
 	})
 	t.Run("Invalid values for each", func(t *testing.T) {
 		for _, v := range invalid {
-			_ , got := auth.ValidateValues(v[0], v[1], v[2], v[3])
+			_, got := auth.ValidateValues(v[0], v[1], v[2], v[3])
 			want := false
 			if got != want {
 				t.Errorf("got %v, want %v ", got, want)
 			}
 		}
 	})
+}
+
+func TestCapitalised(t *testing.T) {
+	user := structs.User{FirstName: "first", LastName: "last", NickName: "nick", Email: "EmAil@eMAil.com"}
+	auth.Capitalise(&user)
+
+	got := user
+	want := structs.User{FirstName: "First", LastName: "Last", NickName: "Nick", Email: "email@email.com"}
+	if got != want {
+		t.Errorf("got %v, want %v ", got, want)
+	}
 }

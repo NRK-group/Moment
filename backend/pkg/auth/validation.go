@@ -31,17 +31,7 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-// SliceCookie takes in the cookie and checks if it is valid to slice. If it can be a sliced a a slice of strings is returned containing the userId, email and sessionId
-func SliceCookie(cookie string) ([]string, error) {
-	if strings.Contains(cookie, "&") {
-		emailSlc := strings.Split(cookie, "&")
-		if len(emailSlc) == 3 {
-			return emailSlc, nil
-		}
-	}
-	return []string{}, errors.New("Invalid Cookie")
-}
-
+// ValidEmail accepts an email (string) and checks if the syntax is correct for an email and returns a boolean
 func ValidEmail(email string) bool {
 	_, err := mail.ParseAddress(email)
 	if err != nil {
@@ -53,4 +43,23 @@ func ValidEmail(email string) bool {
 		return false
 	}
 	return strings.Contains(split[1], ".")
+}
+
+// SliceCookie takes in the cookie and checks if it is valid to slice. If it can be a sliced a a slice of strings is returned containing the userId, email and sessionId
+func SliceCookie(cookie string) ([]string, error) {
+	if strings.Contains(cookie, "&") {
+		emailSlc := strings.Split(cookie, "&")
+		if len(emailSlc) == 3 {
+			return emailSlc, nil
+		}
+	}
+	return []string{}, errors.New("Invalid Cookie")
+}
+
+// ValidateValues checks that all input values are valid to be inserted
+func ValidateValues(first, last, email, password string) bool {
+	if len(first) == 0 || len(last) == 0 || !ValidEmail(email) || !ValidPassword(password){
+		return false
+	}
+	return true
 }

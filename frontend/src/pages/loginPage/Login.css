@@ -60,12 +60,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: red; */
     width: 85%;
     height: 5px;
-    margin: auto;
+    font-size: 90%;
     color: red;
     font-weight: bold;
+    text-align: center;
+    margin: 6% auto;
 }
 
 .inputBox {

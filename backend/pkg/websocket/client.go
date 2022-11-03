@@ -2,8 +2,6 @@ package websocket
 
 import (
 	"bytes"
-	"encoding/json"
-	"fmt"
 	"log"
 	"time"
 
@@ -41,20 +39,8 @@ type Client struct {
 	// Buffered channel of outbound messages.
 	Send chan []byte
 }
-type Message struct {
-	MessageId string `json:"messageId"`
-	// MessageType is the type of the message
-	// It can be "privateMessage", "groupMessage", or "typing"
-	MessageType string `json:"type"`
-	ReceiverId  string `json:"receiverId"`
-	SenderId    string `json:"senderId"`
-	ChatId      string `json:"chatId"`
-	Img         string `json:"img"`
-	Content     string `json:"content"`
-	CreateAt    string `json:"createAt"`
-}
 
-// readPump pumps messages from the websocket connection to the hub.
+// ReadPump pumps messages from the websocket connection to the hub.
 //
 // The application runs readPump in a per-connection goroutine. The application
 // ensures that there is at most one reader on a connection by executing all
@@ -68,33 +54,19 @@ func (c *Client) ReadPump() {
 	c.Conn.SetReadDeadline(time.Now().Add(PongWait))
 	c.Conn.SetPongHandler(func(string) error { c.Conn.SetReadDeadline(time.Now().Add(PongWait)); return nil })
 	for {
-		_, message, err := c.Conn.ReadMessage()
+		_, messageByte, err := c.Conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				log.Printf("error: %v", err)
 			}
 			break
 		}
-		message = bytes.TrimSpace(bytes.Replace(message, Newline, Space, -1))
-		fmt.Println("Before Unmarshal message: ", string(message))
-		var msg Message
-		json.Unmarshal(message, &msg)
-		// fmt.Print("msg: ", msg)
-		if msg.MessageType == "privateMessage" {
-			fmt.Println("privateMessage", msg)
-			c.Hub.Broadcast <- message
-		}
-		if msg.MessageType == "groupMessage" {
-			c.Hub.Broadcast <- message
-		}
-		if msg.MessageType == "typing" {
-			fmt.Println("typing", msg)
-			c.Hub.Broadcast <- message
-		}
+		messageByte = bytes.TrimSpace(bytes.Replace(messageByte, Newline, Space, -1))
+		c.Hub.Broadcast <- messageByte
 	}
 }
 
-// writePump pumps messages from the hub to the websocket connection.
+// WritePump pumps messages from the hub to the websocket connection.
 //
 // A goroutine running writePump is started for each connection. The
 // application ensures that there is at most one writer to a connection by
@@ -114,7 +86,6 @@ func (c *Client) WritePump() {
 				c.Conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
-
 			w, err := c.Conn.NextWriter(websocket.TextMessage)
 			if err != nil {
 				return
@@ -126,7 +97,6 @@ func (c *Client) WritePump() {
 				w.Write(Newline)
 				w.Write(<-c.Send)
 			}
-
 			if err := w.Close(); err != nil {
 				return
 			}

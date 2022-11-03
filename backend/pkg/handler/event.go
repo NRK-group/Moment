@@ -11,7 +11,6 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if r.Method == "GET" {
-
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("event get"))
 		return

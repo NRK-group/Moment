@@ -11,29 +11,24 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// CheckCredentials validates the credentials entered by the user
+// CheckCredentials accepts the email and password a user inputs and checks whether the login credentials are valid.
+//A boolean value and a string message are returned specifiying if the login was successful
 func CheckCredentials(email, password string, DB *structs.DB) (bool, string) {
-	// Query the db to see if a user exsists with the inpit email
 	rows, err := DB.DB.Query(`SELECT password FROM User WHERE email = ?`, email)
 	if err != nil {
 		fmt.Println("Error querying the db: ", err)
 		return false, "Error querying the db"
 	}
-	counter := 0
 	var pass string
 	for rows.Next() {
-		counter++
 		rows.Scan(&pass)
 	}
-	// If not return false with msg
-	if counter == 0 {
+	if pass == "" {
 		return false, "Account not found"
 	}
-	// Check if the password input is correct
 	if CheckPasswordHash(password, pass) {
 		return true, "Valid Login"
 	}
-	// If not return false with msg
 	return false, "Incorrect Password"
 }
 

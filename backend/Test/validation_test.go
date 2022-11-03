@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
 
 	"backend/pkg/auth"
@@ -20,11 +19,13 @@ func TestGetBody(t *testing.T) {
 			FirstName: "GetBodyTest", LastName: "GetBodyTest",
 		}
 
+
 		// Marhsal the struct to a slice of bytes
 		sampleUserBytes, err := json.Marshal(sampleUser)
 		if err != nil {
 			t.Errorf("Error marshalling the sampleUser")
 		}
+
 
 		// Create the bytes into a reader
 		testReq := bytes.NewReader(sampleUserBytes)
@@ -43,7 +44,7 @@ func TestGetBody(t *testing.T) {
 		got := resultUser
 		want := sampleUser
 
-		if !reflect.DeepEqual(got, want) {
+		if got !=  want {
 			t.Errorf("want %v, got %v", want, got)
 		}
 	})

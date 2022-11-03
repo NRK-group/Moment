@@ -30,8 +30,12 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		//Validate the user input here
-		
+		// Validate the user input here
+		msg, valid := auth.ValidateValues(newUser.FirstName, newUser.LastName, newUser.Email, newUser.Password)
+		if !valid {
+			w.Write([]byte(msg))
+			return
+		}
 		// Insert the new user into the database
 		err := auth.InsertUser(newUser, *DB.Env)
 		if err != nil {

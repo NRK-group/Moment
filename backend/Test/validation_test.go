@@ -125,7 +125,7 @@ var invalid = [][]string{{"", "Last", "email@email.com", "Password123"}, {"first
 
 func TestValidValues(t *testing.T) {
 	t.Run("Valid input values", func(t *testing.T) {
-		got := auth.ValidateValues("Valid", "Valid", "email@email.com", "Password123")
+		_, got := auth.ValidateValues("Valid", "Valid", "email@email.com", "Password123")
 		want := true
 		if got != want {
 			t.Errorf("got %v, want %v ", got, want)
@@ -133,7 +133,7 @@ func TestValidValues(t *testing.T) {
 	})
 	t.Run("Invalid values for each", func(t *testing.T) {
 		for _, v := range invalid {
-			got := auth.ValidateValues(v[0], v[1], v[2], v[3])
+			_ , got := auth.ValidateValues(v[0], v[1], v[2], v[3])
 			want := false
 			if got != want {
 				t.Errorf("got %v, want %v ", got, want)

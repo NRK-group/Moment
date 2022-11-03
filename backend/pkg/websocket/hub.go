@@ -41,11 +41,13 @@ func (h *Hub) Run() {
 			}
 		case message := <-h.Broadcast:
 			for userId, client := range h.Clients {
-				select {
-				case client.Send <- message:
-				default:
-					close(client.Send)
-					delete(h.Clients, userId)
+				if client.UserId != userId {
+					select {
+					case client.Send <- message:
+					default:
+						close(client.Send)
+						delete(h.Clients, userId)
+					}
 				}
 			}
 		}
@@ -55,10 +57,8 @@ func (h *Hub) Run() {
 func (h *Hub) LogConns() {
 	for {
 		fmt.Println(len(h.Clients), "clients connected")
-		for userId, client := range h.Clients {
+		for userId := range h.Clients {
 			fmt.Printf("client %v have %v connections\n", userId, len(h.Clients))
-			fmt.Println()
-			fmt.Printf("client %v conn is %v\n", userId, client.Conn)
 		}
 		fmt.Println()
 		time.Sleep(1 * time.Second)

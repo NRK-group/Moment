@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	l "backend/pkg/log"
+	"backend/pkg/member"
 	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -39,8 +41,6 @@ func AllEventByGroup(groupId string, database *structs.DB) ([]structs.Event, err
 }
 
 func AddEventParticipant(eventId, userId string, database *structs.DB) (string, error) {
-	
-	
 	createdAt := time.Now().String()
 	stmt, _ := database.DB.Prepare(`
 	INSERT INTO EventParticipant values (?, ?, ?)
@@ -153,16 +153,93 @@ func AllUserEvent(userId string, database *structs.DB) ([]structs.Event, error) 
 
 func AddEvent(groupId string, event structs.Event, database *structs.DB) (string, error) {
 	createdAt := time.Now().String()
-	eventId := uuid.NewV4()
+	eventId := uuid.NewV4().String()
 
-	stmt, _ := database.DB.Prepare(`
+	stmt, err := database.DB.Prepare(`
 	INSERT INTO Event values (?, ?, ?, ?, ?, ?, ?, ?, ?)
 `)
-
-	_, err := stmt.Exec(eventId, event.UserId, groupId, event.Name, event.Description, event.Location, event.StartTime, event.EndTime, createdAt)
+	if err != nil {
+		l.LogMessage("Event.go", "AddEvent", err)
+		return "", err
+	}
+	_, err = stmt.Exec(eventId, event.UserId, groupId, event.Name, event.Description, event.Location, event.StartTime, event.EndTime, createdAt)
 	if err != nil {
 		fmt.Println("inside Create Addevent", err)
 		return "", err
 	}
-	return eventId.String(), nil
+	err = CreateNewEventNotif(groupId, eventId, database)
+	if err != nil {
+		l.LogMessage("Event.go", "AddEvent", err)
+		return "", err
+	}
+	return eventId, nil
+}
+
+// NotifMemberOfGroupEvent is a function that sends a notification to all members of a group when a new event is created
+//
+// Parameters:
+//
+//	groupId: the id of the group
+//	eventId: the id of the event
+//	database: the database
+func CreateNewEventNotif(groupId, eventId string, database *structs.DB) error {
+	members, err := member.GetMembers(groupId, database)
+	if err != nil {
+		l.LogMessage("Event.go", "CreateNewEventNotif", err)
+		return err
+	}
+	l.LogMessage("Event.go", "CreateNewEventNotif", len(members))
+	for _, member := range members {
+		l.LogMessage("Event.go", "CreateNewEventNotif", member.UserId)
+		err := InsertEventNotification(eventId, member.UserId, database)
+		if err != nil {
+			l.LogMessage("Event.go", "CreateNewEventNotif", err)
+			return err
+		}
+	}
+	return nil
+}
+
+// InsertEventNotification is a function that inserts a notification into the database
+//
+// Parameters:
+//
+//	eventId: the id of the event
+//	userId: the id of the user
+//	database: the database
+func InsertEventNotification(eventId, userId string, database *structs.DB) error {
+	stmt, err := database.DB.Prepare("INSERT INTO EventNotif values (?, ?, ?)")
+	if err != nil {
+		l.LogMessage("Event.go", "InsertEventNotification", err)
+		return err
+	}
+	_, err = stmt.Exec(eventId, userId, 0)
+	if err != nil {
+		l.LogMessage("Event.go", "InsertEventNotification", err)
+		return err
+	}
+	return nil
+}
+
+// GetEventNotifications is a function that gets all the notifications for a user
+//
+// Parameters:
+//
+//	userId: the id of the user
+//	database: the database
+func GetEventNotifications(userId string, database *structs.DB) ([]structs.EventNotification, error) {
+	rows, err := database.DB.Query("SELECT * FROM EventNotif WHERE userId = '" + userId + "'")
+	if err != nil {
+		l.LogMessage("Event.go", "GetEventNotifications", err)
+		return nil, err
+	}
+	var eventNotifcation structs.EventNotification
+	var eventNotifcations []structs.EventNotification
+	for rows.Next() {
+		rows.Scan(&eventNotifcation.EventId, &eventNotifcation.UserId, &eventNotifcation.Read)
+		eventNotifcations = append([]structs.EventNotification{eventNotifcation}, eventNotifcations...)
+	}
+	l.LogMessage("Event.go", "GetEventNotifications", len(eventNotifcations))
+	l.LogMessage("Event.go", "GetEventNotifications", eventNotifcations)
+	return eventNotifcations, nil
 }

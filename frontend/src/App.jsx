@@ -17,7 +17,7 @@ import Validation from './components/Validation/Validation';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     const [authorised, setAuthorised] = useState(false);
-    let socket;
+    const [socket, setSocket] = useState(null);
     //random userid
     const user = Math.floor(Math.random() * 5);
     let generalNotif = [
@@ -31,12 +31,6 @@ function App() {
     let followrequest = [{ name: 'Ken' }];
     let groupNotif = [];
 
-    // for websocket
-    const CreateWebSocket = () => {
-        socket = new WebSocket('ws://' + 'localhost:5070' + '/ws');
-        console.log('Attempting Connection...');
-    };
-    CreateWebSocket();
     return (
         <div
             className='App'
@@ -53,10 +47,9 @@ function App() {
             }}>
             {
                 <Validation>
-                    <Header />
+                    <Header setSocket={setSocket} />
                 </Validation>
             }
-
             <>
                 <Routes>
                     <Route path='/' element={<Login auth={setAuthorised} />} />
@@ -106,14 +99,12 @@ function App() {
                                 <Chat
                                     bodyStyleName='mobile'
                                     cardStyleName='mobileCard'
-                                    user={user}
                                     socket={socket}
                                 />
                                 ) : (
                                 <Chat
                                     bodyStyleName='desktop'
                                     cardStyleName='desktopCard'
-                                    user={user}
                                     socket={socket}
                                 />
                                 )

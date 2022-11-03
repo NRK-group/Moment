@@ -56,6 +56,18 @@
     font-size: 1.2rem;
 }
 
+.errMsgHolder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: red; */
+    width: 85%;
+    height: 5px;
+    margin: auto;
+    color: red;
+    font-weight: bold;
+}
+
 .inputBox {
     position: relative;
     width: 100%;
@@ -69,7 +81,7 @@
 
 .inputBox span {
     position: absolute;
-    z-index: 10;
+    z-index: 0;
     margin-top: -11%;
     margin-left: 10%;
 }
@@ -81,7 +93,7 @@
     transform: translateY(-135%);
     font-size: 0.75rem;
     padding: 0.5%;
-    background-color: var(--background-color);
+    /* background-color: var(--background-color); */
 }
 
 .loginAttemptBtn {

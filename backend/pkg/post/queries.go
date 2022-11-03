@@ -21,6 +21,7 @@ func  AllPost(uID string, database *structs.DB) ([]structs.Post, error) {
 		fmt.Print(err)
 		return nil, err
 	}
+	
 	var numLikes int
 	var postId, userId, groupId, content, image, createdAt string
 	for rows.Next() {
@@ -33,8 +34,9 @@ func  AllPost(uID string, database *structs.DB) ([]structs.Post, error) {
 			Content:      content,
 			Image:        image,
 			NumLikes:     numLikes,
-			NumOfComment: len(commets.GetComments(postId, database)),
 		}
+		arr , _ := commets.GetComments(postId, database)
+		post.NumOfComment = len(arr)
 		posts = append([]structs.Post{post}, posts...)
 	}
 
@@ -44,7 +46,7 @@ func  AllPost(uID string, database *structs.DB) ([]structs.Post, error) {
 // CreatePost
 // is a method of database that add post in it.
 func CreatePost(userID, groupId, image, content string, database *structs.DB) (string, error) {
-	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
+	createdAt := time.Now().String()
 	postID := uuid.NewV4()
 	stmt, _ := database.DB.Prepare(`
 		INSERT INTO Post (postId, userId, groupId, content, image, numLikes, createdAt ) values (?, ?, ?, ?, ?, ?, ?)

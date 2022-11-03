@@ -28,6 +28,12 @@ func main() {
 	http.HandleFunc("/", database.Home) 
 	http.HandleFunc("/post", database.Post) 
 	http.HandleFunc("/group", database.Group) 
+	http.HandleFunc("/event", database.Event) 
+	http.HandleFunc("/login", database.Login) 
+	http.HandleFunc("/registration", database.Registration)
+	http.HandleFunc("/validate", database.Validate)
+
+
 
 	// handler for the websocket
 	hub := wSocket.NewHub()

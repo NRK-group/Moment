@@ -15,9 +15,9 @@ import (
 )
 
 
+var database = DatabaseSetup()
 
 func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
-	database := DatabaseSetup()
 	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll
 	// pass 'nil' as the third parameter.
 	req, err := http.NewRequest("GET", "/group", nil)
@@ -45,7 +45,6 @@ func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
 }
 
 func TestHealthCheckGroupHttpPost(t *testing.T) {
-	database := DatabaseSetup()
 	req := httptest.NewRequest(http.MethodGet, "/group", nil)
 		w := httptest.NewRecorder()
 
@@ -60,8 +59,7 @@ func TestHealthCheckGroupHttpPost(t *testing.T) {
 }
 
 func TestCreateGroup(t *testing.T) {
-	t.Run("Insert Post to DB", func(t *testing.T) {
-		database := DatabaseSetup()
+	t.Run("Creating a group", func(t *testing.T) {
 		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
 		str, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		fmt.Println(str)
@@ -70,8 +68,7 @@ func TestCreateGroup(t *testing.T) {
 		}
 	})
 
-	t.Run("Read all Posts from the DB", func(t *testing.T) {
-		database := DatabaseSetup()
+	t.Run("get all groups", func(t *testing.T) {
 		groups, err := group.AllGroups("6t78t8t87", database)
 		fmt.Println(groups)
 		if err != nil {
@@ -81,7 +78,6 @@ func TestCreateGroup(t *testing.T) {
 }
 
 func TestPostHandlerMakeAGroup(t *testing.T) {
-	database := DatabaseSetup()
 
 	group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
 	body, _ := json.Marshal(group1)
@@ -103,7 +99,6 @@ func TestPostHandlerMakeAGroup(t *testing.T) {
 }
 
 func TestPostHandlerGettingAllGroups(t *testing.T) {
-	database := DatabaseSetup()
 
 	req, err := http.NewRequest("GET", "/group", nil)
 	if err != nil {

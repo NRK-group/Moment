@@ -16,7 +16,7 @@ import (
 
 func TestValidate(t *testing.T) {
 	t.Run("Request with valid enpoint", func(t *testing.T) {
-		database := DatabaseSetup()
+		// database := DatabaseSetup()
 		Env := handler.Env{Env: database}
 
 		req := httptest.NewRequest(http.MethodPut, "/validate", nil)
@@ -31,7 +31,7 @@ func TestValidate(t *testing.T) {
 		}
 	})
 	t.Run("Request with invalid enpoint", func(t *testing.T) {
-		database := DatabaseSetup()
+		// database := DatabaseSetup()
 		Env := handler.Env{Env: database}
 
 		req := httptest.NewRequest(http.MethodPut, "/invalid", nil)
@@ -46,7 +46,7 @@ func TestValidate(t *testing.T) {
 		}
 	})
 	t.Run("Send a request from a valid user", func(t *testing.T) {
-		database := DatabaseSetup()
+		// database := DatabaseSetup()
 		Env := handler.Env{Env: database}
 		
 		// Now the user is logged in Check if there is a valid session
@@ -63,7 +63,7 @@ func TestValidate(t *testing.T) {
 	})
 	t.Run("Send a request from a valid user", func(t *testing.T) {
 		validationValidEmail := "validCreds@" + uuid.NewV4().String()
-		database := DatabaseSetup()
+		// database := DatabaseSetup()
 		Env := handler.Env{Env: database}
 		inputUser := &structs.User{
 			FirstName: "Validation", LastName: "Validation", NickName: "NickTest", Email: validationValidEmail, Password: "Password123",

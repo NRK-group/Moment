@@ -13,7 +13,7 @@ import (
 // TestFollow will include all the tests for the follow feature
 func TestFollow(t *testing.T) {
 	// Create the database that will be used for testing
-	database := DatabaseSetup()
+	// database := DatabaseSetup()
 	followerId := uuid.NewV4().String()
 	followingId := uuid.NewV4().String()
 	t.Run("Insert follow", func(t *testing.T) {

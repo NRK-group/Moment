@@ -14,7 +14,7 @@ func TestCreateMember(t *testing.T) {
 	grouoIdTest := "dhgfhfdj"
 	userIdTest := "esfesfesf"
 	receiverId := "hello"
-	database := DatabaseSetup()
+	// database := DatabaseSetup()
 	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
 	stmt, _ := database.DB.Prepare(`
 		INSERT INTO GroupMember values (?, ?, ?)

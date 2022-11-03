@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"backend/pkg/auth"
-	"backend/pkg/db/sqlite"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
 
@@ -16,21 +15,21 @@ import (
 )
 
 var (
-	logTestEmail   = "validCreds" + uuid.NewV4().String() + "@test.com"
+	logTestEmail  = "validCreds" + uuid.NewV4().String() + "@test.com"
 	loginAttempts = [][]string{{"Account not found", "InvalidEmail@false.com", "Password123"}, {"Valid Login", logTestEmail, "Password123"}, {"Incorrect Password", logTestEmail, "IncorrectPassword"}}
 )
 
 func TestLogin(t *testing.T) {
 	t.Run("Request with valid enpoint", func(t *testing.T) {
 		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
+		// database := sqlite.CreateDatabase("./social_network_test.db")
 
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
+		// // migrate the database
+		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
 
-		// Create the database struct
-		DB := &structs.DB{DB: database}
-		Env := handler.Env{Env: DB}
+		// // Create the database struct
+		// DB := &structs.DB{DB: database}
+		Env := handler.Env{Env: database}
 
 		req := httptest.NewRequest(http.MethodGet, "/login", nil)
 		w := httptest.NewRecorder()
@@ -45,14 +44,14 @@ func TestLogin(t *testing.T) {
 	})
 	t.Run("Request with invalid enpoint", func(t *testing.T) {
 		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
+		// database := sqlite.CreateDatabase("./social_network_test.db")
 
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
+		// // migrate the database
+		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
 
-		// Create the database struct
-		DB := &structs.DB{DB: database}
-		Env := handler.Env{Env: DB}
+		// // Create the database struct
+		// DB := &structs.DB{DB: database}
+		Env := handler.Env{Env: database}
 
 		req := httptest.NewRequest(http.MethodGet, "/invalid", nil)
 		w := httptest.NewRecorder()
@@ -66,15 +65,15 @@ func TestLogin(t *testing.T) {
 		}
 	})
 	t.Run("Login with valid and invalid credentials", func(t *testing.T) {
-		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
+		// // Create the database that will be used for testing
+		// database := sqlite.CreateDatabase("./social_network_test.db")
 
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
+		// // migrate the database
+		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
 
-		// Create the database struct
-		DB := &structs.DB{DB: database}
-		Env := handler.Env{Env: DB}
+		// // Create the database struct
+		// DB := &structs.DB{DB: database}
+		Env := handler.Env{Env: database}
 		inputUser := &structs.User{
 			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: logTestEmail, Password: "Password123",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
@@ -103,9 +102,9 @@ func TestLogin(t *testing.T) {
 			req := httptest.NewRequest(http.MethodPost, "/login", testReq)
 			w := httptest.NewRecorder()
 			Env.Login(w, req)
-			want := value[0] 
+			want := value[0]
 			got := w.Body.String()
-			
+
 			if got != want {
 				t.Errorf("got: %v. Want: %v.", got, want)
 			}
@@ -113,14 +112,14 @@ func TestLogin(t *testing.T) {
 	})
 	t.Run("Create a session ID for the logged in user", func(t *testing.T) {
 		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
+		// database := sqlite.CreateDatabase("./social_network_test.db")
 
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
+		// // migrate the database
+		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
 
-		// Create the database struct
-		DB := &structs.DB{DB: database}
-		Env := handler.Env{Env: DB}
+		// // Create the database struct
+		// DB := &structs.DB{DB: database}
+		Env := handler.Env{Env: database}
 		sampleUser := &structs.User{
 			Email: logTestEmail, Password: "Password123",
 		}
@@ -132,13 +131,13 @@ func TestLogin(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPost, "/login", testReq)
 		w := httptest.NewRecorder()
 		Env.Login(w, req)
-		//Check if sessionId for the user has been created
+		// Check if sessionId for the user has been created
 		rows, sessionErr := Env.Env.DB.Query(`SELECT sessionId FROM User WHERE email = ?`, logTestEmail)
 		if sessionErr != nil {
 			t.Errorf("Error selecting sessionId from the database")
 		}
 		var got string
-		for rows.Next(){
+		for rows.Next() {
 			rows.Scan(&got)
 		}
 		notWant := "-"

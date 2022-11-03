@@ -1,13 +1,14 @@
 package handler
 
 import (
-	"backend/pkg/structs"
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"backend/pkg/structs"
 )
 
-type Env struct{
+type Env struct {
 	Env *structs.DB
 }
 
@@ -15,7 +16,7 @@ type Env struct{
 func GetBody(b interface{}, w http.ResponseWriter, r *http.Request) error {
 	err := json.NewDecoder(r.Body).Decode(&b) // unmarshall the userdata
 	if err != nil {
-		fmt.Print(err)
+		fmt.Println(err)
 		http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 		w.WriteHeader(http.StatusInternalServerError)
 	}

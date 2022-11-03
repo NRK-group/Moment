@@ -18,14 +18,14 @@ import (
 func TestLogout(t *testing.T) {
 	t.Run("Test with a valid path", func(t *testing.T) {
 		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
+		// database := sqlite.CreateDatabase("./social_network_test.db")
 
 		// migrate the database
 		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
 
 		// Create the database struct
-		DB := &structs.DB{DB: database}
-		Env := handler.Env{Env: DB}
+		// DB := &structs.DB{DB: database}
+		Env := handler.Env{Env: database}
 
 		req := httptest.NewRequest(http.MethodPut, "/logout", nil)
 		w := httptest.NewRecorder()
@@ -61,21 +61,21 @@ func TestLogout(t *testing.T) {
 	})
 	t.Run("Remove cookie", func(t *testing.T) {
 		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
+		// database := sqlite.CreateDatabase("./social_network_test.db")
 
 		// migrate the database
 		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
 
 		// Create the database struct
-		DB := &structs.DB{DB: database}
-		Env := handler.Env{Env: DB}
+		// DB := &structs.DB{DB: database}
+		Env := handler.Env{Env: database}
 		randEmail := "removeCookie@" + uuid.NewV4().String() + ".com"
 		sampleUser := &structs.User{
 			FirstName: "LogoutRemove", LastName: "LogoutRemove", NickName: "LogoutRemove", Email: randEmail, Password: "LogoutRemove1",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
-		err := auth.InsertUser(*sampleUser, *DB)
+		err := auth.InsertUser(*sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error inserting the new user to the db")
 		}
@@ -98,7 +98,7 @@ func TestLogout(t *testing.T) {
 		w := httptest.NewRecorder()
 
 		Env.Login(w, req)
-		auth.CreateCookie(w, testUser.Email, DB)
+		auth.CreateCookie(w, testUser.Email, database)
 		// request the logout handler
 		req.Header = http.Header{"Cookie": w.HeaderMap["Set-Cookie"]}
 
@@ -128,21 +128,21 @@ func TestLogout(t *testing.T) {
 	})
 	t.Run("Remove user from session table", func(t *testing.T) {
 		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
+		// database := sqlite.CreateDatabase("./social_network_test.db")
 
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
+		// // migrate the database
+		// sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
 
-		// Create the database struct
-		DB := &structs.DB{DB: database}
-		Env := handler.Env{Env: DB}
+		// // Create the database struct
+		// DB := &structs.DB{DB: database}
+		Env := handler.Env{Env: database}
 		randEmail := "removeCookie@" + uuid.NewV4().String() + ".com"
 		sampleUser := &structs.User{
 			FirstName: "LogoutRemove", LastName: "LogoutRemove", NickName: "LogoutRemove", Email: randEmail, Password: "LogoutRemove1",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
-		err := auth.InsertUser(*sampleUser, *DB)
+		err := auth.InsertUser(*sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error inserting the new user to the db")
 		}
@@ -165,11 +165,11 @@ func TestLogout(t *testing.T) {
 		w := httptest.NewRecorder()
 		Env.Login(w, req)
 		// now check if the session is in the table
-		err = auth.GetUser("email", sampleUser.Email, sampleUser, *DB)
+		err = auth.GetUser("email", sampleUser.Email, sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error getting user: %v", err)
 		}
-		rows, err := DB.DB.Query("SELECT * FROM UserSessions WHERE userId = ?", sampleUser.UserId)
+		rows, err := database.DB.Query("SELECT * FROM UserSessions WHERE userId = ?", sampleUser.UserId)
 		if err != nil {
 			t.Errorf("Error querying db:  %v", err)
 		}
@@ -193,7 +193,7 @@ func TestLogout(t *testing.T) {
 		wr := httptest.NewRecorder()
 		Env.Logout(wr, r)
 
-		rows, err = DB.DB.Query("SELECT * FROM UserSessions WHERE userId = ?", sampleUser.UserId)
+		rows, err = database.DB.Query("SELECT * FROM UserSessions WHERE userId = ?", sampleUser.UserId)
 		if err != nil {
 			t.Errorf("Error querying db:  %v", err)
 		}

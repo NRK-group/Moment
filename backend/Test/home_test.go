@@ -1,22 +1,21 @@
 package Test
 
 import (
-	"backend/pkg/db/sqlite"
-	"backend/pkg/handler"
-	"backend/pkg/structs"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"backend/pkg/handler"
 )
 
 func TestGetHome(t *testing.T) {
 	// initialize the database struct with a mock database
-	database := &structs.DB{DB: sqlite.CreateDatabase("./social_network_test.db")}
+	// database := &structs.DB{DB: sqlite.CreateDatabase("./social_network_test.db")}
 	Env := handler.Env{Env: database}
 
 	request := httptest.NewRequest(http.MethodGet, "/", nil) // create a request
 	response := httptest.NewRecorder()                       // create a response recorder
-	Env.Home(response, request)                         // call the handler
+	Env.Home(response, request)                              // call the handler
 
 	// check the response
 	t.Run("Home handler GET response", func(t *testing.T) {
@@ -43,13 +42,12 @@ func TestGetHome(t *testing.T) {
 
 func TestPostHome(t *testing.T) {
 	// initialize the database struct with a mock database
-	database := &structs.DB{DB: sqlite.CreateDatabase("./social_network_test.db")}
+	// database := &structs.DB{DB: sqlite.CreateDatabase("./social_network_test.db")}
 	Env := handler.Env{Env: database}
-
 
 	request := httptest.NewRequest(http.MethodPost, "/", nil) // create a request
 	response := httptest.NewRecorder()                        // create a response recorder
-	Env.Home(response, request)                          // call the handler
+	Env.Home(response, request)                               // call the handler
 
 	t.Run("Home handler POST response", func(t *testing.T) {
 		got := response.Body.String() // get the response body

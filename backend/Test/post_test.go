@@ -29,7 +29,7 @@ func DatabaseSetup() *structs.DB {
 }
 
 func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
-	database := DatabaseSetup()
+	// database := DatabaseSetup()
 	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll
 	// pass 'nil' as the third parameter.
 	req, err := http.NewRequest("GET", "/post", nil)
@@ -64,7 +64,7 @@ func TestHealthCheckPostHttpPost(t *testing.T) {
 
 func TestCreatePost(t *testing.T) {
 	t.Run("Insert Post to DB", func(t *testing.T) {
-		database := DatabaseSetup()
+		// database := DatabaseSetup()
 		post1 := structs.Post{UserID: "3232131221", Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
 		str, err := post.CreatePost(post1.UserID, post1.Content, post1.GroupID, post1.Image, database)
 		fmt.Println(str)
@@ -74,7 +74,7 @@ func TestCreatePost(t *testing.T) {
 	})
 
 	t.Run("Read all Posts from the DB", func(t *testing.T) {
-		database := DatabaseSetup()
+		// database := DatabaseSetup()
 
 		posts, err := post.AllPost("6t78t8t87", database)
 		fmt.Println(posts)
@@ -85,7 +85,7 @@ func TestCreatePost(t *testing.T) {
 }
 
 func TestPostHandlerMakeAPost(t *testing.T) {
-	database := DatabaseSetup()
+	// database := DatabaseSetup()
 
 	post1 := structs.Post{UserID: "3232131221", Content: "hey2", GroupID: "3233234", Image: "wasfdfgfd"}
 	body, _ := json.Marshal(post1)
@@ -108,7 +108,7 @@ func TestPostHandlerMakeAPost(t *testing.T) {
 }
 
 func TestPostHandlerGettingAllPost(t *testing.T) {
-	database := DatabaseSetup()
+	// database := DatabaseSetup()
 
 	req, err := http.NewRequest("GET", "/post", nil)
 	if err != nil {

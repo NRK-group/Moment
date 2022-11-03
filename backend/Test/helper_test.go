@@ -11,7 +11,7 @@ import (
 )
 
 func TestHelper(t *testing.T) {
-	database := DatabaseSetup()
+	// database := DatabaseSetup()
 	email := "Helper" + uuid.NewV4().String() + "@test.com"
 	inputUser := &structs.User{
 		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: email, Password: "Password123",

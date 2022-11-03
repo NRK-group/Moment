@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS "EventNotif"(
     "eventId" TEXT NOT NULL,
-    "groupId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "read" INTEGER DEFAULT 0,
     FOREIGN KEY ("eventId") 
         REFERENCES "Event" ("eventId")
-    FOREIGN KEY ("groupId")
-        REFERENCES "Group" ("groupId")
+    FOREIGN KEY ("userId")
+        REFERENCES "User" ("userId")
 );
 
 CREATE TABLE IF NOT EXISTS "InviteNotif"(

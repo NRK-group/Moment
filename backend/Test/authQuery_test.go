@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"backend/pkg/auth"
-	"backend/pkg/db/sqlite"
 	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -52,26 +51,18 @@ var tests = []structs.User{
 func TestInsertUser(t *testing.T) {
 	randEmail := "insertUSer@" + uuid.NewV4().String()
 	t.Run("Insert valid user to DB", func(t *testing.T) {
-		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
-
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// Create the database struct
-		DB := &structs.DB{DB: database}
 		sampleUser := &structs.User{
 			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: randEmail, Password: "InsertUser",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
-		err := auth.InsertUser(*sampleUser, *DB)
+		err := auth.InsertUser(*sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 
 		// Query the db to check if the user was inserted
-		rows, err := DB.DB.Query(`SELECT * FROM User WHERE Email = ?`, sampleUser.Email)
+		rows, err := database.DB.Query(`SELECT * FROM User WHERE Email = ?`, sampleUser.Email)
 		var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password string
 		var resultUser *structs.User
 
@@ -105,35 +96,19 @@ func TestInsertUser(t *testing.T) {
 		}
 	})
 	t.Run("inserting a user with used email to the db", func(t *testing.T) {
-		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
-
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// Create the database struct
-		DB := &structs.DB{DB: database}
 		sampleUser := &structs.User{
 			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: randEmail, Password: "InsertUser",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
-		err := auth.InsertUser(*sampleUser, *DB)
+		err := auth.InsertUser(*sampleUser, *database)
 		if err == nil {
 			t.Errorf("Error Catching already used email %v", err)
 		}
 	})
 	t.Run("Check the length of neccesary values can't be 0", func(t *testing.T) {
-		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// Create the database struct
-		DB := &structs.DB{DB: database}
-
 		for _, s := range tests {
-			err := auth.InsertUser(s, *DB)
+			err := auth.InsertUser(s, *database)
 			if err == nil {
 				t.Errorf("Error Catching empty values %v", err)
 			}
@@ -145,14 +120,6 @@ func TestCheckCredentials(t *testing.T) {
 	testEmail := "GetUser@" + uuid.NewV4().String()
 
 	t.Run("Non-existing account entered", func(t *testing.T) {
-		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
-
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// Create the database struct
-		DB := &structs.DB{DB: database}
 
 		sampleUser := &structs.User{
 			FirstName: "GetUser", LastName: "GetUser", NickName: "GetUser", Email: "123", Password: "GetUser",
@@ -164,7 +131,7 @@ func TestCheckCredentials(t *testing.T) {
 		wantStr := "Account not found"
 		wantBool := false
 
-		gotBool, gotStr := auth.CheckCredentials(sampleUser.Email, sampleUser.Password, DB)
+		gotBool, gotStr := auth.CheckCredentials(sampleUser.Email, sampleUser.Password, database)
 
 		if gotBool != wantBool && gotStr != wantStr {
 			t.Errorf("Got: %v %v, Want: %v %v", gotBool, gotStr, wantBool, wantStr)
@@ -172,23 +139,13 @@ func TestCheckCredentials(t *testing.T) {
 	})
 
 	t.Run("Check with correct credentials", func(t *testing.T) {
-		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
-
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// Create the database struct
-		DB := &structs.DB{DB: database}
-		// Env := &handler.Env{Env: DB}
-
 		sampleUser := &structs.User{
 			FirstName: "GetUser", LastName: "GetUser", NickName: "GetUser", Email: testEmail, Password: "GetUser123",
 			DateOfBirth: "GetUser", AboutMe: "GetUser", Avatar: "GetUser", CreatedAt: "GetUser", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
 
-		err := auth.InsertUser(*sampleUser, *DB)
+		err := auth.InsertUser(*sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error Inserting the test user to the db")
 		}
@@ -197,7 +154,7 @@ func TestCheckCredentials(t *testing.T) {
 		wantStr := "Valid Login"
 		wantBool := true
 
-		gotBool, gotStr := auth.CheckCredentials(sampleUser.Email, sampleUser.Password, DB)
+		gotBool, gotStr := auth.CheckCredentials(sampleUser.Email, sampleUser.Password, database)
 
 		if gotBool != wantBool && gotStr != wantStr {
 			t.Errorf("Got: %v %v, Want: %v %v", gotBool, gotStr, wantBool, wantStr)
@@ -205,20 +162,11 @@ func TestCheckCredentials(t *testing.T) {
 	})
 
 	t.Run("Check with incorrect password", func(t *testing.T) {
-		// Create the database that will be used for testing
-		database := sqlite.CreateDatabase("./social_network_test.db")
-
-		// migrate the database
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db")
-
-		// Create the database struct
-		DB := &structs.DB{DB: database}
-
 		// Now check if the value is input to the db
 		wantStr := "Incorrect Password"
 		wantBool := false
 
-		gotBool, gotStr := auth.CheckCredentials(testEmail, "incorrectPassword", DB)
+		gotBool, gotStr := auth.CheckCredentials(testEmail, "incorrectPassword", database)
 
 		if gotBool != wantBool && gotStr != wantStr {
 			t.Errorf("Got: %v %v, Want: %v %v", gotBool, gotStr, wantBool, wantStr)
@@ -229,21 +177,19 @@ func TestCheckCredentials(t *testing.T) {
 func TestGetUser(t *testing.T) {
 	randEmail := uuid.NewV4().String()
 	t.Run("Getting valid user", func(t *testing.T) {
-		database := sqlite.CreateDatabase("./social_network_test.db")
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
-		DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		                                                                 // Create the database struct
 
 		sampleUser := &structs.User{
 			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: randEmail, Password: "InsertUser",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
-		err := auth.InsertUser(*sampleUser, *DB)
+		err := auth.InsertUser(*sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 		var got structs.User
-		getErr := auth.GetUser(`email`, randEmail, &got, *DB)
+		getErr := auth.GetUser(`email`, randEmail, &got, *database)
 		if getErr != nil {
 			t.Errorf("Error getting the user from the database")
 		}
@@ -260,11 +206,9 @@ func TestGetUser(t *testing.T) {
 		}
 	})
 	t.Run("Getting User that doesnt exsist", func(t *testing.T) {
-		database := sqlite.CreateDatabase("./social_network_test.db")
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
-		DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		                                                               // Create the database struct
 		var got structs.User
-		getErr := auth.GetUser("email", "", &got, *DB)
+		getErr := auth.GetUser("email", "", &got, *database)
 		if getErr == nil {
 			t.Errorf("Error recognising invalid user details")
 		}
@@ -273,23 +217,21 @@ func TestGetUser(t *testing.T) {
 
 func TestUpdateSessionId(t *testing.T) {
 	t.Run("Adding session to user in user table", func(t *testing.T) {
-		database := sqlite.CreateDatabase("./social_network_test.db")
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
-		DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		                                                                   // Create the database struct
 		randEmail := uuid.NewV4().String()
 		sampleUser := &structs.User{
 			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
-		err := auth.InsertUser(*sampleUser, *DB)
+		err := auth.InsertUser(*sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error inserting the new user to the db")
 		}
 		newSess := uuid.NewV4().String()
-		auth.UpdateSessionId(randEmail, newSess, *DB)
+		auth.UpdateSessionId(randEmail, newSess, *database)
 		var result structs.User
-		getErr := auth.GetUser("email", randEmail, &result, *DB)
+		getErr := auth.GetUser("email", randEmail, &result, *database)
 		if getErr != nil {
 			t.Errorf("Error getting the new user")
 		}
@@ -301,28 +243,25 @@ func TestUpdateSessionId(t *testing.T) {
 		}
 	})
 	t.Run("adding the session to the session table", func(t *testing.T) {
-		database := sqlite.CreateDatabase("./social_network_test.db")
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
-		DB := &structs.DB{DB: database}                                                                    // Create the database struct
 		randEmail := uuid.NewV4().String()
 		sampleUser := &structs.User{
 			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
-		err := auth.InsertUser(*sampleUser, *DB)
+		err := auth.InsertUser(*sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error inserting the new user to the db")
 		}
 		newSess := uuid.NewV4().String()
-		auth.UpdateSessionId(randEmail, newSess, *DB)
+		auth.UpdateSessionId(randEmail, newSess, *database)
 		var result structs.User
-		getErr := auth.GetUser("email", randEmail, &result, *DB)
+		getErr := auth.GetUser("email", randEmail, &result, *database)
 		if getErr != nil {
 			t.Errorf("Error getting the new user")
 		}
 		// Get the results from the session Id table
-		rows, querErr := DB.DB.Query(`SELECT * FROM UserSessions WHERE userId = ?`, result.UserId)
+		rows, querErr := database.DB.Query(`SELECT * FROM UserSessions WHERE userId = ?`, result.UserId)
 		if querErr != nil {
 			t.Errorf("Error accessing the table")
 			return
@@ -337,23 +276,21 @@ func TestUpdateSessionId(t *testing.T) {
 		}
 	})
 	t.Run("Removing session from the user table", func(t *testing.T) {
-		database := sqlite.CreateDatabase("./social_network_test.db")
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
-		DB := &structs.DB{DB: database}                                                                    // Create the database struct
+		// Create the database struct
 		randEmail := uuid.NewV4().String()
 		sampleUser := &structs.User{
 			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
-		err := auth.InsertUser(*sampleUser, *DB)
+		err := auth.InsertUser(*sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error inserting the new user to the db")
 		}
-		auth.UpdateSessionId(randEmail, "-", *DB)
+		auth.UpdateSessionId(randEmail, "-", *database)
 
 		var result structs.User
-		getErr := auth.GetUser("email", randEmail, &result, *DB)
+		getErr := auth.GetUser("email", randEmail, &result, *database)
 		if getErr != nil {
 			t.Errorf("Error getting the new user")
 		}
@@ -366,25 +303,23 @@ func TestUpdateSessionId(t *testing.T) {
 	})
 
 	t.Run("Removing the session from the session table", func(t *testing.T) {
-		database := sqlite.CreateDatabase("./social_network_test.db")
-		sqlite.MigrateDatabase("file://../pkg/db/migrations/sqlite", "sqlite3://./social_network_test.db") // migrate the database
-		DB := &structs.DB{DB: database}                                                                    // Create the database struct
-		randEmail := uuid.NewV4().String()                                                                 // Create a new email
+		// Create the database struct
+		randEmail := uuid.NewV4().String() // Create a new email
 		sampleUser := &structs.User{
 			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		} // Create a sample user to insert
-		err := auth.InsertUser(*sampleUser, *DB)
+		err := auth.InsertUser(*sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error inserting the new user to the db")
 		}
 		newSess := uuid.NewV4().String()
-		auth.UpdateSessionId(randEmail, newSess, *DB) // Add the session to the db
-		auth.UpdateSessionId(randEmail, "-", *DB)     // Now get rid of the session from the session table
+		auth.UpdateSessionId(randEmail, newSess, *database) // Add the session to the db
+		auth.UpdateSessionId(randEmail, "-", *database)     // Now get rid of the session from the session table
 		var result structs.User
-		auth.GetUser("email", randEmail, &result, *DB)
-		rows, _ := DB.DB.Query(`SELECT * FROM UserSessions WHERE userId = ?`, result.UserId) // Check the row doesnt exsist
+		auth.GetUser("email", randEmail, &result, *database)
+		rows, _ := database.DB.Query(`SELECT * FROM UserSessions WHERE userId = ?`, result.UserId) // Check the row doesnt exsist
 		counter := 0
 		for rows.Next() {
 			counter++

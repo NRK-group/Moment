@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
 
 	"backend/pkg/auth"
@@ -19,7 +18,6 @@ func TestGetBody(t *testing.T) {
 		sampleUser := structs.User{
 			FirstName: "GetBodyTest", LastName: "GetBodyTest",
 		}
-
 		// Marhsal the struct to a slice of bytes
 		sampleUserBytes, err := json.Marshal(sampleUser)
 		if err != nil {
@@ -43,7 +41,7 @@ func TestGetBody(t *testing.T) {
 		got := resultUser
 		want := sampleUser
 
-		if !reflect.DeepEqual(got, want) {
+		if got != want {
 			t.Errorf("want %v, got %v", want, got)
 		}
 	})
@@ -53,10 +51,12 @@ func TestGetBody(t *testing.T) {
 		w := httptest.NewRecorder()
 		var resultUser structs.User
 
-		err := handler.GetBody(resultUser, w, req)
+		got := handler.GetBody(resultUser, w, req)
+		var want error
+		want = nil
 		// If the error is nil the function hasn't registered there is an invalid body
-		if err == nil {
-			t.Errorf("Error expected instead got %v", err)
+		if got == want {
+			t.Errorf("Error expected instead got %v", got)
 		}
 	})
 }
@@ -94,6 +94,7 @@ func TestValidPassword(t *testing.T) {
 		}
 	})
 }
+<<<<<<< HEAD
 
 var (
 	emailtests    = []string{"valid@email.com", "valid@email.co.uk"}
@@ -152,3 +153,5 @@ func TestCapitalised(t *testing.T) {
 		t.Errorf("got %v, want %v ", got, want)
 	}
 }
+=======
+>>>>>>> development

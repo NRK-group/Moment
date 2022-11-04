@@ -1,7 +1,12 @@
 import './Header.css';
 import { DesktopHeaderNav, MobileHeaderNav } from '../Navbar/Navbar';
 import Input from '../../components/Input/Input';
-const Header = () => {
+import { CreateWebSocket } from '../../utils/createWebsocket';
+import { useEffect } from 'react';
+const Header = ({ setSocket }) => {
+    useEffect(() => {
+        setSocket(CreateWebSocket());
+    }, []);
     return (
         <div className='headerContainer'>
             <div className='header'>

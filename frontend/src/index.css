@@ -4,7 +4,7 @@
     --subheading-font-size: 1rem;
     --body-font-size: 1.6rem;
     --input-font-size: 1.6rem;
-    --post-font-size: 1.0rem;
+    --post-font-size: 1rem;
     --tertiary-font-size: 0.9rem;
     --heading-color: #2b2c34;
     --subheading-color: #2b2c3460;
@@ -25,6 +25,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Libre Franklin', sans-serif;
+    scroll-behavior: smooth;
 }
 
 body {

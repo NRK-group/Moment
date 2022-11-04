@@ -20,6 +20,9 @@ function mixedCase(str) {
 }
 
 export default function ValidateLoginAttempt(email, password, errMsg) {
+    errMsg.innerHTML = `<div class="horizontal-bar-wrap">
+    <div class="bar1 bar"></div>
+  </div>`;
     if (!CheckCreds(email, password)) {
         errMsg.innerHTML = 'Incorrect email or password';
         return false; //Display the error message to client
@@ -43,8 +46,8 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
             return response.text();
         })
         .then((resp) => {
+            errMsg.innerHTML = resp;
             if (resp !== 'Valid Login') {
-                errMsg.innerHTML = resp;
                 return false;
             }
             if (resp === 'Valid Login') return true;

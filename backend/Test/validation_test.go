@@ -94,7 +94,6 @@ func TestValidPassword(t *testing.T) {
 		}
 	})
 }
-<<<<<<< HEAD
 
 var (
 	emailtests    = []string{"valid@email.com", "valid@email.co.uk"}
@@ -153,5 +152,3 @@ func TestCapitalised(t *testing.T) {
 		t.Errorf("got %v, want %v ", got, want)
 	}
 }
-=======
->>>>>>> development

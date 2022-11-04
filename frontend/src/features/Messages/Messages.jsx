@@ -16,16 +16,6 @@ export const Messages = ({ name, img, msg, socket, currentUserName }) => {
     const sendMessage = (e) => {
         e.preventDefault();
         if (messageInput.current.value !== '') {
-            // console.log(
-            //     JSON.stringify({
-            //         type: 'message', // message, notification, followrequest
-            //         receiver: name, //name of the receiver
-            //         sender: 'Moment', // change this to current user
-            //         img: img, // img of the sender
-            //         content: messageInput.current.value, // content of the message
-            //     })
-            // );
-            //generate uuid for each message
             let messageId = '';
             socket.send(
                 JSON.stringify({

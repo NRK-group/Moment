@@ -9,15 +9,17 @@ import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
 import Stories from './pages/stories/stories';
 import Comments from './features/Comments';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
 import Validation from './components/Validation/Validation';
-import { useEffect } from 'react';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     const [authorised, setAuthorised] = useState(false);
+    const [socket, setSocket] = useState(null);
+    //random userid
+    const user = Math.floor(Math.random() * 5);
     let generalNotif = [
         {
             name: 'John',
@@ -28,6 +30,7 @@ function App() {
     ];
     let followrequest = [{ name: 'Ken' }];
     let groupNotif = [];
+
     return (
         <div
             className='App'
@@ -44,10 +47,9 @@ function App() {
             }}>
             {
                 <Validation>
-                    <Header />
+                    <Header setSocket={setSocket} />
                 </Validation>
             }
-
             <>
                 <Routes>
                     <Route path='/' element={<Login auth={setAuthorised} />} />
@@ -97,11 +99,13 @@ function App() {
                                 <Chat
                                     bodyStyleName='mobile'
                                     cardStyleName='mobileCard'
+                                    socket={socket}
                                 />
                                 ) : (
                                 <Chat
                                     bodyStyleName='desktop'
                                     cardStyleName='desktopCard'
+                                    socket={socket}
                                 />
                                 )
                             </Validation>

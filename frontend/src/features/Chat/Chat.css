@@ -58,7 +58,26 @@
     padding-right: 5px;
     border: 3px solid var(--border-color);
 }
-
+.newChatModalContainer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+}
+.newChatModal:before {
+    content: '';
+    position: absolute;
+    background-color: black;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.5;
+}
 @media only screen and (min-width: 601px) {
     .chatBox {
         border: 1px solid var(--terheading-color);

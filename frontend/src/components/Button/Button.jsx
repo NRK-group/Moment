@@ -1,5 +1,14 @@
 import './Button.css';
 
-export const Button = ({ styleName, content }) => {
-    return <button className={`${styleName} btn`}>{content}</button>;
+export const Button = ({ styleName, content, action }) => {
+    return (
+        <button
+            onClick={() => {
+                action();
+                console.log('clicked');
+            }}
+            className={`${styleName} btn`}>
+            {content}
+        </button>
+    );
 };

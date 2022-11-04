@@ -37,7 +37,7 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 		auth.Capitalise(newUser)                  // Make all values lowercase
 		err := auth.InsertUser(*newUser, *DB.Env) // Insert the new user into the database
 		if err != nil {
-			w.Write([]byte("500 Internal Server Error"))
+			w.Write([]byte(err.Error()))
 			return
 		}
 		w.Write([]byte("Successfully Registered"))

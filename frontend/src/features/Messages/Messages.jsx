@@ -7,7 +7,6 @@ import { MessageContent } from './components/MessageContent';
 import { ProfileIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 export const Messages = ({ name, img, msg, socket, currentUserName }) => {
     let messageInput = useRef();
@@ -27,7 +26,7 @@ export const Messages = ({ name, img, msg, socket, currentUserName }) => {
             //     })
             // );
             //generate uuid for each message
-            let messageId = uuidv4();
+            let messageId = '';
             socket.send(
                 JSON.stringify({
                     messageId: messageId,

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"backend/pkg/structs"
@@ -40,6 +41,7 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	stmt, err := DB.DB.Prepare(`INSERT INTO User values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
 	if err != nil {
 		fmt.Println("Error preparing inserting user into the db: ", err)
+		
 		return err
 	}
 	// Hash the password and get the current time
@@ -57,6 +59,9 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	_, execErr := stmt.Exec(newUser.UserId, "-", newUser.FirstName, newUser.LastName, newUser.NickName, newUser.Email, newUser.DateOfBirth, newUser.Avatar, newUser.AboutMe, newUser.CreatedAt, newUser.IsLoggedIn, newUser.IsPublic, newUser.NumFollowers, newUser.NumFollowing, newUser.NumPosts, newUser.Password)
 	if execErr != nil {
 		fmt.Println("Error executing inserting user into the db: ", execErr)
+		if strings.Contains(execErr.Error() , "UNIQUE constraint failed: User.email") {
+			return errors.New("Email already in use")
+		}
 		return execErr
 	}
 	return nil

@@ -18,6 +18,10 @@ export default async function SendRegistration(values, div) {
         DateOfBirth: values[7],
     };
 
+    div.innerHTML = `<div class="horizontal-bar-wrap">
+    <div class="bar1 bar"></div>
+  </div>`;
+
     let registered = await fetch('http://localhost:5070/registration', {
         method: 'POST',
         headers: {
@@ -30,12 +34,14 @@ export default async function SendRegistration(values, div) {
             return await response.text();
         })
         .then((resp) => {
+            console.log("RESP =======   ", resp)
             div.innerHTML = resp;
             if (resp === 'Successfully Registered') {
-                div.style.color = 'green'
-                return true
+                div.style.color = 'green';
+                return true;
             }
-            return false
+            div.style.color = 'red';
+            return false;
         });
 }
 

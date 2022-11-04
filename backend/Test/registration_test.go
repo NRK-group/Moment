@@ -73,7 +73,7 @@ func TestRegistration(t *testing.T) {
 		Env := handler.Env{Env: DB}
 
 		// Create the struct that will be inserted
-		sampleUser := &structs.User{
+		sampleUser := structs.User{
 			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: "handlertest@" + uuid.NewV4().String() + ".com", Password: "TestPass",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
@@ -104,11 +104,12 @@ func TestRegistration(t *testing.T) {
 			t.Errorf("Error hashing the password %v", err)
 		}
 		resultUser.Password = "true"
+		auth.Capitalise(&sampleUser)
 
 		want := sampleUser
 		got := resultUser
 
-		if got != *want {
+		if got != want {
 			t.Errorf("want %v, got %v", want, got)
 		}
 	})

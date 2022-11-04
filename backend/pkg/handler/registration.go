@@ -21,8 +21,9 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	SetupCorsResponse(w)
+	w.Header().Add("Content-Type", "application/text")
 	if r.Method == "POST" { // Check if registration is correct
-		var newUser structs.User
+		var newUser *structs.User
 		bodyErr := GetBody(&newUser, w, r) // Get the body of the request
 		if bodyErr != nil {
 			w.Write([]byte("500 Internal Server Error"))
@@ -33,8 +34,8 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(msg))
 			return
 		}
-		// auth.Capitalise(&newUser) // Make all values lowercase
-		err := auth.InsertUser(newUser, *DB.Env) // Insert the new user into the database
+		auth.Capitalise(newUser)                  // Make all values lowercase
+		err := auth.InsertUser(*newUser, *DB.Env) // Insert the new user into the database
 		if err != nil {
 			w.Write([]byte("500 Internal Server Error"))
 			return

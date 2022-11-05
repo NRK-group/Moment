@@ -5,7 +5,6 @@ export const Button = ({ styleName, content, action }) => {
         <button
             onClick={() => {
                 action();
-                console.log('clicked');
             }}
             className={`${styleName} btn`}>
             {content}

@@ -13,7 +13,11 @@ const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
     let messages = [];
     return (
         <>
-            <>{isModalOpen && <NewChatModal />}</>
+            <>
+                {isModalOpen && (
+                    <NewChatModal setIsModalOpen={setIsModalOpen} />
+                )}
+            </>
             <Body styleName={bodyStyleName}>
                 <Card styleName={cardStyleName}>
                     <div className='chatContainer'>

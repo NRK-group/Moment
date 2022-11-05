@@ -6,7 +6,6 @@ export const ChatUsersContainer = ({
     styleName,
     setIsModalOpen,
 }) => {
-    console.log(styleName);
     return (
         <div className={`chatUsersContainer ${styleName}`}>
             <ChatContainerHeader

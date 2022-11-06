@@ -43,3 +43,5 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Successfully Registered"))
 	}
 }
+
+

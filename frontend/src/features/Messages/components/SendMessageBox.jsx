@@ -1,6 +1,6 @@
 import { Button } from '../../../components/Button/Button';
 
-const SendMessageBox = () => {
+const SendMessageBox = ({ setIsModalOpen }) => {
     return (
         <div className='sendMessageBoxContainer'>
             <div className='sendIcon'>
@@ -14,7 +14,13 @@ const SendMessageBox = () => {
             </div>
             <div>Your messages</div>
             <div>Send private photos and messages to a friend or group.</div>
-            <Button styleName='sendMessageBtn' content={'Send message'} />
+            <Button
+                styleName='sendMessageBtn'
+                content={'Send message'}
+                action={() => {
+                    setIsModalOpen(true);
+                }}
+            />
         </div>
     );
 };

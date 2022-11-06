@@ -95,19 +95,19 @@ function App() {
                         path='/messages'
                         element={
                             <Validation>
-                                isMobile ? (
-                                <Chat
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                    socket={socket}
-                                />
+                                {isMobile ? (
+                                    <Chat
+                                        bodyStyleName='mobile'
+                                        cardStyleName='mobileCard'
+                                        socket={socket}
+                                    />
                                 ) : (
-                                <Chat
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                    socket={socket}
-                                />
-                                )
+                                    <Chat
+                                        bodyStyleName='desktop'
+                                        cardStyleName='desktopCard'
+                                        socket={socket}
+                                    />
+                                )}
                             </Validation>
                         }
                     />
@@ -123,17 +123,17 @@ function App() {
                         path='/comments'
                         element={
                             <Validation>
-                                isMobile ? (
-                                <Comments
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
+                                {isMobile ? (
+                                    <Comments
+                                        bodyStyleName='mobile'
+                                        cardStyleName='mobileCard'
+                                    />
                                 ) : (
-                                <Comments
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                                )
+                                    <Comments
+                                        bodyStyleName='desktop'
+                                        cardStyleName='desktopCard'
+                                    />
+                                )}
                             </Validation>
                         }
                     />

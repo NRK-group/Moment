@@ -20,8 +20,6 @@ function App() {
     const [authorised, setAuthorised] = useState(false);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    //random userid
-    const user = Math.floor(Math.random() * 5);
     let generalNotif = [
         {
             name: 'John',

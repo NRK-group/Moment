@@ -9,15 +9,17 @@ import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
 import Stories from './pages/stories/stories';
 import Comments from './features/Comments';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
 import Validation from './components/Validation/Validation';
+import { Menu } from './layouts/Menu/Menu';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     const [authorised, setAuthorised] = useState(false);
     const [socket, setSocket] = useState(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     //random userid
     const user = Math.floor(Math.random() * 5);
     let generalNotif = [
@@ -34,6 +36,9 @@ function App() {
     return (
         <div
             className='App'
+            onClick={() => {
+                setIsMenuOpen(false);
+            }}
             ref={(boxRef) => {
                 boxRef &&
                     console.log(
@@ -47,9 +52,13 @@ function App() {
             }}>
             {
                 <Validation>
-                    <Header setSocket={setSocket} />
+                    <Header
+                        setSocket={setSocket}
+                        setIsMenuOpen={setIsMenuOpen}
+                    />
                 </Validation>
             }
+            <>{isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}</>
             <>
                 <Routes>
                     <Route path='/' element={<Login auth={setAuthorised} />} />

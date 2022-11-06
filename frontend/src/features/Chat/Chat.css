@@ -90,34 +90,50 @@
     z-index: 1;
     display: grid;
     margin: 15px;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: 8% 10% 82%;
 }
 .newChatModalHeader {
     display: grid;
-    grid-template-columns: 5% 95%;
+    grid-template-columns: 5% 90% 5%;
     width: 100%;
     height: 100%;
+}
+.newChatModalHeader .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .newChatModalHeader .closeIcon {
     margin: 3px 0 0 3px;
 }
 .searchFollowing {
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 100%;
 }
 .searchFollowing input {
     background-color: var(--background-color);
+    width: 100%;
     color: var(--heading-color);
-    font-size: 1.2rem;
+    font-size: var(--subheading-font-size);
     padding-left: 20px;
 }
 .newChatModalHeaderSearch {
+    width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 20px;
+    border-top: 1px solid var(--terheading-color);
+    border-bottom: 1px solid var(--terheading-color);
+}
+.newChatModalContainer .searchResult {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
 }
 @media only screen and (min-width: 601px) {
     .chatBox {

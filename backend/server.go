@@ -30,6 +30,7 @@ func main() {
 	http.HandleFunc("/group", database.Group) 
 	http.HandleFunc("/event", database.Event) 
 	http.HandleFunc("/login", database.Login) 
+	http.HandleFunc("/logout", database.Logout) 
 	http.HandleFunc("/registration", database.Registration)
 	http.HandleFunc("/validate", database.Validate)
 	http.HandleFunc("/updateprofileimg", database.UpdateImage)

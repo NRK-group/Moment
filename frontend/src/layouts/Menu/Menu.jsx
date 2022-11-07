@@ -1,7 +1,12 @@
 import './Menu.css';
 import { Button } from '../../components/Button/Button';
 import { NavLink } from 'react-router-dom';
-export const Menu = ({ setIsMenuOpen }) => {
+import Logout from './Logout';
+import { useNavigate } from 'react-router-dom';
+
+export const Menu = ({ setIsMenuOpen, auth }) => {
+    let navigate = useNavigate();
+
     return (
         <div className='menuContainer'>
             <div className='menu'>
@@ -17,7 +22,10 @@ export const Menu = ({ setIsMenuOpen }) => {
                     <Button
                         styleName='logoutBtn'
                         content='Logout'
-                        action={() => {}}
+                        action={() => {
+                            Logout(navigate, auth);
+                            setIsMenuOpen(false)
+                        }}
                     />
                 </div>
             </div>

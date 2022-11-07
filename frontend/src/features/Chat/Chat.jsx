@@ -9,11 +9,10 @@ import { useState } from 'react';
 const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
     let [isModalOpen, setIsModalOpen] = useState(false);
     let user = document.cookie.split('=')[1].split('&')[0];
-    let users = [];
-    let messages = [];
+    const [currentReceiver, setcurrentReceiver] = useState('');
     return (
         <>
-            <>
+            <>l
                 {isModalOpen && (
                     <NewChatModal setIsModalOpen={setIsModalOpen} />
                 )}
@@ -25,25 +24,24 @@ const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
                             {
                                 <ChatUsersContainer
                                     styleName='chatUsersContainer'
-                                    users={users}
                                     currentUserName={user}
                                     setIsModalOpen={setIsModalOpen}
+                                    setcurrentReceiver={setcurrentReceiver}
                                 />
                             }
                             <div className='messagesContainer'>
-                                {messages ? (
+                                {currentReceiver ? (
+                                    <Messages
+                                        currentUserName={user}
+                                        name={currentReceiver}
+                                        socket={socket}
+                                    />
+                                ) : (
                                     <div className='sendMessageContainer'>
                                         <SendMessageBox
                                             setIsModalOpen={setIsModalOpen}
                                         />
                                     </div>
-                                ) : (
-                                    <Messages
-                                        currentUserName={user}
-                                        msg={[]} // all the messages
-                                        name={Math.floor(Math.random() * 5) + 1} //change to current receiver
-                                        socket={socket}
-                                    />
                                 )}
                             </div>
                         </div>

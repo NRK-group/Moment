@@ -160,3 +160,19 @@ func CheckSession(session, user string, DB structs.DB) (bool, error) {
 	}
 	return valid, nil
 }
+
+
+//Update changes the specificed column in a specified table
+func Update(table, set, to, where, id string, DB structs.DB) error {
+	update := "UPDATE " + table + " SET " + set + " = '" + to + "' WHERE " + where + " = '" + id + "'"
+	stmt, prepErr := DB.DB.Prepare(update)
+	if prepErr != nil {
+		log.Println("Error updating field: ", prepErr)
+		return prepErr
+	}
+	_, err := stmt.Exec()
+	if err != nil {
+		return err
+	}
+	return nil
+}

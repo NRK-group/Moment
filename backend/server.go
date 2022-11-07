@@ -32,6 +32,10 @@ func main() {
 	http.HandleFunc("/login", database.Login) 
 	http.HandleFunc("/registration", database.Registration)
 	http.HandleFunc("/validate", database.Validate)
+	http.HandleFunc("/updateprofileimg", database.UpdateImage)
+
+	gallery := http.FileServer(http.Dir("./images"))
+	http.Handle("/images/", http.StripPrefix("/images/", gallery)) // handling the CSS
 
 
 

@@ -1,10 +1,11 @@
 package auth
 
 import (
-	"backend/pkg/structs"
 	"errors"
 	"net/mail"
 	"strings"
+
+	"backend/pkg/structs"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -58,23 +59,34 @@ func SliceCookie(cookie string) ([]string, error) {
 }
 
 // ValidateValues checks that all input values are valid to be inserted
-func ValidateValues(first, last, email, password string) (string,bool) {
+func ValidateValues(first, last, email, password string) (string, bool) {
 	if len(first) == 0 || len(last) == 0 {
-		return "Names must only contain letters and hyphens",false
+		return "Names must only contain letters and hyphens", false
 	}
 	if !ValidEmail(email) {
 		return "Invalid email", false
 	}
-	if !ValidPassword(password){
+	if !ValidPassword(password) {
 		return "Passwords must contain 8-16 lower and uppercase letters and special characters", false
 	}
 	return "", true
 }
 
-//Capitalise accepts a user struct and makes the neccassary fields capitalised
+// Capitalise accepts a user struct and makes the neccassary fields capitalised
 func Capitalise(obj *structs.User) {
 	obj.FirstName = strings.Title(strings.ToLower(obj.FirstName))
 	obj.LastName = strings.Title(strings.ToLower(obj.LastName))
 	obj.NickName = strings.Title(strings.ToLower(obj.NickName))
 	obj.Email = strings.ToLower(obj.Email)
 }
+
+// func ValidSession(sessionId string, DB *structs.DB) bool {
+// 	// Check if the sessionId is present in the table
+// 	rows, err := DB.DB.Query("SELECT 1 FROM Users WHERE sessionId = ?", sessionId)
+// 	if err != nil {
+// 		log.Println("Error validating the session",err)
+// 	}
+// 	for rows.Next() {
+// 	}
+// 	return false
+// }

@@ -4,7 +4,7 @@ import AuthAlternative from '../../features/authentication/AuthAlternative';
 import AuthCard from '../../features/authentication/AuthCard';
 import AuthDateInput from '../../features/authentication/AuthDateInput';
 import AuthInput from '../../features/authentication/AuthInput';
-import {SendRegistration, UpdateProfleImg}  from './ValidRegistration';
+import { SendRegistration, UpdateProfleImg } from './ValidRegistration';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -22,11 +22,12 @@ export default function Registration() {
         regPassword = useRef(),
         regConfirm = useRef(),
         regErrMsg = useRef(),
-        file = useRef();
+        file = useRef(),
+        profileImg = useRef();
 
     return (
         <AuthCard>
-            <Card styleName='authAvatar'>
+            <Card styleName='authAvatar' refr={profileImg}>
                 <button
                     className='authAvatarBtn'
                     onClick={() => {
@@ -39,7 +40,11 @@ export default function Registration() {
                     className='none'
                     ref={file}
                     onChange={() => {
-                        UpdateProfleImg(file.current);
+                        UpdateProfleImg(
+                            file.current,
+                            profileImg.current,
+                            regErrMsg.current
+                        );
                     }}
                 />
             </Card>

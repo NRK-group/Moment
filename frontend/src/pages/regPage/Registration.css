@@ -29,10 +29,9 @@
     min-height: 125px;
     width: 10vmax;
     min-width: 125px;
-    background-image: url('./assets/noun-user-circle-4602186.svg');
+    background-image: url('http://localhost:5070/images/profile/default-user.svg');
     background-position: center;
-    background-size: contain;
-    /* background-size: 110%; */
+    background-size: cover;
     background-repeat: no-repeat;
     border-radius: 50%;
     opacity: 0.85;

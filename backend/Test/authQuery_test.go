@@ -120,7 +120,6 @@ func TestCheckCredentials(t *testing.T) {
 	testEmail := "GetUser@" + uuid.NewV4().String()
 
 	t.Run("Non-existing account entered", func(t *testing.T) {
-
 		sampleUser := &structs.User{
 			FirstName: "GetUser", LastName: "GetUser", NickName: "GetUser", Email: "123", Password: "GetUser",
 			DateOfBirth: "GetUser", AboutMe: "GetUser", Avatar: "GetUser", CreatedAt: "GetUser", UserId: "-", SessionId: "-",
@@ -177,7 +176,7 @@ func TestCheckCredentials(t *testing.T) {
 func TestGetUser(t *testing.T) {
 	randEmail := uuid.NewV4().String()
 	t.Run("Getting valid user", func(t *testing.T) {
-		                                                                 // Create the database struct
+		// Create the database struct
 
 		sampleUser := &structs.User{
 			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: randEmail, Password: "InsertUser",
@@ -206,7 +205,7 @@ func TestGetUser(t *testing.T) {
 		}
 	})
 	t.Run("Getting User that doesnt exsist", func(t *testing.T) {
-		                                                               // Create the database struct
+		// Create the database struct
 		var got structs.User
 		getErr := auth.GetUser("email", "", &got, *database)
 		if getErr == nil {
@@ -217,7 +216,7 @@ func TestGetUser(t *testing.T) {
 
 func TestUpdateSessionId(t *testing.T) {
 	t.Run("Adding session to user in user table", func(t *testing.T) {
-		                                                                   // Create the database struct
+		// Create the database struct
 		randEmail := uuid.NewV4().String()
 		sampleUser := &structs.User{
 			FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
@@ -330,4 +329,30 @@ func TestUpdateSessionId(t *testing.T) {
 			t.Errorf("Got: %v. Want: %v.", got, want)
 		}
 	})
+}
+
+func TestUpdate(t *testing.T) {
+	randEmail := uuid.NewV4().String() // Create a new email
+	sampleUser := &structs.User{
+		FirstName: "SessionTest", LastName: "SessionTest", NickName: "SessionTest", Email: randEmail, Password: "SessionTest",
+		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	} // Create a sample user to insert
+	err := auth.InsertUser(*sampleUser, *database)
+	if err != nil {
+		t.Errorf("Error inserting the new user to the db")
+	}
+
+	testUID := uuid.NewV4().String()
+	updateErr := auth.Update("User", "userId", testUID, "email", randEmail, *database)
+	if updateErr != nil {
+		t.Errorf("Error updating the table %v", updateErr)
+	}
+	var result structs.User
+	err = auth.GetUser("email", randEmail, &result, *database)
+	got := result.UserId
+	want := testUID
+	if got != want {
+		t.Errorf("Got: %v. Want: %v.", got, want)
+	}
 }

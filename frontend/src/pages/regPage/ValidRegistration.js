@@ -1,5 +1,5 @@
 import { ValidateEmail } from '../loginPage/ValidateLogin';
-import { fromUnixTime, isValid } from 'date-fns';
+import { isValid } from 'date-fns';
 
 async function SendRegistration(values, div) {
     let result = ValidateRegistrationInfo(values);
@@ -23,7 +23,6 @@ async function SendRegistration(values, div) {
   </div>`;
 
     let registered = await fetch('http://localhost:5070/registration', {
-        
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -35,7 +34,6 @@ async function SendRegistration(values, div) {
             return await response.text();
         })
         .then((resp) => {
-            console.log('RESP =======   ', resp);
             div.innerHTML = resp;
             if (resp === 'Successfully Registered') {
                 div.style.color = 'green';
@@ -84,28 +82,25 @@ function ValidateRegistrationInfo(args) {
 function UpdateProfleImg(fileInput, profileImg, errMsg) {
     let file = fileInput.files;
     if (!file) return;
-    console.log('CHANGING!!!!');
     const formData = new FormData();
     formData.append('file', file[0]);
     fetch('http://localhost:5070/updateprofileimg', {
         credentials: 'include',
         method: 'POST',
         body: formData,
-
-    }).then(async (response) => {
-        let result = await response.text()
-        return result
-    }).then( resp => {
-        console.log(resp)
-        if (!resp.includes("images/")) {
-            errMsg.innerHTML= resp
-            return
-        }
-        console.log({profileImg})
-        profileImg.style.backgroundImage = `url("http://localhost:5070/${resp}")`
-        errMsg.innerHTML= ""
-
-    });
+    })
+        .then(async (response) => {
+            let result = await response.text();
+            return result;
+        })
+        .then((resp) => {
+            if (!resp.includes('images/')) {
+                errMsg.innerHTML = resp;
+                return;
+            }
+            profileImg.style.backgroundImage = `url("http://localhost:5070/${resp}")`;
+            errMsg.innerHTML = '';
+        });
 }
 
 export { UpdateProfleImg, SendRegistration };

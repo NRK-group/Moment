@@ -26,6 +26,7 @@ export default function Post({
     const navigate = useNavigate();
 
     const [toggle, setToggle] = useState(true);
+  //  const [comments, setComments] = useState([]);
 
     const OpenDropdownMenu = () => {
         setToggle(!toggle);
@@ -38,26 +39,24 @@ export default function Post({
     };
 
     const OpenCommets = async (postId) => {
-        let comments = await fetch('http://localhost:5070/comment', {
-            method: 'POST',
-            body: JSON.stringify({ PostID: postId }),
+        let comments = await fetch(`http://localhost:5070/comment/${postId}`, {
+            credentials: 'include',
+            method: 'GET',
         }).then(async (response) => {
             let resp = await response.json();
-            return resp
-        }).finally((resp)=> console.log("hjfjyfvjhv", resp))
-
-        
+           return resp
+        })
 
         navigate('/comments', {
             state: {
-                postId: postId,
-                postBodyText: postBodyText,
-                postBodyImgSrc: postBodyImgSrc,
-                postContent: postContent,
-                likes: likes,
-                avatarSrc: avatarSrc,
-                name: name,
-                comments: comments,
+                PostId: postId,
+                PostBodyText: postBodyText,
+                PostBodyImgSrc: postBodyImgSrc,
+                PostContent: postContent,
+                Likes: likes,
+                AvatarSrc: avatarSrc,
+                Name: name,
+                Comments: comments,
             },
         });
     };

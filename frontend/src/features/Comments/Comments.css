@@ -18,8 +18,8 @@
 }
 
 .CommentsImg img {
-  width:550px ;
-  height:fit-content;
+    object-fit: fill;
+    height: inherit;
 }
 
 .CommentsSection {
@@ -85,10 +85,45 @@
     overflow-y: scroll;
 }
 
-@media only screen and (max-width: 600px) {
+.Commet-Content {
+    font:bold;
+}
+
+.CommentsSectionUsers .optContent {
+    color: black;
+}
+
+.CommentsSectionUsers .optContent P {
+    justify-content:left;
+    align-items: left;
+}
+
+.CommentsSectionUsers .miniUserCard {
+    height: fit-content;
+}
+
+.Comments-Emoji {
+    display: block;
+    position: absolute;
+    top: 34%;
+    left: 1vw;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;  
+}
+
+   .CommentsChat .react-emoji {
+    flex-direction: row-reverse;
+}
+
+@media only screen and (max-width: 700px) {
     .Comments {
         flex-direction: column;
         overflow-y: scroll;
+    }
+
+    .CommentText {
+        display: flex;
     }
 
     .CommentsImg img {

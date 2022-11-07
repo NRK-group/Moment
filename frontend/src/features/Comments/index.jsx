@@ -5,17 +5,23 @@ import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
 import { FaceSmileIcon } from '../../components/Icons/Icons';
 import { useRef, useState, useEffect } from 'react';
+import ReadMoreReact from 'read-more-react';
 import { useLocation } from 'react-router-dom';
+import InputEmoji from 'react-input-emoji';
 
 const Comments = ({ bodyStyleName, cardStyleName }) => {
-
-
     const { state } = useLocation();
+
+    const [test, setTest] = useState(''); 
+
     useEffect(() => {
         console.log({ state });
+        console.log(state.Comments);
+        window.document
+            .querySelectorAll('.CommentsSectionUsers .miniUserCard .contentSep')
+            .forEach((ele) => ele.remove());
+       
     }, []);
-
-   
 
     const dropdown = useRef(null);
     const [toggle, setToggle] = useState(true);
@@ -30,20 +36,31 @@ const Comments = ({ bodyStyleName, cardStyleName }) => {
         }
     };
 
+    const [text, setText] = useState('');
+
+    function handleOnEnter(text) {
+        console.log('enter', text);
+    }
+
     return (
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
                 <div className='Comments'>
                     <div className='CommentsLeft'>
                         <div className='CommentsImg'>
-                            <img src={state.postBodyImgSrc} />
+                            <img src={state.PostBodyImgSrc} />
                         </div>
+                        <div className='Comments-Emoji'></div>
                         <div className='CommentsChat'>
-                            <div className='CommentsChatIcons'>
-                                <FaceSmileIcon />
-                                <input></input>
-                            </div>
-                            <p>Post</p>
+                            <InputEmoji
+                                value={text}
+                                onChange={setText}
+                                cleanOnEnter
+                                onEnter={handleOnEnter}
+                                placeholder='Type a message'
+                            />
+
+                            <p>Comm</p>
                         </div>
                     </div>
 
@@ -51,9 +68,7 @@ const Comments = ({ bodyStyleName, cardStyleName }) => {
                         <Card styleName={'PostHeader'}>
                             <div style={{ display: 'flex' }}>
                                 <Avatar
-                                    avatarSrc={
-                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
-                                    }
+                                    avatarSrc={state.AvatarSrc}
                                     styleName={'PostAvatarUsers'}
                                 />
 
@@ -76,19 +91,38 @@ const Comments = ({ bodyStyleName, cardStyleName }) => {
                             </div>
                         </Card>
                         <div className='CommentsSectionUsers'>
-                            {[
-                                1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 64, 5, 3, 4, 3, 5,
-                                56, 54, 34, 43,
-                            ].map((ele) => (
-                                <MiniUserCard
-                                    img={
-                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
-                                    }
-                                    imgStyleName='miniUserCardImg'
-                                    name={'vjkjkbkj'}
-                                    content={'gjkgkgk'}
-                                />
-                            ))}
+                            {state.Comments &&
+                                state.Comments.map((ele) => (
+                                    <MiniUserCard
+                                        img={
+                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
+                                        }
+                                        imgStyleName={'miniUserCardImg'}
+                                        optContent={
+                                            <>
+                                                <h3>Name:</h3>
+                                                <div className=''>
+                                                    <ReadMoreReact
+                                                        text={ele.Content}
+                                                        readMoreText={
+                                                            '...read More'
+                                                        }
+                                                        ideal={100}
+                                                    />
+                                                </div>
+                                            </>
+                                        }>
+                                        {' '}
+                                        {ele.CreatedAt &&
+                                            Date(ele.CreatedAt)
+                                                .slice(0, -34)
+                                                .slice(0, 15) +
+                                                ' -' +
+                                                Date(ele.CreatedAt)
+                                                    .slice(0, -34)
+                                                    .slice(15)}
+                                    </MiniUserCard>
+                                ))}
                         </div>
                     </div>
                 </div>

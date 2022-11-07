@@ -52,7 +52,7 @@ function App() {
             {authorised ? (
                 <Header setSocket={setSocket} setIsMenuOpen={setIsMenuOpen} />
             ) : null}
-            <>{isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}</>
+            <>{isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} auth={setAuthorised} />}</>
             <>
                 <Routes>
                     <Route

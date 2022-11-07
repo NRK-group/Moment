@@ -12,6 +12,8 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
+	SetupCorsResponse(w)
+	w.Header().Add("Content-Type", "application/text")
 	if r.Method == "GET" {
 		c, err := r.Cookie("session_token") // Access the cookie
 		if err == nil {                     // Cookie is present so remove
@@ -31,6 +33,7 @@ func (DB *Env) Logout(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
+		w.Write([]byte("Logged Out"))
 		w.WriteHeader(200)
 		return
 	}

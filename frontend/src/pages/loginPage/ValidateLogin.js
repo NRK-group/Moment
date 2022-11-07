@@ -46,8 +46,10 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
             return response.text();
         })
         .then((resp) => {
-            errMsg.innerHTML = resp;
+            errMsg.innerHTML = "";
+
             if (resp !== 'Valid Login') {
+                errMsg.innerHTML = resp;
                 return false;
             }
             if (resp === 'Valid Login') return true;

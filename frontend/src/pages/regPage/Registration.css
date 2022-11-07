@@ -3,7 +3,8 @@
     background-color: #ffffff00;
 }
 
-.authAvatarBtn{
+.authAvatarBtn {
+    /* all: unset; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,9 +15,11 @@
     background-color: var(--button-color);
     border: none;
     color: white;
+    position: relative;
     margin-bottom: 18%;
     margin-left: 75%;
     border-radius: 50%;
+
 }
 
 .authAvatar{
@@ -34,6 +37,7 @@
     border-radius: 50%;
     opacity: 0.85;
     cursor: pointer;
+    
 }
 
 .authDate{

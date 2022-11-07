@@ -1,7 +1,7 @@
 import { ValidateEmail } from '../loginPage/ValidateLogin';
-import { isValid } from 'date-fns';
+import { fromUnixTime, isValid } from 'date-fns';
 
-export default async function SendRegistration(values, div) {
+async function SendRegistration(values, div) {
     let result = ValidateRegistrationInfo(values);
     if (!result[0]) {
         div.innerHTML = result[1];
@@ -34,7 +34,7 @@ export default async function SendRegistration(values, div) {
             return await response.text();
         })
         .then((resp) => {
-            console.log("RESP =======   ", resp)
+            console.log('RESP =======   ', resp);
             div.innerHTML = resp;
             if (resp === 'Successfully Registered') {
                 div.style.color = 'green';
@@ -79,3 +79,22 @@ function ValidateRegistrationInfo(args) {
     if (!isValid(args[7])) return [false, 'Please enter a valid date'];
     return [true, ''];
 }
+
+function UpdateProfleImg(fileInput) {
+    let file = fileInput.files;
+    if (!file) return;
+    console.log('CHANGING!!!!');
+    const formData = new FormData();
+    formData.append('file', file[0]);
+    fetch('http://localhost:5070/updateprofileimg', {
+        method: 'POST',
+        body: formData,
+    }).then(async (response) => {
+        let result = await response.text()
+        return result
+    }).then( resp => {
+        console.log(resp)
+    });
+}
+
+export { UpdateProfleImg, SendRegistration };

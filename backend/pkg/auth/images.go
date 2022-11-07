@@ -32,12 +32,12 @@ func WriteImage(dir string, r *http.Request) (bool,string) {
 	}
 
 	imgType = getFilePrefix[len(getFilePrefix)-1]
-	tempFile, err := os.CreateTemp("images/profile", uuid.NewV4().String()+"*."+imgType)
+	tempFile, err := os.CreateTemp(dir, uuid.NewV4().String()+"*."+imgType)
 	if err != nil {
 		log.Println("Error creating temp file: ", err)
 	}
 	defer tempFile.Close()
-	imgUrl := "../../" + tempFile.Name()
+	imgUrl := tempFile.Name()
 	fileBytes, err := io.ReadAll(file)
 	if err != nil {
 		fmt.Println(err)

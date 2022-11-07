@@ -20,6 +20,7 @@
 .CommentsImg img {
     object-fit: fill;
     height: inherit;
+  width:fit-content;
 }
 
 .CommentsSection {
@@ -30,7 +31,6 @@
 
 .CommentsLeft {
     background-color: black;
-    
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -93,6 +93,11 @@
     color: black;
 }
 
+.CommentsSectionUsers .optContent .displayed-text{
+    width: 200px;
+    overflow-wrap: anywhere;
+}
+
 .CommentsSectionUsers .optContent P {
     justify-content:left;
     align-items: left;
@@ -116,6 +121,16 @@
     flex-direction: row-reverse;
 }
 
+.CommentsIcon {
+    display: flex;
+   width: 100px;
+   justify-content: space-around;
+}
+
+.CommentsLeft .react-input-emoji--input {
+width: 530px;
+}
+
 @media only screen and (max-width: 700px) {
     .Comments {
         flex-direction: column;
@@ -128,7 +143,6 @@
 
     .CommentsImg img {
         height:100%;
-        width: 370px;
       }
 
       .CommentsChatIcons input {
@@ -138,7 +152,7 @@
  
 
     .CommentsChat {
-        height: 40px;
+        height: auto;
     }
 
     .CommentsSection {
@@ -154,4 +168,9 @@
     .CommentsSectionUsers {
         height: 100%;
     }
+
+    .CommentsLeft .react-input-emoji--input {
+        width: 220px;
+        height: inherit;
+        }
 }

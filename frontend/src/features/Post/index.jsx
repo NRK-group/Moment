@@ -43,6 +43,7 @@ export default function Post({
             credentials: 'include',
             method: 'GET',
         }).then(async (response) => {
+            console.log(response)
             let resp = await response.json();
            return resp
         })

@@ -3,7 +3,7 @@ import Avatar from '../../components/Avatar';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
-import { FaceSmileIcon } from '../../components/Icons/Icons';
+import { MessagesIcon, UploadIcon } from '../../components/Icons/Icons';
 import { useRef, useState, useEffect } from 'react';
 import ReadMoreReact from 'read-more-react';
 import { useLocation } from 'react-router-dom';
@@ -59,8 +59,10 @@ const Comments = ({ bodyStyleName, cardStyleName }) => {
                                 onEnter={handleOnEnter}
                                 placeholder='Type a message'
                             />
-
-                            <p>Comm</p>
+                            <div className='CommentsIcon'>
+<i class="fa-solid fa-upload"></i>
+                            <i>  <MessagesIcon /></i>
+                            </div>
                         </div>
                     </div>
 
@@ -103,11 +105,14 @@ const Comments = ({ bodyStyleName, cardStyleName }) => {
                                                 <h3>Name:</h3>
                                                 <div className=''>
                                                     <ReadMoreReact
-                                                        text={ele.Content}
+                                                        text={" sbasjkbcdajskdbjkasbdkjsadvhjsvdhsavdhasdhsavdhjdvchgkasvdhas,vcdsvcasvhjcasbjkvsakjdvasjkcvsajkcvshjcbvsajkbcjsahvckjsdcvjksabcjksavcjksavcjksavcjkasvckjasvc"}
                                                         readMoreText={
                                                             '...read More'
                                                         }
-                                                        ideal={100}
+                                                        min={40}
+                                                        ideal={80}
+                                                        max={150}
+                                                        
                                                     />
                                                 </div>
                                             </>

@@ -48,14 +48,9 @@ function App() {
                     setIsMobile(boxRef.getBoundingClientRect().width < 600)
                 );
             }}>
-            {
-                <Validation>
-                    <Header
-                        setSocket={setSocket}
-                        setIsMenuOpen={setIsMenuOpen}
-                    />
-                </Validation>
-            }
+            {authorised ? (
+                <Header setSocket={setSocket} setIsMenuOpen={setIsMenuOpen} />
+            ) : null}
             <>{isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}</>
             <>
                 <Routes>
@@ -66,14 +61,14 @@ function App() {
                         path='/home'
                         element={
                             isMobile ? (
-                                <Validation>
+                                <Validation auth={setAuthorised}>
                                     <Home
                                         bodyStyleName='mobile'
                                         cardStyleName='mobileCard'
                                     />
                                 </Validation>
                             ) : (
-                                <Validation>
+                                <Validation auth={setAuthorised}>
                                     <Home
                                         bodyStyleName='desktop'
                                         cardStyleName='desktopCard'
@@ -85,7 +80,7 @@ function App() {
                     <Route
                         path='/search'
                         element={
-                            <Validation>
+                            <Validation auth={setAuthorised}>
                                 <Search />
                             </Validation>
                         }
@@ -93,7 +88,7 @@ function App() {
                     <Route
                         path='/newpost'
                         element={
-                            <Validation>
+                            <Validation auth={setAuthorised}>
                                 <NewPost />
                             </Validation>
                         }
@@ -101,7 +96,7 @@ function App() {
                     <Route
                         path='/messages'
                         element={
-                            <Validation>
+                            <Validation auth={setAuthorised}>
                                 {isMobile ? (
                                     <Chat
                                         bodyStyleName='mobile'
@@ -121,7 +116,7 @@ function App() {
                     <Route
                         path='/groups'
                         element={
-                            <Validation>
+                            <Validation auth={setAuthorised}>
                                 <h1>Groups</h1>
                             </Validation>
                         }
@@ -129,7 +124,7 @@ function App() {
                     <Route
                         path='/comments'
                         element={
-                            <Validation>
+                            <Validation auth={setAuthorised}>
                                 {isMobile ? (
                                     <Comments
                                         bodyStyleName='mobile'
@@ -147,14 +142,14 @@ function App() {
                     <Route
                         path='notifications'
                         element={
-                            <Validation>
+                            <Validation auth={setAuthorised}>
                                 <Notification users={generalNotif} />
                             </Validation>
                         }>
                         <Route
                             path='general'
                             element={
-                                <Validation>
+                                <Validation auth={setAuthorised}>
                                     <Notification users={generalNotif} />
                                 </Validation>
                             }
@@ -162,7 +157,7 @@ function App() {
                         <Route
                             path='followrequest'
                             element={
-                                <Validation>
+                                <Validation auth={setAuthorised}>
                                     <Notification users={followrequest} />
                                 </Validation>
                             }
@@ -170,7 +165,7 @@ function App() {
                         <Route
                             path='group'
                             element={
-                                <Validation>
+                                <Validation auth={setAuthorised}>
                                     <Notification users={groupNotif} />
                                 </Validation>
                             }
@@ -179,7 +174,7 @@ function App() {
                     <Route
                         path='profile'
                         element={
-                            <Validation>
+                            <Validation auth={setAuthorised}>
                                 <Profile
                                     aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
                                     fullname='Nathaniel Russell'
@@ -191,17 +186,14 @@ function App() {
                     <Route
                         path='/stories'
                         element={
-                            <Validation>
+                            <Validation auth={setAuthorised}>
                                 <Stories />
                             </Validation>
                         }
                     />
                 </Routes>
             </>
-            {
-                <Validation>
-                    <Footer />
-                </Validation>
+            { authorised ? <Footer /> : null
             }
         </div>
     );

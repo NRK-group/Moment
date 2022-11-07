@@ -23,8 +23,11 @@ CREATE TABLE IF NOT EXISTS "GroupMessage"(
 );
 CREATE TABLE IF NOT EXISTS "Chat"(
     chatId TEXT NOT NULL PRIMARY KEY,
-    user1 TEXT NOT NULL,
-    user2 TEXT NOT NULL,
+    groupId TEXT,
+    user1 TEXT,
+    user2 TEXT,
+    FOREIGN KEY ("groupId")
+        REFERENCES "Group"("groupId"),
     FOREIGN KEY ("user1")
         REFERENCES "User"("userId"),
     FOREIGN KEY ("user2")

@@ -103,6 +103,8 @@ function UpdateProfleImg(fileInput, profileImg, errMsg) {
         }
         console.log({profileImg})
         profileImg.style.backgroundImage = `url("http://localhost:5070/${resp}")`
+        errMsg.innerHTML= ""
+
     });
 }
 

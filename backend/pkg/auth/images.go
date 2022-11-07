@@ -14,7 +14,7 @@ func WriteImage(dir string, r *http.Request) (bool, string) {
 	file, handler, err := r.FormFile("file")
 	if err != nil {
 		log.Println("Error getting file from form data: ", err)
-		return false, "File Not Found"
+		return false, ""
 	}
 	defer file.Close()
 	getFilePrefix := strings.Split(handler.Filename, ".")

@@ -1,11 +1,10 @@
 package handler
 
 import (
-	"net/http"
-	"time"
-
 	"backend/pkg/auth"
 	"backend/pkg/structs"
+	"net/http"
+	"time"
 
 	uuid "github.com/satori/go.uuid"
 )

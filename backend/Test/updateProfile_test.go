@@ -13,10 +13,10 @@ func TestUpdateProfile(t *testing.T) {
 	t.Run("Request with valid URL", func(t *testing.T) {
 		Env := handler.Env{Env: database}
 
-		req := httptest.NewRequest(http.MethodGet, "/updateprofile", nil)
+		req := httptest.NewRequest(http.MethodGet, "/updateprofileimg", nil)
 		w := httptest.NewRecorder()
 
-		Env.Update(w, req)
+		Env.UpdateImage(w, req)
 		want := 200
 		got := w.Code
 
@@ -31,7 +31,7 @@ func TestUpdateProfile(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/badUrl", nil)
 		w := httptest.NewRecorder()
 
-		Env.Update(w, req)
+		Env.UpdateImage(w, req)
 		want := 404
 		got := w.Code
 

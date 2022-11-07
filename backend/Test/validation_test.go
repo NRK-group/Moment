@@ -152,3 +152,44 @@ func TestCapitalised(t *testing.T) {
 		t.Errorf("got %v, want %v ", got, want)
 	}
 }
+
+// func TestValidSession(t *testing.T) {
+// 	t.Run("check with valid session", func(t *testing.T) {
+// 		// Register a user
+// 		Env := handler.Env{Env: database}
+// 		validSeshEmail := "session@" + uuid.NewV4().String() + ".com"
+// 		inputUser := &structs.User{
+// 			FirstName: "Validation", LastName: "Validation", NickName: "NickTest", Email: validSeshEmail, Password: "Password123",
+// 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
+// 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+// 		}
+// 		err := auth.InsertUser(*inputUser, *Env.Env)
+// 		if err != nil {
+// 			t.Errorf("Error inserting test struct")
+// 		}
+// 		// Log the user in
+// 		sampleUser := &structs.User{
+// 			Email: validSeshEmail, Password: "Password123",
+// 		}
+// 		// Marshal the struct to bytes
+// 		sampleUserBytes, err := json.Marshal(sampleUser)
+// 		if err != nil {
+// 			t.Errorf("Error marshalling the sampleUser")
+// 		}
+
+// 		// Create the bytes into a reader
+// 		testReq := bytes.NewReader(sampleUserBytes)
+
+// 		req := httptest.NewRequest(http.MethodPost, "/login", testReq)
+// 		w := httptest.NewRecorder()
+// 		Env.Login(w, req)
+// 		var resultUser structs.User
+// 		auth.GetUser("email", validSeshEmail, &resultUser, *Env.Env)
+// 		got := auth.ValidSession(resultUser.SessionId, Env.Env)
+// 		want := true
+// 		if got != want {
+// 		t.Errorf("got %v, want %v ", got, want)
+
+// 		}
+// 	})
+// }

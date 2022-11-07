@@ -1,11 +1,16 @@
 import { WriteIcon } from '../../../components/Icons/Icons';
-const ChatContainerHeader = ({ userName }) => {
+const ChatContainerHeader = ({ userName, setIsModalOpen }) => {
     return (
         <div className='chatContainerHeader'>
             <div>
                 <div className='userName'>{userName}</div>
             </div>
-            <WriteIcon />
+            <div
+                onClick={() => {
+                    setIsModalOpen(true);
+                }}>
+                <WriteIcon />
+            </div>
         </div>
     );
 };

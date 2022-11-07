@@ -7,6 +7,7 @@ import (
 	"backend/pkg/handler"
 	"backend/pkg/post"
 	"backend/pkg/structs"
+	wSocket "backend/pkg/websocket"
 	"fmt"
 	"log"
 	"math/rand"
@@ -67,6 +68,16 @@ func main() {
 	http.HandleFunc("/comment", database.Comment)
 	http.HandleFunc("/registration", database.Registration)
 	http.HandleFunc("/validate", database.Validate)
+
+
+
+	// handler for the websocket
+	hub := wSocket.NewHub()
+	go hub.LogConns()
+	go hub.Run()
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		handler.ServeWs(hub, w, r)
+	})
 
 	// start the server
 	log.Println("Server is running on port 5070")

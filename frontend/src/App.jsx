@@ -14,10 +14,12 @@ import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
 import Validation from './components/Validation/Validation';
-import { useEffect } from 'react';
+import { Menu } from './layouts/Menu/Menu';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     const [authorised, setAuthorised] = useState(false);
+    const [socket, setSocket] = useState(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     let generalNotif = [
         {
             name: 'John',
@@ -28,9 +30,13 @@ function App() {
     ];
     let followrequest = [{ name: 'Ken' }];
     let groupNotif = [];
+
     return (
         <div
             className='App'
+            onClick={() => {
+                setIsMenuOpen(false);
+            }}
             ref={(boxRef) => {
                 boxRef &&
                     console.log(
@@ -44,10 +50,13 @@ function App() {
             }}>
             {
                 <Validation>
-                    <Header />
+                    <Header
+                        setSocket={setSocket}
+                        setIsMenuOpen={setIsMenuOpen}
+                    />
                 </Validation>
             }
-
+            <>{isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}</>
             <>
                 <Routes>
                     <Route path='/' element={<Login auth={setAuthorised} />} />
@@ -93,17 +102,19 @@ function App() {
                         path='/messages'
                         element={
                             <Validation>
-                                isMobile ? (
-                                <Chat
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
+                                {isMobile ? (
+                                    <Chat
+                                        bodyStyleName='mobile'
+                                        cardStyleName='mobileCard'
+                                        socket={socket}
+                                    />
                                 ) : (
-                                <Chat
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                                )
+                                    <Chat
+                                        bodyStyleName='desktop'
+                                        cardStyleName='desktopCard'
+                                        socket={socket}
+                                    />
+                                )}
                             </Validation>
                         }
                     />
@@ -119,17 +130,17 @@ function App() {
                         path='/comments'
                         element={
                             <Validation>
-                                isMobile ? (
-                                <Comments
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
+                                {isMobile ? (
+                                    <Comments
+                                        bodyStyleName='mobile'
+                                        cardStyleName='mobileCard'
+                                    />
                                 ) : (
-                                <Comments
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                                )
+                                    <Comments
+                                        bodyStyleName='desktop'
+                                        cardStyleName='desktopCard'
+                                    />
+                                )}
                             </Validation>
                         }
                     />

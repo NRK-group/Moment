@@ -1,10 +1,17 @@
 import ChatContainerHeader from './ChatContainerHeader';
 import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
-export const ChatUsersContainer = ({ users, currentUserName, styleName }) => {
-    console.log(styleName);
+export const ChatUsersContainer = ({
+    users,
+    currentUserName,
+    styleName,
+    setIsModalOpen,
+}) => {
     return (
         <div className={`chatUsersContainer ${styleName}`}>
-            <ChatContainerHeader userName={currentUserName} />
+            <ChatContainerHeader
+                userName={currentUserName}
+                setIsModalOpen={setIsModalOpen}
+            />
             <div className='chatUsers scrollbar-hidden'>
                 {users.map(({ img, id, name, content }) => (
                     <MiniUserCard

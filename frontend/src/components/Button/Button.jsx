@@ -3,8 +3,9 @@ import './Button.css';
 export const Button = ({ styleName, content, action }) => {
     return (
         <button
-            onClick={() => {
+            onClick={(e) => {
                 action();
+                e.stopPropagation();
             }}
             className={`${styleName} btn`}>
             {content}

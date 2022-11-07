@@ -94,3 +94,61 @@ func TestValidPassword(t *testing.T) {
 		}
 	})
 }
+
+var (
+	emailtests    = []string{"valid@email.com", "valid@email.co.uk"}
+	invalidEmails = []string{"invalidemail.c", "invalid@email", "Invalid.email@com", "Invalid"}
+)
+
+func TestValidEmail(t *testing.T) {
+	t.Run("Testing valid emails", func(t *testing.T) {
+		for _, v := range emailtests {
+			got := auth.ValidEmail(v)
+			want := true
+			if got != want {
+				t.Errorf("Error cehcking valid email: got %v -- want %v", got, want)
+			}
+		}
+	})
+	t.Run("Testing valid emails", func(t *testing.T) {
+		for _, v := range invalidEmails {
+			got := auth.ValidEmail(v)
+			want := false
+			if got != want {
+				t.Errorf("Error cehcking valid email: got %v -- want %v ===== %v", got, want, v)
+			}
+		}
+	})
+}
+
+var invalid = [][]string{{"", "Last", "email@email.com", "Password123"}, {"first", "", "email@email.com", "Password123"}, {"first", "Last", "email@ema", "Password123"}, {"first", "Last", "email@email.com", "assword123"}}
+
+func TestValidValues(t *testing.T) {
+	t.Run("Valid input values", func(t *testing.T) {
+		_, got := auth.ValidateValues("Valid", "Valid", "email@email.com", "Password123")
+		want := true
+		if got != want {
+			t.Errorf("got %v, want %v ", got, want)
+		}
+	})
+	t.Run("Invalid values for each", func(t *testing.T) {
+		for _, v := range invalid {
+			_, got := auth.ValidateValues(v[0], v[1], v[2], v[3])
+			want := false
+			if got != want {
+				t.Errorf("got %v, want %v ", got, want)
+			}
+		}
+	})
+}
+
+func TestCapitalised(t *testing.T) {
+	user := structs.User{FirstName: "first", LastName: "last", NickName: "nick", Email: "EmAil@eMAil.com"}
+	auth.Capitalise(&user)
+
+	got := user
+	want := structs.User{FirstName: "First", LastName: "Last", NickName: "Nick", Email: "email@email.com"}
+	if got != want {
+		t.Errorf("got %v, want %v ", got, want)
+	}
+}

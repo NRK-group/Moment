@@ -34,7 +34,7 @@ const FooterNav = () => {
         </div>
     );
 };
-const MobileHeaderNav = () => {
+const MobileHeaderNav = ({ setIsMenuOpen }) => {
     return (
         <div className='mobileNavContainer'>
             <div className='navbar navbarSize' id='mobileHeaderNav'>
@@ -42,19 +42,23 @@ const MobileHeaderNav = () => {
                     <NavLink to='/notifications/general'>
                         <NotificationsIcon />
                     </NavLink>
-                    <NavLink to='/profile'>
+                    <div
+                        onClick={(e) => {
+                            setIsMenuOpen(true);
+                            e.stopPropagation();
+                        }}>
                         <ProfileIcon
                             img={'./logo.svg'}
                             imgStyleName='profileIcon'
                             iconStyleName='icon'
                         />
-                    </NavLink>
+                    </div>
                 </>
             </div>
         </div>
     );
 };
-const DesktopHeaderNav = () => {
+const DesktopHeaderNav = ({ setIsMenuOpen }) => {
     return (
         <div className='navContainer'>
             <div className='navbar' id='desktopHeaderNav'>
@@ -74,13 +78,17 @@ const DesktopHeaderNav = () => {
                     <NavLink to='/notifications/general'>
                         <NotificationsIcon />
                     </NavLink>
-                    <NavLink to='/profile'>
+                    <div
+                        onClick={(e) => {
+                            setIsMenuOpen(true);
+                            e.stopPropagation();
+                        }}>
                         <ProfileIcon
                             img={'./logo.svg'}
                             imgStyleName='profileIcon'
                             iconStyleName='icon'
                         />
-                    </NavLink>
+                    </div>
                 </>
             </div>
         </div>

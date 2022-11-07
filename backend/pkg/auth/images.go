@@ -28,19 +28,19 @@ func WriteImage(dir string, r *http.Request) (bool, string) {
 		log.Println("File size exceeded")
 		return false, "File Size Limit Exceeded"
 	}
-
 	imgType = getFilePrefix[len(getFilePrefix)-1]
 	tempFile, err := os.CreateTemp(dir, "*."+imgType)
 	if err != nil {
 		log.Println("Error creating temp file: ", err)
+		return false, ""
 	}
 	defer tempFile.Close()
 	imgUrl := tempFile.Name()
 	fileBytes, err := io.ReadAll(file)
 	if err != nil {
 		fmt.Println(err)
+		return false, ""
 	}
 	tempFile.Write(fileBytes)
-
 	return true, imgUrl
 }

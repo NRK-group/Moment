@@ -8,36 +8,49 @@ import { ProfileIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 
-export const Messages = ({ name, img, msg, socket, currentUserName }) => {
+export const Messages = ({ name, img, socket, currentUserName }) => {
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
-    const [messages, setMessages] = useState(msg);
+    const [messages, setMessages] = useState([]);
     const sendMessage = (e) => {
         e.preventDefault();
-        if (messageInput.current.value !== '') {
+        let message = messageInput.current.value;
+        if (message.trim() !== '') {
             let messageId = '';
-            socket.send(
-                JSON.stringify({
-                    messageId: messageId,
-                    type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
-                    receiverId: name + '', //change to the id of the receiver
-                    senderId: currentUserName + '', //chnage to current userid
-                    chatId: '1', //change to the chat id
-                    img: './logo.svg', // img of the sender
-                    content: messageInput.current.value, // content of the message
-                    createAt: new Date().toLocaleString(),
-                })
-            );
+            let data = {
+                messageId: messageId,
+                type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
+                receiverId: name + '', //change to the id of the receiver
+                senderId: currentUserName + '', //chnage to current userid
+                chatId: '1', //change to the chat id
+                img: './logo.svg', // img of the sender
+                content: messageInput.current.value, // content of the message
+                createAt: new Date().toLocaleString(),
+            };
+            socket.send(JSON.stringify(data));
+            setMessages((messages) => [...messages, data]);
             messageInput.current.value = '';
         }
     };
     useEffect(() => {
         chatBox.current.scroll({ top: chatBox.current.scrollHeight });
     }, [messages]);
+    let timeOutId;
+    const debounce = (call, time) => {
+        if (timeOutId) {
+            clearTimeout(timeOutId);
+        }
+        timeOutId = setTimeout(() => {
+            call();
+        }, time);
+    };
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             sendMessage(e);
+            return;
+        }
+        if (e.key === 'Backspace') {
             return;
         }
         socket.send(
@@ -54,14 +67,15 @@ export const Messages = ({ name, img, msg, socket, currentUserName }) => {
                 let data = JSON.parse(event.data);
                 if (data.type === 'privateMessage') {
                     setMessages((messages) => [...messages, data]);
+                    console.log('hello');
                 }
                 if (data.type === 'typing') {
                     isTyping.current.innerText = `${data.senderId} is typing...`;
                     //change the typing status
                     isTyping.current.style.display = 'block';
-                    setTimeout(() => {
+                    debounce(() => {
                         isTyping.current.style.display = 'none';
-                    }, 5000);
+                    }, 3000);
                 }
             }
         };
@@ -91,30 +105,35 @@ export const Messages = ({ name, img, msg, socket, currentUserName }) => {
             <div
                 className='chatMessageContainer scrollbar-hidden'
                 ref={chatBox}>
-                {messages.map((message, i) => {
-                    let date = message.createAt.split(',')[0];
-                    let time = message.createAt.split(',')[1];
-                    return (
-                        <MessageContainer
-                            key={message + i}
-                            message={message}
-                            name={message.senderId}
-                            img={message.img}>
-                            <MessageContent
-                                date={date + ' • ' + time}
-                                content={message.content}
-                            />
-                        </MessageContainer>
-                    );
-                })}
-                {/* <MessageContainer
-                    name='Firstname ajsdkjgasjdglajshgdjla;ksdklfnaskd;akldhk;asdk;asjgsjldgaljsgdljagsjldgasjldgajls'
-                    img='./logo.svg'>
-                    <MessageContent
-                        date={'11 October 2022 •17:46'}
-                        content='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl sit amet aliquam aliquam, nisl nisl aliquam nisl, sit amet aliquam nisl nisl sit amet.'
-                    />
-                </MessageContainer> */}
+                {messages &&
+                    messages.map((message, i) => {
+                        console.log(message);
+                        let date = message.createAt.split(',')[0];
+                        let time = message.createAt.split(',')[1];
+                        if (message.senderId === currentUserName) {
+                            return (
+                                <MessageContent
+                                    containerStyle={'senderContainer'}
+                                    key={message + i}
+                                    type='sender'
+                                    content={message.content}
+                                    date={date + ' • ' + time}
+                                />
+                            );
+                        }
+                        return (
+                            <MessageContainer
+                                key={message + i}
+                                message={message}
+                                name={message.senderId}
+                                img={message.img}>
+                                <MessageContent
+                                    date={date + ' • ' + time}
+                                    content={message.content}
+                                />
+                            </MessageContainer>
+                        );
+                    })}
             </div>
             <div className='isTypingContainer'>
                 <div className='isTyping' ref={isTyping}></div>
@@ -135,6 +154,7 @@ export const Messages = ({ name, img, msg, socket, currentUserName }) => {
                             rows='2'
                             placeholder='message'
                             ref={messageInput}
+                            autoFocus
                             onKeyDown={handleKeyDown}></textarea>
                     </div>
                     <div onClick={sendMessage}>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-export default function Validation({setAuth, children}) {
+export default function Validation({auth, children}) {
     const navigate = useNavigate();
     //Query the endpoint and check if the cookie present is valid
     const [valid, setValid] = useState(false);
@@ -13,6 +13,7 @@ export default function Validation({setAuth, children}) {
             .then((response) => {
                 if (response === 'Validated') {
                     setValid(true);
+                    auth(true)
                     return;
                 }
                 navigate('/')

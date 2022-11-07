@@ -17,12 +17,8 @@ func (database *Env) Validate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/text")
 	if r.Method == "GET" {
 		c, err := r.Cookie("session_token")
-		if err != nil {
+		if err != nil || !auth.ValidateCookie(c, database.Env, w){
 			log.Println("No cookie found in validate")
-			io.WriteString(w, "Unauthorized")
-			return
-		}
-		if !auth.ValidateCookie(c, database.Env, w) {
 			io.WriteString(w, "Unauthorized")
 			return
 		}

@@ -12,7 +12,7 @@ const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
     const [currentReceiver, setcurrentReceiver] = useState('');
     return (
         <>
-            <>l
+            <>
                 {isModalOpen && (
                     <NewChatModal setIsModalOpen={setIsModalOpen} />
                 )}

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"backend/pkg/chat"
+	"backend/pkg/member"
 	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -48,5 +50,7 @@ func CreateGroup(name, description, admin string, database *structs.DB) (string,
 		fmt.Println("inside Create Group", err)
 		return "", err
 	}
+	member.AddMember(groupId.String(), admin, database)
+	chat.InsertNewGroupChat(groupId.String(), database)
 	return groupId.String(), nil
 }

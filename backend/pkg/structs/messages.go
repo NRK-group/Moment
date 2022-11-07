@@ -10,3 +10,11 @@ type Message struct {
 	Content     string `json:"content"`
 	CreateAt    string `json:"createAt"`
 }
+
+type Chat struct {
+	ChatId    string `json:"chatId"`
+	GroupId   string `json:"groupId"`
+	User1     string `json:"user1"`
+	User2     string `json:"user2"`
+	UpdatedAt string `json:"updatedAt"`
+}

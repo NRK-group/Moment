@@ -15,6 +15,7 @@ import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
 import Validation from './components/Validation/Validation';
 import { Menu } from './layouts/Menu/Menu';
+import ValidRedirect from './components/Validation/ValidRedirect';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
     const [authorised, setAuthorised] = useState(false);
@@ -54,8 +55,22 @@ function App() {
             <>{isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}</>
             <>
                 <Routes>
-                    <Route path='/' element={<Login auth={setAuthorised} />} />
-                    <Route path='/register' element={<Registration />} />
+                    <Route
+                        path='/'
+                        element={
+                            <ValidRedirect>
+                                <Login auth={setAuthorised} />
+                            </ValidRedirect>
+                        }
+                    />
+                    <Route
+                        path='/register'
+                        element={
+                            <ValidRedirect>
+                                <Registration />
+                            </ValidRedirect>
+                        }
+                    />
 
                     <Route
                         path='/home'
@@ -193,8 +208,7 @@ function App() {
                     />
                 </Routes>
             </>
-            { authorised ? <Footer /> : null
-            }
+            {authorised ? <Footer /> : null}
         </div>
     );
 }

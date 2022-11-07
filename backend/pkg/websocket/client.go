@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"time"
 
@@ -61,6 +62,7 @@ func (c *Client) ReadPump() {
 			}
 			break
 		}
+		fmt.Println("messageByte", string(messageByte))
 		messageByte = bytes.TrimSpace(bytes.Replace(messageByte, Newline, Space, -1))
 		c.Hub.Broadcast <- messageByte
 	}

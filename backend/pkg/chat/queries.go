@@ -57,3 +57,25 @@ func InsertNewChat(user1Id string, user2Id string, database *structs.DB) (string
 	}
 	return chatId, nil
 }
+
+// InsertNewGroupChat inserts a new group chat message
+//
+// Param:
+//
+//	groupId: the group id
+//	database: the database
+func InsertNewGroupChat(groupId string, database *structs.DB) error {
+	stmt, err := database.DB.Prepare("INSERT INTO Chat (chatId, groupId, user1, user2, updatedAt) VALUES (?, ?, ?, ?, ?)")
+	chatId := uuid.NewV4().String()
+	updateAt := time.Now().String()
+	if err != nil {
+		l.LogMessage("Chat", "InsertNewGroupChat - Insert Error", err)
+		return err
+	}
+	_, err = stmt.Exec(chatId, groupId, "", "", updateAt)
+	if err != nil {
+		l.LogMessage("Chat", "InsertNewGroupChat - Exec Error", err)
+		return err
+	}
+	return nil
+}

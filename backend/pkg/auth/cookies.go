@@ -33,6 +33,7 @@ func RemoveCookie(w http.ResponseWriter) {
 	http.SetCookie(w, &http.Cookie{Name: "session_token", Value: "", Expires: time.Now()})
 }
 
+//ValidCookie checks if the session in a cookie is valid
 func ValidateCookie(c *http.Cookie, database *structs.DB, w http.ResponseWriter) bool {
 	cookie, cErr := SliceCookie(c.Value)
 	if cErr != nil {

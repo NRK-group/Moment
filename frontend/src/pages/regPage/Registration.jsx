@@ -122,7 +122,6 @@ export default function Registration() {
                 }>
                 Register
             </button>
-
             <AuthAlternative
                 question='Already have an account?'
                 option='Log in'

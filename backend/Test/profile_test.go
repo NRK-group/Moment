@@ -3,6 +3,7 @@ package Test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -110,9 +111,20 @@ func TestProfile(t *testing.T) {
 		reqLogin := httptest.NewRequest(http.MethodPost, "/login", logReq)
 		wr := httptest.NewRecorder()
 		Env.Login(wr, reqLogin)
+		var temp structs.User
+		getErr := auth.GetUser("email", profileEmail, &temp, *Env.Env)
+		if getErr != nil {
+			t.Errorf("Error getting the user")
+			return
+		}
 
 		reqProf := httptest.NewRequest(http.MethodGet, "/profile", nil)
 		reqProf.Header = http.Header{"Cookie": wr.Header()["Set-Cookie"]}
+
+		values := reqProf.URL.Query()
+		values.Add("userID", temp.UserId)
+		reqProf.URL.RawQuery = values.Encode()
+
 		profWr := httptest.NewRecorder()
 		Env.Profile(profWr, reqProf)
 		var result structs.User

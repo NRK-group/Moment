@@ -13,7 +13,7 @@ async function SendRegistration(values, div) {
         LastName: values[1],
         NickName: values[2],
         AboutMe: values[3],
-        Email: values[4],
+        Email: values[4].toLowerCase(),
         Password: values[5],
         DateOfBirth: values[7],
     };

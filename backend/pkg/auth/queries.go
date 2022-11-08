@@ -36,7 +36,6 @@ func CheckCredentials(email, password string, DB *structs.DB) (bool, string) {
 // InsertUser is a method that inserts a new user into the database
 func InsertUser(newUser structs.User, DB structs.DB) error {
 	newUser.UserId = uuid.NewV4().String() // Create a uuid for the user Id
-
 	stmt, err := DB.DB.Prepare(`INSERT INTO User values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`) // Create the sql INSERT statement
 	if err != nil {
 		fmt.Println("Error preparing inserting user into the db: ", err)

@@ -20,7 +20,7 @@ func TestHelper(t *testing.T) {
 	}
 	auth.InsertUser(*inputUser, *database)
 	var result structs.User
-	auth.GetUser("email", email, &result, *database)
+	auth.GetUser("email", strings.ToLower(email), &result, *database)
 	t.Run("Check user privacy", func(t *testing.T) {
 		got := helper.CheckUserIfPublic(result.UserId, database)
 		want := true

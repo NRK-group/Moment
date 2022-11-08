@@ -127,7 +127,6 @@ func GetNumOfFollowing(userId string, database *structs.DB) (int, error) {
 			&user.NumFollowing,
 		)
 	}
-	l.LogMessage("follow.go", "GetNumOfFollowing", user)
 	return user.NumFollowing, nil
 }
 
@@ -149,7 +148,6 @@ func GetNumOfFollowers(userId string, database *structs.DB) (int, error) {
 			&user.NumFollowers,
 		)
 	}
-	l.LogMessage("follow.go", "GetNumOfFollowers", user)
 	return user.NumFollowers, nil
 }
 

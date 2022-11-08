@@ -115,6 +115,7 @@ export default function Registration() {
                             regPassword.current.value,
                             regConfirm.current.value,
                             startDate,
+                            profileImg.current
                         ],
                         regErrMsg.current
                     )

@@ -5,9 +5,11 @@ import (
 	"backend/pkg/structs"
 	"io"
 	"net/http"
+	"strings"
 
 	uuid "github.com/satori/go.uuid"
 )
+
 // Login is a handler that validates the credentials input by a user
 
 func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
@@ -23,17 +25,17 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		successfulLogin, validationMsg := auth.CheckCredentials(userLogin.Email, userLogin.Password, DB.Env) // Validate the login creds
+		successfulLogin, validationMsg := auth.CheckCredentials(strings.ToLower(userLogin.Email), userLogin.Password, DB.Env) // Validate the login creds
 		if !successfulLogin {
 			io.WriteString(w, validationMsg)
 			return
 		}
-		sessionErr := auth.UpdateSessionId(userLogin.Email, uuid.NewV4().String(), *DB.Env) // Create a sessionID
+		sessionErr := auth.UpdateSessionId(strings.ToLower(userLogin.Email), uuid.NewV4().String(), *DB.Env) // Create a sessionID
 		if sessionErr != nil {
 			io.WriteString(w, validationMsg)
 			return
 		}
-		err = auth.CreateCookie(w, userLogin.Email, DB.Env) // Create the cookie
+		err = auth.CreateCookie(w, strings.ToLower(userLogin.Email), DB.Env) // Create the cookie
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return

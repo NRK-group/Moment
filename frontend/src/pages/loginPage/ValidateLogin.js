@@ -29,7 +29,7 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
     }
     const LOGIN_CREDS = {
         //Make the obj with the login details
-        Email: email,
+        Email: email.toLowerCase(),
         Password: password,
     };
     // Send the data to the server to be validated by login handler

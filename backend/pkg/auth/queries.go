@@ -13,7 +13,7 @@ import (
 )
 
 // CheckCredentials accepts the email and password a user inputs and checks whether the login credentials are valid.
-//A boolean value and a string message are returned specifiying if the login was successful
+// A boolean value and a string message are returned specifiying if the login was successful
 func CheckCredentials(email, password string, DB *structs.DB) (bool, string) {
 	rows, err := DB.DB.Query(`SELECT password FROM User WHERE email = ?`, email)
 	if err != nil {
@@ -35,17 +35,13 @@ func CheckCredentials(email, password string, DB *structs.DB) (bool, string) {
 
 // InsertUser is a method that inserts a new user into the database
 func InsertUser(newUser structs.User, DB structs.DB) error {
-	// Create a uuid for the user Id
-	newUser.UserId = uuid.NewV4().String()
-	// Create the sql INSERT statement
-	stmt, err := DB.DB.Prepare(`INSERT INTO User values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+	newUser.UserId = uuid.NewV4().String() // Create a uuid for the user Id
+	stmt, err := DB.DB.Prepare(`INSERT INTO User values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`) // Create the sql INSERT statement
 	if err != nil {
 		fmt.Println("Error preparing inserting user into the db: ", err)
-		
 		return err
 	}
-	// Hash the password and get the current time
-	var hashErr error
+	var hashErr error // Hash the password and get the current time
 	if !ValidPassword(newUser.Password) {
 		return errors.New("Invalid Password")
 	}
@@ -55,16 +51,14 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 		return hashErr
 	}
 	newUser.CreatedAt = time.Now().String()
-
-	_, execErr := stmt.Exec(newUser.UserId, "-", newUser.FirstName, newUser.LastName, newUser.NickName, newUser.Email, newUser.DateOfBirth, newUser.Avatar, newUser.AboutMe, newUser.CreatedAt, newUser.IsLoggedIn, newUser.IsPublic, newUser.NumFollowers, newUser.NumFollowing, newUser.NumPosts, newUser.Password)
+	_, execErr := stmt.Exec(newUser.UserId, "-", newUser.FirstName, newUser.LastName, newUser.NickName, strings.ToLower(newUser.Email), newUser.DateOfBirth, newUser.Avatar, newUser.AboutMe, newUser.CreatedAt, newUser.IsLoggedIn, newUser.IsPublic, newUser.NumFollowers, newUser.NumFollowing, newUser.NumPosts, newUser.Password)
 	if execErr != nil {
 		fmt.Println("Error executing inserting user into the db: ", execErr)
-		if strings.Contains(execErr.Error() , "UNIQUE constraint failed: User.email") {
+		if strings.Contains(execErr.Error(), "UNIQUE constraint failed: User.email") {
 			return errors.New("Email already in use")
 		}
-		return execErr
 	}
-	return nil
+	return execErr
 }
 
 // Delete is used to delet a row from a specefied table
@@ -161,8 +155,7 @@ func CheckSession(session, user string, DB structs.DB) (bool, error) {
 	return valid, nil
 }
 
-
-//Update changes the specificed column in a specified table
+// Update changes the specificed column in a specified table
 func Update(table, set, to, where, id string, DB structs.DB) error {
 	update := "UPDATE " + table + " SET " + set + " = '" + to + "' WHERE " + where + " = '" + id + "'"
 	stmt, prepErr := DB.DB.Prepare(update)

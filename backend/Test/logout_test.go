@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"backend/pkg/auth"
@@ -131,7 +132,7 @@ func TestLogout(t *testing.T) {
 		Env := handler.Env{Env: database}
 		randEmail := "removeCookie@" + uuid.NewV4().String() + ".com"
 		sampleUser := &structs.User{
-			FirstName: "LogoutRemove", LastName: "LogoutRemove", NickName: "LogoutRemove", Email: randEmail, Password: "LogoutRemove1",
+			FirstName: "LogoutRemove", LastName: "LogoutRemove", NickName: "LogoutRemove", Email: strings.ToLower(randEmail), Password: "LogoutRemove1",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}

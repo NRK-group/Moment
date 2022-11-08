@@ -40,4 +40,31 @@ func TestProfile(t *testing.T) {
 			t.Errorf("Expected %v got %v", want, got)
 		}
 	})
+	t.Run("No Cookie Present", func(t *testing.T) {
+		Env := handler.Env{Env: database}
+
+		req := httptest.NewRequest(http.MethodGet, "/profile", nil)
+		w := httptest.NewRecorder()
+
+		Env.Profile(w, req)
+		want := "Unauthorised"
+		got := w.Body.String()
+		if got != want {
+			t.Errorf("Expected %v got %v", want, got)
+		}
+	})
+	t.Run("Register invalid Cookie", func(t *testing.T) {
+		Env := handler.Env{Env: database}
+
+		req := httptest.NewRequest(http.MethodGet, "/profile", nil)
+		w := httptest.NewRecorder()
+		req.AddCookie(&http.Cookie{Name: "session_token", Value: "INVALID"})
+
+		Env.Profile(w, req)
+		want := "Unauthorised"
+		got := w.Body.String()
+		if got != want {
+			t.Errorf("Expected %v got %v", want, got)
+		}
+	})
 }

@@ -12,7 +12,7 @@ type Env struct {
 	Env *structs.DB
 }
 
-// GetBody marshalls the body of a request into a struct, b must be a struct
+// GetBody unmarshalls the body of a request into a struct, b must be a struct
 func GetBody(b interface{}, w http.ResponseWriter, r *http.Request) error {
 	err := json.NewDecoder(r.Body).Decode(&b) // unmarshall the userdata
 	if err != nil {

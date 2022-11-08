@@ -79,14 +79,3 @@ func Capitalise(obj *structs.User) {
 	obj.NickName = strings.Title(strings.ToLower(obj.NickName))
 	obj.Email = strings.ToLower(obj.Email)
 }
-
-// func ValidSession(sessionId string, DB *structs.DB) bool {
-// 	// Check if the sessionId is present in the table
-// 	rows, err := DB.DB.Query("SELECT 1 FROM Users WHERE sessionId = ?", sessionId)
-// 	if err != nil {
-// 		log.Println("Error validating the session",err)
-// 	}
-// 	for rows.Next() {
-// 	}
-// 	return false
-// }

@@ -69,20 +69,6 @@ func TestInsertUser(t *testing.T) {
 
 		for rows.Next() {
 			rows.Scan(&resultUser.UserId, &resultUser.SessionId, &resultUser.FirstName, &resultUser.LastName, &resultUser.NickName, &resultUser.Email, &resultUser.DateOfBirth, &resultUser.Avatar, &resultUser.AboutMe, &resultUser.CreatedAt, &resultUser.IsLoggedIn, &resultUser.IsPublic, &resultUser.NumFollowers, &resultUser.NumFollowing, &resultUser.NumPosts, &resultUser.Password)
-
-			// resultUser = structs.User{
-			// 	UserId:      "-",
-			// 	SessionId:   sessionId,
-			// 	FirstName:   firstName,
-			// 	LastName:    lastName,
-			// 	NickName:    nickName,
-			// 	Email:       strings.ToLower(email),
-			// 	DateOfBirth: DOB,
-			// 	Avatar:      avatar,
-			// 	AboutMe:     aboutMe,
-			// 	CreatedAt:   "-",
-			// 	Password:    password,
-			// }
 		}
 		resultUser.UserId = "-"
 		resultUser.CreatedAt = "-"

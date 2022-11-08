@@ -42,9 +42,6 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 		fmt.Println("Error preparing inserting user into the db: ", err)
 		return err
 	}
-	if newUser.Avatar == "" {
-		newUser.Avatar = "images/profile/default-user.svg"
-	}
 	var hashErr error // Hash the password and get the current time
 	if !ValidPassword(newUser.Password) {
 		return errors.New("Invalid Password")

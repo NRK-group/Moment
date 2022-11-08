@@ -16,7 +16,6 @@ async function SendRegistration(values, div) {
         Email: values[4],
         Password: values[5],
         DateOfBirth: values[7],
-        // Avatar : 
     };
 
     div.innerHTML = `<div class="horizontal-bar-wrap">

@@ -49,10 +49,14 @@ function App() {
                     setIsMobile(boxRef.getBoundingClientRect().width < 600)
                 );
             }}>
-            {authorised ? (
+            {authorised && (
                 <Header setSocket={setSocket} setIsMenuOpen={setIsMenuOpen} />
-            ) : null}
-            <>{isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} auth={setAuthorised} />}</>
+            )}
+            <>
+                {isMenuOpen && (
+                    <Menu setIsMenuOpen={setIsMenuOpen} auth={setAuthorised} />
+                )}
+            </>
             <>
                 <Routes>
                     <Route
@@ -71,25 +75,12 @@ function App() {
                             </ValidRedirect>
                         }
                     />
-
                     <Route
                         path='/home'
                         element={
-                            isMobile ? (
-                                <Validation auth={setAuthorised}>
-                                    <Home
-                                        bodyStyleName='mobile'
-                                        cardStyleName='mobileCard'
-                                    />
-                                </Validation>
-                            ) : (
-                                <Validation auth={setAuthorised}>
-                                    <Home
-                                        bodyStyleName='desktop'
-                                        cardStyleName='desktopCard'
-                                    />
-                                </Validation>
-                            )
+                            <Validation auth={setAuthorised}>
+                                <Home isMobile={isMobile} />
+                            </Validation>
                         }
                     />
                     <Route
@@ -112,19 +103,7 @@ function App() {
                         path='/messages'
                         element={
                             <Validation auth={setAuthorised}>
-                                {isMobile ? (
-                                    <Chat
-                                        bodyStyleName='mobile'
-                                        cardStyleName='mobileCard'
-                                        socket={socket}
-                                    />
-                                ) : (
-                                    <Chat
-                                        bodyStyleName='desktop'
-                                        cardStyleName='desktopCard'
-                                        socket={socket}
-                                    />
-                                )}
+                                <Chat isMobile={isMobile} socket={socket} />
                             </Validation>
                         }
                     />
@@ -140,17 +119,7 @@ function App() {
                         path='/comments'
                         element={
                             <Validation auth={setAuthorised}>
-                                {isMobile ? (
-                                    <Comments
-                                        bodyStyleName='mobile'
-                                        cardStyleName='mobileCard'
-                                    />
-                                ) : (
-                                    <Comments
-                                        bodyStyleName='desktop'
-                                        cardStyleName='desktopCard'
-                                    />
-                                )}
+                                <Comments isMobile={isMobile} />
                             </Validation>
                         }
                     />

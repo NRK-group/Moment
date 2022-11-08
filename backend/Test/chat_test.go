@@ -73,19 +73,23 @@ func TestChatHandler(t *testing.T) {
 	t.Run("Chat handler", func(t *testing.T) {
 		// initialize the database struct with a mock database
 		// database := &structs.DB{DB: sqlite.CreateDatabase("./social_network_test.db")}
+		// Create the database struct
 		Env := handler.Env{Env: database}
-		validationValidEmail := "validCreds" + uuid.NewV4().String() + "@test.com"
+		validationValidEmail := "add" + uuid.NewV4().String() + "@test.com"
 		inputUser := &structs.User{
-			FirstName: "Validation", LastName: "Validation", NickName: "TesingChat", Email: validationValidEmail, Password: "Password123",
+			FirstName: "Adriell", LastName: "Validation123", NickName: "", Email: validationValidEmail, Password: "Password123",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
 		err := auth.InsertUser(*inputUser, *Env.Env)
 		if err != nil {
-			t.Errorf("Error inserting test struct")
+			t.Errorf("Error inserting test struct %v", err)
 		}
 		var result structs.User
-		auth.GetUser("email", validationValidEmail, &result, *Env.Env)
+		err = auth.GetUser("email", validationValidEmail, &result, *Env.Env)
+		if err != nil {
+			t.Errorf("Error getting test struct %v", err)
+		}
 		sampleUser := &structs.User{
 			Email: validationValidEmail, Password: "Password123",
 		}
@@ -104,15 +108,12 @@ func TestChatHandler(t *testing.T) {
 		nr.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 		nrr := httptest.NewRecorder() // create a response recorder
 		Env.Chat(nrr, nr)             // call the handler
-		l.LogMessage("Test", "UserId", result.UserId)
 		// get cookies
 		cookie, _ := nr.Cookie("session_token")
 		got, _ := auth.SliceCookie(cookie.Value)
 		want := result.UserId
-		l.LogMessage("Test", "got", got)
-		l.LogMessage("Test", "want", want)
 		if got[0] != want {
-			t.Errorf("Expected %s, got %s", want, got)
+			t.Errorf("Expected %s, got %s", want, got[0])
 		}
 		if nrr.Code != http.StatusOK {
 			t.Errorf("Expected status code %d, got %d", http.StatusOK, nrr.Code)

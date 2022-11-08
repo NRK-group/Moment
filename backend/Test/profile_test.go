@@ -1,11 +1,17 @@
 package Test
 
 import (
+	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"backend/pkg/handler"
+	"backend/pkg/structs"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 func TestProfile(t *testing.T) {
@@ -65,6 +71,63 @@ func TestProfile(t *testing.T) {
 		got := w.Body.String()
 		if got != want {
 			t.Errorf("Expected %v got %v", want, got)
+		}
+	})
+	t.Run("Check correct user is returned", func(t *testing.T) {
+		Env := handler.Env{Env: database}
+		profileEmail := strings.ToLower("profile@" + uuid.NewV4().String() + ".com")
+		// Create the struct that will be inserted
+		sampleUser := structs.User{
+			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: profileEmail, Password: "TestPass",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+
+		// Marhsal the struct to a slice of bytes
+		sampleUserBytes, err := json.Marshal(sampleUser)
+		if err != nil {
+			t.Errorf("Error marshalling the sampleUser")
+		}
+
+		// Create the bytes into a reader
+		testReq := bytes.NewReader(sampleUserBytes)
+
+		req := httptest.NewRequest(http.MethodPost, "/registration", testReq)
+		w := httptest.NewRecorder()
+		Env.Registration(w, req)
+		loginUser := structs.User{Email: profileEmail, Password: "TestPass"}
+
+		// Marhsal the struct to a slice of bytes
+		logUser, err := json.Marshal(loginUser)
+		if err != nil {
+			t.Errorf("Error marshalling the sampleUser")
+		}
+
+		// Create the bytes into a reader
+		logReq := bytes.NewReader(logUser)
+		reqLogin := httptest.NewRequest(http.MethodPost, "/login", logReq)
+		wr := httptest.NewRecorder()
+		Env.Login(wr, reqLogin)
+
+		reqProf := httptest.NewRequest(http.MethodGet, "/profile", nil)
+		reqProf.Header = http.Header{"Cookie": wr.Header()["Set-Cookie"]}
+		profWr := httptest.NewRecorder()
+		Env.Profile(profWr, reqProf)
+		var got structs.User
+		gotErr := json.Unmarshal(profWr.Body.Bytes(), &got)
+		if gotErr != nil {
+			t.Errorf("Error unmarshalling result: %v", gotErr)
+			return
+		}
+
+		want := sampleUser
+		got.UserId = "-"
+		got.SessionId = "-"
+		got.CreatedAt = "-"
+		want.Password = ""
+
+		if got != want {
+			t.Errorf("got %v \nwant %v", got, want)
 		}
 	})
 }

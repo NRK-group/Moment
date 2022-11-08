@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"backend/pkg/auth"
-	"backend/pkg/structs"
 	"io"
 	"net/http"
 	"strings"
+
+	"backend/pkg/auth"
+	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
 )

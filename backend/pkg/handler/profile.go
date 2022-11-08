@@ -23,7 +23,7 @@ func (DB *Env) Profile(w http.ResponseWriter, r *http.Request) {
 			response.WrtieMessage("No cookie present user unauthorized", "Unauthorised", w)
 			return
 		}
-		cookie, slcErr := auth.SliceCookie(c.Value)// Valid session so return details for the user
+		cookie, slcErr := auth.SliceCookie(c.Value) // Valid session so return details for the user
 		if slcErr != nil {
 			log.Println("No cookie present user unauthorized")
 			w.Write([]byte("Unauthorised"))
@@ -35,6 +35,7 @@ func (DB *Env) Profile(w http.ResponseWriter, r *http.Request) {
 			response.WrtieMessage("No cookie present user unauthorized", "Unauthorised", w)
 			return
 		}
+		result.Password = ""
 		sendBack, marshErr := json.Marshal(result)
 		if marshErr != nil {
 			response.WrtieMessage("Error marshalling user profile data", "500 Internal Server Error", w)

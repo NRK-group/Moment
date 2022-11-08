@@ -7,6 +7,7 @@ createMigration:
 	migrate create -ext sql -dir backend/pkg/db/migrations/sqlite -seq create_social_network_schema
 runGo:
 	rm -rf backend/social_network.db
+	cd backend && go run populate/main.go
 	cd backend && go run server.go
 runJs:
 	cd frontend && npm run dev

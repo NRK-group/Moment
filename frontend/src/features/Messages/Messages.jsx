@@ -8,10 +8,17 @@ import { ProfileIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 
-export const Messages = ({ name, img, socket, currentUserName }) => {
+export const Messages = ({
+    name,
+    img,
+    socket,
+    currentUserName,
+    receiverinfo,
+}) => {
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
+    console.log({ receiverinfo });
     const [messages, setMessages] = useState([]);
     const sendMessage = (e) => {
         e.preventDefault();
@@ -21,10 +28,10 @@ export const Messages = ({ name, img, socket, currentUserName }) => {
             let data = {
                 messageId: messageId,
                 type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
-                receiverId: name + '', //change to the id of the receiver
-                senderId: currentUserName + '', //chnage to current userid
-                chatId: '1', //change to the chat id
-                img: './logo.svg', // img of the sender
+                receiverId: receiverinfo.userId,
+                senderId: currentUserName, //chnage to current userid
+                chatId: receiverinfo.chatId,
+                img: receiverinfo.img,
                 content: messageInput.current.value, // content of the message
                 createAt: new Date().toLocaleString(),
             };
@@ -47,6 +54,7 @@ export const Messages = ({ name, img, socket, currentUserName }) => {
     };
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
+            console.log('enter');
             sendMessage(e);
             return;
         }
@@ -56,8 +64,8 @@ export const Messages = ({ name, img, socket, currentUserName }) => {
         socket.send(
             JSON.stringify({
                 type: 'typing', // message, notification, followrequest
-                senderId: currentUserName + '', // senderid
-                receiverId: name + '', //change to the id of the receiver
+                senderId: currentUserName, // senderid
+                receiverId: receiverinfo.userId, //change to the id of the receiver
             })
         );
     };

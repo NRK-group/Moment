@@ -1,6 +1,7 @@
 package Test
 
 import (
+	"strings"
 	"testing"
 
 	"backend/pkg/auth"
@@ -13,7 +14,7 @@ import (
 func TestHelper(t *testing.T) {
 	email := "Helper" + uuid.NewV4().String() + "@test.com"
 	inputUser := &structs.User{
-		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: email, Password: "Password123",
+		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: strings.ToLower(email), Password: "Password123",
 		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 1, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 	}

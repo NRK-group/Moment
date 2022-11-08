@@ -20,9 +20,7 @@ function mixedCase(str) {
 }
 
 export default function ValidateLoginAttempt(email, password, errMsg) {
-    errMsg.innerHTML = `<div class="horizontal-bar-wrap">
-    <div class="bar1 bar"></div>
-  </div>`;
+    errMsg.innerHTML = `<div class="dot-flashing"></div>`;
     if (!CheckCreds(email, password)) {
         errMsg.innerHTML = 'Incorrect email or password';
         return false; //Display the error message to client

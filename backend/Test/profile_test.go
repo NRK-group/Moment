@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"backend/pkg/auth"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
 
@@ -82,6 +83,7 @@ func TestProfile(t *testing.T) {
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
+		auth.Capitalise(&sampleUser)
 
 		// Marhsal the struct to a slice of bytes
 		sampleUserBytes, err := json.Marshal(sampleUser)
@@ -113,13 +115,13 @@ func TestProfile(t *testing.T) {
 		reqProf.Header = http.Header{"Cookie": wr.Header()["Set-Cookie"]}
 		profWr := httptest.NewRecorder()
 		Env.Profile(profWr, reqProf)
-		var got structs.User
-		gotErr := json.Unmarshal(profWr.Body.Bytes(), &got)
+		var result structs.User
+		gotErr := json.Unmarshal(profWr.Body.Bytes(), &result)
 		if gotErr != nil {
 			t.Errorf("Error unmarshalling result: %v", gotErr)
 			return
 		}
-
+		got := result
 		want := sampleUser
 		got.UserId = "-"
 		got.SessionId = "-"
@@ -127,7 +129,7 @@ func TestProfile(t *testing.T) {
 		want.Password = ""
 
 		if got != want {
-			t.Errorf("got %v \nwant %v", got, want)
+			t.Errorf("got %v \n want %v", got, want)
 		}
 	})
 }

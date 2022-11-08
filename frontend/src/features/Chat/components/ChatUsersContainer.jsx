@@ -5,8 +5,9 @@ export const ChatUsersContainer = ({
     styleName,
     setIsModalOpen,
     setcurrentReceiver,
+    chatList,
+    setReceiverInfo,
 }) => {
-    let users = [];
     return (
         <div className={`chatUsersContainer ${styleName}`}>
             <ChatContainerHeader
@@ -14,18 +15,24 @@ export const ChatUsersContainer = ({
                 setIsModalOpen={setIsModalOpen}
             />
             <div className='chatUsers scrollbar-hidden'>
-                {users.map(({ img, id, name, content }) => (
+                {chatList.map(({ chatId, user, content }) => (
                     <div
-                        key={id}
+                        key={chatId}
                         onClick={() => {
-                            setcurrentReceiver(name);
+                            setcurrentReceiver(user.username);
+                            setReceiverInfo({
+                                chatId: chatId,
+                                userId: user.userId,
+                                username: user.username,
+                                img: user.img,
+                            });
                         }}>
                         <MiniUserCard
-                            key={id}
-                            img={img}
-                            propsId={`chat` + id}
-                            name={name}>
-                            {content}
+                            key={user.userId}
+                            img={user.img}
+                            propsId={`chat` + user.userId}
+                            name={user.username}>
+                            {content.content}
                         </MiniUserCard>
                     </div>
                 ))}

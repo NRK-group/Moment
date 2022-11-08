@@ -115,13 +115,13 @@ export default function Registration() {
                             regPassword.current.value,
                             regConfirm.current.value,
                             startDate,
+                            profileImg.current
                         ],
                         regErrMsg.current
                     )
                 }>
                 Register
             </button>
-
             <AuthAlternative
                 question='Already have an account?'
                 option='Log in'

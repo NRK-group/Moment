@@ -7,20 +7,26 @@ async function SendRegistration(values, div) {
         div.innerHTML = result[1];
         return;
     }
+    //Get the image path
+    let IMG_NAME;
+    if (!values[8].style.backgroundImage) {
+        IMG_NAME = 'default-user.svg';
+    } else {
+        IMG_NAME = values[8].style.backgroundImage.split('/')[5].slice(0, -2);
+    }
     //Send registration request to the backend
     const REG_DETAILS = {
         FirstName: values[0],
         LastName: values[1],
         NickName: values[2],
         AboutMe: values[3],
-        Email: values[4],
+        Email: values[4].toLowerCase(),
         Password: values[5],
         DateOfBirth: values[7],
+        Avatar: `images/profile/${IMG_NAME}`,
     };
 
-    div.innerHTML = `<div class="horizontal-bar-wrap">
-    <div class="bar1 bar"></div>
-  </div>`;
+    div.innerHTML = `<div class="dot-flashing"></div>`;
 
     let registered = await fetch('http://localhost:5070/registration', {
         method: 'POST',
@@ -61,7 +67,7 @@ function ValidPassword(str) {
 function ValidateRegistrationInfo(args) {
     const FULL = args.every((element, i) => {
         //Check if any values are empty (EXCEPT NICKNAME AND ABOUT ME)
-        if (i == 7 || i == 2 || i == 3) return true;
+        if (i == 7 || i == 2 || i == 3 || i == 8) return true;
         if (element.trim().length === 0) return false;
         return true;
     });

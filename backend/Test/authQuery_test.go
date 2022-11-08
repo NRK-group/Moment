@@ -2,6 +2,7 @@ package Test
 
 import (
 	"strconv"
+	"strings"
 	"testing"
 
 	"backend/pkg/auth"
@@ -51,38 +52,26 @@ var tests = []structs.User{
 func TestInsertUser(t *testing.T) {
 	randEmail := "insertUSer@" + uuid.NewV4().String()
 	t.Run("Insert valid user to DB", func(t *testing.T) {
-		sampleUser := &structs.User{
-			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: randEmail, Password: "InsertUser",
+		sampleUser := structs.User{
+			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: strings.ToLower(randEmail), Password: "InsertUser",
 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
-		err := auth.InsertUser(*sampleUser, *database)
+		err := auth.InsertUser(sampleUser, *database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 
 		// Query the db to check if the user was inserted
 		rows, err := database.DB.Query(`SELECT * FROM User WHERE Email = ?`, sampleUser.Email)
-		var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password string
-		var resultUser *structs.User
+		// var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password string
+		var resultUser structs.User
 
 		for rows.Next() {
-			rows.Scan(&userId, &sessionId, &firstName, &lastName, &nickName, &email, &DOB, &avatar, &aboutMe, &createdAt, &isLoggedIn, &isPublic, &numFollowers, &numFollowing, &numPosts, &password)
-
-			resultUser = &structs.User{
-				UserId:      "-",
-				SessionId:   sessionId,
-				FirstName:   firstName,
-				LastName:    lastName,
-				NickName:    nickName,
-				Email:       email,
-				DateOfBirth: DOB,
-				Avatar:      avatar,
-				AboutMe:     aboutMe,
-				CreatedAt:   "-",
-				Password:    password,
-			}
+			rows.Scan(&resultUser.UserId, &resultUser.SessionId, &resultUser.FirstName, &resultUser.LastName, &resultUser.NickName, &resultUser.Email, &resultUser.DateOfBirth, &resultUser.Avatar, &resultUser.AboutMe, &resultUser.CreatedAt, &resultUser.IsLoggedIn, &resultUser.IsPublic, &resultUser.NumFollowers, &resultUser.NumFollowing, &resultUser.NumPosts, &resultUser.Password)
 		}
+		resultUser.UserId = "-"
+		resultUser.CreatedAt = "-"
 		sampleUser.Password = strconv.FormatBool(auth.CheckPasswordHash(sampleUser.Password, resultUser.Password))
 		if err != nil {
 			t.Errorf("Error hashing the password %v", err)
@@ -91,7 +80,7 @@ func TestInsertUser(t *testing.T) {
 		want := sampleUser
 		got := resultUser
 
-		if *got != *want {
+		if got != want {
 			t.Errorf("want %v, \n got %v", want, got)
 		}
 	})
@@ -153,7 +142,7 @@ func TestCheckCredentials(t *testing.T) {
 		wantStr := "Valid Login"
 		wantBool := true
 
-		gotBool, gotStr := auth.CheckCredentials(sampleUser.Email, sampleUser.Password, database)
+		gotBool, gotStr := auth.CheckCredentials(strings.ToLower(sampleUser.Email), sampleUser.Password, database)
 
 		if gotBool != wantBool && gotStr != wantStr {
 			t.Errorf("Got: %v %v, Want: %v %v", gotBool, gotStr, wantBool, wantStr)

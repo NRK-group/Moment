@@ -14,7 +14,7 @@ func TestProfile(t *testing.T) {
 
 		Env := handler.Env{Env: database}
 
-		req := httptest.NewRequest(http.MethodGet, "/login", nil)
+		req := httptest.NewRequest(http.MethodGet, "/profile", nil)
 		w := httptest.NewRecorder()
 
 		Env.Profile(w, req)

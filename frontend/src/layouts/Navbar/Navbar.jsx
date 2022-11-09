@@ -48,7 +48,7 @@ const MobileHeaderNav = ({ setIsMenuOpen }) => {
                             e.stopPropagation();
                         }}>
                         <ProfileIcon
-                            img={'./logo.svg'}
+                            img={''}
                             imgStyleName='profileIcon'
                             iconStyleName='icon'
                         />
@@ -84,7 +84,7 @@ const DesktopHeaderNav = ({ setIsMenuOpen }) => {
                             e.stopPropagation();
                         }}>
                         <ProfileIcon
-                            img={'./logo.svg'}
+                            img={''}
                             imgStyleName='profileIcon'
                             iconStyleName='icon'
                         />

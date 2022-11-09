@@ -18,20 +18,11 @@ import { Menu } from './layouts/Menu/Menu';
 import ValidRedirect from './components/Validation/ValidRedirect';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
-    const [authorised, setAuthorised] = useState(false);
+    const [auth, setAuthorised] = useState(false);
+    const authorised = Validation(auth);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    let generalNotif = [
-        {
-            name: 'John',
-            id: 1,
-            content: 'liked your post',
-            optContent: '1h',
-        },
-    ];
-    let followrequest = [{ name: 'Ken' }];
-    let groupNotif = [];
-
+    console.log('rendered');
     return (
         <div
             className='App'
@@ -39,20 +30,19 @@ function App() {
                 setIsMenuOpen(false);
             }}
             ref={(boxRef) => {
-                boxRef &&
-                    console.log(
-                        boxRef.getBoundingClientRect().width,
-                        boxRef.getBoundingClientRect().width >= 600
-                    );
                 return (
                     boxRef &&
                     setIsMobile(boxRef.getBoundingClientRect().width < 600)
                 );
             }}>
-            {authorised ? (
+            {authorised && (
                 <Header setSocket={setSocket} setIsMenuOpen={setIsMenuOpen} />
-            ) : null}
-            <>{isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} auth={setAuthorised} />}</>
+            )}
+            <>
+                {isMenuOpen && (
+                    <Menu setIsMenuOpen={setIsMenuOpen} auth={setAuthorised} />
+                )}
+            </>
             <>
                 <Routes>
                     <Route
@@ -71,143 +61,49 @@ function App() {
                             </ValidRedirect>
                         }
                     />
-
-                    <Route
-                        path='/home'
-                        element={
-                            isMobile ? (
-                                <Validation auth={setAuthorised}>
-                                    <Home
-                                        bodyStyleName='mobile'
-                                        cardStyleName='mobileCard'
-                                    />
-                                </Validation>
-                            ) : (
-                                <Validation auth={setAuthorised}>
-                                    <Home
-                                        bodyStyleName='desktop'
-                                        cardStyleName='desktopCard'
-                                    />
-                                </Validation>
-                            )
-                        }
-                    />
-                    <Route
-                        path='/search'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <Search />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/newpost'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <NewPost />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/messages'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                {isMobile ? (
-                                    <Chat
-                                        bodyStyleName='mobile'
-                                        cardStyleName='mobileCard'
-                                        socket={socket}
-                                    />
-                                ) : (
-                                    <Chat
-                                        bodyStyleName='desktop'
-                                        cardStyleName='desktopCard'
-                                        socket={socket}
-                                    />
-                                )}
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/groups'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <h1>Groups</h1>
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/comments'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                {isMobile ? (
-                                    <Comments
-                                        bodyStyleName='mobile'
-                                        cardStyleName='mobileCard'
-                                    />
-                                ) : (
-                                    <Comments
-                                        bodyStyleName='desktop'
-                                        cardStyleName='desktopCard'
-                                    />
-                                )}
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='notifications'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <Notification users={generalNotif} />
-                            </Validation>
-                        }>
+                    {/* need to be replaced */}
+                    <Route path='*' element={<></>} />
+                </Routes>
+            </>
+            {authorised && (
+                <>
+                    <Routes>
                         <Route
-                            path='general'
+                            path='/home'
+                            element={<Home isMobile={isMobile} />}
+                        />
+                        <Route path='/search' element={<Search />} />
+                        <Route path='/newpost' element={<NewPost />} />
+                        <Route
+                            path='/messages'
                             element={
-                                <Validation auth={setAuthorised}>
-                                    <Notification users={generalNotif} />
-                                </Validation>
+                                <Chat isMobile={isMobile} socket={socket} />
                             }
                         />
+                        <Route path='/groups' element={<h1>Groups</h1>} />
                         <Route
-                            path='followrequest'
-                            element={
-                                <Validation auth={setAuthorised}>
-                                    <Notification users={followrequest} />
-                                </Validation>
-                            }
+                            path='/comments'
+                            element={<Comments isMobile={isMobile} />}
+                        />
+                        <Route path='notifications' element={<></>} />
+                        <Route
+                            path='notifications/:type'
+                            element={<Notification />}
                         />
                         <Route
-                            path='group'
+                            path='profile'
                             element={
-                                <Validation auth={setAuthorised}>
-                                    <Notification users={groupNotif} />
-                                </Validation>
-                            }
-                        />
-                    </Route>
-                    <Route
-                        path='profile'
-                        element={
-                            <Validation auth={setAuthorised}>
                                 <Profile
                                     aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
                                     fullname='Nathaniel Russell'
                                     nickname='Nate'
                                 />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/stories'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <Stories />
-                            </Validation>
-                        }
-                    />
-                </Routes>
-            </>
+                            }
+                        />
+                        <Route path='/stories' element={<Stories />} />
+                    </Routes>
+                </>
+            )}
             {authorised ? <Footer /> : null}
         </div>
     );

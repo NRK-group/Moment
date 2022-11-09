@@ -6,7 +6,9 @@ import { ChatUsersContainer } from './components/chatUsersContainer';
 import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
 import { useState, useEffect } from 'react';
-const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
+const Chat = ({ isMobile, socket }) => {
+    let bodyStyleName = isMobile ? 'mobile' : 'desktop';
+    let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
     let [isModalOpen, setIsModalOpen] = useState(false);
     let user = document.cookie.split('=')[1].split('&')[0];
     const [currentReceiver, setcurrentReceiver] = useState('');

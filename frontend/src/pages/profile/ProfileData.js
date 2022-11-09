@@ -1,23 +1,20 @@
-export default async function GetProfile() {
-    //Access the current cookie
-    const COOKIE_VALUE = getCookie('session_token').split('&')[0];
-    if (!COOKIE_VALUE) return 'Unauthorised';
+export default async function GetProfile(user) {
     //Query the profile endpoint to get the data
-    let result = fetch(
+    if (!user) user = GetCookie("session_token").split("&")[0]
+    return await fetch(
         'http://localhost:5070/profile?' +
             new URLSearchParams({
-                userID: COOKIE_VALUE,
+                userID: user,
             }),
         {
             credentials: 'include',
         }
-    ).then( response => {
-        return response.json()
-    })
-    return await result
+    ).then((response) => {
+        return response.json();
+    });
 }
 
-function getCookie(name) {
+function GetCookie(name) {
     // Split cookie string and get all individual name=value pairs in an array
     var cookieArr = document.cookie.split(';');
 
@@ -31,7 +28,8 @@ function getCookie(name) {
             return cookiePair[1];
         }
     }
-
     // Return null if not found
     return null;
 }
+
+// export { GetCookie, GetProfile };

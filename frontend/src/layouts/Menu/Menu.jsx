@@ -3,7 +3,6 @@ import { Button } from '../../components/Button/Button';
 import { NavLink } from 'react-router-dom';
 import Logout from './Logout';
 import { useNavigate } from 'react-router-dom';
-import GetProfile from '../../pages/profile/ProfileData';
 
 export const Menu = ({ setIsMenuOpen, auth }) => {
     let navigate = useNavigate();
@@ -15,9 +14,6 @@ export const Menu = ({ setIsMenuOpen, auth }) => {
                     <div
                         onClick={() => {
                             setIsMenuOpen(false);
-                            GetProfile().then(resp => {
-                                console.log(resp)
-                            })
                         }}>
                         <NavLink to='/profile'>
                             <div>Profile</div>
@@ -27,8 +23,8 @@ export const Menu = ({ setIsMenuOpen, auth }) => {
                         styleName='logoutBtn'
                         content='Logout'
                         action={() => {
-                            Logout(navigate, auth);
                             setIsMenuOpen(false)
+                            Logout(navigate, auth);
                         }}
                     />
                 </div>

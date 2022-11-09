@@ -23,8 +23,8 @@ export const Menu = ({ setIsMenuOpen, auth }) => {
                         styleName='logoutBtn'
                         content='Logout'
                         action={() => {
-                            Logout(navigate, auth);
                             setIsMenuOpen(false)
+                            Logout(navigate, auth);
                         }}
                     />
                 </div>

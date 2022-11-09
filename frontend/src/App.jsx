@@ -22,7 +22,6 @@ function App() {
     const authorised = Validation(auth);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    console.log('rendered');
     return (
         <div
             className='App'

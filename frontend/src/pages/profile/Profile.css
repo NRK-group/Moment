@@ -17,13 +17,16 @@
 
 .profileAvatarImg{
     border: none;
-    height: 110%;
-    width: 110%;
+    height: 15vmax;
+    min-height: 125px;
+    width: 15vmax;
+    min-width: 125px;
+    border-radius: 50%;
 }
 
 .profileAvatar{
     margin: 5%;
-    margin-top: 0;
+    /* margin-top: 0; */
     height: 200px;
     width: 200px;
 }

@@ -54,7 +54,7 @@ func TestProfile(t *testing.T) {
 		w := httptest.NewRecorder()
 
 		Env.Profile(w, req)
-		want := "Unauthorised"
+		want := `{"Message":"Unauthorised"}`
 		got := w.Body.String()
 		if got != want {
 			t.Errorf("Expected %v got %v", want, got)
@@ -68,7 +68,7 @@ func TestProfile(t *testing.T) {
 		req.AddCookie(&http.Cookie{Name: "session_token", Value: "INVALID"})
 
 		Env.Profile(w, req)
-		want := "Unauthorised"
+		want := `{"Message":"Unauthorised"}`
 		got := w.Body.String()
 		if got != want {
 			t.Errorf("Expected %v got %v", want, got)

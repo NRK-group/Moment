@@ -21,6 +21,7 @@ function App() {
     const [authorised, setAuthorised] = useState(false);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    console.log('rendered');
     return (
         <div
             className='App'
@@ -28,11 +29,6 @@ function App() {
                 setIsMenuOpen(false);
             }}
             ref={(boxRef) => {
-                boxRef &&
-                    console.log(
-                        boxRef.getBoundingClientRect().width,
-                        boxRef.getBoundingClientRect().width >= 600
-                    );
                 return (
                     boxRef &&
                     setIsMobile(boxRef.getBoundingClientRect().width < 600)
@@ -64,85 +60,51 @@ function App() {
                             </ValidRedirect>
                         }
                     />
-                    <Route
-                        path='/home'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <Home isMobile={isMobile} />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/search'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <Search />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/newpost'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <NewPost />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/messages'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <Chat isMobile={isMobile} socket={socket} />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/groups'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <h1>Groups</h1>
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/comments'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <Comments isMobile={isMobile} />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='notifications/:type'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <Notification />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='profile'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <Profile
-                                    aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
-                                    fullname='Nathaniel Russell'
-                                    nickname='Nate'
-                                />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/stories'
-                        element={
-                            <Validation auth={setAuthorised}>
-                                <Stories />
-                            </Validation>
-                        }
-                    />
+                    {/* need to be replaced */}
+                    <Route path='/home' element={<h1>loading</h1>} />
                     <Route path='*' element={<h1>404</h1>} />
                 </Routes>
             </>
+            <Validation auth={setAuthorised}>
+                {authorised && (
+                    <>
+                        <Routes>
+                            <Route
+                                path='/home'
+                                element={<Home isMobile={isMobile} />}
+                            />
+                            <Route path='/search' element={<Search />} />
+                            <Route path='/newpost' element={<NewPost />} />
+                            <Route
+                                path='/messages'
+                                element={
+                                    <Chat isMobile={isMobile} socket={socket} />
+                                }
+                            />
+                            <Route path='/groups' element={<h1>Groups</h1>} />
+                            <Route
+                                path='/comments'
+                                element={<Comments isMobile={isMobile} />}
+                            />
+                            <Route
+                                path='notifications/:type'
+                                element={<Notification />}
+                            />
+                            <Route
+                                path='profile'
+                                element={
+                                    <Profile
+                                        aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
+                                        fullname='Nathaniel Russell'
+                                        nickname='Nate'
+                                    />
+                                }
+                            />
+                            <Route path='/stories' element={<Stories />} />
+                        </Routes>
+                    </>
+                )}
+            </Validation>
             {authorised ? <Footer /> : null}
         </div>
     );

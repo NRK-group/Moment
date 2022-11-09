@@ -40,7 +40,6 @@ export default function Login({auth}) {
                      email.current.value,
                      password.current.value,
                      errMsg.current).then(resp => {
-                        console.log(resp)
                         if (resp) successfulLogin()
                      })
                 }

@@ -10,9 +10,12 @@ import CloseFriendsUsers from '../../features/profile/CloseFriendsUsers';
 import GetProfile from './ProfileData';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { Button } from '../../components/Button/Button';
 
 export default function Profile({ userId }) {
     const [values, setValues] = useState({});
+    //if userId check if curr user follows profile user
+    const relBtn = <Button content='Follow' styleName='relationship followBtn' action = {()=>{console.log("Hello World")}}></Button>
 
     useEffect(() => {
         GetProfile(userId).then((response) => setValues(response));
@@ -34,13 +37,16 @@ export default function Profile({ userId }) {
                         </h1>
                         <h3 className='profileDetailText'>{values.NickName}</h3>
                         <p className='profileAboutMe'>{values.AboutMe}</p>
+                        {
+                          userId?
                         <span className='profileButtonHolder'>
                             <button className='profileDetailBtn'>Edit</button>
                             <Card styleName='profileBestFriends'>
                                 <i className='fa-solid fa-user-group profileBestFriendsIcon'></i>
                                 Close Friends
                             </Card>
-                        </span>
+                        </span> : relBtn
+                        }
                     </Card>
                     <ProfileStats
                         styleName={'profileStats'}

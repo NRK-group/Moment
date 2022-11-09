@@ -18,7 +18,8 @@ import { Menu } from './layouts/Menu/Menu';
 import ValidRedirect from './components/Validation/ValidRedirect';
 function App() {
     const [isMobile, setIsMobile] = useState(false);
-    const [authorised, setAuthorised] = useState(false);
+    const [auth, setAuthorised] = useState(false);
+    const authorised = Validation(auth);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     console.log('rendered');
@@ -61,50 +62,48 @@ function App() {
                         }
                     />
                     {/* need to be replaced */}
-                    <Route path='/home' element={<h1>loading</h1>} />
-                    <Route path='*' element={<h1>404</h1>} />
+                    <Route path='*' element={<></>} />
                 </Routes>
             </>
-            <Validation auth={setAuthorised}>
-                {authorised && (
-                    <>
-                        <Routes>
-                            <Route
-                                path='/home'
-                                element={<Home isMobile={isMobile} />}
-                            />
-                            <Route path='/search' element={<Search />} />
-                            <Route path='/newpost' element={<NewPost />} />
-                            <Route
-                                path='/messages'
-                                element={
-                                    <Chat isMobile={isMobile} socket={socket} />
-                                }
-                            />
-                            <Route path='/groups' element={<h1>Groups</h1>} />
-                            <Route
-                                path='/comments'
-                                element={<Comments isMobile={isMobile} />}
-                            />
-                            <Route
-                                path='notifications/:type'
-                                element={<Notification />}
-                            />
-                            <Route
-                                path='profile'
-                                element={
-                                    <Profile
-                                        aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
-                                        fullname='Nathaniel Russell'
-                                        nickname='Nate'
-                                    />
-                                }
-                            />
-                            <Route path='/stories' element={<Stories />} />
-                        </Routes>
-                    </>
-                )}
-            </Validation>
+            {authorised && (
+                <>
+                    <Routes>
+                        <Route
+                            path='/home'
+                            element={<Home isMobile={isMobile} />}
+                        />
+                        <Route path='/search' element={<Search />} />
+                        <Route path='/newpost' element={<NewPost />} />
+                        <Route
+                            path='/messages'
+                            element={
+                                <Chat isMobile={isMobile} socket={socket} />
+                            }
+                        />
+                        <Route path='/groups' element={<h1>Groups</h1>} />
+                        <Route
+                            path='/comments'
+                            element={<Comments isMobile={isMobile} />}
+                        />
+                        <Route path='notifications' element={<></>} />
+                        <Route
+                            path='notifications/:type'
+                            element={<Notification />}
+                        />
+                        <Route
+                            path='profile'
+                            element={
+                                <Profile
+                                    aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
+                                    fullname='Nathaniel Russell'
+                                    nickname='Nate'
+                                />
+                            }
+                        />
+                        <Route path='/stories' element={<Stories />} />
+                    </Routes>
+                </>
+            )}
             {authorised ? <Footer /> : null}
         </div>
     );

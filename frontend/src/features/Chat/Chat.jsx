@@ -6,53 +6,22 @@ import { ChatUsersContainer } from './components/chatUsersContainer';
 import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
 import { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { GetChatList } from './GetChatList';
 const Chat = ({ isMobile, socket }) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
-    let [isModalOpen, setIsModalOpen] = useState(false);
     let user = document.cookie.split('=')[1].split('&')[0];
-    const [currentReceiver, setcurrentReceiver] = useState('');
-    const [chatList, setChatList] = useState([]);
-    const [receiverinfo, setReceiverInfo] = useState({
-        chatId: '',
-        userId: '',
-        username: '',
-        img: '',
-    });
-    useEffect(() => {
-        getChatList();
-    }, []);
-    const getChatList = () => {
-        fetch('http://localhost:5070/chat', {
-            credentials: 'include',
-        })
-            .then((res) => {
-                console.log(res);
-                return res.json();
-            })
-            .then((data) => {
-                setChatList(data);
-                console.log(data);
-            });
-    };
+    const chatList = GetChatList();
     return (
         <>
-            <>
-                {isModalOpen && (
-                    <NewChatModal setIsModalOpen={setIsModalOpen} />
-                )}
-            </>
             <Body styleName={bodyStyleName}>
                 <Card styleName={cardStyleName}>
                     <div className='chatContainer'>
                         <div className='chatBox'>
                             <ChatUsersContainer
                                 styleName='chatUsersContainer'
-                                currentUserName={user}
-                                setIsModalOpen={setIsModalOpen}
-                                setcurrentReceiver={setcurrentReceiver}
-                                setReceiverInfo={setReceiverInfo}
+                                currentUserInfo={user}
                                 chatList={chatList}
                             />
                             <div className='messagesContainer'>
@@ -62,11 +31,7 @@ const Chat = ({ isMobile, socket }) => {
                                             index
                                             element={
                                                 <div className='sendMessageContainer'>
-                                                    <SendMessageBox
-                                                        setIsModalOpen={
-                                                            setIsModalOpen
-                                                        }
-                                                    />
+                                                    <SendMessageBox />
                                                 </div>
                                             }
                                         />
@@ -78,16 +43,14 @@ const Chat = ({ isMobile, socket }) => {
                                             path=':id'
                                             element={
                                                 <Messages
-                                                    currentUserName={user}
-                                                    name={currentReceiver}
-                                                    receiverinfo={receiverinfo}
+                                                    currentUserInfo={user} // change to user info
                                                     socket={socket}
                                                 />
                                             }
                                         />
                                         <Route
                                             path=':id/*'
-                                            element={<h1>404: Not Found</h1>}
+                                            element={<Navigate to='/messages' />}
                                         />
                                     </Routes>
                                 </>

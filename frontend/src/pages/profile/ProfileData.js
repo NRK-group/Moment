@@ -1,10 +1,10 @@
-export default function GetProfile() {
+export default async function GetProfile() {
     //Access the current cookie
     const COOKIE_VALUE = getCookie('session_token').split('&')[0];
     if (!COOKIE_VALUE) return 'Unauthorised';
     //Query the profile endpoint to get the data
-    fetch(
-        'http://localhost:5070/profile' +
+    let result = fetch(
+        'http://localhost:5070/profile?' +
             new URLSearchParams({
                 userID: COOKIE_VALUE,
             }),
@@ -13,9 +13,8 @@ export default function GetProfile() {
         }
     ).then( response => {
         return response.json()
-    }).then(resp => {
-        console.log(resp)
-    });
+    })
+    return await result
 }
 
 function getCookie(name) {

@@ -15,7 +15,9 @@ export const Menu = ({ setIsMenuOpen, auth }) => {
                     <div
                         onClick={() => {
                             setIsMenuOpen(false);
-                            GetProfile()
+                            GetProfile().then(resp => {
+                                console.log(resp)
+                            })
                         }}>
                         <NavLink to='/profile'>
                             <div>Profile</div>

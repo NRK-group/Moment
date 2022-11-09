@@ -55,5 +55,5 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/validate", database.Validate)
 	http.HandleFunc("/updateprofileimg", database.UpdateImage)
 	http.HandleFunc("/chat", database.Chat)
-	http.HandleFunc("profile", database.Profile)
+	http.HandleFunc("/profile", database.Profile)
 }

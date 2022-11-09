@@ -21,17 +21,6 @@ function App() {
     const [authorised, setAuthorised] = useState(false);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    let generalNotif = [
-        {
-            name: 'John',
-            id: 1,
-            content: 'liked your post',
-            optContent: '1h',
-        },
-    ];
-    let followrequest = [{ name: 'Ken' }];
-    let groupNotif = [];
-
     return (
         <div
             className='App'
@@ -124,37 +113,13 @@ function App() {
                         }
                     />
                     <Route
-                        path='notifications'
+                        path='notifications/:type'
                         element={
                             <Validation auth={setAuthorised}>
-                                <Notification users={generalNotif} />
+                                <Notification />
                             </Validation>
-                        }>
-                        <Route
-                            path='general'
-                            element={
-                                <Validation auth={setAuthorised}>
-                                    <Notification users={generalNotif} />
-                                </Validation>
-                            }
-                        />
-                        <Route
-                            path='followrequest'
-                            element={
-                                <Validation auth={setAuthorised}>
-                                    <Notification users={followrequest} />
-                                </Validation>
-                            }
-                        />
-                        <Route
-                            path='group'
-                            element={
-                                <Validation auth={setAuthorised}>
-                                    <Notification users={groupNotif} />
-                                </Validation>
-                            }
-                        />
-                    </Route>
+                        }
+                    />
                     <Route
                         path='profile'
                         element={
@@ -175,6 +140,7 @@ function App() {
                             </Validation>
                         }
                     />
+                    <Route path='*' element={<h1>404</h1>} />
                 </Routes>
             </>
             {authorised ? <Footer /> : null}

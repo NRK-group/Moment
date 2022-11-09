@@ -16,24 +16,19 @@ import { Search } from './features/Search/Search';
 import Validation from './components/Validation/Validation';
 import { Menu } from './layouts/Menu/Menu';
 import ValidRedirect from './components/Validation/ValidRedirect';
+import useWindowDimensions from './components/hooks/useWindowDimensions';
 function App() {
-    const [isMobile, setIsMobile] = useState(false);
     const [auth, setAuthorised] = useState(false);
     const authorised = Validation(auth);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    console.log('rendered');
+    const { width } = useWindowDimensions();
+    let isMobile = width < 600;
     return (
         <div
             className='App'
             onClick={() => {
                 setIsMenuOpen(false);
-            }}
-            ref={(boxRef) => {
-                return (
-                    boxRef &&
-                    setIsMobile(boxRef.getBoundingClientRect().width < 600)
-                );
             }}>
             {authorised && (
                 <Header setSocket={setSocket} setIsMenuOpen={setIsMenuOpen} />

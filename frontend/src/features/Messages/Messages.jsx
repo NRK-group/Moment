@@ -1,25 +1,21 @@
 import './Messages.css';
-import SendMessageBox from './components/SendMessageBox';
-import Input from '../../components/Input/Input';
 import { MessagesIcon, UserIcon } from '../../components/Icons/Icons';
 import { MessageContainer } from './components/messageContainer';
 import { MessageContent } from './components/MessageContent';
 import { ProfileIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
-
-export const Messages = ({
-    name,
-    img,
-    socket,
-    currentUserName,
-    receiverinfo,
-}) => {
+import { useParams } from 'react-router-dom';
+export const Messages = ({ socket, currentUserInfo }) => {
+    const { id } = useParams();
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
-    console.log({ receiverinfo });
     const [messages, setMessages] = useState([]);
+    let receiverinfo = {};
+    useEffect(() => {
+        setMessages([]);
+    }, [id]);
     const sendMessage = (e) => {
         e.preventDefault();
         let message = messageInput.current.value;
@@ -29,7 +25,7 @@ export const Messages = ({
                 messageId: messageId,
                 type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
                 receiverId: receiverinfo.userId,
-                senderId: currentUserName, //chnage to current userid
+                senderId: currentUserInfo, //chnage to current userid
                 chatId: receiverinfo.chatId,
                 img: receiverinfo.img,
                 content: messageInput.current.value, // content of the message
@@ -64,7 +60,7 @@ export const Messages = ({
         socket.send(
             JSON.stringify({
                 type: 'typing', // message, notification, followrequest
-                senderId: currentUserName, // senderid
+                senderId: currentUserInfo, // senderid
                 receiverId: receiverinfo.userId, //change to the id of the receiver
             })
         );
@@ -98,12 +94,12 @@ export const Messages = ({
                                 <ProfileIcon
                                     iconStyleName='imgIcon'
                                     imgStyleName='imgIcon'
-                                    img={img}
+                                    img={receiverinfo.img}
                                 />
                             }
                         </span>
                         <span className='messageHeaderName longTextElipsis'>
-                            {name}
+                            {receiverinfo.username}
                         </span>
                     </div>
                     {/* this will be replace by the elipsis btn */}
@@ -118,7 +114,7 @@ export const Messages = ({
                         console.log(message);
                         let date = message.createAt.split(',')[0];
                         let time = message.createAt.split(',')[1];
-                        if (message.senderId === currentUserName) {
+                        if (message.senderId === currentUserInfo) {
                             return (
                                 <MessageContent
                                     containerStyle={'senderContainer'}

@@ -85,16 +85,7 @@ function App() {
                             path='notifications/:type'
                             element={<Notification />}
                         />
-                        <Route
-                            path='profile'
-                            element={
-                                <Profile
-                                    aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
-                                    fullname='Nathaniel Russell'
-                                    nickname='Nate'
-                                />
-                            }
-                        />
+                        <Route path='profile' element={<Profile />} />
                         <Route path='/stories' element={<Stories />} />
                     </Routes>
                 </>

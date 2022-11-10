@@ -30,7 +30,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
                 receiverId: id,
                 senderId: currentUserInfo, //chnage to current userid
                 chatId: receiverinfo.chatId,
-                img: receiverinfo.img,
+                img: receiverinfo.img, //change to current user img
                 content: messageInput.current.value, // content of the message
                 createAt: new Date().toLocaleString(),
             };

@@ -11,6 +11,7 @@ import {
 import './Navbar.css';
 
 const FooterNav = () => {
+    let notif = '';
     return (
         <div className='navbar'>
             {/* Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc.*/}
@@ -25,7 +26,10 @@ const FooterNav = () => {
                     <NewPostIcon />
                 </NavLink>
                 <NavLink to='/messages'>
-                    <MessagesIcon />
+                    <div className='notifIcon'>
+                        <MessagesIcon />
+                        {notif || <span className='notif'></span>}
+                    </div>
                 </NavLink>
                 <NavLink to='/groups'>
                     <GroupsIcon />
@@ -48,7 +52,7 @@ const MobileHeaderNav = ({ setIsMenuOpen }) => {
                             e.stopPropagation();
                         }}>
                         <ProfileIcon
-                            img={'./logo.svg'}
+                            img={''}
                             imgStyleName='profileIcon'
                             iconStyleName='icon'
                         />
@@ -59,6 +63,7 @@ const MobileHeaderNav = ({ setIsMenuOpen }) => {
     );
 };
 const DesktopHeaderNav = ({ setIsMenuOpen }) => {
+    let notif = '';
     return (
         <div className='navContainer'>
             <div className='navbar' id='desktopHeaderNav'>
@@ -67,7 +72,10 @@ const DesktopHeaderNav = ({ setIsMenuOpen }) => {
                         <HomeIcon />
                     </NavLink>
                     <NavLink to='/messages'>
-                        <MessagesIcon />
+                        <div className='notifIcon'>
+                            <MessagesIcon />
+                            {notif || <span className='notif'></span>}
+                        </div>
                     </NavLink>
                     <NavLink to='/newpost'>
                         <NewPostIcon />
@@ -76,7 +84,10 @@ const DesktopHeaderNav = ({ setIsMenuOpen }) => {
                         <GroupsIcon />
                     </NavLink>
                     <NavLink to='/notifications/general'>
-                        <NotificationsIcon />
+                        <div className='notifIcon'>
+                            <NotificationsIcon />
+                            {notif || <span className='notif'></span>}
+                        </div>
                     </NavLink>
                     <div
                         onClick={(e) => {
@@ -84,7 +95,7 @@ const DesktopHeaderNav = ({ setIsMenuOpen }) => {
                             e.stopPropagation();
                         }}>
                         <ProfileIcon
-                            img={'./logo.svg'}
+                            img={''}
                             imgStyleName='profileIcon'
                             iconStyleName='icon'
                         />

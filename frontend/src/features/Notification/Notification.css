@@ -69,3 +69,17 @@
     fill: var(--subheading-color);
     margin-bottom: 20px;
 }
+.notificationsHeader .notif {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 15px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--notif-color);
+    color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

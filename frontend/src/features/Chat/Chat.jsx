@@ -7,7 +7,7 @@ import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
 import { useState, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { GetChatList } from './GetChatList';
+import { GetChatList } from './hooks/getChatList';
 const Chat = ({ isMobile, socket }) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
@@ -36,7 +36,7 @@ const Chat = ({ isMobile, socket }) => {
                                             }
                                         />
                                         <Route
-                                            path='/new'
+                                            path='new'
                                             element={<NewChatModal />}
                                         />
                                         <Route
@@ -50,7 +50,9 @@ const Chat = ({ isMobile, socket }) => {
                                         />
                                         <Route
                                             path=':id/*'
-                                            element={<Navigate to='/messages' />}
+                                            element={
+                                                <Navigate to='/messages' />
+                                            }
                                         />
                                     </Routes>
                                 </>

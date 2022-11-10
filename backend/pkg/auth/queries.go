@@ -35,7 +35,7 @@ func CheckCredentials(email, password string, DB *structs.DB) (bool, string) {
 
 // InsertUser is a method that inserts a new user into the database
 func InsertUser(newUser structs.User, DB structs.DB) error {
-	newUser.UserId = uuid.NewV4().String() // Create a uuid for the user Id
+	newUser.UserId = uuid.NewV4().String()                                                                 // Create a uuid for the user Id
 	stmt, err := DB.DB.Prepare(`INSERT INTO User values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`) // Create the sql INSERT statement
 	if err != nil {
 		fmt.Println("Error preparing inserting user into the db: ", err)
@@ -168,4 +168,18 @@ func Update(table, set, to, where, id string, DB structs.DB) error {
 		return err
 	}
 	return nil
+}
+
+// UpdateUserProfile changes the relevant row in the database when a user updates their profile
+func UpdateUserProfile(user structs.User, DB structs.DB) error {
+	qry, err := DB.DB.Prepare("UPDATE User SET (fistName = ?, lastName= ?, nickName = ?, email = ?,  DOB = ?, avatar = ?, isPublic = ?, Password = ?) WHERE userId = ?")
+	if err != nil {
+		log.Println("Error updating the database")
+		return err
+	}
+	_, execErr := qry.Exec()
+	if execErr != nil {
+		log.Println("Error executing the update stmt")
+	}
+	return execErr
 }

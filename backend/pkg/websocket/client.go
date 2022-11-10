@@ -6,6 +6,8 @@ import (
 	"log"
 	"time"
 
+	"backend/pkg/structs"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -39,6 +41,8 @@ type Client struct {
 	Conn *websocket.Conn
 	// Buffered channel of outbound messages.
 	Send chan []byte
+	// Database connection
+	Database *structs.DB
 }
 
 // ReadPump pumps messages from the websocket connection to the hub.

@@ -5,17 +5,18 @@ import { MessageContent } from './components/MessageContent';
 import { ProfileIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useScrollDown } from './hooks/scrollDown';
 import { debounce } from './hooks/debounce';
 export const Messages = ({ socket, currentUserInfo }) => {
     const { id } = useParams();
+    const location = useLocation();
+    const { chatId, img, name } = location.state;
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
     const [messages, setMessages] = useState([]);
     useScrollDown(chatBox, messages);
-    let receiverinfo = {};
     useEffect(() => {
         setMessages([]);
     }, [id]);
@@ -23,16 +24,13 @@ export const Messages = ({ socket, currentUserInfo }) => {
         e.preventDefault();
         let message = messageInput.current.value;
         if (message.trim() !== '') {
-            let messageId = '';
             let data = {
-                messageId: messageId,
                 type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
                 receiverId: id,
                 senderId: currentUserInfo, //chnage to current userid
-                chatId: receiverinfo.chatId,
-                img: receiverinfo.img, //change to current user img
+                chatId: chatId,
                 content: messageInput.current.value, // content of the message
-                createAt: new Date().toLocaleString(),
+                createAt: Date().toLocaleString(),
             };
             socket.send(JSON.stringify(data));
             setMessages((messages) => [...messages, data]);
@@ -61,6 +59,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
             if (event.data) {
                 let data = JSON.parse(event.data);
                 if (data.type === 'privateMessage') {
+                    data.img = img;
                     setMessages((messages) => [...messages, data]);
                     isTyping.current.style.display = 'none';
                     console.log('hello');
@@ -86,12 +85,12 @@ export const Messages = ({ socket, currentUserInfo }) => {
                                 <ProfileIcon
                                     iconStyleName='imgIcon'
                                     imgStyleName='imgIcon'
-                                    img={receiverinfo.img}
+                                    img={img}
                                 />
                             }
                         </span>
                         <span className='messageHeaderName longTextElipsis'>
-                            {receiverinfo.username}
+                            {name}
                         </span>
                     </div>
                     {/* this will be replace by the elipsis btn */}
@@ -103,8 +102,6 @@ export const Messages = ({ socket, currentUserInfo }) => {
                 ref={chatBox}>
                 {messages &&
                     messages.map((message, i) => {
-                        let date = message.createAt.split(',')[0];
-                        let time = message.createAt.split(',')[1];
                         if (message.senderId === currentUserInfo) {
                             return (
                                 <MessageContent
@@ -112,7 +109,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
                                     key={message + i}
                                     type='sender'
                                     content={message.content}
-                                    date={date + ' • ' + time}
+                                    date={'date'}
                                 />
                             );
                         }
@@ -123,7 +120,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
                                 name={message.senderId}
                                 img={message.img}>
                                 <MessageContent
-                                    date={date + ' • ' + time}
+                                    date={'date'}
                                     content={message.content}
                                 />
                             </MessageContainer>

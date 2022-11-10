@@ -35,7 +35,7 @@ func main() {
 	go hub.LogConns()
 	go hub.Run()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		handler.ServeWs(hub, w, r)
+		database.ServeWs(hub, w, r)
 	})
 
 	// start the server
@@ -43,7 +43,7 @@ func main() {
 	http.ListenAndServe(":5070", nil)
 }
 
-//SetUpRoutes initialises the handlers
+// SetUpRoutes initialises the handlers
 func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/", database.Home)
 	http.HandleFunc("/post", database.Post)

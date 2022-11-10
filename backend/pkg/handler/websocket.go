@@ -16,7 +16,7 @@ import (
 //	hub: the hub that contains the clients connected to the websocket
 //	w: the response writer
 //	r: the request
-func ServeWs(hub *wSocket.Hub, w http.ResponseWriter, r *http.Request) {
+func (database *Env) ServeWs(hub *wSocket.Hub, w http.ResponseWriter, r *http.Request) {
 	wSocket.Upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 	conn, err := wSocket.Upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ServeWs(hub *wSocket.Hub, w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	client := &wSocket.Client{Hub: hub, UserId: arrCookie[0], Conn: conn, Send: make(chan []byte, 1024)}
+	client := &wSocket.Client{Hub: hub, UserId: arrCookie[0], Conn: conn, Send: make(chan []byte, 1024), Database: database.Env}
 	client.Hub.Register <- client
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.

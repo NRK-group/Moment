@@ -17,7 +17,6 @@ export const Messages = ({ socket, currentUserInfo }) => {
     let isTyping = useRef();
     const [messages, setMessages] = useState([]);
     useScrollDown(chatBox, messages);
-    let receiverinfo = {};
     useEffect(() => {
         setMessages([]);
     }, [id]);

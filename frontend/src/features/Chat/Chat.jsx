@@ -6,69 +6,56 @@ import { ChatUsersContainer } from './components/chatUsersContainer';
 import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
 import { useState, useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { GetChatList } from './hooks/getChatList';
 const Chat = ({ isMobile, socket }) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
-    let [isModalOpen, setIsModalOpen] = useState(false);
     let user = document.cookie.split('=')[1].split('&')[0];
-    const [currentReceiver, setcurrentReceiver] = useState('');
-    const [chatList, setChatList] = useState([]);
-    const [receiverinfo, setReceiverInfo] = useState({
-        chatId: '',
-        userId: '',
-        username: '',
-        img: '',
-    });
-    useEffect(() => {
-        getChatList();
-    }, []);
-    const getChatList = () => {
-        fetch('http://localhost:5070/chat', {
-            credentials: 'include',
-        })
-            .then((res) => {
-                console.log(res);
-                return res.json();
-            })
-            .then((data) => {
-                setChatList(data);
-            });
-    };
+    const chatList = GetChatList();
     return (
         <>
-            <>
-                {isModalOpen && (
-                    <NewChatModal setIsModalOpen={setIsModalOpen} />
-                )}
-            </>
             <Body styleName={bodyStyleName}>
                 <Card styleName={cardStyleName}>
                     <div className='chatContainer'>
                         <div className='chatBox'>
-                            {
-                                <ChatUsersContainer
-                                    styleName='chatUsersContainer'
-                                    currentUserName={user}
-                                    setIsModalOpen={setIsModalOpen}
-                                    setcurrentReceiver={setcurrentReceiver}
-                                    setReceiverInfo={setReceiverInfo}
-                                    chatList={chatList}
-                                />
-                            }
+                            <ChatUsersContainer
+                                styleName='chatUsersContainer'
+                                currentUserInfo={user}
+                                chatList={chatList}
+                            />
                             <div className='messagesContainer'>
-                                {receiverinfo.userId ? (
-                                    <Messages
-                                        currentUserName={user}
-                                        receiverinfo={receiverinfo}
-                                        socket={socket}
-                                    />
-                                ) : (
-                                    <div className='sendMessageContainer'>
-                                        <SendMessageBox
-                                            setIsModalOpen={setIsModalOpen}
+                                <>
+                                    <Routes>
+                                        <Route
+                                            index
+                                            element={
+                                                <div className='sendMessageContainer'>
+                                                    <SendMessageBox />
+                                                </div>
+                                            }
                                         />
-                                    </div>
-                                )}
+                                        <Route
+                                            path='new'
+                                            element={<NewChatModal />}
+                                        />
+                                        <Route
+                                            path=':id'
+                                            element={
+                                                <Messages
+                                                    currentUserInfo={user} // change to user info
+                                                    socket={socket}
+                                                />
+                                            }
+                                        />
+                                        <Route
+                                            path=':id/*'
+                                            element={
+                                                <Navigate to='/messages' />
+                                            }
+                                        />
+                                    </Routes>
+                                </>
                             </div>
                         </div>
                     </div>

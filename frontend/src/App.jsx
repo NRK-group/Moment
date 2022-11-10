@@ -70,7 +70,7 @@ function App() {
                         <Route path='/search' element={<Search />} />
                         <Route path='/newpost' element={<NewPost />} />
                         <Route
-                            path='/messages'
+                            path='/messages/*'
                             element={
                                 <Chat isMobile={isMobile} socket={socket} />
                             }

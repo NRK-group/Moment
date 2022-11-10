@@ -1,19 +1,24 @@
 import './Messages.css';
-import SendMessageBox from './components/SendMessageBox';
-import Input from '../../components/Input/Input';
 import { MessagesIcon, UserIcon } from '../../components/Icons/Icons';
 import { MessageContainer } from './components/messageContainer';
 import { MessageContent } from './components/MessageContent';
 import { ProfileIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
-
-export const Messages = ({ socket, currentUserName, receiverinfo }) => {
+import { useParams } from 'react-router-dom';
+import { useScrollDown } from './hooks/scrollDown';
+import { debounce } from './hooks/debounce';
+export const Messages = ({ socket, currentUserInfo }) => {
+    const { id } = useParams();
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
-    console.log({ receiverinfo });
     const [messages, setMessages] = useState([]);
+    useScrollDown(chatBox, messages);
+    let receiverinfo = {};
+    useEffect(() => {
+        setMessages([]);
+    }, [id]);
     const sendMessage = (e) => {
         e.preventDefault();
         let message = messageInput.current.value;
@@ -22,8 +27,8 @@ export const Messages = ({ socket, currentUserName, receiverinfo }) => {
             let data = {
                 messageId: messageId,
                 type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
-                receiverId: receiverinfo.userId,
-                senderId: currentUserName, //chnage to current userid
+                receiverId: id,
+                senderId: currentUserInfo, //chnage to current userid
                 chatId: receiverinfo.chatId,
                 img: receiverinfo.img, //change to current user img
                 content: messageInput.current.value, // content of the message
@@ -33,18 +38,6 @@ export const Messages = ({ socket, currentUserName, receiverinfo }) => {
             setMessages((messages) => [...messages, data]);
             messageInput.current.value = '';
         }
-    };
-    useEffect(() => {
-        chatBox.current.scroll({ top: chatBox.current.scrollHeight });
-    }, [messages]);
-    let timeOutId;
-    const debounce = (call, time) => {
-        if (timeOutId) {
-            clearTimeout(timeOutId);
-        }
-        timeOutId = setTimeout(() => {
-            call();
-        }, time);
     };
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -58,8 +51,8 @@ export const Messages = ({ socket, currentUserName, receiverinfo }) => {
         socket.send(
             JSON.stringify({
                 type: 'typing', // message, notification, followrequest
-                senderId: currentUserName, // senderid
-                receiverId: receiverinfo.userId, //change to the id of the receiver
+                senderId: currentUserInfo, // senderid
+                receiverId: id, //change to the id of the receiver
             })
         );
     };
@@ -69,6 +62,7 @@ export const Messages = ({ socket, currentUserName, receiverinfo }) => {
                 let data = JSON.parse(event.data);
                 if (data.type === 'privateMessage') {
                     setMessages((messages) => [...messages, data]);
+                    isTyping.current.style.display = 'none';
                     console.log('hello');
                 }
                 if (data.type === 'typing') {
@@ -77,7 +71,7 @@ export const Messages = ({ socket, currentUserName, receiverinfo }) => {
                     isTyping.current.style.display = 'block';
                     debounce(() => {
                         isTyping.current.style.display = 'none';
-                    }, 3000);
+                    }, 2000);
                 }
             }
         };
@@ -109,10 +103,9 @@ export const Messages = ({ socket, currentUserName, receiverinfo }) => {
                 ref={chatBox}>
                 {messages &&
                     messages.map((message, i) => {
-                        console.log(message);
                         let date = message.createAt.split(',')[0];
                         let time = message.createAt.split(',')[1];
-                        if (message.senderId === currentUserName) {
+                        if (message.senderId === currentUserInfo) {
                             return (
                                 <MessageContent
                                     containerStyle={'senderContainer'}

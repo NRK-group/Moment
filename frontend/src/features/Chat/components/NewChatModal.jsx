@@ -1,12 +1,14 @@
 import Input from '../../../components/Input/Input';
-import { CloseIcon, SearchIcon } from '../../../components/Icons/Icons';
+import { CloseIcon } from '../../../components/Icons/Icons';
 import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
-export const NewChatModal = ({ setIsModalOpen }) => {
+import { useNavigate } from 'react-router-dom';
+export const NewChatModal = () => {
+    const navigate = useNavigate();
     return (
         <div
             className='newChatModalContainer'
             onClick={() => {
-                setIsModalOpen(false);
+                navigate(`/messages`);
             }}>
             <div
                 className='newChatModal'
@@ -17,7 +19,7 @@ export const NewChatModal = ({ setIsModalOpen }) => {
                     <div className='closeIcon'>
                         <CloseIcon
                             action={() => {
-                                setIsModalOpen(false);
+                                navigate(`/messages`);
                             }}
                         />
                     </div>

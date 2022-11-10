@@ -32,7 +32,6 @@ const Chat = ({ isMobile, socket }) => {
             })
             .then((data) => {
                 setChatList(data);
-                console.log(data);
             });
     };
     return (
@@ -60,7 +59,6 @@ const Chat = ({ isMobile, socket }) => {
                                 {receiverinfo.userId ? (
                                     <Messages
                                         currentUserName={user}
-                                        name={currentReceiver}
                                         receiverinfo={receiverinfo}
                                         socket={socket}
                                     />

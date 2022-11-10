@@ -8,13 +8,7 @@ import { ProfileIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 
-export const Messages = ({
-    name,
-    img,
-    socket,
-    currentUserName,
-    receiverinfo,
-}) => {
+export const Messages = ({ socket, currentUserName, receiverinfo }) => {
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
@@ -31,7 +25,7 @@ export const Messages = ({
                 receiverId: receiverinfo.userId,
                 senderId: currentUserName, //chnage to current userid
                 chatId: receiverinfo.chatId,
-                img: receiverinfo.img,
+                img: receiverinfo.img, //change to current user img
                 content: messageInput.current.value, // content of the message
                 createAt: new Date().toLocaleString(),
             };
@@ -98,12 +92,12 @@ export const Messages = ({
                                 <ProfileIcon
                                     iconStyleName='imgIcon'
                                     imgStyleName='imgIcon'
-                                    img={img}
+                                    img={receiverinfo.img}
                                 />
                             }
                         </span>
                         <span className='messageHeaderName longTextElipsis'>
-                            {name}
+                            {receiverinfo.username}
                         </span>
                     </div>
                     {/* this will be replace by the elipsis btn */}

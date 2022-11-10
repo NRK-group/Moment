@@ -409,6 +409,13 @@ p {
     font-weight: bold;
 }
 
+
+.react-datepicker__input-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media all and (max-width: 780px) {
     .profileSection {
         min-width: 0;

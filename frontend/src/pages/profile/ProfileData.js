@@ -1,6 +1,6 @@
 //GetProfile gets all the profile stats for a user
 export default async function GetProfile(user) {
-    
+    console.log("FETCHING");
     if (!user) user = GetCookie("session_token").split("&")[0] // If userId is empty use the cookie as current user is viewing their own profile
     return await fetch(//Query the profile endpoint to get the data
         'http://localhost:5070/profile?' +

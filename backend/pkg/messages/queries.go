@@ -44,3 +44,29 @@ func InsertMessage(message structs.Message, database structs.DB) (structs.Messag
 	}
 	return msg, nil
 }
+
+// GetMessages returns the messages from a chat
+//
+// Param:
+//
+// chatId: the id of the chat
+//
+//	database: the database
+func GetPrivateMessages(chatId string, database structs.DB) ([]structs.Message, error) {
+	var message structs.Message
+	var messages []structs.Message
+	row, err := database.DB.Query("SELECT * FROM PrivateMessage WHERE chatId = ?", chatId)
+	if err != nil {
+		l.LogMessage("Messages.go", "GetMessages - Query", err)
+		return messages, err
+	}
+	for row.Next() {
+		err = row.Scan(&message.MessageId, &message.ChatId, &message.SenderId, &message.ReceiverId, &message.Content, &message.CreatedAt)
+		if err != nil {
+			l.LogMessage("Messages.go", "GetMessages - Scan", err)
+			return messages, err
+		}
+		messages = append(messages, message)
+	}
+	return messages, nil
+}

@@ -29,6 +29,7 @@
     /* margin-top: 0; */
     height: 200px;
     width: 200px;
+    border-radius: 50%;
 }
 
 .profileDetails {
@@ -407,6 +408,13 @@ p {
     width: fit-content;
     margin: 2% auto;
     font-weight: bold;
+}
+
+
+.react-datepicker__input-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media all and (max-width: 780px) {

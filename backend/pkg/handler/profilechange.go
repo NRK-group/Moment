@@ -1,9 +1,8 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
-
+	"fmt"
 	"backend/pkg/auth"
 	"backend/pkg/response"
 	"backend/pkg/structs"
@@ -25,17 +24,12 @@ func (DB *Env) ProfileChange(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Invalid Session", "Unauthorised", w)
 			return
 		}
-		var data structs.User // Get the values from the request
-		getErr := GetBody(&data, w, r)
-		if getErr != nil {
+		var data structs.User
+		if getErr := GetBody(&data, w, r); getErr != nil {
 			response.WriteMessage("Could not get request body", "Unauthorised", w)
 			return
 		}
-		fmt.Println()
-		fmt.Println("-=-=-+-+-+-+-+GOT here")
-		fmt.Println()
-		resp, valid := auth.ValidateValues(data.FirstName, data.LastName, data.Email, "NotChecking1", data.IsPublic)
-		if !valid {
+		if resp, valid := auth.ValidateValues(data.FirstName, data.LastName, data.Email, "NotChecking1", data.IsPublic); !valid {
 			response.WriteMessage("Update data not valid", resp, w)
 			return
 		}
@@ -44,11 +38,18 @@ func (DB *Env) ProfileChange(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Error slicing cookie", "Unauthorised", w)
 			return
 		}
-		updateErr := auth.UpdateUserProfile(cookieSlc[0], data, *DB.Env) // Update the values in the db
-		if updateErr != nil {
+		fmt.Println(cookieSlc, data.Email)
+		fmt.Println("ACTIVE EMAIL: ", auth.ActiveEmail(cookieSlc[0], data.Email, *DB.Env))
+		fmt.Println()
+		fmt.Println()
+		if auth.ActiveEmail(cookieSlc[0], data.Email, *DB.Env) {
+			response.WriteMessage("Error updating the user profile", "Email already in use", w)
+			return
+		}
+		if updateErr := auth.UpdateUserProfile(cookieSlc[0], data, *DB.Env); updateErr != nil { // Update the values in the db
 			response.WriteMessage("Error updating the user profile", "Unauthorised", w)
 			return
-	}
+		}
 		response.WriteMessage("Update user profile func run", "Updated", w)
 	}
 }

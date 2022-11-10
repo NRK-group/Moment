@@ -190,8 +190,10 @@ func ActiveEmail(userID, email string, DB structs.DB) bool {
 		return true
 	} else {
 		var userId string
+		fmt.Println("scanning")
 		for rows.Next() {
 			rows.Scan(&userId)
+			fmt.Println("USERID in activeemail === ", userId, "input userID: ", userID)
 			if (userId != userID) {
 				return true
 			}

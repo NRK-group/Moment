@@ -183,3 +183,19 @@ func UpdateUserProfile(userID string, user structs.User, DB structs.DB) error {
 	}
 	return execErr
 }
+//ActiveEmail checks if the email enetered is already in use and whether it belongs to the current user
+func ActiveEmail(userID, email string, DB structs.DB) bool {
+	if rows, err := DB.DB.Query("SELECT userId from User WHERE email = ?", email); err != nil {
+		log.Println("Invalid Query")
+		return true
+	} else {
+		var userId string
+		for rows.Next() {
+			rows.Scan(&userId)
+			if (userId != userID) {
+				return true
+			}
+		}
+	}
+	return false
+}

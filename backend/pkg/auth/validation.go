@@ -60,6 +60,7 @@ func SliceCookie(cookie string) ([]string, error) {
 
 // ValidateValues checks that all input values are valid to be inserted
 func ValidateValues(first, last, email, password string, isPublic int) (string, bool) {
+	//Check if the email is already in use
 	if len(first) == 0 || len(last) == 0 {
 		return "Names must only contain letters and hyphens", false
 	}

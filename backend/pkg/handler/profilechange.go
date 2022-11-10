@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"backend/pkg/auth"
@@ -8,7 +9,7 @@ import (
 	"backend/pkg/structs"
 )
 
-func (DB *Env) ProfileUpdate(w http.ResponseWriter, r *http.Request) {
+func (DB *Env) ProfileChange(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/updateprofileinfo" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
@@ -30,7 +31,10 @@ func (DB *Env) ProfileUpdate(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Could not get request body", "Unauthorised", w)
 			return
 		}
-		resp, valid := auth.ValidateValues(data.FirstName, data.LastName, data.Email, data.Password, data.IsPublic)
+		fmt.Println()
+		fmt.Println("-=-=-+-+-+-+-+GOT here")
+		fmt.Println()
+		resp, valid := auth.ValidateValues(data.FirstName, data.LastName, data.Email, "NotChecking1", data.IsPublic)
 		if !valid {
 			response.WriteMessage("Update data not valid", resp, w)
 			return
@@ -44,7 +48,7 @@ func (DB *Env) ProfileUpdate(w http.ResponseWriter, r *http.Request) {
 		if updateErr != nil {
 			response.WriteMessage("Error updating the user profile", "Unauthorised", w)
 			return
-		}
+	}
 		response.WriteMessage("Update user profile func run", "Updated", w)
 	}
 }

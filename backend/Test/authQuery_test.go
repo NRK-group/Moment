@@ -420,3 +420,46 @@ func TestUpdateUserProfile(t *testing.T) {
 		}
 	})
 }
+
+func TestActiveEmail(t *testing.T) {
+	t.Run("test where email doesn't exsist in db", func(t *testing.T) {
+		
+		got := auth.ActiveEmail("", "Notexsist", *database)
+		want := false
+		if got != want {
+			t.Errorf("Got %v Want %v", got, want)
+		}
+	})
+	t.Run("Test with email", func(t *testing.T) {
+		newEmail := strings.ToLower("test@uuid" + uuid.NewV4().String() + ".com")
+		// Create the struct that will be inserted
+		sampleUser := structs.User{
+			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: newEmail, Password: "TestPass",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+		auth.InsertUser(sampleUser, *database)
+		
+		auth.GetUser("email", newEmail, &sampleUser, *database)
+		got := auth.ActiveEmail(sampleUser.UserId, newEmail, *database)
+		want := false
+		if got != want {
+			t.Errorf("Got %v Want %v", got, want)
+		}
+	})
+	t.Run("Check with taken email", func(t *testing.T) {
+		newEmail := strings.ToLower("test@uuid" + uuid.NewV4().String() + ".com")
+		// Create the struct that will be inserted
+		sampleUser := structs.User{
+			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: newEmail, Password: "TestPass",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
+			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+		}
+		auth.InsertUser(sampleUser, *database)
+		got := auth.ActiveEmail("Random", newEmail, *database)
+		want := true
+		if got != want {
+			t.Errorf("Got %v Want %v", got, want)
+		}
+	})
+}

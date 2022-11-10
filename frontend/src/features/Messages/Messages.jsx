@@ -6,12 +6,15 @@ import { ProfileIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useScrollDown } from './hooks/scrollDown';
+import { debounce } from './hooks/debounce';
 export const Messages = ({ socket, currentUserInfo }) => {
     const { id } = useParams();
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
     const [messages, setMessages] = useState([]);
+    useScrollDown(chatBox, messages);
     let receiverinfo = {};
     useEffect(() => {
         setMessages([]);
@@ -24,7 +27,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
             let data = {
                 messageId: messageId,
                 type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
-                receiverId: receiverinfo.userId,
+                receiverId: id,
                 senderId: currentUserInfo, //chnage to current userid
                 chatId: receiverinfo.chatId,
                 img: receiverinfo.img,
@@ -35,18 +38,6 @@ export const Messages = ({ socket, currentUserInfo }) => {
             setMessages((messages) => [...messages, data]);
             messageInput.current.value = '';
         }
-    };
-    useEffect(() => {
-        chatBox.current.scroll({ top: chatBox.current.scrollHeight });
-    }, [messages]);
-    let timeOutId;
-    const debounce = (call, time) => {
-        if (timeOutId) {
-            clearTimeout(timeOutId);
-        }
-        timeOutId = setTimeout(() => {
-            call();
-        }, time);
     };
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -61,7 +52,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
             JSON.stringify({
                 type: 'typing', // message, notification, followrequest
                 senderId: currentUserInfo, // senderid
-                receiverId: receiverinfo.userId, //change to the id of the receiver
+                receiverId: id, //change to the id of the receiver
             })
         );
     };
@@ -71,6 +62,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
                 let data = JSON.parse(event.data);
                 if (data.type === 'privateMessage') {
                     setMessages((messages) => [...messages, data]);
+                    isTyping.current.style.display = 'none';
                     console.log('hello');
                 }
                 if (data.type === 'typing') {
@@ -79,7 +71,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
                     isTyping.current.style.display = 'block';
                     debounce(() => {
                         isTyping.current.style.display = 'none';
-                    }, 3000);
+                    }, 2000);
                 }
             }
         };
@@ -111,7 +103,6 @@ export const Messages = ({ socket, currentUserInfo }) => {
                 ref={chatBox}>
                 {messages &&
                     messages.map((message, i) => {
-                        console.log(message);
                         let date = message.createAt.split(',')[0];
                         let time = message.createAt.split(',')[1];
                         if (message.senderId === currentUserInfo) {

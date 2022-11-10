@@ -49,4 +49,11 @@ func TestMessage(t *testing.T) {
 			t.Errorf("Error inserting message: %v", err)
 		}
 	})
+	t.Run("Test Get Messages", func(t *testing.T) {
+		msgs, err := messages.GetPrivateMessages(chatId, *database)
+		l.LogMessage("message_test.go", "Test Get Messages", msgs)
+		if err != nil {
+			t.Errorf("Error getting messages: %v", err)
+		}
+	})
 }

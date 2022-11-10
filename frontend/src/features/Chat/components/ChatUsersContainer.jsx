@@ -19,7 +19,6 @@ export const ChatUsersContainer = ({
                             img: user.img,
                             name: user.username,
                         }}>
-                        {console.log(chatId)}
                         <MiniUserCard
                             img={user.img}
                             propsId={`chat` + user.userId}

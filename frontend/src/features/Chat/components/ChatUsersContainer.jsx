@@ -11,7 +11,15 @@ export const ChatUsersContainer = ({
             <ChatContainerHeader userName={currentUserInfo} />
             <div className='chatUsers scrollbar-hidden'>
                 {chatList.map(({ chatId, user, content }) => (
-                    <NavLink key={user.userId} to={`/messages/${user.userId}`}>
+                    <NavLink
+                        key={user.userId}
+                        to={`/messages/${user.userId}`}
+                        state={{
+                            chatId: chatId,
+                            img: user.img,
+                            name: user.username,
+                        }}>
+                        {console.log(chatId)}
                         <MiniUserCard
                             img={user.img}
                             propsId={`chat` + user.userId}

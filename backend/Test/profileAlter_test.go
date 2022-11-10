@@ -131,4 +131,17 @@ func TestProfileUpdate(t *testing.T) {
 			t.Errorf("Got %v Want %v", got, want)
 		}
 	})
+	t.Run("With no cookies", func(t *testing.T) {
+		Env := handler.Env{Env: database}
+
+		r := httptest.NewRequest(http.MethodPut, "/updateprofileinfo", nil)
+		w := httptest.NewRecorder()
+		Env.ProfileChange(w, r)
+		got := w.Body.String()
+		want := `{"Message":"Unauthorised"}`
+		if got != want {
+			t.Errorf("Got %v Want %v", got, want)
+		}
+	})
+
 }

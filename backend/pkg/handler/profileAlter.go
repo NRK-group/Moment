@@ -17,12 +17,8 @@ func (DB *Env) ProfileChange(w http.ResponseWriter, r *http.Request) {
 	SetupCorsResponse(w)
 	if r.Method == "PUT" {
 		c, err := r.Cookie("session_token")
-		if err != nil { // No cookie found
+		if err != nil || !auth.ValidateCookie(c, DB.Env, w) { // No cookie found
 			response.WriteMessage("No cookie found: ", "Unauthorised", w)
-			return
-		}
-		if !auth.ValidateCookie(c, DB.Env, w) { // Cookie doesn't have a valid session ID
-			response.WriteMessage("Invalid Session", "Unauthorised", w)
 			return
 		}
 		var data structs.User

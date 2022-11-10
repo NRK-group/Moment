@@ -9,7 +9,7 @@ export default function PrivacySelector(props) {
    
 
     return (
-      <select className={props.styleName} defaultValue={select}>;
+      <select className={props.styleName} ref={props.refr} defaultValue={select}>;
         
             <option key='privateSelector' >
                 Private

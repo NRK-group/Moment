@@ -347,41 +347,76 @@ func TestUpdate(t *testing.T) {
 	}
 }
 
+var newEmail = "email@" + uuid.NewV4().String() + ".com"
+
+var updateExamples = []structs.User{
+	{FirstName: "", LastName: "Update", NickName: "Update", Email: strings.ToLower(newEmail), DateOfBirth: "06-08-2002", AboutMe: "Update", Avatar: "Update", IsPublic: 1},
+	{FirstName: "Update", LastName: "", NickName: "Update", Email: strings.ToLower(newEmail), DateOfBirth: "06-08-2002", AboutMe: "Update", Avatar: "Update", IsPublic: 1},
+	{FirstName: "Update", LastName: "Update", NickName: "Update", Email: "", DateOfBirth: "06-08-2002", AboutMe: "Update", Avatar: "Update", IsPublic: 1},
+}
+
 func TestUpdateUserProfile(t *testing.T) {
-	updateEmail := "email@" + uuid.NewV4().String() + ".com"
-	newEmail := "email@" + uuid.NewV4().String() + ".com"
-	currTime := time.Now().String()
+	t.Run("Valid update", func(t *testing.T) {
+		updateEmail := "email@" + uuid.NewV4().String() + ".com"
+		newEmail := "email@" + uuid.NewV4().String() + ".com"
+		currTime := time.Now().String()
 
-	firstUser := structs.User{FirstName: "First", LastName: "Last", NickName: "Nick", Email: strings.ToLower(updateEmail), Password: "Password123", DateOfBirth: currTime, AboutMe: "AboutMe", Avatar: "Test", IsPublic: 0,  }
-	err := auth.InsertUser(firstUser, *database)
-	if err != nil {
-		t.Errorf("Error inserting the user")
-		return
-	}
-	var temp structs.User
-	getErr := auth.GetUser("email", strings.ToLower(updateEmail), &temp, *database)
-	if getErr != nil {
-		t.Errorf("Error getting the user")
-		return
-	}
-	//Create the struct to update the user
-	result := structs.User{FirstName: "Update", LastName: "Update", NickName: "Update", Email: strings.ToLower(newEmail), DateOfBirth: "06-08-2002", AboutMe: "Update", Avatar: "Update", IsPublic: 1}
-	updateErr := auth.UpdateUserProfile(temp.UserId, result, *database)
-	if updateErr != nil {
-		t.Errorf("Error updating the user profile ")
-		return
-	}
-	//Get the user to see if results have been updated
-	var got structs.User
-	auth.GetUser("email", strings.ToLower(newEmail), &got, *database)
-	got.UserId =""
-	got.SessionId= ""
-	got.Password = ""
-	got.DateOfBirth = ""
-	got.CreatedAt = ""
-	result.DateOfBirth = ""
+		firstUser := structs.User{FirstName: "First", LastName: "Last", NickName: "Nick", Email: strings.ToLower(updateEmail), Password: "Password123", DateOfBirth: currTime, AboutMe: "AboutMe", Avatar: "Test", IsPublic: 0}
+		err := auth.InsertUser(firstUser, *database)
+		if err != nil {
+			t.Errorf("Error inserting the user")
+			return
+		}
+		var temp structs.User
+		getErr := auth.GetUser("email", strings.ToLower(updateEmail), &temp, *database)
+		if getErr != nil {
+			t.Errorf("Error getting the user")
+			return
+		}
+		// Create the struct to update the user
+		result := structs.User{FirstName: "Update", LastName: "Update", NickName: "Update", Email: strings.ToLower(newEmail), DateOfBirth: "06-08-2002", AboutMe: "Update", Avatar: "Update", IsPublic: 1}
+		updateErr := auth.UpdateUserProfile(temp.UserId, result, *database)
+		if updateErr != nil {
+			t.Errorf("Error updating the user profile ")
+			return
+		}
+		// Get the user to see if results have been updated
+		var got structs.User
+		auth.GetUser("email", strings.ToLower(newEmail), &got, *database)
+		got.UserId = ""
+		got.SessionId = ""
+		got.Password = ""
+		got.DateOfBirth = ""
+		got.CreatedAt = ""
+		result.DateOfBirth = ""
 
-	if got != result {
-		t.Errorf("Got %v want %v", got, result)
-	}
-	}	
+		if got != result {
+			t.Errorf("Got %v want %v", got, result)
+		}
+	})
+	t.Run("insert invalid values", func(t *testing.T) {
+		updateEmail := "email@" + uuid.NewV4().String() + ".com"
+		currTime := time.Now().String()
+
+		firstUser := structs.User{FirstName: "First", LastName: "Last", NickName: "Nick", Email: strings.ToLower(updateEmail), Password: "Password123", DateOfBirth: currTime, AboutMe: "AboutMe", Avatar: "Test", IsPublic: 0}
+		err := auth.InsertUser(firstUser, *database)
+		if err != nil {
+			t.Errorf("Error inserting the user")
+			return
+		}
+		var temp structs.User
+		getErr := auth.GetUser("email", strings.ToLower(updateEmail), &temp, *database)
+		if getErr != nil {
+			t.Errorf("Error getting the user")
+			return
+		}
+		for _, v := range updateExamples {
+			// Create the struct to update the user
+			updateErr := auth.UpdateUserProfile(temp.UserId, v, *database)
+			if updateErr == nil {
+				t.Errorf("Error catching error in user profile ")
+				return
+			}
+		}
+	})
+}

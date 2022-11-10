@@ -24,7 +24,6 @@ func (DB *Env) ProfileUpdate(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Invalid Session", "Unauthorised", w)
 			return
 		}
-
 		var data structs.User // Get the values from the request
 		getErr := GetBody(&data, w, r)
 		if getErr != nil {
@@ -41,7 +40,11 @@ func (DB *Env) ProfileUpdate(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Error slicing cookie", "Unauthorised", w)
 			return
 		}
-		updateErr := auth.UpdateUserProfile(data, *DB.Env) // Update the values in the db
+		updateErr := auth.UpdateUserProfile(cookieSlc[0], data, *DB.Env) // Update the values in the db
+		if updateErr != nil {
+			response.WriteMessage("Error updating the user profile", "Unauthorised", w)
+			return
+		}
 		response.WriteMessage("Update user profile func run", "Updated", w)
 	}
 }

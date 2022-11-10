@@ -50,7 +50,7 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 		log.Print("Error hashing password", hashErr)
 		return hashErr
 	}
-	newUser.CreatedAt = time.Now().String()
+	newUser.CreatedAt = time.Now()
 	_, execErr := stmt.Exec(newUser.UserId, "-", newUser.FirstName, newUser.LastName, newUser.NickName, strings.ToLower(newUser.Email), newUser.DateOfBirth, newUser.Avatar, newUser.AboutMe, newUser.CreatedAt, newUser.IsLoggedIn, newUser.IsPublic, newUser.NumFollowers, newUser.NumFollowing, newUser.NumPosts, newUser.Password)
 	if execErr != nil {
 		fmt.Println("Error executing inserting user into the db: ", execErr)
@@ -171,15 +171,15 @@ func Update(table, set, to, where, id string, DB structs.DB) error {
 }
 
 // UpdateUserProfile changes the relevant row in the database when a user updates their profile
-func UpdateUserProfile(user structs.User, DB structs.DB) error {
-	qry, err := DB.DB.Prepare("UPDATE User SET (fistName = ?, lastName= ?, nickName = ?, email = ?,  DOB = ?, avatar = ?, isPublic = ?, Password = ?) WHERE userId = ?")
+func UpdateUserProfile(userID string, user structs.User, DB structs.DB) error {
+	qry, err := DB.DB.Prepare("UPDATE User SET firstName = ?, lastName = ?, nickName = ?, email = ?, DOB = ?, aboutMe = ?, avatar = ?, isPublic = ? WHERE userId = ?")
 	if err != nil {
-		log.Println("Error updating the database")
+		log.Println("Error updating the database", err)
 		return err
 	}
-	_, execErr := qry.Exec()
+	_, execErr := qry.Exec(user.FirstName, user.LastName, user.NickName, user.Email, user.DateOfBirth, user.AboutMe, user.Avatar, user.IsPublic, userID)
 	if execErr != nil {
-		log.Println("Error executing the update stmt")
+		log.Println("Error executing the update stmt ", execErr)
 	}
 	return execErr
 }

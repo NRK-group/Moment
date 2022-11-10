@@ -2,10 +2,11 @@ package handler
 
 import (
 	"net/http"
-	"fmt"
+
 	"backend/pkg/auth"
-	"backend/pkg/response"
 	"backend/pkg/structs"
+	"backend/pkg/response"
+
 )
 
 func (DB *Env) ProfileChange(w http.ResponseWriter, r *http.Request) {
@@ -38,10 +39,6 @@ func (DB *Env) ProfileChange(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Error slicing cookie", "Unauthorised", w)
 			return
 		}
-		fmt.Println(cookieSlc, data.Email)
-		fmt.Println("ACTIVE EMAIL: ", auth.ActiveEmail(cookieSlc[0], data.Email, *DB.Env))
-		fmt.Println()
-		fmt.Println()
 		if auth.ActiveEmail(cookieSlc[0], data.Email, *DB.Env) {
 			response.WriteMessage("Error updating the user profile", "Email already in use", w)
 			return

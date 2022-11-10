@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -17,7 +16,7 @@ import (
 func CheckCredentials(email, password string, DB *structs.DB) (bool, string) {
 	rows, err := DB.DB.Query(`SELECT password FROM User WHERE email = ?`, email)
 	if err != nil {
-		fmt.Println("Error querying the db: ", err)
+		log.Println("Error querying the db: ", err)
 		return false, "Error querying the db"
 	}
 	var pass string
@@ -38,7 +37,7 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	newUser.UserId = uuid.NewV4().String()                                                                 // Create a uuid for the user Id
 	stmt, err := DB.DB.Prepare(`INSERT INTO User values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`) // Create the sql INSERT statement
 	if err != nil {
-		fmt.Println("Error preparing inserting user into the db: ", err)
+		log.Println("Error preparing inserting user into the db: ", err)
 		return err
 	}
 	var hashErr error // Hash the password and get the current time
@@ -53,7 +52,7 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 	newUser.CreatedAt = time.Now().String()
 	_, execErr := stmt.Exec(newUser.UserId, "-", newUser.FirstName, newUser.LastName, newUser.NickName, strings.ToLower(newUser.Email), newUser.DateOfBirth, newUser.Avatar, newUser.AboutMe, newUser.CreatedAt, newUser.IsLoggedIn, newUser.IsPublic, newUser.NumFollowers, newUser.NumFollowing, newUser.NumPosts, newUser.Password)
 	if execErr != nil {
-		fmt.Println("Error executing inserting user into the db: ", execErr)
+		log.Println("Error executing inserting user into the db: ", execErr)
 		if strings.Contains(execErr.Error(), "UNIQUE constraint failed: User.email") {
 			return errors.New("Email already in use")
 		}
@@ -85,12 +84,12 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 	}
 	stmt, err := DB.DB.Prepare(`UPDATE User SET sessionId = ? WHERE email = ?`) // Update the session ID in the user table
 	if err != nil {
-		fmt.Println("Error preparing inserting user into the db: ", err)
+		log.Println("Error preparing inserting user into the db: ", err)
 		return err
 	}
 	_, err = stmt.Exec(value, email)
 	if err != nil {
-		fmt.Println("Error executing update sessionID")
+		log.Println("Error executing update sessionID")
 		return err
 	}
 	err = Delete("UserSessions", "userId", result.UserId, DB)
@@ -100,7 +99,7 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 	if value != "-" {
 		stmt, err := DB.DB.Prepare(`INSERT INTO UserSessions values (?, ?, ?)`) // Add the value to the db
 		if err != nil {
-			fmt.Println("Error Preparing Delete statement")
+			log.Println("Error Preparing Delete statement")
 			return err
 		}
 		stmt.Exec(value, result.UserId, time.Now().String())
@@ -112,7 +111,7 @@ func UpdateSessionId(email, value string, DB structs.DB) error {
 func GetUser(datatype, value string, result *structs.User, DB structs.DB) error {
 	rows, err := DB.DB.Query(`SELECT * FROM User WHERE `+datatype+` = ?`, value)
 	if err != nil {
-		fmt.Println("Error selecting data from db")
+		log.Println("Error selecting data from db")
 		return err
 	}
 	nothing := true
@@ -183,18 +182,17 @@ func UpdateUserProfile(userID string, user structs.User, DB structs.DB) error {
 	}
 	return execErr
 }
-//ActiveEmail checks if the email enetered is already in use and whether it belongs to the current user
+
+// ActiveEmail checks if the email enetered is already in use and whether it belongs to the current user
 func ActiveEmail(userID, email string, DB structs.DB) bool {
 	if rows, err := DB.DB.Query("SELECT userId from User WHERE email = ?", email); err != nil {
 		log.Println("Invalid Query")
 		return true
 	} else {
 		var userId string
-		fmt.Println("scanning")
 		for rows.Next() {
 			rows.Scan(&userId)
-			fmt.Println("USERID in activeemail === ", userId, "input userID: ", userID)
-			if (userId != userID) {
+			if userId != userID {
 				return true
 			}
 		}

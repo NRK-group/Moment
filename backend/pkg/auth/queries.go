@@ -50,7 +50,7 @@ func InsertUser(newUser structs.User, DB structs.DB) error {
 		log.Print("Error hashing password", hashErr)
 		return hashErr
 	}
-	newUser.CreatedAt = time.Now()
+	newUser.CreatedAt = time.Now().String()
 	_, execErr := stmt.Exec(newUser.UserId, "-", newUser.FirstName, newUser.LastName, newUser.NickName, strings.ToLower(newUser.Email), newUser.DateOfBirth, newUser.Avatar, newUser.AboutMe, newUser.CreatedAt, newUser.IsLoggedIn, newUser.IsPublic, newUser.NumFollowers, newUser.NumFollowing, newUser.NumPosts, newUser.Password)
 	if execErr != nil {
 		fmt.Println("Error executing inserting user into the db: ", execErr)

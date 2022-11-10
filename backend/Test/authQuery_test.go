@@ -1,7 +1,6 @@
 package Test
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 	"testing"
@@ -16,36 +15,37 @@ import (
 var tests = []structs.User{
 	{
 		FirstName: "", LastName: "Length", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "Length",
-		DateOfBirth: time.Now(), AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: time.Now(), UserId: "-", SessionId: "-",
+		DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 	},
 
 	{
 		FirstName: "Length", LastName: "", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "Length",
-		DateOfBirth: time.Now(), AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: time.Now(), UserId: "-", SessionId: "-",
+		DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 	},
 
 	{
 		FirstName: "Length", LastName: "Length", NickName: "Length", Email: "", Password: "Length",
-		DateOfBirth: time.Now(), AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: time.Now(), UserId: "-", SessionId: "-",
+		DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 	},
 
 	{
 		FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "",
-		DateOfBirth: time.Now(), AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: time.Now(), UserId: "-", SessionId: "-",
-		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-	},
-
-	{
-		FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "Length", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: time.Now(), UserId: "-", SessionId: "-",
+		DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 	},
 
 	{
 		FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "Length",
-		DateOfBirth: time.Now(), AboutMe: "Test about me section", Avatar: "testPath", UserId: "-", SessionId: "-",
+		DateOfBirth: "", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "0000-00-00", UserId: "-", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	},
+
+	{
+		FirstName: "Length", LastName: "Length", NickName: "Length", Email: "Length" + uuid.NewV4().String(), Password: "Length",
+		DateOfBirth: "0000-00-00", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 	},
 }
@@ -55,7 +55,7 @@ func TestInsertUser(t *testing.T) {
 	t.Run("Insert valid user to DB", func(t *testing.T) {
 		sampleUser := structs.User{
 			FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: strings.ToLower(randEmail), Password: "InsertUser",
-			DateOfBirth: time.Now(), AboutMe: "Test about me section", Avatar: "testPath", UserId: "-", SessionId: "-",
+			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
 		err := auth.InsertUser(sampleUser, *database)
@@ -350,8 +350,9 @@ func TestUpdate(t *testing.T) {
 func TestUpdateUserProfile(t *testing.T) {
 	updateEmail := "email@" + uuid.NewV4().String() + ".com"
 	newEmail := "email@" + uuid.NewV4().String() + ".com"
+	currTime := time.Now().String()
 
-	firstUser := structs.User{FirstName: "First", LastName: "Last", NickName: "Nick", Email: strings.ToLower(updateEmail), Password: "Password123", DateOfBirth: "01-01-0001", AboutMe: "AboutMe", Avatar: "Test", IsPublic: 0}
+	firstUser := structs.User{FirstName: "First", LastName: "Last", NickName: "Nick", Email: strings.ToLower(updateEmail), Password: "Password123", DateOfBirth: currTime, AboutMe: "AboutMe", Avatar: "Test", IsPublic: 0,  }
 	err := auth.InsertUser(firstUser, *database)
 	if err != nil {
 		t.Errorf("Error inserting the user")
@@ -359,21 +360,28 @@ func TestUpdateUserProfile(t *testing.T) {
 	}
 	var temp structs.User
 	getErr := auth.GetUser("email", strings.ToLower(updateEmail), &temp, *database)
-	fmt.Println("TEMP: ", temp.CreatedAt)
 	if getErr != nil {
 		t.Errorf("Error getting the user")
 		return
 	}
-	// Create the struct to update the user
+	//Create the struct to update the user
 	result := structs.User{FirstName: "Update", LastName: "Update", NickName: "Update", Email: strings.ToLower(newEmail), DateOfBirth: "06-08-2002", AboutMe: "Update", Avatar: "Update", IsPublic: 1}
 	updateErr := auth.UpdateUserProfile(temp.UserId, result, *database)
 	if updateErr != nil {
-		t.Errorf("Error updating the user profile %v", updateErr)
+		t.Errorf("Error updating the user profile ")
 		return
 	}
-
-	// Get the user to see if results have been updated
+	//Get the user to see if results have been updated
 	var got structs.User
 	auth.GetUser("email", strings.ToLower(newEmail), &got, *database)
-	fmt.Println("GOt: ", got)
-}
+	got.UserId =""
+	got.SessionId= ""
+	got.Password = ""
+	got.DateOfBirth = ""
+	got.CreatedAt = ""
+	result.DateOfBirth = ""
+
+	if got != result {
+		t.Errorf("Got %v want %v", got, result)
+	}
+	}	

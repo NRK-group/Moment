@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"backend/pkg/auth"
@@ -18,7 +17,6 @@ func (DB *Env) Profile(w http.ResponseWriter, r *http.Request) {
 	}
 	SetupCorsResponse(w)
 	if r.Method == "GET" {
-		fmt.Println("-------------Getting user data")
 		c, err := r.Cookie("session_token") // Check if a cookie is present
 		if err != nil || !auth.ValidateCookie(c, DB.Env, w) {
 			response.WriteMessage("No cookie present user unauthorized", "Unauthorised", w)

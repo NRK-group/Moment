@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"backend/pkg/messages"
 	"backend/pkg/structs"
 )
 
@@ -45,8 +46,20 @@ func (h *Hub) Run() {
 		case message := <-h.Broadcast:
 			var msg structs.Message
 			json.Unmarshal(message, &msg)
-			if _, valid := h.Clients[msg.ReceiverId]; valid {
-				h.Clients[msg.ReceiverId].Send <- message
+			if msg.MessageType == "privateMessage" {
+				if _, valid := h.Clients[msg.ReceiverId]; valid {
+					msg, err := messages.InsertMessage(msg, *h.Clients[msg.ReceiverId].Database)
+					if err != nil {
+						fmt.Println("error inserting message", err)
+					}
+					resp, _ := json.Marshal(msg)
+					h.Clients[msg.ReceiverId].Send <- resp
+				}
+			}
+			if msg.MessageType == "typing" {
+				if _, valid := h.Clients[msg.ReceiverId]; valid {
+					h.Clients[msg.ReceiverId].Send <- message
+				}
 			}
 			// for userId, client := range h.Clients {
 			// 	select {

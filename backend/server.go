@@ -31,7 +31,7 @@ func main() {
 	http.Handle("/images/", http.StripPrefix("/images/", gallery)) // handling the CSS
 
 	// handler for the websocket
-	hub := wSocket.NewHub()
+	hub := wSocket.NewHub(data)
 	go hub.LogConns()
 	go hub.Run()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {

@@ -56,4 +56,5 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/updateprofileimg", database.UpdateImage)
 	http.HandleFunc("/chat", database.Chat)
 	http.HandleFunc("/profile", database.Profile)
+	http.HandleFunc("/message", database.Message)
 }

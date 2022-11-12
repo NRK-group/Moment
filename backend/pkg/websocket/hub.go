@@ -20,15 +20,18 @@ type Hub struct {
 	Register chan *Client
 	// Unregister requests from clients.
 	Unregister chan *Client
+	// Database comnectiomn
+	Database *structs.DB
 }
 
 // NewHub creates a new hub
-func NewHub() *Hub {
+func NewHub(DB *structs.DB) *Hub {
 	return &Hub{
 		Broadcast:  make(chan []byte),
 		Register:   make(chan *Client),
 		Unregister: make(chan *Client),
 		Clients:    make(map[string]*Client),
+		Database:   DB,
 	}
 }
 
@@ -47,11 +50,11 @@ func (h *Hub) Run() {
 			var msg structs.Message
 			json.Unmarshal(message, &msg)
 			if msg.MessageType == "privateMessage" {
+				msg, err := messages.InsertMessage(msg, *h.Database)
+				if err != nil {
+					fmt.Println("error inserting message", err)
+				}
 				if _, valid := h.Clients[msg.ReceiverId]; valid {
-					msg, err := messages.InsertMessage(msg, *h.Clients[msg.ReceiverId].Database)
-					if err != nil {
-						fmt.Println("error inserting message", err)
-					}
 					resp, _ := json.Marshal(msg)
 					h.Clients[msg.ReceiverId].Send <- resp
 				}

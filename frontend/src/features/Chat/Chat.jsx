@@ -39,7 +39,7 @@ const Chat = ({ isMobile, socket }) => {
                                             element={<NewChatModal />}
                                         />
                                         <Route
-                                            path=':id'
+                                            path=':chatId'
                                             element={
                                                 <Messages
                                                     currentUserInfo={user} // change to user info
@@ -48,7 +48,7 @@ const Chat = ({ isMobile, socket }) => {
                                             }
                                         />
                                         <Route
-                                            path=':id/*'
+                                            path=':chatId/*'
                                             element={
                                                 <Navigate to='/messages' />
                                             }

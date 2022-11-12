@@ -29,17 +29,20 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 			l.LogMessage("Chat", "GetPreviousPrivateChat - Scan", err)
 			return chatList, err
 		}
+		m := make(map[string]structs.UserInfo)
 		if prevChat.User1 == userId {
 			userInfo, _ := GetUserInfo(prevChat.User2, database)
+			m[prevChat.User2] = userInfo
 			chatList = append([]structs.ChatWriter{{
 				ChatId: prevChat.ChatId,
-				User:   userInfo,
+				User:   m,
 			}}, chatList...)
 		} else {
 			userInfo, _ := GetUserInfo(prevChat.User1, database)
+			m[prevChat.User1] = userInfo
 			chatList = append([]structs.ChatWriter{{
 				ChatId: prevChat.ChatId,
-				User:   userInfo,
+				User:   m,
 			}}, chatList...)
 		}
 	}

@@ -22,9 +22,9 @@ type Chat struct {
 }
 
 type ChatWriter struct {
-	ChatId  string   `json:"chatId"`
-	User    UserInfo `json:"user"`
-	Content Message  `json:"content"`
+	ChatId  string              `json:"chatId"`
+	User    map[string]UserInfo `json:"user"`
+	Content Message             `json:"content"`
 }
 
 type UserInfo struct {

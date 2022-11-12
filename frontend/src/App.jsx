@@ -7,6 +7,7 @@ import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
+import ProfileInfoPopUp from './features/profile/ProfileInfoPopUp';
 import Stories from './pages/stories/stories';
 import Comments from './features/Comments';
 import { useState } from 'react';
@@ -85,7 +86,8 @@ function App() {
                             path='notifications/:type'
                             element={<Notification />}
                         />
-                        <Route path='profile' element={<Profile />} />
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/profile/update' element={<ProfileInfoPopUp styleName='popUp' />} />
                         <Route path='/stories' element={<Stories />} />
                     </Routes>
                 </>

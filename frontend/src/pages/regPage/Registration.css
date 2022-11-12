@@ -1,4 +1,4 @@
-.inputText{
+.inputText {
     pointer-events: none;
     background-color: #ffffff00;
 }
@@ -19,10 +19,9 @@
     margin-bottom: 18%;
     margin-left: 75%;
     border-radius: 50%;
-
 }
 
-.authAvatar{
+.authAvatar {
     display: flex;
     margin: auto;
     height: 10vmax;
@@ -36,10 +35,9 @@
     border-radius: 50%;
     opacity: 0.85;
     cursor: pointer;
-    
 }
 
-.authDate{
+.authDate {
     display: flex;
     justify-content: center;
     width: 85%;
@@ -47,16 +45,15 @@
     z-index: 1;
 }
 
-
-select::-webkit-scrollbar{
+select::-webkit-scrollbar {
     width: 10px;
 }
-select::-webkit-scrollbar-thumb{
+select::-webkit-scrollbar-thumb {
     background-color: var(--subheading-color);
     border-radius: 5px;
 }
 
-  .dot-flashing {
+.dot-flashing {
     position: relative;
     width: 10px;
     height: 10px;
@@ -64,17 +61,18 @@ select::-webkit-scrollbar-thumb{
     background-color: var(--button-color);
     color: var(--button-color);
     animation: dotFlashing 1s infinite linear alternate;
-    animation-delay: .5s;
-  }
-  
-  .dot-flashing::before, .dot-flashing::after {
+    animation-delay: 0.5s;
+}
+
+.dot-flashing::before,
+.dot-flashing::after {
     content: '';
     display: inline-block;
     position: absolute;
     top: 0;
-  }
-  
-  .dot-flashing::before {
+}
+
+.dot-flashing::before {
     left: -15px;
     width: 10px;
     height: 10px;
@@ -83,9 +81,9 @@ select::-webkit-scrollbar-thumb{
     color: var(--button-color);
     animation: dotFlashing 1s infinite alternate;
     animation-delay: 0s;
-  }
-  
-  .dot-flashing::after {
+}
+
+.dot-flashing::after {
     left: 15px;
     width: 10px;
     height: 10px;
@@ -94,15 +92,14 @@ select::-webkit-scrollbar-thumb{
     color: var(--button-color);
     animation: dotFlashing 1s infinite alternate;
     animation-delay: 1s;
-  }
-  
-  @keyframes dotFlashing {
+}
+
+@keyframes dotFlashing {
     0% {
-      background-color: var(--button-color);
+        background-color: var(--button-color);
     }
     50%,
     100% {
-      background-color: #bcd0ff;
+        background-color: #bcd0ff;
     }
-  }
-
+}

@@ -85,6 +85,7 @@ func TestChatHandler(t *testing.T) {
 		if err != nil {
 			t.Errorf("Error inserting test struct %v", err)
 		}
+		
 		var result structs.User
 		err = auth.GetUser("email", validationValidEmail, &result, *Env.Env)
 		if err != nil {

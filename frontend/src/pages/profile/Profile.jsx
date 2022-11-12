@@ -4,15 +4,17 @@ import ProfileStats from '../../features/profile/ProfileStats';
 import UserImg from '../../features/profile/UserImg';
 import ProfilePosts from '../../features/profile/ProfilePosts';
 import './Profile.css';
-import ProfileInfoPopUp from '../../features/profile/ProfileInfoPopUp';
 import FollowStatUsers from '../../features/profile/FollowStatUsers';
 import CloseFriendsUsers from '../../features/profile/CloseFriendsUsers';
 import GetProfile from './ProfileData';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile({ userId }) {
+  const navigate = useNavigate();
+
     const [values, setValues] = useState({});
     //if userId check if curr user follows profile user
     const relBtn = (
@@ -23,7 +25,6 @@ export default function Profile({ userId }) {
                 console.log('Hello World');
             }}></Button>
     );
-
     useEffect(() => {
         GetProfile(userId).then((response) => setValues(response));
     }, []);
@@ -48,7 +49,7 @@ export default function Profile({ userId }) {
                             relBtn
                         ) : (
                             <span className='profileButtonHolder'>
-                                <button className='profileDetailBtn'>
+                                <button className='profileDetailBtn' onClick={()=> navigate("/profile/update") }>
                                     Edit
                                 </button>
                                 <Card styleName='profileBestFriends'>
@@ -142,7 +143,7 @@ export default function Profile({ userId }) {
                 likeBtn='profileLiked'
                 postContainer='profilePostContainer noContent'
             />
-            <ProfileInfoPopUp styleName='popUp none' />
+            
         </Card>
     );
 }

@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import Card from '../../components/card/Card';
 import AuthAlternative from '../../features/authentication/AuthAlternative';
 import AuthCard from '../../features/authentication/AuthCard';
-import AuthDateInput from '../../features/authentication/AuthDateInput';
 import AuthInput from '../../features/authentication/AuthInput';
 import { SendRegistration, UpdateProfleImg } from './ValidRegistration';
 import React, { useState } from 'react';

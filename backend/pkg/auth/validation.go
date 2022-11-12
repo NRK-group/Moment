@@ -59,7 +59,8 @@ func SliceCookie(cookie string) ([]string, error) {
 }
 
 // ValidateValues checks that all input values are valid to be inserted
-func ValidateValues(first, last, email, password string) (string, bool) {
+func ValidateValues(first, last, email, password string, isPublic int) (string, bool) {
+	//Check if the email is already in use
 	if len(first) == 0 || len(last) == 0 {
 		return "Names must only contain letters and hyphens", false
 	}
@@ -69,6 +70,9 @@ func ValidateValues(first, last, email, password string) (string, bool) {
 	if !ValidPassword(password) {
 		return "Passwords must contain 8-16 lower and uppercase letters and special characters", false
 	}
+	if !(isPublic == 0 || isPublic == 1) {
+		return "Invalid Account privacy", false
+	} 
 	return "", true
 }
 

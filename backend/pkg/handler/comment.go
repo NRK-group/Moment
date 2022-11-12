@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -19,8 +18,20 @@ func (database *Env) Comment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
 	SetupCorsResponse(w)
+
+	c, err := r.Cookie("session_token")
+	if err != nil {
+		log.Println("No cookie found in validate")
+		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	if !auth.ValidateCookie(c, database.Env, w) {
+		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	cookie, _ := auth.SliceCookie(c.Value)
 
 	if r.Method == "GET" {
 
@@ -45,37 +56,23 @@ func (database *Env) Comment(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
 
-		c, err := r.Cookie("session_token")
-		if err != nil {
-			log.Println("No cookie found in validate")
-			io.WriteString(w, "Unauthorized")
-			return
-		}
-		cookie, cErr := auth.SliceCookie(c.Value)
-		if cErr != nil {
-			fmt.Println("Error slicing the cookie")
-			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
-			return
-		}
-
 		var commentS structs.Comment
-		err = GetBody(&commentS, w, r)
+		err := GetBody(&commentS, w, r)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		_, errc := commet.CreateComment(cookie[0] , commentS.PostID, commentS.Content, database.Env)
+		_, errc := commet.CreateComment(cookie[0], commentS.PostID, commentS.Content, database.Env)
 		if errc != nil {
 			fmt.Println("Error inputing a comment in the db %v", err)
 		}
 
 		returstr, err := commet.GetComments(commentS.PostID, database.Env)
-
 		if err != nil {
 			http.Error(w, "500 Internal Server Error with getting the comments", http.StatusInternalServerError)
 			return
 		}
-		
+
 		marshallPage, err := json.Marshal(returstr)
 		if err != nil {
 			fmt.Println("Error marshalling the data: ", err)

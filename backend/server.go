@@ -1,46 +1,14 @@
 package main
 
 import (
+	"log"
+	"net/http"
 
-	"backend/pkg/commets"
 	"backend/pkg/db/sqlite"
 	"backend/pkg/handler"
-	"backend/pkg/post"
 	"backend/pkg/structs"
 	wSocket "backend/pkg/websocket"
-	"fmt"
-	"log"
-	"math/rand"
-	"net/http"
 )
-
-var postIdarr []string
-
-func twentyPost(database *structs.DB) {
-	for i := 0; i < 20; i++ {
-		post1 := structs.Post{UserID: "3232131221" + fmt.Sprint(i), Content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry " + fmt.Sprint(i) + ".", GroupID: "3233234" + fmt.Sprint(i%2), Image: "https://picsum.photos/400/500"}
-		str, _ := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
-		postIdarr = append([]string{str}, postIdarr...)
-		fmt.Println(str)
-	}
-}
-
-func randomComments(database *structs.DB) {
-	
-
-	// sampleUser := &structs.User{
-	// 	FirstName: "InsertUser", LastName: "InsertUser", NickName: "InsertUser", Email: "randEmail@gmail.com", Password: "InsertUser",
-	// 	DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "-", UserId: "-", SessionId: "-",
-	// 	IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-	// }
-	// auth.InsertUser(*sampleUser, *database)
-
-	content := "test"
-
-	for i := 0; i < 50; i++ {
-		commets.CreateComment("-", postIdarr[rand.Intn(19)], content+fmt.Sprint(i), database)
-	}
-}
 
 func main() {
 	// this open or create the database
@@ -56,9 +24,6 @@ func main() {
 	// close the database
 	defer networkDb.Close()
 
-	//twentyPost(data)
-	//randomComments(data)
-	
 	// initialize the routes
 	SetUpRoutes(database)
 

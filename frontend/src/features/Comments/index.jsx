@@ -12,16 +12,18 @@ import InputEmoji from 'react-input-emoji';
 const Comments = ({ bodyStyleName, cardStyleName }) => {
     const { state } = useLocation();
 
-    const [test, setTest] = useState(''); 
+    const [text, setText] = useState('');
+    const [commentS, setCommentS] = useState([]);
+    const [flag, setFlag] = useState('');
 
     useEffect(() => {
         console.log({ state });
-        console.log(state.Comments);
+       
         window.document
             .querySelectorAll('.CommentsSectionUsers .miniUserCard .contentSep')
             .forEach((ele) => ele.remove());
-       
-    }, []);
+          
+    }, [commentS]);
 
     const dropdown = useRef(null);
     const [toggle, setToggle] = useState(true);
@@ -36,11 +38,43 @@ const Comments = ({ bodyStyleName, cardStyleName }) => {
         }
     };
 
-    const [text, setText] = useState('');
+
+
+    const PostComments = async ()=> {
+
+        let comments = await fetch(`http://localhost:5070/comment/`, {
+            credentials: 'include',
+            method: 'POST',
+            body: JSON.stringify({postId:state.PostId, content:text})
+        }).then(async (response) => {
+            let resp = await response.json();
+            console.log(resp)
+            setText("")
+            setCommentS(resp)
+           return resp
+        })
+        setFlag(1)
+    }
 
     function handleOnEnter(text) {
         console.log('enter', text);
     }
+
+    useEffect(() => {
+        let comments = fetch(`http://localhost:5070/comment/${state.PostId}`, {
+            credentials: 'include',
+            method: 'GET',
+        }).then(async (response) => {
+            let resp = await response.json();
+            setCommentS(resp)
+           return resp
+        })
+
+        window.document
+        .querySelectorAll('.CommentsSectionUsers .miniUserCard .contentSep')
+        .forEach((ele) => ele.remove());
+
+    }, [flag]);
 
     return (
         <Body styleName={bodyStyleName}>
@@ -60,8 +94,11 @@ const Comments = ({ bodyStyleName, cardStyleName }) => {
                                 placeholder='Type a message'
                             />
                             <div className='CommentsIcon'>
-<i class="fa-solid fa-upload"></i>
-                            <i>  <MessagesIcon /></i>
+                                <i className='fa-solid fa-upload'></i>
+                                <i onClick={PostComments}>
+                                    {' '}
+                                    <MessagesIcon />
+                                </i>
                             </div>
                         </div>
                     </div>
@@ -93,9 +130,10 @@ const Comments = ({ bodyStyleName, cardStyleName }) => {
                             </div>
                         </Card>
                         <div className='CommentsSectionUsers'>
-                            {state.Comments &&
-                                state.Comments.map((ele) => (
+                            {commentS &&
+                                commentS.map((ele) => (
                                     <MiniUserCard
+                                    key={ele.CommentID}
                                         img={
                                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
                                         }
@@ -105,27 +143,22 @@ const Comments = ({ bodyStyleName, cardStyleName }) => {
                                                 <h3>Name:</h3>
                                                 <div className=''>
                                                     <ReadMoreReact
-                                                        text={" sbasjkbcdajskdbjkasbdkjsadvhjsvdhsavdhasdhsavdhjdvchgkasvdhas,vcdsvcasvhjcasbjkvsakjdvasjkcvsajkcvshjcbvsajkbcjsahvckjsdcvjksabcjksavcjksavcjksavcjkasvckjasvc"}
+                                                        text={
+                                                            ele.content
+                                                        }
                                                         readMoreText={
                                                             '...read More'
                                                         }
                                                         min={40}
                                                         ideal={80}
                                                         max={150}
-                                                        
                                                     />
+                                                   
                                                 </div>
                                             </>
                                         }>
                                         {' '}
-                                        {ele.CreatedAt &&
-                                            Date(ele.CreatedAt)
-                                                .slice(0, -34)
-                                                .slice(0, 15) +
-                                                ' -' +
-                                                Date(ele.CreatedAt)
-                                                    .slice(0, -34)
-                                                    .slice(15)}
+                                        {ele.CreatedAt}
                                     </MiniUserCard>
                                 ))}
                         </div>

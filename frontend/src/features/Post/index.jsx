@@ -39,15 +39,7 @@ export default function Post({
     };
 
     const OpenCommets = async (postId) => {
-        let comments = await fetch(`http://localhost:5070/comment/${postId}`, {
-            credentials: 'include',
-            method: 'GET',
-        }).then(async (response) => {
-            console.log(response)
-            let resp = await response.json();
-           return resp
-        })
-
+   
         navigate('/comments', {
             state: {
                 PostId: postId,
@@ -57,7 +49,6 @@ export default function Post({
                 Likes: likes,
                 AvatarSrc: avatarSrc,
                 Name: name,
-                Comments: comments,
             },
         });
     };
@@ -95,7 +86,7 @@ export default function Post({
                 <Card styleName={'PostContent'}>
                     <div className='PostContentIcons'>
                         <div className='PostContentIconsLeft'>
-                            <LikeIcon />
+                           <i onClick={()=>console.log("we need")}><LikeIcon /></i> 
                             <CommentIcon />
                             <MessagesIcon />
                         </div>

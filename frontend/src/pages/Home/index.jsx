@@ -50,6 +50,7 @@ function Home({ bodyStyleName, cardStyleName }) {
                             <div className='homePagePostArea'>
                                 { posts && posts.map((data) => (
                                     <Post
+                                    key={data.PostID}
                                         avatarSrc={
                                             'https://phantom-marca.unidadeditorial.es/ee46d7a1c09b447117f8e83c6e131f31/resize/1320/f/jpg/assets/multimedia/imagenes/2022/02/02/16437899001758.jpg'
                                         }

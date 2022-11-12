@@ -5,46 +5,57 @@ import SendMessageBox from '../Messages/components/SendMessageBox';
 import { ChatUsersContainer } from './components/chatUsersContainer';
 import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
-import { useState } from 'react';
-const Chat = ({ bodyStyleName, cardStyleName, socket }) => {
-    let [isModalOpen, setIsModalOpen] = useState(false);
+import { useState, useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { GetChatList } from './hooks/getChatList';
+const Chat = ({ isMobile, socket }) => {
+    let bodyStyleName = isMobile ? 'mobile' : 'desktop';
+    let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
     let user = document.cookie.split('=')[1].split('&')[0];
-    let users = [];
-    let messages = [];
+    const chatList = GetChatList();
     return (
         <>
-            <>
-                {isModalOpen && (
-                    <NewChatModal setIsModalOpen={setIsModalOpen} />
-                )}
-            </>
             <Body styleName={bodyStyleName}>
                 <Card styleName={cardStyleName}>
                     <div className='chatContainer'>
                         <div className='chatBox'>
-                            {
-                                <ChatUsersContainer
-                                    styleName='chatUsersContainer'
-                                    users={users}
-                                    currentUserName={user}
-                                    setIsModalOpen={setIsModalOpen}
-                                />
-                            }
+                            <ChatUsersContainer
+                                styleName='chatUsersContainer'
+                                currentUserInfo={user}
+                                chatList={chatList}
+                            />
                             <div className='messagesContainer'>
-                                {messages ? (
-                                    <div className='sendMessageContainer'>
-                                        <SendMessageBox
-                                            setIsModalOpen={setIsModalOpen}
+                                <>
+                                    <Routes>
+                                        <Route
+                                            index
+                                            element={
+                                                <div className='sendMessageContainer'>
+                                                    <SendMessageBox />
+                                                </div>
+                                            }
                                         />
-                                    </div>
-                                ) : (
-                                    <Messages
-                                        currentUserName={user}
-                                        msg={[]} // all the messages
-                                        name={Math.floor(Math.random() * 5) + 1} //change to current receiver
-                                        socket={socket}
-                                    />
-                                )}
+                                        <Route
+                                            path='new'
+                                            element={<NewChatModal />}
+                                        />
+                                        <Route
+                                            path=':id'
+                                            element={
+                                                <Messages
+                                                    currentUserInfo={user} // change to user info
+                                                    socket={socket}
+                                                />
+                                            }
+                                        />
+                                        <Route
+                                            path=':id/*'
+                                            element={
+                                                <Navigate to='/messages' />
+                                            }
+                                        />
+                                    </Routes>
+                                </>
                             </div>
                         </div>
                     </div>

@@ -195,7 +195,11 @@ const ProfileIcon = ({ imgStyleName, iconStyleName, img }) => {
     return (
         <>
             {img ? (
-                <img className={imgStyleName} src={img} alt='profile' />
+                <img
+                    className={imgStyleName}
+                    src={'http://localhost:5070/' + img}
+                    alt='profile'
+                />
             ) : (
                 <UserIcon styleName={iconStyleName} />
             )}

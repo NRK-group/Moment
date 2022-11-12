@@ -1,10 +1,11 @@
 package auth
 
 import (
-	"backend/pkg/structs"
 	"errors"
 	"net/mail"
 	"strings"
+
+	"backend/pkg/structs"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -58,20 +59,24 @@ func SliceCookie(cookie string) ([]string, error) {
 }
 
 // ValidateValues checks that all input values are valid to be inserted
-func ValidateValues(first, last, email, password string) (string,bool) {
+func ValidateValues(first, last, email, password string, isPublic int) (string, bool) {
+	//Check if the email is already in use
 	if len(first) == 0 || len(last) == 0 {
-		return "Names must only contain letters and hyphens",false
+		return "Names must only contain letters and hyphens", false
 	}
 	if !ValidEmail(email) {
 		return "Invalid email", false
 	}
-	if !ValidPassword(password){
+	if !ValidPassword(password) {
 		return "Passwords must contain 8-16 lower and uppercase letters and special characters", false
 	}
+	if !(isPublic == 0 || isPublic == 1) {
+		return "Invalid Account privacy", false
+	} 
 	return "", true
 }
 
-//Capitalise accepts a user struct and makes the neccassary fields capitalised
+// Capitalise accepts a user struct and makes the neccassary fields capitalised
 func Capitalise(obj *structs.User) {
 	obj.FirstName = strings.Title(strings.ToLower(obj.FirstName))
 	obj.LastName = strings.Title(strings.ToLower(obj.LastName))

@@ -1,4 +1,4 @@
-.profileCard{
+.profileCard {
     height: calc(100vh);
     width: 100%;
     margin: auto;
@@ -7,7 +7,7 @@
     overflow: auto;
 }
 
-.profileSection{
+.profileSection {
     display: flex;
     height: fit-content;
     width: 75%;
@@ -15,24 +15,28 @@
     margin: 1% auto 0;
 }
 
-.profileAvatarImg{
+.profileAvatarImg {
     border: none;
-    height: 110%;
-    width: 110%;
+    height: 15vmax;
+    min-height: 125px;
+    width: 15vmax;
+    min-width: 125px;
+    border-radius: 50%;
 }
 
-.profileAvatar{
+.profileAvatar {
     margin: 5%;
-    margin-top: 0;
+    /* margin-top: 0; */
     height: 200px;
     width: 200px;
+    border-radius: 50%;
 }
 
-.profileDetails{
+.profileDetails {
     width: 85%;
     height: 100%;
     min-height: 206px;
-    
+
     padding: 3%;
     padding-left: 0;
 }
@@ -42,22 +46,21 @@
     margin: 2% auto;
 }
 
-.profileAboutMe{
+.profileAboutMe {
     font-weight: lighter;
 }
 
-.profileButtonHolder{
+.profileButtonHolder {
     display: flex;
     width: 365px;
     margin: auto;
-
 }
 
 .profileButtonHolder > * {
     margin: auto;
 }
 
-.profileDetailBtn{
+.profileDetailBtn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -74,7 +77,24 @@
     margin-bottom: min(2vh, 25px); */
 }
 
-.profileBestFriends{
+.relationship {
+    width: 50%;
+    height: 20%;
+    color: white;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.followBtn {
+    background-color: var(--button-color);
+}
+
+.followingBtn {
+    background-color: var(--subheading-color);
+}
+
+.profileBestFriends {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,11 +112,11 @@
     color: white;
 }
 
-.profileBestFriendsIcon{
+.profileBestFriendsIcon {
     margin-right: 6%;
 }
 
-.profileStats{
+.profileStats {
     display: flex;
     width: 80%;
     height: 30%;
@@ -104,36 +124,36 @@
     margin-top: min(5vh, 20px);
 }
 
-.profileStats_1{
+.profileStats_1 {
     display: none;
     margin-bottom: 5%;
 }
 
-.stats{
+.stats {
     width: 30%;
     margin: auto;
 }
 
-p{
+p {
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center; 
+    text-align: center;
     font-weight: bold;
 }
-.none{
+.none {
     display: none;
 }
-.popUp{
+.popUp {
     /* display: none; */
     position: fixed;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.671);
-    top:0;
+    top: 0;
 }
 
-.followStatsPopUp{
+.followStatsPopUp {
     position: fixed;
     left: 0;
     right: 0;
@@ -145,10 +165,10 @@ p{
     width: 400px;
     border-radius: 10px;
     background-color: var(--background-color);
-    border: 2px solid var(--border-color)
+    border: 2px solid var(--border-color);
 }
 
-.followStatsPopUpHeading{
+.followStatsPopUpHeading {
     display: flex;
     height: 12%;
     width: 100%;
@@ -156,37 +176,35 @@ p{
     margin: auto;
 }
 
-.followStatsPopUpTitle{
+.followStatsPopUpTitle {
     width: fit-content;
     margin: auto;
 }
 
-.followStatsPopUpCross{
+.followStatsPopUpCross {
     display: flex;
     position: absolute;
-        right: 0;
+    right: 0;
     text-align: center;
     justify-content: center;
     font-weight: bold;
     float: right;
     margin-right: 2%;
-    margin-top:1%;
+    margin-top: 1%;
     height: fit-content;
 }
 
-.followStatsPopUpCross:hover{
+.followStatsPopUpCross:hover {
     cursor: pointer;
 }
 
-.followStatsPopUpUserSection{
+.followStatsPopUpUserSection {
     height: 88%;
     width: 100%;
     overflow: auto;
 }
 
-
-
-.followStatUser{
+.followStatUser {
     display: flex;
     /* justify-content: space-evenly; */
     align-items: center;
@@ -195,7 +213,7 @@ p{
     padding: 1%;
 }
 
-.followStatAvatarImg{
+.followStatAvatarImg {
     width: 50px;
     height: 50px;
 }
@@ -207,12 +225,12 @@ p{
     justify-content: center;
 }
 
-.followStatUsernameHold{
+.followStatUsernameHold {
     width: fit-content;
-    padding-left: 4%
+    padding-left: 4%;
 }
 
-.followStatUsername{
+.followStatUsername {
     width: fit-content;
     font-size: var(--subheading-font-size);
     font-weight: lighter;
@@ -220,7 +238,7 @@ p{
     word-wrap: none;
 }
 
-.followStatsRemove{
+.followStatsRemove {
     width: 20%;
     height: 25px;
     border: none;
@@ -232,11 +250,11 @@ p{
     margin-right: 5%;
 }
 
-.profilePostSection{
+.profilePostSection {
     height: fit-content;
 }
 
-.profileContentSelector{
+.profileContentSelector {
     display: flex;
     justify-content: center;
     border-top: 2px solid var(--subheading-color);
@@ -256,50 +274,46 @@ p{
     cursor: pointer;
 }
 
-.profilePosts{
+.profilePosts {
     font-weight: 600;
     border-top: 2px solid black;
-
-
 }
 
-.fa-bookmark{
+.fa-bookmark {
     display: flex;
     align-items: center;
     margin-right: 3%;
     font-size: 95%;
 }
-.fa-table-list{
-    display: flex;
-    align-items: center;
-    margin-right: 3%;
-    font-size: 95%;
-}
-
-.fa-heart{
+.fa-table-list {
     display: flex;
     align-items: center;
     margin-right: 3%;
     font-size: 95%;
 }
 
+.fa-heart {
+    display: flex;
+    align-items: center;
+    margin-right: 3%;
+    font-size: 95%;
+}
 
-
-.profilePostContainer{
+.profilePostContainer {
     margin: 2% auto;
     width: 75%;
     height: 50vh;
-    min-height: 205px
+    min-height: 205px;
 }
 
-.noContent{
+.noContent {
     background-image: url('./assets/NothingToSee.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 30%;
 }
 
-.profileUpdate{
+.profileUpdate {
     position: fixed;
     left: 0;
     right: 0;
@@ -315,11 +329,11 @@ p{
     overflow: auto;
 }
 
-.profileUpdate::-webkit-scrollbar{
+.profileUpdate::-webkit-scrollbar {
     width: 5%;
 }
 
-.profileAvatarBtn{
+.profileAvatarBtn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -335,11 +349,11 @@ p{
     border-radius: 50%;
 }
 
-.profileInput{
-    height: 25%
+.profileInput {
+    height: 25%;
 }
 
-.profileAttemptBtn{
+.profileAttemptBtn {
     background-color: var(--button-color);
     color: white;
     height: 5%;
@@ -347,21 +361,20 @@ p{
     width: 50%;
 }
 
-.profileInfoPrivacy{
+.profileInfoPrivacy {
     width: 20%;
     border-radius: 4px;
     margin: 4% auto;
     display: flex;
     border: 1px solid var(--border-color);
-
 }
 
-.profileInfoPrivacy:focus{
+.profileInfoPrivacy:focus {
     outline: 2px solid var(--button-color);
-    border: none
+    border: none;
 }
 
-.profileCloseFriendsHolder{
+.profileCloseFriendsHolder {
     height: 88%;
     width: 100%;
     border-radius: inherit;
@@ -369,12 +382,12 @@ p{
     overflow-y: auto;
 }
 
-.profileCloseFriendsUser{
+.profileCloseFriendsUser {
     border-top: 1px solid var(--subheading-color);
     padding-top: 4%;
 }
 
-.profileCurrentCloseFriends{
+.profileCurrentCloseFriends {
     height: fit-content;
     width: 100%;
     padding: 2%;
@@ -382,7 +395,7 @@ p{
     border-bottom: 2px solid var(--terheading-color);
 }
 
-.profileNotCloseFriends{
+.profileNotCloseFriends {
     height: fit-content;
     width: 100%;
     margin: 1% auto;
@@ -390,100 +403,104 @@ p{
     /* border-top: 2px solid var(--subheading-color); */
 }
 
-.profileCloseFriendsHeader{
+.profileCloseFriendsHeader {
     display: flex;
     width: fit-content;
     margin: 2% auto;
     font-weight: bold;
 }
 
+
+.react-datepicker__input-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media all and (max-width: 780px) {
-    .profileSection{
+    .profileSection {
         min-width: 0;
         width: 100%;
         /* height: 75%; */
     }
 
-    .profileStats{
+    .profileStats {
         display: none;
     }
 
-    .profileStats_1{
+    .profileStats_1 {
         display: flex;
         margin-top: 0;
     }
 
-    .profileDetails{
+    .profileDetails {
         display: flex;
         justify-content: center;
-
     }
-    .profileDetailContainer{
+    .profileDetailContainer {
         margin: auto;
     }
 
-.noContent{
-    background-size: 40%;
-    height: fit-content;
-}
+    .noContent {
+        background-size: 40%;
+        height: fit-content;
+    }
 
-.profileUpdate{
-    padding-bottom: 10%;
-}
-
+    .profileUpdate {
+        padding-bottom: 10%;
+    }
 }
 
 @media all and (max-width: 480px) {
-    .profileCard{
+    .profileCard {
         padding-top: 3%;
     }
 
-    .authAvatar{
+    .authAvatar {
         margin-top: 6%;
     }
-    
-    .profileAvatar{
+
+    .profileAvatar {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
         margin-right: 1vw;
     }
-    .profileAvatarImg{
+    .profileAvatarImg {
         height: 110px;
         width: 110px;
     }
-    .profileFullName{
+    .profileFullName {
         display: flex;
         justify-content: center;
         width: fit-content;
         min-width: 206px;
     }
-    .profileSection{
+    .profileSection {
         height: 30%;
         min-height: 210px;
         margin: 8% auto 1%;
-
     }
 
-    .profileDetails{
+    .profileDetails {
         height: 100%;
     }
 
-    .profileDetailText{
+    .profileDetailText {
         font-size: var(--secondary-font-size);
-    /* font-weight: 300; */
+        /* font-weight: 300; */
     }
 
-    .profileAboutMe{
+    .profileAboutMe {
         font-size: 80%;
     }
 
-    .profileStats_1{
+    .profileStats_1 {
         margin: 2% auto 8%;
     }
 
-    .followStatsPopUp{
+    .followStatsPopUp {
         max-height: none;
         min-height: 0px;
         height: 100%;
@@ -492,41 +509,40 @@ p{
         border-radius: 0;
     }
 
-    .followStatsPopUpCross{
+    .followStatsPopUpCross {
         height: fit-content;
         margin-top: 2%;
-        
     }
 
-.profileContentSelector{
-    height: 7%;
-    min-width: 0;
-    width: 85%;
+    .profileContentSelector {
+        height: 7%;
+        min-width: 0;
+        width: 85%;
     }
-.profilePostContainer{
-    width: 100%;
-}
+    .profilePostContainer {
+        width: 100%;
+    }
 
-.profileUpdate{
-    width: 100%;
-    height: 100%;
-    margin-top: 0;
-    border-radius: 0;
-    padding-bottom: 10vh;
-}
+    .profileUpdate {
+        width: 100%;
+        height: 100%;
+        margin-top: 0;
+        border-radius: 0;
+        padding-bottom: 10vh;
+    }
 
-.profileCloseFriendsHolder{
-    padding-bottom: 7vh;
-}
+    .profileCloseFriendsHolder {
+        padding-bottom: 7vh;
+    }
 
-.profileButtonHolder{
-    display: block;
-    width: fit-content;
-}
+    .profileButtonHolder {
+        display: block;
+        width: fit-content;
+    }
 
-.profileButtonHolder > * {
-    width: 125px;
-    height: 30px;
-    font-size:0.9rem;
-}
+    .profileButtonHolder > * {
+        width: 125px;
+        height: 30px;
+        font-size: 0.9rem;
+    }
 }

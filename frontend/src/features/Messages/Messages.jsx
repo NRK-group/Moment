@@ -1,50 +1,56 @@
 import './Messages.css';
-import SendMessageBox from './components/SendMessageBox';
-import Input from '../../components/Input/Input';
 import { MessagesIcon, UserIcon } from '../../components/Icons/Icons';
 import { MessageContainer } from './components/messageContainer';
 import { MessageContent } from './components/MessageContent';
 import { ProfileIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
-
-export const Messages = ({ name, img, msg, socket, currentUserName }) => {
+import { useLocation, useParams } from 'react-router-dom';
+import { useScrollDown } from './hooks/scrollDown';
+import { debounce } from './hooks/debounce';
+export const Messages = ({ socket, currentUserInfo }) => {
+    const { id } = useParams();
+    const location = useLocation();
+    const { chatId, img, name } = location.state;
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
-    const [messages, setMessages] = useState(msg);
+    const [messages, setMessages] = useState([]);
+    useScrollDown(chatBox, messages);
+    useEffect(() => {
+        setMessages([]);
+    }, [id]);
     const sendMessage = (e) => {
         e.preventDefault();
-        if (messageInput.current.value !== '') {
-            let messageId = '';
-            socket.send(
-                JSON.stringify({
-                    messageId: messageId,
-                    type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
-                    receiverId: name + '', //change to the id of the receiver
-                    senderId: currentUserName + '', //chnage to current userid
-                    chatId: '1', //change to the chat id
-                    img: './logo.svg', // img of the sender
-                    content: messageInput.current.value, // content of the message
-                    createAt: new Date().toLocaleString(),
-                })
-            );
+        let message = messageInput.current.value;
+        if (message.trim() !== '') {
+            let data = {
+                type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
+                receiverId: id,
+                senderId: currentUserInfo, //chnage to current userid
+                chatId: chatId,
+                content: messageInput.current.value, // content of the message
+                createAt: Date().toLocaleString(),
+            };
+            socket.send(JSON.stringify(data));
+            setMessages((messages) => [...messages, data]);
             messageInput.current.value = '';
         }
     };
-    useEffect(() => {
-        chatBox.current.scroll({ top: chatBox.current.scrollHeight });
-    }, [messages]);
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
+            console.log('enter');
             sendMessage(e);
+            return;
+        }
+        if (e.key === 'Backspace') {
             return;
         }
         socket.send(
             JSON.stringify({
                 type: 'typing', // message, notification, followrequest
-                senderId: currentUserName + '', // senderid
-                receiverId: name + '', //change to the id of the receiver
+                senderId: currentUserInfo, // senderid
+                receiverId: id, //change to the id of the receiver
             })
         );
     };
@@ -53,15 +59,18 @@ export const Messages = ({ name, img, msg, socket, currentUserName }) => {
             if (event.data) {
                 let data = JSON.parse(event.data);
                 if (data.type === 'privateMessage') {
+                    data.img = img;
                     setMessages((messages) => [...messages, data]);
+                    isTyping.current.style.display = 'none';
+                    console.log('hello');
                 }
                 if (data.type === 'typing') {
                     isTyping.current.innerText = `${data.senderId} is typing...`;
                     //change the typing status
                     isTyping.current.style.display = 'block';
-                    setTimeout(() => {
+                    debounce(() => {
                         isTyping.current.style.display = 'none';
-                    }, 5000);
+                    }, 2000);
                 }
             }
         };
@@ -91,30 +100,32 @@ export const Messages = ({ name, img, msg, socket, currentUserName }) => {
             <div
                 className='chatMessageContainer scrollbar-hidden'
                 ref={chatBox}>
-                {messages.map((message, i) => {
-                    let date = message.createAt.split(',')[0];
-                    let time = message.createAt.split(',')[1];
-                    return (
-                        <MessageContainer
-                            key={message + i}
-                            message={message}
-                            name={message.senderId}
-                            img={message.img}>
-                            <MessageContent
-                                date={date + ' • ' + time}
-                                content={message.content}
-                            />
-                        </MessageContainer>
-                    );
-                })}
-                {/* <MessageContainer
-                    name='Firstname ajsdkjgasjdglajshgdjla;ksdklfnaskd;akldhk;asdk;asjgsjldgaljsgdljagsjldgasjldgajls'
-                    img='./logo.svg'>
-                    <MessageContent
-                        date={'11 October 2022 •17:46'}
-                        content='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl sit amet aliquam aliquam, nisl nisl aliquam nisl, sit amet aliquam nisl nisl sit amet.'
-                    />
-                </MessageContainer> */}
+                {messages &&
+                    messages.map((message, i) => {
+                        if (message.senderId === currentUserInfo) {
+                            return (
+                                <MessageContent
+                                    containerStyle={'senderContainer'}
+                                    key={message + i}
+                                    type='sender'
+                                    content={message.content}
+                                    date={'date'}
+                                />
+                            );
+                        }
+                        return (
+                            <MessageContainer
+                                key={message + i}
+                                message={message}
+                                name={message.senderId}
+                                img={message.img}>
+                                <MessageContent
+                                    date={'date'}
+                                    content={message.content}
+                                />
+                            </MessageContainer>
+                        );
+                    })}
             </div>
             <div className='isTypingContainer'>
                 <div className='isTyping' ref={isTyping}></div>
@@ -135,6 +146,7 @@ export const Messages = ({ name, img, msg, socket, currentUserName }) => {
                             rows='2'
                             placeholder='message'
                             ref={messageInput}
+                            autoFocus
                             onKeyDown={handleKeyDown}></textarea>
                     </div>
                     <div onClick={sendMessage}>

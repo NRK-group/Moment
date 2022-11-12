@@ -29,7 +29,7 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("500 Internal Server Error"))
 			return
 		}
-		msg, valid := auth.ValidateValues(newUser.FirstName, newUser.LastName, newUser.Email, newUser.Password) // Validate the user input here
+		msg, valid := auth.ValidateValues(newUser.FirstName, newUser.LastName, newUser.Email, newUser.Password, newUser.IsPublic) // Validate the user input here
 		if !valid {
 			w.Write([]byte(msg))
 			return
@@ -43,3 +43,5 @@ func (DB *Env) Registration(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Successfully Registered"))
 	}
 }
+
+

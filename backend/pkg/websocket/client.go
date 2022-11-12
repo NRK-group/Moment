@@ -2,8 +2,11 @@ package websocket
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"time"
+
+	"backend/pkg/structs"
 
 	"github.com/gorilla/websocket"
 )
@@ -38,6 +41,8 @@ type Client struct {
 	Conn *websocket.Conn
 	// Buffered channel of outbound messages.
 	Send chan []byte
+	// Database connection
+	Database *structs.DB
 }
 
 // ReadPump pumps messages from the websocket connection to the hub.
@@ -61,6 +66,7 @@ func (c *Client) ReadPump() {
 			}
 			break
 		}
+		fmt.Println("messageByte", string(messageByte))
 		messageByte = bytes.TrimSpace(bytes.Replace(messageByte, Newline, Space, -1))
 		c.Hub.Broadcast <- messageByte
 	}

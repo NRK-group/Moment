@@ -9,7 +9,11 @@ import ReadMoreReact from 'read-more-react';
 import { useLocation } from 'react-router-dom';
 import InputEmoji from 'react-input-emoji';
 
-const Comments = ({ bodyStyleName, cardStyleName }) => {
+const Comments = ({ isMobile }) => {
+
+    let bodyStyleName = isMobile ? 'mobile' : 'desktop';
+    let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
+
     const { state } = useLocation();
 
     const [text, setText] = useState('');

@@ -2,14 +2,11 @@ import { useRef } from 'react';
 import Card from '../../components/card/Card';
 import AuthAlternative from '../../features/authentication/AuthAlternative';
 import AuthCard from '../../features/authentication/AuthCard';
-import AuthDateInput from '../../features/authentication/AuthDateInput';
 import AuthInput from '../../features/authentication/AuthInput';
-import SendRegistration from './ValidRegistration';
+import { SendRegistration, UpdateProfleImg } from './ValidRegistration';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
-
 import 'react-datepicker/dist/react-datepicker.css';
-
 import './Registration.css';
 
 export default function Registration() {
@@ -23,12 +20,32 @@ export default function Registration() {
         regEmail = useRef(),
         regPassword = useRef(),
         regConfirm = useRef(),
-        regErrMsg = useRef();
+        regErrMsg = useRef(),
+        file = useRef(),
+        profileImg = useRef();
 
     return (
         <AuthCard>
-            <Card styleName='authAvatar'>
-                <button className='authAvatarBtn'>+</button>
+            <Card styleName='authAvatar' refr={profileImg}>
+                <button
+                    className='authAvatarBtn'
+                    onClick={() => {
+                        file.current.click();
+                    }}>
+                    +
+                </button>
+                <input
+                    type='file'
+                    className='none'
+                    ref={file}
+                    onChange={() => {
+                        UpdateProfleImg(
+                            file.current,
+                            profileImg.current,
+                            regErrMsg.current
+                        );
+                    }}
+                />
             </Card>
             <AuthInput
                 type='text'
@@ -87,20 +104,23 @@ export default function Registration() {
             <button
                 className='loginInput loginAttemptBtn'
                 onClick={() =>
-                    SendRegistration([
-                        fisrtName.current.value,
-                        lastName.current.value,
-                        nickName.current.value,
-                        aboutMe.current.value,
-                        regEmail.current.value,
-                        regPassword.current.value,
-                        regConfirm.current.value,
-                        startDate], regErrMsg.current
+                    SendRegistration(
+                        [
+                            fisrtName.current.value,
+                            lastName.current.value,
+                            nickName.current.value,
+                            aboutMe.current.value,
+                            regEmail.current.value,
+                            regPassword.current.value,
+                            regConfirm.current.value,
+                            startDate,
+                            profileImg.current
+                        ],
+                        regErrMsg.current
                     )
                 }>
                 Register
             </button>
-
             <AuthAlternative
                 question='Already have an account?'
                 option='Log in'

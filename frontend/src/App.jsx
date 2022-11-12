@@ -7,6 +7,7 @@ import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
+import ProfileInfoPopUp from './features/profile/ProfileInfoPopUp';
 import Stories from './pages/stories/stories';
 import Comments from './features/Comments';
 import { useState } from 'react';
@@ -15,194 +16,83 @@ import { Notification } from './features/Notification/Notification';
 import { Search } from './features/Search/Search';
 import Validation from './components/Validation/Validation';
 import { Menu } from './layouts/Menu/Menu';
+import ValidRedirect from './components/Validation/ValidRedirect';
+import useWindowDimensions from './components/hooks/useWindowDimensions';
 function App() {
-    const [isMobile, setIsMobile] = useState(false);
-    const [authorised, setAuthorised] = useState(false);
+    const [auth, setAuthorised] = useState(false);
+    const authorised = Validation(auth);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    let generalNotif = [
-        {
-            name: 'John',
-            id: 1,
-            content: 'liked your post',
-            optContent: '1h',
-        },
-    ];
-    let followrequest = [{ name: 'Ken' }];
-    let groupNotif = [];
-
+    const { width } = useWindowDimensions();
+    let isMobile = width < 600;
     return (
         <div
             className='App'
             onClick={() => {
                 setIsMenuOpen(false);
-            }}
-            ref={(boxRef) => {
-                boxRef &&
-                    console.log(
-                        boxRef.getBoundingClientRect().width,
-                        boxRef.getBoundingClientRect().width >= 600
-                    );
-                return (
-                    boxRef &&
-                    setIsMobile(boxRef.getBoundingClientRect().width < 600)
-                );
             }}>
-            {
-                <Validation>
-                    <Header
-                        setSocket={setSocket}
-                        setIsMenuOpen={setIsMenuOpen}
-                    />
-                </Validation>
-            }
-            <>{isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}</>
+            {authorised && (
+                <Header setSocket={setSocket} setIsMenuOpen={setIsMenuOpen} />
+            )}
+            <>
+                {isMenuOpen && (
+                    <Menu setIsMenuOpen={setIsMenuOpen} auth={setAuthorised} />
+                )}
+            </>
             <>
                 <Routes>
-                    <Route path='/' element={<Login auth={setAuthorised} />} />
-                    <Route path='/register' element={<Registration />} />
-
                     <Route
-                        path='/home'
+                        path='/'
                         element={
-                            isMobile ? (
-                                <Validation>
-                                    <Home
-                                        bodyStyleName='mobile'
-                                        cardStyleName='mobileCard'
-                                    />
-                                </Validation>
-                            ) : (
-                                <Validation>
-                                    <Home
-                                        bodyStyleName='desktop'
-                                        cardStyleName='desktopCard'
-                                    />
-                                </Validation>
-                            )
+                            <ValidRedirect>
+                                <Login auth={setAuthorised} />
+                            </ValidRedirect>
                         }
                     />
                     <Route
-                        path='/search'
+                        path='/register'
                         element={
-                            <Validation>
-                                <Search />
-                            </Validation>
+                            <ValidRedirect>
+                                <Registration />
+                            </ValidRedirect>
                         }
                     />
-                    <Route
-                        path='/newpost'
-                        element={
-                            <Validation>
-                                <NewPost />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/messages'
-                        element={
-                            <Validation>
-                                {isMobile ? (
-                                    <Chat
-                                        bodyStyleName='mobile'
-                                        cardStyleName='mobileCard'
-                                        socket={socket}
-                                    />
-                                ) : (
-                                    <Chat
-                                        bodyStyleName='desktop'
-                                        cardStyleName='desktopCard'
-                                        socket={socket}
-                                    />
-                                )}
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/groups'
-                        element={
-                            <Validation>
-                                <h1>Groups</h1>
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/comments'
-                        element={
-                            <Validation>
-                                {isMobile ? (
-                                    <Comments
-                                        bodyStyleName='mobile'
-                                        cardStyleName='mobileCard'
-                                    />
-                                ) : (
-                                    <Comments
-                                        bodyStyleName='desktop'
-                                        cardStyleName='desktopCard'
-                                    />
-                                )}
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='notifications'
-                        element={
-                            <Validation>
-                                <Notification users={generalNotif} />
-                            </Validation>
-                        }>
-                        <Route
-                            path='general'
-                            element={
-                                <Validation>
-                                    <Notification users={generalNotif} />
-                                </Validation>
-                            }
-                        />
-                        <Route
-                            path='followrequest'
-                            element={
-                                <Validation>
-                                    <Notification users={followrequest} />
-                                </Validation>
-                            }
-                        />
-                        <Route
-                            path='group'
-                            element={
-                                <Validation>
-                                    <Notification users={groupNotif} />
-                                </Validation>
-                            }
-                        />
-                    </Route>
-                    <Route
-                        path='profile'
-                        element={
-                            <Validation>
-                                <Profile
-                                    aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
-                                    fullname='Nathaniel Russell'
-                                    nickname='Nate'
-                                />
-                            </Validation>
-                        }
-                    />
-                    <Route
-                        path='/stories'
-                        element={
-                            <Validation>
-                                <Stories />
-                            </Validation>
-                        }
-                    />
+                    {/* need to be replaced */}
+                    <Route path='*' element={<></>} />
                 </Routes>
             </>
-            {
-                <Validation>
-                    <Footer />
-                </Validation>
-            }
+            {authorised && (
+                <>
+                    <Routes>
+                        <Route
+                            path='/home'
+                            element={<Home isMobile={isMobile} />}
+                        />
+                        <Route path='/search' element={<Search />} />
+                        <Route path='/newpost' element={<NewPost />} />
+                        <Route
+                            path='/messages/*'
+                            element={
+                                <Chat isMobile={isMobile} socket={socket} />
+                            }
+                        />
+                        <Route path='/groups' element={<h1>Groups</h1>} />
+                        <Route
+                            path='/comments'
+                            element={<Comments isMobile={isMobile} />}
+                        />
+                        <Route path='notifications' element={<></>} />
+                        <Route
+                            path='notifications/:type'
+                            element={<Notification />}
+                        />
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/profile/update' element={<ProfileInfoPopUp styleName='popUp' />} />
+                        <Route path='/stories' element={<Stories />} />
+                    </Routes>
+                </>
+            )}
+            {authorised ? <Footer /> : null}
         </div>
     );
 }

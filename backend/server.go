@@ -60,26 +60,36 @@ func main() {
 	//randomComments(data)
 	
 	// initialize the routes
-	http.HandleFunc("/", database.Home)
-	http.HandleFunc("/post", database.Post)
-	http.HandleFunc("/group", database.Group)
-	http.HandleFunc("/event", database.Event)
-	http.HandleFunc("/login", database.Login)
-	http.HandleFunc("/comment/", database.Comment)
-	http.HandleFunc("/registration", database.Registration)
-	http.HandleFunc("/validate", database.Validate)
+	SetUpRoutes(database)
 
-
+	gallery := http.FileServer(http.Dir("./images"))
+	http.Handle("/images/", http.StripPrefix("/images/", gallery)) // handling the CSS
 
 	// handler for the websocket
 	hub := wSocket.NewHub()
 	go hub.LogConns()
 	go hub.Run()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		handler.ServeWs(hub, w, r)
+		database.ServeWs(hub, w, r)
 	})
 
 	// start the server
 	log.Println("Server is running on port 5070")
 	http.ListenAndServe(":5070", nil)
+}
+
+// SetUpRoutes initialises the handlers
+func SetUpRoutes(database *handler.Env) {
+	http.HandleFunc("/", database.Home)
+	http.HandleFunc("/post", database.Post)
+	http.HandleFunc("/group", database.Group)
+	http.HandleFunc("/event", database.Event)
+	http.HandleFunc("/login", database.Login)
+	http.HandleFunc("/logout", database.Logout)
+	http.HandleFunc("/registration", database.Registration)
+	http.HandleFunc("/validate", database.Validate)
+	http.HandleFunc("/updateprofileimg", database.UpdateImage)
+	http.HandleFunc("/chat", database.Chat)
+	http.HandleFunc("/comment/", database.Comment)
+	http.HandleFunc("/profile", database.Profile)
 }

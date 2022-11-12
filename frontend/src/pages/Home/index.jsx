@@ -5,7 +5,9 @@ import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
 import { useState, useEffect } from 'react';
 
-function Home({ bodyStyleName, cardStyleName }) {
+function Home({ isMobile }) {
+    let bodyStyleName = isMobile ? 'mobile' : 'desktop';
+    let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
     const [posts, setPosts] = useState([]);
 
     const GetAllPosts = async () => {

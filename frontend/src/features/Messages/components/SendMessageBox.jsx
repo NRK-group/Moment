@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/Button/Button';
 
-const SendMessageBox = ({ setIsModalOpen }) => {
+const SendMessageBox = () => {
+    const navigate = useNavigate();
     return (
         <div className='sendMessageBoxContainer'>
             <div className='sendIcon'>
@@ -18,7 +20,7 @@ const SendMessageBox = ({ setIsModalOpen }) => {
                 styleName='sendMessageBtn'
                 content={'Send message'}
                 action={() => {
-                    setIsModalOpen(true);
+                    navigate('/messages/new');
                 }}
             />
         </div>

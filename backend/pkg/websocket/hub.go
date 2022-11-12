@@ -1,8 +1,12 @@
 package websocket
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
+
+	"backend/pkg/messages"
+	"backend/pkg/structs"
 )
 
 // Hub maintains the set of active clients and broadcasts messages to the
@@ -40,16 +44,31 @@ func (h *Hub) Run() {
 				close(client.Send)
 			}
 		case message := <-h.Broadcast:
-			for userId, client := range h.Clients {
-				if client.UserId != userId {
-					select {
-					case client.Send <- message:
-					default:
-						close(client.Send)
-						delete(h.Clients, userId)
+			var msg structs.Message
+			json.Unmarshal(message, &msg)
+			if msg.MessageType == "privateMessage" {
+				if _, valid := h.Clients[msg.ReceiverId]; valid {
+					msg, err := messages.InsertMessage(msg, *h.Clients[msg.ReceiverId].Database)
+					if err != nil {
+						fmt.Println("error inserting message", err)
 					}
+					resp, _ := json.Marshal(msg)
+					h.Clients[msg.ReceiverId].Send <- resp
 				}
 			}
+			if msg.MessageType == "typing" {
+				if _, valid := h.Clients[msg.ReceiverId]; valid {
+					h.Clients[msg.ReceiverId].Send <- message
+				}
+			}
+			// for userId, client := range h.Clients {
+			// 	select {
+			// 	case client.Send <- message:
+			// 	default:
+			// 		close(client.Send)
+			// 		delete(h.Clients, userId)
+			// 	}
+			// }
 		}
 	}
 }

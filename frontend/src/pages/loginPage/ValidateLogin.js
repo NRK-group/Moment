@@ -20,16 +20,14 @@ function mixedCase(str) {
 }
 
 export default function ValidateLoginAttempt(email, password, errMsg) {
-    errMsg.innerHTML = `<div class="horizontal-bar-wrap">
-    <div class="bar1 bar"></div>
-  </div>`;
+    errMsg.innerHTML = `<div class="dot-flashing"></div>`;
     if (!CheckCreds(email, password)) {
         errMsg.innerHTML = 'Incorrect email or password';
         return false; //Display the error message to client
     }
     const LOGIN_CREDS = {
         //Make the obj with the login details
-        Email: email,
+        Email: email.toLowerCase(),
         Password: password,
     };
     // Send the data to the server to be validated by login handler
@@ -46,8 +44,10 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
             return response.text();
         })
         .then((resp) => {
-            errMsg.innerHTML = resp;
+            errMsg.innerHTML = "";
+
             if (resp !== 'Valid Login') {
+                errMsg.innerHTML = resp;
                 return false;
             }
             if (resp === 'Valid Login') return true;

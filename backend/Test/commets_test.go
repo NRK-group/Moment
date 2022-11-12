@@ -15,7 +15,7 @@ func TestCreateCommets(t *testing.T) {
 		postId, err := post.CreatePost(post1.UserID, post1.Content, post1.GroupID, post1.Image, database)
 		_, errc := commets.CreateComment("3232131221", postId, content, database)
 		if errc != nil {
-			t.Errorf("Error Inserting the struct into the db %v", err)
+			t.Errorf("Error inputing a comment in the db %v", err)
 		}
 
 		retrunComment, err := commets.GetComments(postId, database)

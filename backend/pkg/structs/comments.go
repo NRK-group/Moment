@@ -2,12 +2,13 @@ package structs
 
 type Comment struct {
 	CommentID string
-	UserID    string
-	PostID    string
+	CommentName string
+	UserID    string `json:"userId"`
+	PostID    string `json:"postId"`
 	CreatedAt string
-	Image     string
-	Content   string
-	NumLikes  int
+	Image     string `json:"image"`
+	Content   string `json:"content"`
+	NumLikes  int `json:"numLikes"`
 }
 
 

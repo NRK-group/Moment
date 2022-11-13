@@ -34,7 +34,7 @@ func InsertMessage(message structs.Message, database structs.DB) (structs.Messag
 	}
 	msg = structs.Message{
 		MessageId:   messageId,
-		MessageType: message.MessageType,
+		MessageType: "privateMessage",
 		ChatId:      message.ChatId,
 		SenderId:    message.SenderId,
 		ReceiverId:  message.ReceiverId,

@@ -13,11 +13,11 @@ export const ChatUsersContainer = ({
                 {chatList.map(({ chatId, user, content }) => (
                     <NavLink
                         key={user.userId}
-                        to={`/messages/${user.userId}`}
+                        to={`/messages/${chatId}`}
                         state={{
-                            chatId: chatId,
-                            img: user.img,
-                            name: user.username,
+                            receiverId: user.userId,
+                            receiverImg: user.img,
+                            receiverName: user.username,
                         }}>
                         <MiniUserCard
                             img={user.img}

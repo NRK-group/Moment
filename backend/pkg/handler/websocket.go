@@ -37,7 +37,7 @@ func (database *Env) ServeWs(hub *wSocket.Hub, w http.ResponseWriter, r *http.Re
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	client := &wSocket.Client{Hub: hub, UserId: arrCookie[0], Conn: conn, Send: make(chan []byte, 1024), Database: database.Env}
+	client := &wSocket.Client{Hub: hub, UserId: arrCookie[0], Conn: conn, Send: make(chan []byte, 1024)}
 	client.Hub.Register <- client
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.

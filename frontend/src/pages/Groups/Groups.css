@@ -40,8 +40,7 @@
 }
 
 .GroupsMenuHeader .searchContainer {
-    background-color: var(--background-color)
-    
+    background-color: var(--background-color);
 }
 
 .GroupsLeftMenu {
@@ -68,6 +67,12 @@
     display: none;
 }
 
+ .toggle {
+   
+    margin-top: '12px';
+    cursor: 'pointer';
+}
+
 @media only screen and (max-width: 600px) {
     .GroupsRightMenu {
         width: 0%;
@@ -90,12 +95,11 @@
     }
 
     .GroupsLeftMenu .EventBtn p {
-        margin-top: 12px 
+        margin-top: 12px;
     }
 
     .Group-Post {
         height: calc(79vh);
-
     }
 
     .GroupHeaderIcons {
@@ -108,8 +112,10 @@
         display: flex;
         padding: 3px;
         position: relative;
-        top: 50%;
-        fill: var(--terheading-color);
+        top: 40vh;
+        width: fit-content;
+        right: 18px;
+        fill: black;
         cursor: pointer;
     }
 
@@ -119,7 +125,7 @@
         position: relative;
         left: 90%;
         top: 300px;
-        fill: var(--terheading-color);
+        fill: black;
         cursor: pointer;
     }
 }

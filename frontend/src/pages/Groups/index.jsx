@@ -11,32 +11,52 @@ import {
     BarsIcon,
     GroupsIcon,
 } from '../../components/Icons/Icons';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 function Groups({ bodyStyleName, cardStyleName }) {
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);
     const GroupsPostsArea = useRef(null);
 
+    const [toggle, setToggle] = useState(true);
+
     const OpenGroupsLeftMenu = () => {
         GroupsLeftMenu.current.style.width = '670px';
+        GroupsLeftMenu.current.style.display = 'inline-table';
     };
 
     const CloseGroupsLeftMenu = () => {
         GroupsLeftMenu.current.style.width = '0%';
+        GroupsLeftMenu.current.style.display = 'none';
     };
 
     const OpenGroupsRightMenu = () => {
         GroupsRightMenu.current.style.width = '670px';
+        GroupsRightMenu.current.style.display = 'inline-table';
+        GroupsPostsArea.current.style.width = '50%';
     };
 
     const CloseGroupsRightMenu = () => {
         GroupsRightMenu.current.style.width = '0%';
+        GroupsRightMenu.current.style.display = 'none';
+        GroupsPostsArea.current.style.width = '100%';
     };
 
     const Events = () => {
-        CloseGroupsRightMenu()
-        GroupsPostsArea.current.style.width = "100%"
+        CloseGroupsRightMenu();
+        GroupsPostsArea.current.style.width = '100%';
+        setToggle(false);
+    };
+
+    const Users = () => {
+        GroupsRightMenu.current.style.display = 'block';
+        GroupsRightMenu.current.style.width = '25%';
+        GroupsPostsArea.current.style.width = '50%';
+        setToggle(true);
+    };
+
+    const Getgroups = ()=> {
+        
     }
 
     return (
@@ -59,11 +79,24 @@ function Groups({ bodyStyleName, cardStyleName }) {
                             <MiniUserCard name={'Fishing'} />
                             <MiniUserCard name={'Racing'} />
                         </div>
-                        <p
-                            style={{ marginTop: '12px', cursor: 'pointer' }}
-                            onClick={() => {Events()}}>
-                            Events
-                        </p>
+                        {toggle ? (
+                            <p
+                            style={{ marginTop: '12px',  cursor: 'pointer'}}
+                                onClick={() => {
+                                    Events();
+                                }}>
+                                Events
+                            </p>
+                        ) : (
+                            <p
+                            style={{ marginTop: '12px',  cursor: 'pointer'}}
+                                onClick={() => {
+                                    Users();
+                                }}>
+                                {' '}
+                                User
+                            </p>
+                        )}
                     </div>
                     <div ref={GroupsPostsArea} className='GroupsPostsArea'>
                         <Card styleName={'PostHeader'}>
@@ -92,10 +125,9 @@ function Groups({ bodyStyleName, cardStyleName }) {
                                 <GroupsIcon />
                             </div>
                         </Card>
-                        <div className="Group-Post">
-
-                        <Post />
-                        <Post />
+                        <div className='Group-Post'>
+                            <Post />
+                            <Post />
                         </div>
                     </div>
 

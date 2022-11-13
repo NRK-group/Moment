@@ -29,20 +29,22 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 			l.LogMessage("Chat", "GetPreviousPrivateChat - Scan", err)
 			return chatList, err
 		}
-		m := make(map[string]structs.UserInfo)
+		m := make(map[string]structs.Info)
 		if prevChat.User1 == userId {
 			userInfo, _ := GetUserInfo(prevChat.User2, database)
 			m[prevChat.User2] = userInfo
 			chatList = append([]structs.ChatWriter{{
-				ChatId: prevChat.ChatId,
-				User:   m,
+				ChatId:  prevChat.ChatId,
+				Details: userInfo,
+				Member:  m,
 			}}, chatList...)
 		} else {
 			userInfo, _ := GetUserInfo(prevChat.User1, database)
 			m[prevChat.User1] = userInfo
 			chatList = append([]structs.ChatWriter{{
-				ChatId: prevChat.ChatId,
-				User:   m,
+				ChatId:  prevChat.ChatId,
+				Details: userInfo,
+				Member:  m,
 			}}, chatList...)
 		}
 	}
@@ -101,8 +103,8 @@ func InsertNewGroupChat(groupId string, database *structs.DB) error {
 //
 //	userId: the user id
 //	database: the database
-func GetUserInfo(userId string, database *structs.DB) (structs.UserInfo, error) {
-	var userInfo structs.UserInfo
+func GetUserInfo(userId string, database *structs.DB) (structs.Info, error) {
+	var userInfo structs.Info
 	var user structs.User
 	stmt, err := database.DB.Query("SELECT userId, firstName, lastName, nickName, avatar FROM User WHERE userId = ?", userId)
 	if err != nil {
@@ -113,16 +115,16 @@ func GetUserInfo(userId string, database *structs.DB) (structs.UserInfo, error) 
 		err = stmt.Scan(&user.UserId, &user.FirstName, &user.LastName, &user.NickName, &user.Avatar)
 		if err != nil {
 			l.LogMessage("Chat", "GetUserInfo - Scan Error", err)
-			return structs.UserInfo{}, err
+			return structs.Info{}, err
 		}
-		userInfo = structs.UserInfo{
-			UserId: user.UserId,
-			Img:    user.Avatar,
+		userInfo = structs.Info{
+			Id:  user.UserId,
+			Img: user.Avatar,
 		}
 		if user.NickName != "" {
-			userInfo.Username = user.NickName
+			userInfo.Name = user.NickName
 		} else {
-			userInfo.Username = user.FirstName + " " + user.LastName
+			userInfo.Name = user.FirstName + " " + user.LastName
 		}
 	}
 	return userInfo, nil

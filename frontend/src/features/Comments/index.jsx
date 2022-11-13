@@ -3,14 +3,13 @@ import Avatar from '../../components/Avatar';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
-import { MessagesIcon, UploadIcon } from '../../components/Icons/Icons';
+import { MessagesIcon } from '../../components/Icons/Icons';
 import { useRef, useState, useEffect } from 'react';
 import ReadMoreReact from 'read-more-react';
 import { useLocation } from 'react-router-dom';
 import InputEmoji from 'react-input-emoji';
 
 const Comments = ({ isMobile }) => {
-
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
 
@@ -22,11 +21,10 @@ const Comments = ({ isMobile }) => {
 
     useEffect(() => {
         console.log({ state });
-       
+
         window.document
             .querySelectorAll('.CommentsSectionUsers .miniUserCard .contentSep')
             .forEach((ele) => ele.remove());
-          
     }, [commentS]);
 
     const dropdown = useRef(null);
@@ -42,26 +40,22 @@ const Comments = ({ isMobile }) => {
         }
     };
 
-
-
-    const PostComments = async ()=> {
-
+    const PostComments = async () => {
         let comments = await fetch(`http://localhost:5070/comment/`, {
             credentials: 'include',
             method: 'POST',
-            body: JSON.stringify({postId:state.PostId, content:text})
+            body: JSON.stringify({ postId: state.PostId, content: text }),
         }).then(async (response) => {
             let resp = await response.json();
-            console.log(resp)
-            setText("")
-            setCommentS(resp)
-           return resp
-        })
-        setFlag(1)
-    }
+            setText('');
+            setCommentS(resp);
+            return resp;
+        });
+        setFlag(1);
+    };
 
-    function handleOnEnter(text) {
-        console.log('enter', text);
+    function handleOnEnter() {
+        PostComments();
     }
 
     useEffect(() => {
@@ -70,15 +64,20 @@ const Comments = ({ isMobile }) => {
             method: 'GET',
         }).then(async (response) => {
             let resp = await response.json();
-            setCommentS(resp)
-           return resp
-        })
+            setCommentS(resp);
+            return resp;
+        });
 
         window.document
-        .querySelectorAll('.CommentsSectionUsers .miniUserCard .contentSep')
-        .forEach((ele) => ele.remove());
-
+            .querySelectorAll('.CommentsSectionUsers .miniUserCard .contentSep')
+            .forEach((ele) => ele.remove());
     }, [flag]);
+
+    const formatDate = (data) => {
+        let myDate = new Date(data);
+        let result = myDate.toString().slice(0,24);
+        return result
+    };
 
     return (
         <Body styleName={bodyStyleName}>
@@ -137,19 +136,17 @@ const Comments = ({ isMobile }) => {
                             {commentS &&
                                 commentS.map((ele) => (
                                     <MiniUserCard
-                                    key={ele.CommentID}
-                                        img={
-                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
-                                        }
+                                        key={ele.CommentID}
+                                        img={ele.image}
                                         imgStyleName={'miniUserCardImg'}
                                         optContent={
                                             <>
-                                                <h3>Name:</h3>
+                                                <h3>
+                                                    {ele.userId.split('-')[5]}:
+                                                </h3>
                                                 <div className=''>
                                                     <ReadMoreReact
-                                                        text={
-                                                            ele.content
-                                                        }
+                                                        text={ele.content}
                                                         readMoreText={
                                                             '...read More'
                                                         }
@@ -157,12 +154,11 @@ const Comments = ({ isMobile }) => {
                                                         ideal={80}
                                                         max={150}
                                                     />
-                                                   
                                                 </div>
                                             </>
                                         }>
                                         {' '}
-                                        {ele.CreatedAt}
+                                        {formatDate(ele.CreatedAt)}
                                     </MiniUserCard>
                                 ))}
                         </div>

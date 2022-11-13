@@ -14,6 +14,7 @@ function Home({ isMobile }) {
         let fetchPost = await fetch('http://localhost:5070/post')
             .then(async (resp) => await resp.json())
             .then((data) => data);
+            console.log({fetchPost})
         setPosts(fetchPost);
     };
     useEffect(() => {

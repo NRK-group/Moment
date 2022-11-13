@@ -1,6 +1,7 @@
 package chat
 
 import (
+	"fmt"
 	"time"
 
 	l "backend/pkg/log"
@@ -48,7 +49,6 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 			}}, chatList...)
 		}
 	}
-	l.LogMessage("Chat", "GetPreviousPrivateChat - ChatList", chatList)
 	return chatList, nil
 }
 
@@ -73,6 +73,114 @@ func InsertNewChat(user1Id string, user2Id string, database *structs.DB) (string
 		return "", err
 	}
 	return chatId, nil
+}
+
+// GetPreviousGroupChat returns the previous chat messages
+//
+// Param:
+//
+//	groupId: the group id
+//	database: the database
+func GetPreviousGroupChat(userId string, database *structs.DB) ([]structs.ChatWriter, error) {
+	var prevChatlist []structs.ChatWriter
+	groups, err := GetUserGroups(userId, database)
+	if err != nil {
+		return prevChatlist, err
+	}
+	for _, group := range groups {
+		var prevChat structs.Chat
+		var info structs.Info
+		row, err := database.DB.Query("SELECT chatId, groupId, updatedAt  FROM Chat WHERE groupId = ?", group.GroupID)
+		if err != nil {
+			return prevChatlist, err
+		}
+		for row.Next() {
+			err = row.Scan(&prevChat.ChatId, &prevChat.GroupId, &prevChat.UpdatedAt)
+			if err != nil {
+				return prevChatlist, err
+			}
+			m := make(map[string]structs.Info)
+			for _, member := range group.Members {
+				fmt.Println(member.UserId)
+				userInfo, err := GetUserInfo(member.UserId, database)
+				if err != nil {
+					return prevChatlist, err
+				}
+				m[member.UserId] = userInfo
+			}
+			info = structs.Info{
+				Id:   group.GroupID,
+				Name: group.Name,
+				Img:  group.Img,
+			}
+			prevChatlist = append([]structs.ChatWriter{{
+				ChatId:  prevChat.ChatId,
+				Details: info,
+				Member:  m,
+			}}, prevChatlist...)
+		}
+	}
+	return prevChatlist, nil
+}
+
+// GetUserGroups returns all groups that the user is a member of and the member of the group
+//
+// Param:
+//
+//	userId: the user id
+//	database: the database
+func GetUserGroups(userId string, database *structs.DB) ([]structs.Group, error) {
+	var group structs.Group
+	var groups []structs.Group
+	rows, err := database.DB.Query("SELECT * FROM Groups WHERE groupId IN (SELECT groupId FROM GroupMember WHERE userId = ?)", userId)
+	if err != nil {
+		fmt.Print(err)
+		return nil, err
+	}
+	var groupId, admin, name, description, createdAt string
+	for rows.Next() {
+		rows.Scan(&groupId, &admin, &name, &description, &createdAt)
+		member, err := GetAllMembersOfGroup(groupId, database)
+		if err != nil {
+			return nil, err
+		}
+		group = structs.Group{
+			CreatedAt:   createdAt,
+			Name:        name,
+			GroupID:     groupId,
+			Description: description,
+			Admin:       admin,
+			Members:     member,
+		}
+		groups = append([]structs.Group{group}, groups...)
+	}
+	return groups, nil
+}
+
+// GetAllMembersOfGroup returns all members of a group
+//
+// Param:
+//
+//	groupId: the group id
+//	database: the database
+func GetAllMembersOfGroup(id string, database *structs.DB) ([]structs.Member, error) {
+	var members []structs.Member
+	rows, err := database.DB.Query("SELECT * FROM GroupMember WHERE groupId = ?", id)
+	if err != nil {
+		fmt.Print(err)
+		return nil, err
+	}
+	var userId, groupId, createdAt string
+	for rows.Next() {
+		rows.Scan(&groupId, &userId, &createdAt)
+		member := structs.Member{
+			UserId:    userId,
+			GroupId:   groupId,
+			CreatedAt: createdAt,
+		}
+		members = append([]structs.Member{member}, members...)
+	}
+	return members, nil
 }
 
 // InsertNewGroupChat inserts a new group chat message

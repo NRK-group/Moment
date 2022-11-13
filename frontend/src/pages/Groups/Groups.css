@@ -19,11 +19,15 @@
 
 .GroupsPostsArea {
     width: 50%;
-    overflow-y: scroll;
 }
 
 .Groups .PostHeader {
     height: 50px;
+}
+
+.Group-Post {
+    height: 85vh;
+    overflow-y: scroll;
 }
 
 .GroupsMenuHeader {
@@ -87,6 +91,11 @@
 
     .GroupsLeftMenu .EventBtn p {
         margin-top: 12px 
+    }
+
+    .Group-Post {
+        height: calc(79vh);
+
     }
 
     .GroupHeaderIcons {

@@ -92,9 +92,11 @@ function Groups({ bodyStyleName, cardStyleName }) {
                                 <GroupsIcon />
                             </div>
                         </Card>
+                        <div className="Group-Post">
 
                         <Post />
                         <Post />
+                        </div>
                     </div>
 
                     <div ref={GroupsRightMenu} className='GroupsRightMenu'>

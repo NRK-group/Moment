@@ -1,6 +1,6 @@
 import './MiniUserCard.css';
 import { ProfileIcon } from '../Icons/Icons';
-const MiniUserCard = ({ propsId, img, name, content }) => {
+const MiniUserCard = ({ propsId, img, name, children, optContent }) => {
     return (
         <div id={propsId} className='miniUserCard'>
             <div className='miniUserCardImgContainer'>
@@ -11,8 +11,18 @@ const MiniUserCard = ({ propsId, img, name, content }) => {
                 />
             </div>
             <div className='miniUserCardInfo'>
-                <span className='miniUserCardName'>{name}</span>
-                <span className='miniUserCardContent'>{content}</span>
+                <span>
+                    <div className='miniUserCardName longTextElipsis'>
+                        {name}
+                    </div>
+                    {optContent && (
+                        <span className='optContent'>
+                            <span className='contentSep'>•</span>
+                            {optContent}
+                        </span>
+                    )}
+                </span>
+                <span className='miniUserCardContent'>{children}</span>
             </div>
         </div>
     );

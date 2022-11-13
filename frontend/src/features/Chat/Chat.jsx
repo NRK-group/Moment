@@ -1,52 +1,67 @@
 import './Chat.css';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
-import SendMessageBox from './components/SendMessageBox';
+import SendMessageBox from '../Messages/components/SendMessageBox';
 import { ChatUsersContainer } from './components/chatUsersContainer';
-const Chat = ({ bodyStyleName, cardStyleName }) => {
-    let users = [];
-    let currentUserName = 'Moment';
+import { Messages } from '../Messages/Messages';
+import { NewChatModal } from './components/NewChatModal';
+import { useState, useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { GetChatList } from './hooks/getChatList';
+const Chat = ({ isMobile, socket }) => {
+    let bodyStyleName = isMobile ? 'mobile' : 'desktop';
+    let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
+    let user = document.cookie.split('=')[1].split('&')[0];
+    const chatList = GetChatList();
     return (
-        <Body styleName={bodyStyleName}>
-            <Card styleName={cardStyleName}>
-                {bodyStyleName === 'mobile' ? (
-                    users.length !== 0 ? (
-                        <div className='chatContainer'>
-                            <div className='chatBox'>
-                                <ChatUsersContainer
-                                    styleName='chatUsersContainerMobile'
-                                    users={users}
-                                    currentUserName={currentUserName}
-                                />
-                            </div>
-                        </div>
-                    ) : (
-                        // for mobile view without any previews messages
-                        <div className='chatContainer'>
-                            <div className='chatBox'>
-                                <div className='sendMessageContainer'>
-                                    <SendMessageBox />
-                                </div>
-                            </div>
-                        </div>
-                    )
-                ) : (
-                    // for desktop view
+        <>
+            <Body styleName={bodyStyleName}>
+                <Card styleName={cardStyleName}>
                     <div className='chatContainer'>
                         <div className='chatBox'>
                             <ChatUsersContainer
-                                styleName='chatUsersContainerDesktop'
-                                users={users}
-                                currentUserName={currentUserName}
+                                styleName='chatUsersContainer'
+                                currentUserInfo={user}
+                                chatList={chatList}
                             />
-                            <div className='sendMessageContainer'>
-                                <SendMessageBox />
+                            <div className='messagesContainer'>
+                                <>
+                                    <Routes>
+                                        <Route
+                                            index
+                                            element={
+                                                <div className='sendMessageContainer'>
+                                                    <SendMessageBox />
+                                                </div>
+                                            }
+                                        />
+                                        <Route
+                                            path='new'
+                                            element={<NewChatModal />}
+                                        />
+                                        <Route
+                                            path=':chatId'
+                                            element={
+                                                <Messages
+                                                    currentUserInfo={user} // change to user info
+                                                    socket={socket}
+                                                />
+                                            }
+                                        />
+                                        <Route
+                                            path=':chatId/*'
+                                            element={
+                                                <Navigate to='/messages' />
+                                            }
+                                        />
+                                    </Routes>
+                                </>
                             </div>
                         </div>
                     </div>
-                )}
-            </Card>
-        </Body>
+                </Card>
+            </Body>
+        </>
     );
 };
 export default Chat;

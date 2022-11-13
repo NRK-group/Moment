@@ -2,4 +2,25 @@
     border-radius: 50%;
     height: 22px;
     width: 22px;
+    cursor: pointer;
+}
+.notifIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.notif {
+    position: absolute;
+    top: -3px;
+    left: -1px;
+    font-size: 15px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--notif-color);
+    color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

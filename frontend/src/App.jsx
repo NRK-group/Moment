@@ -7,98 +7,93 @@ import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
+import ProfileInfoPopUp from './features/profile/ProfileInfoPopUp';
 import Stories from './pages/stories/stories';
+import Comments from './features/Comments';
 import Groups from './pages/Groups';
 import { useState } from 'react';
+import NewPost from './features/newpost/NewPost';
+import { Notification } from './features/Notification/Notification';
+import { Search } from './features/Search/Search';
+import Validation from './components/Validation/Validation';
+import { Menu } from './layouts/Menu/Menu';
+import ValidRedirect from './components/Validation/ValidRedirect';
+import useWindowDimensions from './components/hooks/useWindowDimensions';
 function App() {
-    const [isMobile, setIsMobile] = useState(false);
+    const [auth, setAuthorised] = useState(false);
+    const authorised = Validation(auth);
+    const [socket, setSocket] = useState(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { width } = useWindowDimensions();
+    let isMobile = width < 600;
     return (
         <div
             className='App'
-            ref={(boxRef) => {
-                boxRef &&
-                    console.log(
-                        boxRef.getBoundingClientRect().width,
-                        boxRef.getBoundingClientRect().width >= 600
-                    );
-                return (
-                    boxRef &&
-                    setIsMobile(boxRef.getBoundingClientRect().width < 600)
-                );
+            onClick={() => {
+                setIsMenuOpen(false);
             }}>
-            <Header />
-            {/* <Login /> */}
-            {/* <Registration /> */}
+            {authorised && (
+                <Header setSocket={setSocket} setIsMenuOpen={setIsMenuOpen} />
+            )}
+            <>
+                {isMenuOpen && (
+                    <Menu setIsMenuOpen={setIsMenuOpen} auth={setAuthorised} />
+                )}
+            </>
             <>
                 <Routes>
                     <Route
-                        path='/home'
+                        path='/'
                         element={
-                            isMobile ? (
-                                <Home
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
-                            ) : (
-                                <Home
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                            )
-                        }
-                    />
-                    <Route path='/search' element={<h1>Search</h1>} />
-                    <Route path='/newpost' element={<h1>Newpost</h1>} />
-                    <Route
-                        path='/messages'
-                        element={
-                            isMobile ? (
-                                <Chat
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
-                            ) : (
-                                <Chat
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                            )
+                            <ValidRedirect>
+                                <Login auth={setAuthorised} />
+                            </ValidRedirect>
                         }
                     />
                     <Route
-                        path='/groups'
+                        path='/register'
                         element={
-                            isMobile ? (
-                                <Groups
-                                    bodyStyleName='mobile'
-                                    cardStyleName='mobileCard'
-                                />
-                            ) : (
-                                <Groups
-                                    bodyStyleName='desktop'
-                                    cardStyleName='desktopCard'
-                                />
-                            )
+                            <ValidRedirect>
+                                <Registration />
+                            </ValidRedirect>
                         }
                     />
-                    <Route
-                        path='/notifications'
-                        element={<h1>Notifications</h1>}
-                    />
-                    <Route
-                        path='/profile'
-                        element={
-                            <Profile
-                                aboutMe='This section is where the bio goes. You should write 1-2 sentences about yourself.'
-                                fullname='Nathaniel Russell'
-                                nickname='Nate'
-                            />
-                        }
-                    />
-                    <Route path='/stories' element={<Stories />} />
+                    {/* need to be replaced */}
+                    <Route path='*' element={<></>} />
                 </Routes>
             </>
-            <Footer />
+            {authorised && (
+                <>
+                    <Routes>
+                        <Route
+                            path='/home'
+                            element={<Home isMobile={isMobile} />}
+                        />
+                        <Route path='/search' element={<Search />} />
+                        <Route path='/newpost' element={<NewPost />} />
+                        <Route
+                            path='/messages/*'
+                            element={
+                                <Chat isMobile={isMobile} socket={socket} />
+                            }
+                        />
+                        <Route path='/groups' element={<Groups/>} />
+                        <Route
+                            path='/comments'
+                            element={<Comments isMobile={isMobile} />}
+                        />
+                        <Route path='notifications' element={<></>} />
+                        <Route
+                            path='notifications/:type'
+                            element={<Notification />}
+                        />
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/profile/update' element={<ProfileInfoPopUp styleName='popUp' />} />
+                        <Route path='/stories' element={<Stories />} />
+                    </Routes>
+                </>
+            )}
+            {authorised ? <Footer /> : null}
         </div>
     );
 }

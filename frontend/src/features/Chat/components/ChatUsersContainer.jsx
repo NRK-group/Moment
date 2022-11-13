@@ -1,20 +1,33 @@
 import ChatContainerHeader from './ChatContainerHeader';
 import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
-export const ChatUsersContainer = ({ users, currentUserName, styleName }) => {
-    console.log(styleName);
+import { NavLink, Outlet } from 'react-router-dom';
+export const ChatUsersContainer = ({
+    currentUserInfo,
+    styleName,
+    chatList,
+}) => {
     return (
         <div className={`chatUsersContainer ${styleName}`}>
-            <ChatContainerHeader userName={currentUserName} />
+            <ChatContainerHeader userName={currentUserInfo} />
             <div className='chatUsers scrollbar-hidden'>
-                {users.map(({ img, id, name, content }) => (
-                    <MiniUserCard
-                        key={id}
-                        img={img}
-                        propsId={`chat` + id}
-                        name={name}
-                        content={content}
-                    />
+                {chatList.map(({ chatId, user, content }) => (
+                    <NavLink
+                        key={user.userId}
+                        to={`/messages/${chatId}`}
+                        state={{
+                            receiverId: user.userId,
+                            receiverImg: user.img,
+                            receiverName: user.username,
+                        }}>
+                        <MiniUserCard
+                            img={user.img}
+                            propsId={`chat` + user.userId}
+                            name={user.username}>
+                            {content.content}
+                        </MiniUserCard>
+                    </NavLink>
                 ))}
+                <Outlet />
             </div>
         </div>
     );

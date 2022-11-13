@@ -12,6 +12,7 @@
 .miniUserCardImg {
     height: 30px;
     width: 30px;
+    border-radius: 50%;
 }
 .miniUserCardImgContainer {
     height: 44px;
@@ -33,6 +34,15 @@
 .miniUserCardContent {
     font-size: var(--tertiary-font-size);
     color: var(--subheading-color);
+}
+.optContent {
+    font-weight: 570;
+
+    font-size: var(--tertiary-font-size);
+    color: var(--subheading-color);
+}
+.contentSep {
+    margin: 0 5px;
 }
 @media only screen and (min-width: 601px) {
     .miniUserCardImg {

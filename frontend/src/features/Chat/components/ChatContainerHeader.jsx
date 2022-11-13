@@ -1,11 +1,22 @@
+import { NavLink } from 'react-router-dom';
 import { WriteIcon } from '../../../components/Icons/Icons';
+import { useNavigate } from 'react-router-dom';
 const ChatContainerHeader = ({ userName }) => {
+    const navigate = useNavigate();
     return (
         <div className='chatContainerHeader'>
             <div>
-                <div className='userName'>{userName}</div>
+                <div className='userName'>
+                    <NavLink to={`/profile/`}>{userName} </NavLink>
+                </div>
             </div>
-            <WriteIcon />
+            <div
+                onClick={(e) => {
+                    navigate('/messages/new');
+                    e.stopPropagation();
+                }}>
+                <WriteIcon />
+            </div>
         </div>
     );
 };

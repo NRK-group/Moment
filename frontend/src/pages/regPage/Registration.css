@@ -1,8 +1,10 @@
-.inputText{
+.inputText {
     pointer-events: none;
+    background-color: #ffffff00;
 }
 
-.authAvatarBtn{
+.authAvatarBtn {
+    /* all: unset; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,44 +15,91 @@
     background-color: var(--button-color);
     border: none;
     color: white;
-    margin-bottom: 21%;
-    margin-left: 68%;
+    position: relative;
+    margin-bottom: 18%;
+    margin-left: 75%;
     border-radius: 50%;
 }
 
-.authAvatar{
+.authAvatar {
     display: flex;
     margin: auto;
     height: 10vmax;
     min-height: 125px;
     width: 10vmax;
     min-width: 125px;
-    background-image: url('./assets/noun-user-circle-4602186.svg');
+    background-image: url('http://localhost:5070/images/profile/default-user.svg');
     background-position: center;
-    background-size: contain;
-    /* background-size: 110%; */
+    background-size: cover;
     background-repeat: no-repeat;
     border-radius: 50%;
     opacity: 0.85;
     cursor: pointer;
 }
 
-.authDate{
+.authDate {
     display: flex;
+    justify-content: center;
     width: 85%;
     margin: auto;
+    z-index: 1;
 }
 
-.authDate > * {
-    margin: auto;
-    width: 30%;
-}
-
-select::-webkit-scrollbar{
+select::-webkit-scrollbar {
     width: 10px;
 }
-select::-webkit-scrollbar-thumb{
+select::-webkit-scrollbar-thumb {
     background-color: var(--subheading-color);
     border-radius: 5px;
 }
 
+.dot-flashing {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: var(--button-color);
+    color: var(--button-color);
+    animation: dotFlashing 1s infinite linear alternate;
+    animation-delay: 0.5s;
+}
+
+.dot-flashing::before,
+.dot-flashing::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+}
+
+.dot-flashing::before {
+    left: -15px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: var(--button-color);
+    color: var(--button-color);
+    animation: dotFlashing 1s infinite alternate;
+    animation-delay: 0s;
+}
+
+.dot-flashing::after {
+    left: 15px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: var(--button-color);
+    color: var(--button-color);
+    animation: dotFlashing 1s infinite alternate;
+    animation-delay: 1s;
+}
+
+@keyframes dotFlashing {
+    0% {
+        background-color: var(--button-color);
+    }
+    50%,
+    100% {
+        background-color: #bcd0ff;
+    }
+}

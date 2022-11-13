@@ -31,16 +31,11 @@
 .chatContainerHeader :nth-child(2) {
     cursor: pointer;
 }
-.chatUsersContainerMobile {
-    max-width: 850px;
-}
-.chatUsersContainerDesktop {
-    max-width: 300px;
-}
 .chatUsersContainer {
-    width: 100%;
     height: 100%;
     border-right: 1px solid var(--terheading-color);
+    max-width: 850px;
+    width: 100%;
 }
 .chatUsers {
     height: calc(100% - var(--mobile-nav-height));
@@ -63,16 +58,82 @@
     padding-right: 5px;
     border: 3px solid var(--border-color);
 }
-.sendMessageBoxContainer {
+.newChatModalContainer {
     display: flex;
-    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    z-index: 1;
+    justify-content: center;
     align-items: center;
-    text-align: center;
 }
-.sendMessageBoxContainer :nth-child(3) {
-    font-size: var(--tertiary-font-size);
-    color: var(--sedheading-color);
-    margin: 10px 0;
+.newChatModalContainer:before {
+    content: '';
+    position: absolute;
+    background-color: black;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.5;
+}
+.newChatModal {
+    margin: auto;
+    background-color: var(--background-color);
+    width: 100%;
+    max-width: 450px;
+    height: 100%;
+    max-height: 550px;
+    border-radius: 10px;
+    z-index: 1;
+    display: grid;
+    margin: 15px;
+    grid-template-rows: 8% 10% 82%;
+}
+.newChatModalHeader {
+    display: grid;
+    grid-template-columns: 5% 90% 5%;
+    width: 100%;
+    height: 100%;
+}
+.newChatModalHeader .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.newChatModalHeader .closeIcon {
+    margin: 3px 0 0 3px;
+}
+.searchFollowing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.searchFollowing input {
+    background-color: var(--background-color);
+    width: 100%;
+    color: var(--heading-color);
+    font-size: var(--subheading-font-size);
+    padding-left: 20px;
+}
+.newChatModalHeaderSearch {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    border-top: 1px solid var(--terheading-color);
+    border-bottom: 1px solid var(--terheading-color);
+}
+.newChatModalContainer .searchResult {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
 }
 @media only screen and (min-width: 601px) {
     .chatBox {
@@ -84,5 +145,8 @@
     .chatUsers {
         height: calc(100% - var(--desktop-nav-height));
         overflow-y: scroll;
+    }
+    .chatUsersContainer {
+        max-width: 300px;
     }
 }

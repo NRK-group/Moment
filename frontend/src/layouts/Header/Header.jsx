@@ -1,7 +1,12 @@
 import './Header.css';
 import { DesktopHeaderNav, MobileHeaderNav } from '../Navbar/Navbar';
 import Input from '../../components/Input/Input';
-const Header = () => {
+import { CreateWebSocket } from '../../utils/createWebsocket';
+import { useEffect } from 'react';
+const Header = ({ setSocket, setIsMenuOpen }) => {
+    useEffect(() => {
+        setSocket(CreateWebSocket());
+    }, []);
     return (
         <div className='headerContainer'>
             <div className='header'>
@@ -24,9 +29,13 @@ const Header = () => {
                         <use id='Moment' href='#img1' x='0' y='0' />
                     </svg>
                 </div>
-                <Input styleName={'search'} type={'search'} />
-                <DesktopHeaderNav />
-                <MobileHeaderNav />
+                <Input
+                    styleName={'search'}
+                    type={'search'}
+                    placeholder='search'
+                />
+                <DesktopHeaderNav setIsMenuOpen={setIsMenuOpen} />
+                <MobileHeaderNav setIsMenuOpen={setIsMenuOpen} />
             </div>
         </div>
     );

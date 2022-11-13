@@ -2,6 +2,7 @@ package handler
 
 import (
 	"backend/pkg/auth"
+	"backend/pkg/follow"
 	"backend/pkg/response"
 	"net/http"
 )
@@ -27,8 +28,10 @@ func (DB *Env) Following(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		//Check if cookieSlc[0] is following  followingId
-		
-
-
+		if follow.CheckIfFollow(cookieSlc[0], followingId, DB.Env){
+			response.WriteMessage(cookieSlc[0] + " follows " + followingId, "Following", w)
+			return
+		}
+		response.WriteMessage(cookieSlc[0] + " not following " + followingId, "Not Following", w)
 	}
 }

@@ -62,6 +62,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
         socket.send(
             JSON.stringify({
                 type: 'typing', // message, notification, followrequest
+                chatId: chatId,
                 senderId: currentUserInfo, // senderid
                 receiverId: details.id, //change to the id of the receiver
             })
@@ -71,17 +72,20 @@ export const Messages = ({ socket, currentUserInfo }) => {
         socket.onmessage = (event) => {
             if (event.data) {
                 let data = JSON.parse(event.data);
-                if (data.type === 'privateMessage') {
-                    setMessages((messages) => [...messages, data]);
-                    isTyping.current.style.display = 'none';
-                }
-                if (data.type === 'typing') {
-                    isTyping.current.innerText = `${data.senderId} is typing...`;
-                    //change the typing status
-                    isTyping.current.style.display = 'block';
-                    debounce(() => {
+                if (data.chatId === chatId) {
+                    if (data.type === 'privateMessage') {
+                        setMessages((messages) => [...messages, data]);
                         isTyping.current.style.display = 'none';
-                    }, 2000);
+                    }
+                    if (data.type === 'typing') {
+                        isTyping.current.innerText = `${data.senderId} is typing...`;
+                        //change the typing status
+                        isTyping.current.style.display = 'block';
+                        debounce(() => {
+                            isTyping.current.style.display = 'none';
+                        }, 2000);
+                    }
+                    return;
                 }
             }
         };

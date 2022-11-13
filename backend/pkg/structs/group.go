@@ -1,11 +1,11 @@
 package structs
 
 type Group struct {
-	
-	CreatedAt   string
-	Name        string `json:"Name"`
-	GroupID     string 
-	Description string `json:"Description"`
-	Admin       string `json:"Admin"`
-
+	CreatedAt   string   `json:"CreatedAt"`
+	Name        string   `json:"Name"`
+	GroupID     string   `json:"GroupID"`
+	Img         string   `json:"Img"`
+	Description string   `json:"Description"`
+	Admin       string   `json:"Admin"`
+	Members     []Member `json:"Members"`
 }

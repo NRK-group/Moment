@@ -1,6 +1,7 @@
 package follow
 
 import (
+	"log"
 	"time"
 
 	"backend/pkg/helper"
@@ -302,6 +303,26 @@ func GetFollowingNotifs(userId string, database *structs.DB) ([]structs.Follower
 	return followerNotifs, nil
 }
 
-// func CheckIfFollowPending(followerId, followingId string, database *structs.DB) bool {
-// 	rows, err := database.DB.Query("SELECT ")
-// }
+// CheckIfFollowPending will check the status of a follow notification
+//
+// Params:
+//
+//	followerId: the id of the user who is following - current user
+//	followingId: the id of the user who is being followed - other user
+//	database: the database to update the follow notification status in
+func CheckIfFollowPending(followerId, followingId string, database *structs.DB) bool {
+	rows, err := database.DB.Query("SELECT status FROM FollowNotif WHERE userId = ? AND followingID = ?", followerId, followingId)
+	if err != nil {
+		log.Println("Error Preparing statment to check follow notif status")
+		return false
+	}
+	var status string
+	for rows.Next() {
+		rows.Scan(&status)
+		if status == "pending" {
+			return true
+		}
+	}
+
+	return false
+}

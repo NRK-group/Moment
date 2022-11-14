@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS "GroupMessage"(
     "messageId" TEXT NOT NULL PRIMARY KEY,
     "groupId" TEXT NOT NULL,
     "senderId" TEXT NOT NULL,
+    "chatId" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL,
     FOREIGN KEY ("groupId")

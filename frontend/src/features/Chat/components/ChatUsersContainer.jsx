@@ -10,19 +10,19 @@ export const ChatUsersContainer = ({
         <div className={`chatUsersContainer ${styleName}`}>
             <ChatContainerHeader userName={currentUserInfo} />
             <div className='chatUsers scrollbar-hidden'>
-                {chatList.map(({ chatId, user, content }) => (
+                {chatList.map(({ type, chatId, details, member, content }) => (
                     <NavLink
-                        key={user.userId}
+                        key={details.id}
                         to={`/messages/${chatId}`}
                         state={{
-                            receiverId: user.userId,
-                            receiverImg: user.img,
-                            receiverName: user.username,
+                            type: type,
+                            details: details,
+                            user: member,
                         }}>
                         <MiniUserCard
-                            img={user.img}
-                            propsId={`chat` + user.userId}
-                            name={user.username}>
+                            img={details.img}
+                            propsId={`chat` + details.id}
+                            name={details.name}>
                             {content.content}
                         </MiniUserCard>
                     </NavLink>

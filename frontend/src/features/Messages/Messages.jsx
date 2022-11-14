@@ -1,5 +1,5 @@
 import './Messages.css';
-import { MessagesIcon, UserIcon } from '../../components/Icons/Icons';
+import { MessagesIcon } from '../../components/Icons/Icons';
 import { MessageContainer } from './components/messageContainer';
 import { MessageContent } from './components/MessageContent';
 import { ProfileIcon } from '../../components/Icons/Icons';
@@ -11,7 +11,7 @@ import { debounce } from './hooks/debounce';
 export const Messages = ({ socket, currentUserInfo }) => {
     const { chatId } = useParams();
     const location = useLocation();
-    const { receiverId, receiverImg, receiverName } = location.state;
+    const { type, user, details } = location.state;
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
@@ -22,6 +22,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
             'http://localhost:5070/message?' +
                 new URLSearchParams({
                     chatId: chatId,
+                    type: type,
                 }),
             {
                 credentials: 'include',
@@ -31,14 +32,15 @@ export const Messages = ({ socket, currentUserInfo }) => {
             data ? setMessages(data) : setMessages([]);
             return;
         });
+        console.log(user);
     }, [chatId]);
     const sendMessage = (e) => {
         e.preventDefault();
         let message = messageInput.current.value;
         if (message.trim() !== '') {
             let data = {
-                type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
-                receiverId: receiverId,
+                type: type, // "privateMessage", "groupMessage", or "typing"
+                receiverId: details.id,
                 senderId: currentUserInfo, //chnage to current userid
                 chatId: chatId,
                 content: messageInput.current.value, // content of the message
@@ -60,9 +62,10 @@ export const Messages = ({ socket, currentUserInfo }) => {
         }
         socket.send(
             JSON.stringify({
-                type: 'typing', // message, notification, followrequest
+                type: type + 'typing', // message, notification, followrequest // "privateMessage", "groupMessage", or "typing"
+                chatId: chatId,
                 senderId: currentUserInfo, // senderid
-                receiverId: receiverId, //change to the id of the receiver
+                receiverId: details.id, //change to the id of the receiver
             })
         );
     };
@@ -70,18 +73,20 @@ export const Messages = ({ socket, currentUserInfo }) => {
         socket.onmessage = (event) => {
             if (event.data) {
                 let data = JSON.parse(event.data);
-                if (data.type === 'privateMessage') {
-                    data.img = receiverImg;
-                    setMessages((messages) => [...messages, data]);
-                    isTyping.current.style.display = 'none';
-                }
-                if (data.type === 'typing') {
-                    isTyping.current.innerText = `${data.senderId} is typing...`;
-                    //change the typing status
-                    isTyping.current.style.display = 'block';
-                    debounce(() => {
+                if (data.chatId === chatId) {
+                    if (data.type === type) {
+                        setMessages((messages) => [...messages, data]);
                         isTyping.current.style.display = 'none';
-                    }, 2000);
+                    }
+                    if (data.type === type + 'typing') {
+                        isTyping.current.innerText = `${data.senderId} is typing...`;
+                        //change the typing status
+                        isTyping.current.style.display = 'block';
+                        debounce(() => {
+                            isTyping.current.style.display = 'none';
+                        }, 2000);
+                    }
+                    return;
                 }
             }
         };
@@ -96,12 +101,12 @@ export const Messages = ({ socket, currentUserInfo }) => {
                                 <ProfileIcon
                                     iconStyleName='imgIcon'
                                     imgStyleName='imgIcon'
-                                    img={receiverImg}
+                                    img={details.img}
                                 />
                             }
                         </span>
                         <span className='messageHeaderName longTextElipsis'>
-                            {receiverName}
+                            {details.name}
                         </span>
                     </div>
                     {/* this will be replace by the elipsis btn */}
@@ -111,8 +116,14 @@ export const Messages = ({ socket, currentUserInfo }) => {
             <div
                 className='chatMessageContainer scrollbar-hidden'
                 ref={chatBox}>
-                {messages &&
+                {messages.length != 0 &&
                     messages.map((message, i) => {
+                        if (
+                            message.senderId ===
+                            'f9c12b93-22d9-4630-9629-2332b50a0754'
+                        ) {
+                            console.log('-----------', messages);
+                        }
                         if (message.senderId === currentUserInfo) {
                             return (
                                 <MessageContent
@@ -128,8 +139,14 @@ export const Messages = ({ socket, currentUserInfo }) => {
                             <MessageContainer
                                 key={message + i}
                                 message={message}
-                                name={receiverName}
-                                img={receiverImg}>
+                                name={
+                                    user[message.senderId] &&
+                                    user[message.senderId].name
+                                }
+                                img={
+                                    user[message.senderId] &&
+                                    user[message.senderId].img
+                                }>
                                 <MessageContent
                                     date={'date'}
                                     content={message.content}

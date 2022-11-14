@@ -5,7 +5,6 @@ import SendMessageBox from '../Messages/components/SendMessageBox';
 import { ChatUsersContainer } from './components/chatUsersContainer';
 import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
-import { useState, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { GetChatList } from './hooks/getChatList';
 const Chat = ({ isMobile, socket }) => {
@@ -22,7 +21,7 @@ const Chat = ({ isMobile, socket }) => {
                             <ChatUsersContainer
                                 styleName='chatUsersContainer'
                                 currentUserInfo={user}
-                                chatList={chatList}
+                                chatList={chatList ? chatList : []}
                             />
                             <div className='messagesContainer'>
                                 <>

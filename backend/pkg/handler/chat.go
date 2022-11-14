@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -33,7 +32,12 @@ func (database *Env) Chat(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		fmt.Print(chats)
+		groupChat, err := chat.GetPreviousGroupChat(cookie[0], database.Env)
+		if err != nil {
+			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		chats = append(chats, groupChat...)
 		chatlist, err := json.Marshal(chats)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)

@@ -69,7 +69,7 @@ func GetPrivateMessages(chatId string, database structs.DB) ([]structs.Message, 
 //
 // message struct: the message information
 // database: the database
-func InsertGroupMessage(message structs.Message, database structs.DB) (structs.Message, error) {
+func InsertGroupMessage(message structs.Message, database *structs.DB) (structs.Message, error) {
 	messageId := uuid.NewV4().String()
 	createdAt := time.Now()
 	msg := structs.Message{}

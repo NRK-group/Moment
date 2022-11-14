@@ -18,8 +18,9 @@
 }
 
 .CommentsImg img {
-  width:550px ;
-  height:fit-content;
+    object-fit: fill;
+    height: inherit;
+  width:fit-content;
 }
 
 .CommentsSection {
@@ -30,7 +31,6 @@
 
 .CommentsLeft {
     background-color: black;
-    
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -85,15 +85,64 @@
     overflow-y: scroll;
 }
 
-@media only screen and (max-width: 600px) {
+.Commet-Content {
+    font:bold;
+}
+
+.CommentsSectionUsers .optContent {
+    color: black;
+}
+
+.CommentsSectionUsers .optContent .displayed-text{
+    width: 200px;
+    overflow-wrap: anywhere;
+}
+
+.CommentsSectionUsers .optContent P {
+    justify-content:left;
+    align-items: left;
+}
+
+.CommentsSectionUsers .miniUserCard {
+    height: fit-content;
+}
+
+.Comments-Emoji {
+    display: block;
+    position: absolute;
+    top: 34%;
+    left: 1vw;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;  
+}
+
+   .CommentsChat .react-emoji {
+    flex-direction: row-reverse;
+}
+
+.CommentsIcon {
+    display: flex;
+   width: 100px;
+   justify-content: space-around;
+}
+
+.CommentsLeft .react-input-emoji--input {
+width: 530px;
+}
+
+@media only screen and (max-width: 700px) {
     .Comments {
         flex-direction: column;
         overflow-y: scroll;
     }
 
+    .CommentText {
+        display: flex;
+    }
+
     .CommentsImg img {
         height:100%;
-        width: 370px;
       }
 
       .CommentsChatIcons input {
@@ -103,7 +152,7 @@
  
 
     .CommentsChat {
-        height: 40px;
+        height: auto;
     }
 
     .CommentsSection {
@@ -119,4 +168,9 @@
     .CommentsSectionUsers {
         height: 100%;
     }
+
+    .CommentsLeft .react-input-emoji--input {
+        width: 220px;
+        height: inherit;
+        }
 }

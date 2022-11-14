@@ -2,7 +2,7 @@ package structs
 
 
 type GroupMember struct {
-	EventId string
+	GroupId string
 	UserId string
 	CreatedAt string
 }

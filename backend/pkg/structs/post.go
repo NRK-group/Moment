@@ -2,7 +2,7 @@ package structs
 
 
 type Post struct {
-	PostID       string
+	PostID       string `json:"PostID"`
 	UserID       string `json:"UserID"`
 	CreatedAt    string
 	Content      string `json:"Content"`

@@ -14,7 +14,6 @@ import (
 	"backend/pkg/post"
 	"backend/pkg/structs"
 
-	"github.com/stretchr/testify/assert"
 )
 
 func DatabaseSetup() *structs.DB {
@@ -54,12 +53,6 @@ func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected2)
 	}
-}
-
-func TestHealthCheckPostHttpPost(t *testing.T) {
-	w := httptest.NewRecorder()
-	http.NewRequest("POST", "/post", nil)
-	assert.Equal(t, 200, w.Code)
 }
 
 func TestCreatePost(t *testing.T) {

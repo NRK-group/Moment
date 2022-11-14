@@ -301,3 +301,7 @@ func GetFollowingNotifs(userId string, database *structs.DB) ([]structs.Follower
 	l.LogMessage("follow.go", "GetFollowerNotif", followerNotifs)
 	return followerNotifs, nil
 }
+
+// func CheckIfFollowPending(followerId, followingId string, database *structs.DB) bool {
+// 	rows, err := database.DB.Query("SELECT ")
+// }

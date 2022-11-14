@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"backend/pkg/auth"
@@ -18,27 +17,11 @@ func (DB *Env) Following(w http.ResponseWriter, r *http.Request) {
 	SetupCorsResponse(w)
 	if r.Method == "GET" {
 		// Validate the user session
-		fmt.Println()
-		fmt.Println()
-		fmt.Println("INSIDE GET REQ")
-		fmt.Println()
-		fmt.Println()
-
 		c, err := r.Cookie("session_token")
 		if err != nil || !auth.ValidateCookie(c, DB.Env, w) {
 			response.WriteMessage("Cookie not found", "Unauthorised", w)
-			fmt.Println()
-			fmt.Println()
-			fmt.Println("INSIDE err === ", err)
-			fmt.Println()
-			fmt.Println()
 			return
 		}
-		fmt.Println()
-		fmt.Println()
-		fmt.Println("VALID SESSION NOW SLICING COOKIE")
-		fmt.Println()
-		fmt.Println()
 		followingId := r.URL.Query().Get("followingID") // Get the query for the profile being checked
 		cookieSlc, slcErr := auth.SliceCookie(c.Value)
 		if slcErr != nil {

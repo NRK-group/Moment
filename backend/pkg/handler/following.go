@@ -37,6 +37,6 @@ func (DB *Env) Following(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage(cookieSlc[0]+" pending "+followingId, "Pending", w)
 			return
 		}
-		response.WriteMessage(cookieSlc[0]+" not following "+followingId, "NotFollowing", w)
+		response.WriteMessage(cookieSlc[0]+" not following "+followingId, "Not Following", w)
 	}
 }

@@ -8,6 +8,7 @@ import (
 	"backend/pkg/response"
 )
 
+//Following checks if the user sending the request is following the user in the request parameter. 
 func (DB *Env) Following(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/following" {
 		http.Error(w, "404 not found", http.StatusNotFound)

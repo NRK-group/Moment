@@ -71,9 +71,11 @@ func (h *Hub) Run() {
 					l.LogMessage("Hub.go", "Run() - GetAllMembersOfGroup", err)
 				}
 				for _, member := range members {
-					if _, valid := h.Clients[member.UserId]; valid {
-						resp, _ := json.Marshal(msg)
-						h.Clients[member.UserId].Send <- resp
+					if member.UserId != msg.SenderId {
+						if _, valid := h.Clients[member.UserId]; valid {
+							resp, _ := json.Marshal(msg)
+							h.Clients[member.UserId].Send <- resp
+						}
 					}
 				}
 			}
@@ -88,9 +90,11 @@ func (h *Hub) Run() {
 					l.LogMessage("Hub.go", "Run() - GetAllMembersOfGroup", err)
 				}
 				for _, member := range members {
-					if _, valid := h.Clients[member.UserId]; valid {
-						resp, _ := json.Marshal(msg)
-						h.Clients[member.UserId].Send <- resp
+					if member.UserId != msg.SenderId {
+						if _, valid := h.Clients[member.UserId]; valid {
+							resp, _ := json.Marshal(msg)
+							h.Clients[member.UserId].Send <- resp
+						}
 					}
 				}
 			}

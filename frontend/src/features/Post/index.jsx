@@ -1,7 +1,7 @@
 import Card from '../../components/card/Card';
-import { NavLink } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
 import ChatInput from '../../components/ChatInput';
+import { useNavigate } from 'react-router-dom';
 import {
     LikeIcon,
     FavoriteIcon,
@@ -9,9 +9,10 @@ import {
     CommentIcon,
 } from '../../components/Icons/Icons';
 import './Post.css';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 
 export default function Post({
+    userID,
     name,
     postBodyText,
     postBodyImgSrc,
@@ -19,11 +20,14 @@ export default function Post({
     avatarSrc,
     likes,
     commentsnum,
+    postId,
 }) {
     const dropdown = useRef(null);
     const PostContentText = useRef(null);
+    const navigate = useNavigate();
 
     const [toggle, setToggle] = useState(true);
+  //  const [comments, setComments] = useState([]);
 
     const OpenDropdownMenu = () => {
         setToggle(!toggle);
@@ -35,6 +39,21 @@ export default function Post({
         }
     };
 
+    const OpenCommets = async (postId) => {
+   
+        navigate('/comments', {
+            state: {
+                PostId: postId,
+                PostBodyText: postBodyText,
+                PostBodyImgSrc: postBodyImgSrc,
+                PostContent: postContent,
+                Likes: likes,
+                AvatarSrc: avatarSrc,
+                Name: name,
+                Userid: userID,
+            },
+        });
+    };
 
     return (
         <>
@@ -69,7 +88,7 @@ export default function Post({
                 <Card styleName={'PostContent'}>
                     <div className='PostContentIcons'>
                         <div className='PostContentIconsLeft'>
-                            <LikeIcon />
+                           <i onClick={()=>console.log("we need")}><LikeIcon /></i> 
                             <CommentIcon />
                             <MessagesIcon />
                         </div>
@@ -82,14 +101,13 @@ export default function Post({
                         {postContent}
                     </p>
                     <p className='PostContentVBtn'>
-                    <NavLink to='/comments'>
-                    View all {commentsnum} comments
-                </NavLink>
-                       
+                        <a onClick={() => OpenCommets(postId)}>
+                            View all {commentsnum} comments
+                        </a>
                     </p>
-                   
+
                     <div className='PostContentIconsfooter'>
-                    <ChatInput/>
+                        <ChatInput />
                     </div>
                 </Card>
             </Card>

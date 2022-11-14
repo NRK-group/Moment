@@ -28,6 +28,7 @@ func main() {
 	SetUpRoutes(database)
 
 	gallery := http.FileServer(http.Dir("./images"))
+
 	http.Handle("/images/", http.StripPrefix("/images/", gallery)) // handling the CSS
 
 	// handler for the websocket
@@ -55,6 +56,7 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/validate", database.Validate)
 	http.HandleFunc("/updateprofileimg", database.UpdateImage)
 	http.HandleFunc("/chat", database.Chat)
+	http.HandleFunc("/comment/", database.Comment)
 	http.HandleFunc("/profile", database.Profile)
 	http.HandleFunc("/message", database.Message)
 }

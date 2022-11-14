@@ -11,25 +11,51 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
+import CheckFollowing from './FollowingData';
 
 export default function Profile({ userId }) {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    const [values, setValues] = useState({});
+    const [values, setValues] = useState({FirstName:"",
+    LastName:"",
+    NickName:"",
+    AboutMe:"",
+    Avatar: 'http://localhost:5070/images/profile/default-user.svg',
+});
+    const [followStatus, setFollowStatus] = useState('Pending');
+
     //if userId check if curr user follows profile user
+
+    useEffect(() => {
+        if (userId) {
+            CheckFollowing(userId).then((response) => {
+                console.log(response.Message === 'Not Following')
+                switch(response.Message) {
+                    case 'Not Following':
+                        setFollowStatus('Follow');
+                        break;
+                    case 'Following':
+                        setFollowStatus('Following');
+                        break;
+                    case 'Pending':
+                        setFollowStatus('Pending');
+                        break;
+                    default:
+                        setFollowStatus('Error');
+                        break;
+                }
+            });
+        }
+        GetProfile(userId).then((response) => setValues(response));
+    }, []);
     const relBtn = (
         <Button
-            content='Follow'
-            styleName='relationship followBtn'
+            content={followStatus}
+            styleName={'relationship ' + followStatus}
             action={() => {
                 console.log('Hello World');
             }}></Button>
     );
-    useEffect(() => {
-        GetProfile(userId).then((response) => setValues(response));
-    }, []);
-    {
-    }
     return (
         <Card styleName='profileCard'>
             <Card styleName='profileSection'>
@@ -49,7 +75,9 @@ export default function Profile({ userId }) {
                             relBtn
                         ) : (
                             <span className='profileButtonHolder'>
-                                <button className='profileDetailBtn' onClick={()=> navigate("/profile/update") }>
+                                <button
+                                    className='profileDetailBtn'
+                                    onClick={() => navigate('/profile/update')}>
                                     Edit
                                 </button>
                                 <Card styleName='profileBestFriends'>
@@ -143,7 +171,6 @@ export default function Profile({ userId }) {
                 likeBtn='profileLiked'
                 postContainer='profilePostContainer noContent'
             />
-            
         </Card>
     );
 }

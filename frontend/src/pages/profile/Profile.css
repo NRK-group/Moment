@@ -81,18 +81,19 @@
     width: 50%;
     height: 20%;
     color: white;
-    margin: auto;
+    margin: 3% auto;
     display: flex;
     justify-content: center;
 }
 
-.followBtn {
+.Follow {
     background-color: var(--button-color);
 }
 
-.followingBtn {
+.Following .Pending {
     background-color: var(--subheading-color);
 }
+
 
 .profileBestFriends {
     display: flex;

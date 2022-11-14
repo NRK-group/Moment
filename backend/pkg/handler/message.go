@@ -8,6 +8,7 @@ import (
 	l "backend/pkg/log"
 	"backend/pkg/messages"
 	"backend/pkg/response"
+	"backend/pkg/structs"
 )
 
 // Profile handles all requests for a users own profile information.
@@ -24,15 +25,19 @@ func (DB *Env) Message(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		chatId := r.URL.Query().Get("chatId") // Get the parameter
-		// var result structs.Message
-		messages, err := messages.GetPrivateMessages(chatId, *DB.Env)
+		messageType := r.URL.Query().Get("type")
+		var msgs []structs.Message
+		if messageType == "privateMessage" {
+			msgs, err = messages.GetPrivateMessages(chatId, *DB.Env)
+		}
+		if messageType == "groupMessage" {
+			msgs, err = messages.GetGroupMessages(chatId, *DB.Env)
+		}
 		if err != nil {
-			l.LogMessage("message.go", "Error getting messages", err)
 			response.WriteMessage("Error getting messages", "Error", w)
 			return
 		}
-		l.LogMessage("Messages.go", "Messages", messages)
-		resp, err := json.Marshal(messages)
+		resp, err := json.Marshal(msgs)
 		if err != nil {
 			l.LogMessage("message.go", "Error marshalling messages", err)
 			response.WriteMessage("Error marshalling messages", "Error", w)

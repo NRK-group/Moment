@@ -12,6 +12,7 @@ import './Post.css';
 import { useRef, useState } from 'react';
 
 export default function Post({
+    userID,
     name,
     postBodyText,
     postBodyImgSrc,
@@ -49,6 +50,7 @@ export default function Post({
                 Likes: likes,
                 AvatarSrc: avatarSrc,
                 Name: name,
+                Userid: userID,
             },
         });
     };

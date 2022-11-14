@@ -114,7 +114,7 @@ const Comments = ({ isMobile }) => {
                                     styleName={'PostAvatarUsers'}
                                 />
 
-                                <p style={{ marginLeft: '4px' }}>jhfhjfjh</p>
+                                <p style={{ marginLeft: '4px' }}>{state.Name}</p>
                             </div>
 
                             <div className='PostHeaderMenu'>

@@ -57,10 +57,11 @@ function Home({ isMobile }) {
                                         avatarSrc={
                                             'https://phantom-marca.unidadeditorial.es/ee46d7a1c09b447117f8e83c6e131f31/resize/1320/f/jpg/assets/multimedia/imagenes/2022/02/02/16437899001758.jpg'
                                         }
-                                        name={'NBA'}
+                                        name={data.UserID.split('-')[5]}
                                         postContent={
                                             data.Content
                                         }
+                                        userID={data.UserID}
                                         likes={data.NumLikes}
                                         commentsnum={data.NumOfComment}
                                         postBodyImgSrc={data.Image}

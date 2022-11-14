@@ -59,4 +59,6 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/comment/", database.Comment)
 	http.HandleFunc("/profile", database.Profile)
 	http.HandleFunc("/message", database.Message)
+	http.HandleFunc("/following", database.Following)
+
 }

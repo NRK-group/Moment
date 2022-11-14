@@ -86,7 +86,7 @@ function App() {
                             path='notifications/:type'
                             element={<Notification />}
                         />
-                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/profile' element={<Profile userId = {'4e975626-68e7-48aa-9280-8bc903b5648b'} />} />
                         <Route path='/profile/update' element={<ProfileInfoPopUp styleName='popUp' />} />
                         <Route path='/stories' element={<Stories />} />
                     </Routes>

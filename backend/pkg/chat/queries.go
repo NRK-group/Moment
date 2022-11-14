@@ -35,6 +35,7 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 			userInfo, _ := GetUserInfo(prevChat.User2, database)
 			m[prevChat.User2] = userInfo
 			chatList = append([]structs.ChatWriter{{
+				Type:    "privateMessage",
 				ChatId:  prevChat.ChatId,
 				Details: userInfo,
 				Member:  m,
@@ -43,6 +44,7 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 			userInfo, _ := GetUserInfo(prevChat.User1, database)
 			m[prevChat.User1] = userInfo
 			chatList = append([]structs.ChatWriter{{
+				Type:    "privateMessage",
 				ChatId:  prevChat.ChatId,
 				Details: userInfo,
 				Member:  m,
@@ -114,6 +116,7 @@ func GetPreviousGroupChat(userId string, database *structs.DB) ([]structs.ChatWr
 				Img:  group.Img,
 			}
 			prevChatlist = append([]structs.ChatWriter{{
+				Type:    "groupMessage",
 				ChatId:  prevChat.ChatId,
 				Details: info,
 				Member:  m,

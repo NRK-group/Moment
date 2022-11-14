@@ -28,7 +28,6 @@ func TestMessage(t *testing.T) {
 		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 5, NumFollowing: 5, NumPosts: 0,
 	}
-
 	auth.InsertUser(*user1, *database)
 	var result1 structs.User
 	auth.GetUser("email", user1.Email, &result1, *database)
@@ -90,7 +89,7 @@ func TestMessage(t *testing.T) {
 		Content:    "Hello World",
 	}
 	t.Run("Insert group message", func(t *testing.T) {
-		msg, err := messages.InsertGroupMessage(message, *database)
+		msg, err := messages.InsertGroupMessage(message, database)
 		l.LogMessage("message_test.go", "Test Insert Group Message", msg)
 		if err != nil {
 			t.Errorf("Error inserting group message: %v", err)

@@ -16,8 +16,13 @@ import CheckFollowing from './FollowingData';
 export default function Profile({ userId }) {
     const navigate = useNavigate();
 
-    const [values, setValues] = useState({});
-    const [followStatus, setFollowStatus] = useState('Follow');
+    const [values, setValues] = useState({FirstName:"",
+    LastName:"",
+    NickName:"",
+    AboutMe:"",
+    Avatar: 'http://localhost:5070/images/profile/default-user.svg',
+});
+    const [followStatus, setFollowStatus] = useState('Pending');
 
     //if userId check if curr user follows profile user
 

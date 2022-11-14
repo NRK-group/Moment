@@ -28,7 +28,6 @@ func main() {
 	SetUpRoutes(database)
 
 	gallery := http.FileServer(http.Dir("./images"))
-
 	http.Handle("/images/", http.StripPrefix("/images/", gallery)) // handling the CSS
 
 	// handler for the websocket

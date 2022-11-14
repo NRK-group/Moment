@@ -20,7 +20,7 @@ export default function Profile({ userId }) {
     LastName:"",
     NickName:"",
     AboutMe:"",
-    Avatar: 'http://localhost:5070/images/profile/default-user.svg',
+    Avatar: 'images/profile/default-user.svg',
 });
     const [followStatus, setFollowStatus] = useState('Pending');
 

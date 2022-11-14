@@ -11,7 +11,7 @@ import { debounce } from './hooks/debounce';
 export const Messages = ({ socket, currentUserInfo }) => {
     const { chatId } = useParams();
     const location = useLocation();
-    const { user, details } = location.state;
+    const { type, user, details } = location.state;
     let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
@@ -22,6 +22,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
             'http://localhost:5070/message?' +
                 new URLSearchParams({
                     chatId: chatId,
+                    type: type,
                 }),
             {
                 credentials: 'include',
@@ -38,7 +39,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
         let message = messageInput.current.value;
         if (message.trim() !== '') {
             let data = {
-                type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
+                type: type, // "privateMessage", "groupMessage", or "typing"
                 receiverId: details.id,
                 senderId: currentUserInfo, //chnage to current userid
                 chatId: chatId,
@@ -61,7 +62,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
         }
         socket.send(
             JSON.stringify({
-                type: 'typing', // message, notification, followrequest
+                type: type + 'typing', // message, notification, followrequest // "privateMessage", "groupMessage", or "typing"
                 chatId: chatId,
                 senderId: currentUserInfo, // senderid
                 receiverId: details.id, //change to the id of the receiver
@@ -73,11 +74,11 @@ export const Messages = ({ socket, currentUserInfo }) => {
             if (event.data) {
                 let data = JSON.parse(event.data);
                 if (data.chatId === chatId) {
-                    if (data.type === 'privateMessage') {
+                    if (data.type === type) {
                         setMessages((messages) => [...messages, data]);
                         isTyping.current.style.display = 'none';
                     }
-                    if (data.type === 'typing') {
+                    if (data.type === type + 'typing') {
                         isTyping.current.innerText = `${data.senderId} is typing...`;
                         //change the typing status
                         isTyping.current.style.display = 'block';

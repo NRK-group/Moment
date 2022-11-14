@@ -20,6 +20,7 @@ func CheckCredentials(email, password string, DB *structs.DB) (bool, string) {
 		return false, "Error querying the db"
 	}
 	var pass string
+	defer rows.Close()
 	for rows.Next() {
 		rows.Scan(&pass)
 	}
@@ -115,6 +116,7 @@ func GetUser(datatype, value string, result *structs.User, DB structs.DB) error 
 		return err
 	}
 	nothing := true
+	defer rows.Close()
 	for rows.Next() {
 		nothing = false
 		rows.Scan(
@@ -148,6 +150,7 @@ func CheckSession(session, user string, DB structs.DB) (bool, error) {
 		return false, err
 	}
 	valid := false
+	defer rows.Close()
 	for rows.Next() {
 		valid = true
 	}
@@ -190,6 +193,7 @@ func ActiveEmail(userID, email string, DB structs.DB) bool {
 		return true
 	} else {
 		var userId string
+		defer rows.Close()
 		for rows.Next() {
 			rows.Scan(&userId)
 			if userId != userID {

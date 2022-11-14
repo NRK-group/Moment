@@ -23,6 +23,7 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 		l.LogMessage("Chat", "GetPreviousPrivateChat - Query", err)
 		return chatList, err
 	}
+	defer row.Close()
 	for row.Next() {
 		err = row.Scan(&prevChat.ChatId, &prevChat.GroupId, &prevChat.User1, &prevChat.User2, &prevChat.UpdatedAt)
 		if err != nil {
@@ -106,6 +107,7 @@ func GetUserInfo(userId string, database *structs.DB) (structs.UserInfo, error) 
 		l.LogMessage("Chat", "GetUserInfo - Query Error", err)
 		return userInfo, err
 	}
+	defer stmt.Close()
 	for stmt.Next() {
 		err = stmt.Scan(&user.UserId, &user.FirstName, &user.LastName, &user.NickName, &user.Avatar)
 		if err != nil {

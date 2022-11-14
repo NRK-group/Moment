@@ -123,6 +123,7 @@ func GetNumOfFollowing(userId string, database *structs.DB) (int, error) {
 		return 0, nil
 	}
 	var user structs.User
+	defer stmt.Close()
 	for stmt.Next() {
 		stmt.Scan(
 			&user.NumFollowing,
@@ -144,6 +145,7 @@ func GetNumOfFollowers(userId string, database *structs.DB) (int, error) {
 		return 0, nil
 	}
 	var user structs.User
+	defer stmt.Close()
 	for stmt.Next() {
 		stmt.Scan(
 			&user.NumFollowers,
@@ -291,6 +293,7 @@ func GetFollowingNotifs(userId string, database *structs.DB) ([]structs.Follower
 		l.LogMessage("follow.go", "GetFollowerNotif", err)
 		return nil, err
 	}
+	defer rows.Close()
 	for rows.Next() {
 		err = rows.Scan(&followerNotif.UserId, &followerNotif.FollowingId, &followerNotif.Status, &followerNotif.CreatedAt, &followerNotif.Read)
 		if err != nil {
@@ -317,6 +320,7 @@ func CheckIfFollowPending(followerId, followingId string, database *structs.DB) 
 		return false
 	}
 	var status string
+	defer rows.Close()
 	for rows.Next() {
 		rows.Scan(&status)
 		if status == "pending" {

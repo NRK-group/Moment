@@ -26,7 +26,7 @@ function FollowRelationshipUpdate (followingId) {
         FollowingId: followingId,
     }
     fetch(
-        'http://localhost:5070/following', {
+        'http://localhost:5070/followrequest', {
             method: "PUT",
             credentials: "include",
             Accept: 'application/json',

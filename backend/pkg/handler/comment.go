@@ -58,11 +58,12 @@ func (database *Env) Comment(w http.ResponseWriter, r *http.Request) {
 
 		var commentS structs.Comment
 		err := GetBody(&commentS, w, r)
+
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		_, errc := commet.CreateComment(cookie[0], commentS.PostID, commentS.Content, database.Env)
+		_, errc := commet.CreateComment(cookie[0], commentS.PostID, commentS.Content, commentS.Image, database.Env)
 		if errc != nil {
 			fmt.Println("Error inputing a comment in the db %v", err)
 		}

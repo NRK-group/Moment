@@ -60,5 +60,4 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/profile", database.Profile)
 	http.HandleFunc("/message", database.Message)
 	http.HandleFunc("/following", database.Following)
-
 }

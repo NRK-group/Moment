@@ -19,6 +19,12 @@ const Comments = ({ isMobile }) => {
     const [commentS, setCommentS] = useState([]);
     const [flag, setFlag] = useState('');
 
+    const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [uploadedImage, setUploadedImage] = useState(null);
+
+    const imageRef = useRef(null);
+
     useEffect(() => {
         console.log({ state });
 
@@ -41,14 +47,17 @@ const Comments = ({ isMobile }) => {
     };
 
     const PostComments = async () => {
+        const formData = new FormData();
+        formData.append('image', image);
         let comments = await fetch(`http://localhost:5070/comment/`, {
             credentials: 'include',
             method: 'POST',
-            body: JSON.stringify({ postId: state.PostId, content: text }),
+            body: JSON.stringify({ postId: state.PostId, content: text }) ,
         }).then(async (response) => {
             let resp = await response.json();
             setText('');
-            setCommentS(resp);
+           setCommentS(resp);
+           console.log(resp[0].CommentID)
             return resp;
         });
         setFlag(1);
@@ -75,8 +84,23 @@ const Comments = ({ isMobile }) => {
 
     const formatDate = (data) => {
         let myDate = new Date(data);
-        let result = myDate.toString().slice(0,24);
-        return result
+        let result = myDate.toString().slice(0, 24);
+        return result;
+    };
+
+    const handleUploadImage = async () => {
+       
+            setLoading(true);
+            const formData = new FormData();
+            formData.append('image', image);
+           
+            setImage(null);
+            setLoading(false);
+        
+    };
+
+    const handleChangeImage = (e) => {
+        setImage(e.target.files[0]);
     };
 
     return (
@@ -97,7 +121,29 @@ const Comments = ({ isMobile }) => {
                                 placeholder='Type a message'
                             />
                             <div className='CommentsIcon'>
-                                <i className='fa-solid fa-upload'></i>
+                            { image && <div>
+                                <i class="fa-regular fa-circle-xmark"  style={{ position: 'absolute',  }}></i>
+                                  <img
+                                className='uploadImagesPrev'
+                                src={URL.createObjectURL(image)}
+                                    width='20px'
+                                    height='20px'
+                                    alt='selected image...'
+                                    onClick={()=> setImage(null)}
+                                />
+                                </div>
+                            }
+                                <input
+                                    style={{ display: 'none' }}
+                                    type='file'
+                                    accept='image/*'
+                                    ref={imageRef}
+                                    onChange={handleChangeImage}
+                                />
+                                <i
+                                    className='fa-solid fa-upload'
+                                    onClick={() => imageRef.current.click()}
+                                    style={{ cursor: 'pointer' }}></i>
                                 <i onClick={PostComments}>
                                     {' '}
                                     <MessagesIcon />
@@ -114,7 +160,9 @@ const Comments = ({ isMobile }) => {
                                     styleName={'PostAvatarUsers'}
                                 />
 
-                                <p style={{ marginLeft: '4px' }}>{state.Name}</p>
+                                <p style={{ marginLeft: '4px' }}>
+                                    {state.Name}
+                                </p>
                             </div>
 
                             <div className='PostHeaderMenu'>

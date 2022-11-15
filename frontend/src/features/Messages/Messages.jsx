@@ -2,20 +2,21 @@ import './Messages.css';
 import { MessagesIcon } from '../../components/Icons/Icons';
 import { MessageContainer } from './components/messageContainer';
 import { MessageContent } from './components/MessageContent';
-import { ProfileIcon } from '../../components/Icons/Icons';
+import { ProfileIcon, UploadIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useScrollDown } from './hooks/scrollDown';
 import { debounce } from './hooks/debounce';
+import InputEmoji from 'react-input-emoji';
 export const Messages = ({ socket, currentUserInfo }) => {
     const { chatId } = useParams();
     const location = useLocation();
     const { type, user, details } = location.state;
-    let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
     const [messages, setMessages] = useState([]);
+    const [text, setText] = useState('');
     useScrollDown(chatBox, messages);
     useEffect(() => {
         fetch(
@@ -32,23 +33,21 @@ export const Messages = ({ socket, currentUserInfo }) => {
             data ? setMessages(data) : setMessages([]);
             return;
         });
-        console.log(user);
+        setText('');
     }, [chatId]);
     const sendMessage = (e) => {
         e.preventDefault();
-        let message = messageInput.current.value;
-        if (message.trim() !== '') {
+        if (text.trim() !== '') {
             let data = {
                 type: type, // "privateMessage", "groupMessage", or "typing"
                 receiverId: details.id,
                 senderId: currentUserInfo, //chnage to current userid
                 chatId: chatId,
-                content: messageInput.current.value, // content of the message
+                content: text, // content of the message
                 createAt: Date().toLocaleString(),
             };
             socket.send(JSON.stringify(data));
             setMessages((messages) => [...messages, data]);
-            messageInput.current.value = '';
         }
     };
     const handleKeyDown = (e) => {
@@ -118,12 +117,6 @@ export const Messages = ({ socket, currentUserInfo }) => {
                 ref={chatBox}>
                 {messages.length != 0 &&
                     messages.map((message, i) => {
-                        if (
-                            message.senderId ===
-                            'f9c12b93-22d9-4630-9629-2332b50a0754'
-                        ) {
-                            console.log('-----------', messages);
-                        }
                         if (message.senderId === currentUserInfo) {
                             return (
                                 <MessageContent
@@ -155,25 +148,22 @@ export const Messages = ({ socket, currentUserInfo }) => {
                         );
                     })}
             </div>
+
             <div className='isTypingContainer'>
                 <div className='isTyping' ref={isTyping}></div>
             </div>
             <div className='messageInputContainer'>
-                {/* this will be replace by the emoji btn */}
                 <div className='inputContainer'>
+                    <InputEmoji
+                        theme={'light'}
+                        value={text}
+                        onChange={setText}
+                        onKeyDown={handleKeyDown}
+                        cleanOnEnter
+                        placeholder='Type a message'
+                    />
                     <div>
-                        <MessagesIcon />
-                    </div>
-                    {/* <
-                        placeholder='message'
-                        styleName='messageInput'></Input> */}
-                    <div className='messageInput'>
-                        <textarea
-                            type='submit'
-                            rows='2'
-                            placeholder='message'
-                            ref={messageInput}
-                            onKeyDown={handleKeyDown}></textarea>
+                        <UploadIcon />
                     </div>
                     <div onClick={sendMessage}>
                         <MessagesIcon />

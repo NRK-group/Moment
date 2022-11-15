@@ -1,6 +1,7 @@
 package follow
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -236,6 +237,14 @@ func FollowUser(followerId, followingId string, database *structs.DB) (string, e
 		otherUserNumOfFollowers, _ := GetNumOfFollowers(followingId, database)
 		UpdateNumOfFollowers(followingId, otherUserNumOfFollowers-1, database)
 		return "unfollow", nil
+	}
+	if CheckIfFollowPending(followerId, followingId, database) {
+		fmt.Println("INHERE ----- ")
+		if err := DeleteFollow(followerId, followingId, database); err != nil {
+			return "Error", err
+		}
+		return "unfollow", nil
+
 	}
 	if helper.CheckUserIfPublic(followingId, database) {
 		InsertFollow(followerId, followingId, database)

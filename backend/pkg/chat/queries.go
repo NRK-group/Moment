@@ -227,8 +227,10 @@ func GetUserInfo(userId string, database *structs.DB) (structs.Info, error) {
 			return structs.Info{}, err
 		}
 		userInfo = structs.Info{
-			Id:  user.UserId,
-			Img: user.Avatar,
+			Id:        user.UserId,
+			FirstName: user.FirstName,
+			LastName:  user.LastName,
+			Img:       user.Avatar,
 		}
 		if user.NickName != "" {
 			userInfo.Name = user.NickName

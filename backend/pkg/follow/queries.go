@@ -237,6 +237,13 @@ func FollowUser(followerId, followingId string, database *structs.DB) (string, e
 		UpdateNumOfFollowers(followingId, otherUserNumOfFollowers-1, database)
 		return "unfollow", nil
 	}
+	if CheckIfFollowPending(followerId, followingId, database) {
+		if err := DeleteFollow(followerId, followingId, database); err != nil {
+			return "Error", err
+		}
+		return "unfollow", nil
+
+	}
 	if helper.CheckUserIfPublic(followingId, database) {
 		InsertFollow(followerId, followingId, database)
 		currentUserNumOfFollowing, _ := GetNumOfFollowing(followerId, database)

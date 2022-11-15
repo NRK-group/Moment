@@ -15,6 +15,7 @@ func (DB *Env) FollowReq(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 not found.", http.StatusNotFound)
 		return
 	}
+	SetupCorsResponse(w)
 	if r.Method == "PUT" {
 		// Get the cookie and authorise the session
 		c, err := r.Cookie("session_token")

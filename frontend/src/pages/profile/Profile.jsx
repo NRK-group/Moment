@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import CheckFollowing from './FollowingData';
+import { FollowRelationshipUpdate } from './FollowingData';
 
 export default function Profile({ userId }) {
     const navigate = useNavigate();
@@ -56,7 +57,7 @@ export default function Profile({ userId }) {
             content={followStatus}
             styleName={'relationship ' + followStatus}
             action={() => {
-                console.log('Hello World');
+                FollowRelationshipUpdate(userId).then(response => console.log(response));
             }}></Button>
     );
     return (

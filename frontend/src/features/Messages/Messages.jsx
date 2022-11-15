@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useScrollDown } from './hooks/scrollDown';
 import { debounce } from './hooks/debounce';
-import EmojiPicker from 'emoji-picker-react';
+import InputEmoji from 'react-input-emoji';
 export const Messages = ({ socket, currentUserInfo }) => {
     const [emojiOpen, setEmojiOpen] = useState(0);
     const { chatId } = useParams();
@@ -22,6 +22,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
     let chatBox = useRef();
     let isTyping = useRef();
     const [messages, setMessages] = useState([]);
+    const [text, setText] = useState('');
     useScrollDown(chatBox, messages);
     useEffect(() => {
         fetch(
@@ -42,19 +43,19 @@ export const Messages = ({ socket, currentUserInfo }) => {
     }, [chatId]);
     const sendMessage = (e) => {
         e.preventDefault();
-        let message = messageInput.current.value;
-        if (message.trim() !== '') {
+        // let message = messageInput.current.value;
+        if (text.trim() !== '') {
             let data = {
                 type: type, // "privateMessage", "groupMessage", or "typing"
                 receiverId: details.id,
                 senderId: currentUserInfo, //chnage to current userid
                 chatId: chatId,
-                content: messageInput.current.value, // content of the message
+                content: text, // content of the message
                 createAt: Date().toLocaleString(),
             };
             socket.send(JSON.stringify(data));
             setMessages((messages) => [...messages, data]);
-            messageInput.current.value = '';
+            // messageInput.current.value = '';
         }
     };
     const handleKeyDown = (e) => {
@@ -166,39 +167,15 @@ export const Messages = ({ socket, currentUserInfo }) => {
                 <div className='isTyping' ref={isTyping}></div>
             </div>
             <div className='messageInputContainer'>
-                {/* this will be replace by the emoji btn */}
                 <div className='inputContainer'>
-                    <div className='emojiContainer'>
-                        <span
-                            onClick={() => {
-                                setEmojiOpen(emojiOpen ? 0 : 1);
-                            }}>
-                            <FaceSmileIcon />
-                        </span>
-                        <span
-                            className='emojiPickerContainer'
-                            style={{ opacity: emojiOpen }}>
-                            <EmojiPicker
-                                onEmojiClick={(emoji, e) => {
-                                    e.stopPropagation();
-                                    messageInput.current.value += emoji.emoji;
-                                }}
-                            />
-                        </span>
-                    </div>
-                    <div
-                        className='messageInput'
-                        onClick={() => {
-                            setEmojiOpen(0);
-                        }}>
-                        <textarea
-                            className='scrollbar-hidden'
-                            type='submit'
-                            rows='2'
-                            placeholder='message'
-                            ref={messageInput}
-                            onKeyDown={handleKeyDown}></textarea>
-                    </div>
+                    <InputEmoji
+                        theme={'light'}
+                        value={text}
+                        onChange={setText}
+                        onKeyDown={handleKeyDown}
+                        cleanOnEnter
+                        placeholder='Type a message'
+                    />
                     <div>
                         <UploadIcon />
                     </div>

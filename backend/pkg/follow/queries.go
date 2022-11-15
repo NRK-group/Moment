@@ -362,3 +362,27 @@ func GetFollowers(userId string, database *structs.DB) ([]structs.Follower, erro
 	}
 	return followers, nil
 }
+
+// GetFollowing returns the following of the user
+//
+// return the following of the current user
+//
+// Param:
+//
+//	userId: the user id
+//	database: the database
+func GetFollowing(userId string, database *structs.DB) ([]structs.Follower, error) {
+	var follower structs.Follower
+	var followers []structs.Follower
+	row, err := database.DB.Query("SELECT * FROM Follower WHERE FollowerId = ?", userId)
+	if err != nil {
+		l.LogMessage("Chat", "GetFollowing - Query Error", err)
+		return nil, err
+	}
+	defer row.Close()
+	for row.Next() {
+		row.Scan(&follower.FollowingId, &follower.FollowerId, &follower.CreatedAt)
+		followers = append([]structs.Follower{follower}, followers...)
+	}
+	return followers, nil
+}

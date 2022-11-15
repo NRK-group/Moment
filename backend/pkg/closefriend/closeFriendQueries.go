@@ -1,7 +1,6 @@
 package closefriend
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -26,8 +25,8 @@ func UpdateCloseFriend(userId, closeFriendId string, database structs.DB) string
 			return "Error"
 		}
 	}
-	// Add the friendship
-	if AddCloseFriend(userId, closeFriendId, database) {
+
+	if AddCloseFriend(userId, closeFriendId, database) { // Add the friendship
 		return "Added"
 	} else {
 		return "error"
@@ -40,11 +39,6 @@ func DeleteCloseFriend(userId, closeFriendId string, database structs.DB) bool {
 		log.Println("Error preparing closefriends row: ", err)
 		return false
 	}
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("userId ==== ", userId, "closeFriendId === ", closeFriendId)
-	fmt.Println()
-	fmt.Println()
 	_, execErr := qry.Exec(userId, closeFriendId)
 	if execErr != nil {
 		log.Println("Error executing closefriends row: ", execErr)

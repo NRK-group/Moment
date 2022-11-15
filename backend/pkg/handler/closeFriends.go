@@ -4,7 +4,9 @@ import (
 	"net/http"
 
 	"backend/pkg/auth"
+	"backend/pkg/closefriend"
 	"backend/pkg/response"
+	"backend/pkg/structs"
 )
 
 func (DB *Env) CloseFriends(w http.ResponseWriter, r *http.Request) {
@@ -19,6 +21,13 @@ func (DB *Env) CloseFriends(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Cookie not found", "Unauthorised", w)
 			return
 		}
-		//Add closefriend to the database
+		var closeFriend structs.CloseFriend
+		if bodyErr := GetBody(&closeFriend, w, r); bodyErr != nil { // Get the body of the request
+			response.WriteMessage("Error getting close friend body", "Unauthorised", w)
+			return
+		} 
+		// Add closefriend to the database
+		resp := closefriend.UpdateCloseFriend(closeFriend.UserId, closeFriend.CloseFriendId, DB.Env)
+		response.WriteMessage("Close Friend Updated", resp, w)
 	}
 }

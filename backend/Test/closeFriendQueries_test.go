@@ -2,7 +2,6 @@ package Test
 
 import (
 	"testing"
-	"time"
 
 	"backend/pkg/auth"
 	"backend/pkg/closefriend"
@@ -26,7 +25,6 @@ func TestUpdateCloseFriend(t *testing.T) {
 	auth.GetUser("email", closeEmailTwo, &testTwo, *database)
 	for _, v := range results {
 		got := closefriend.UpdateCloseFriend(testOne.UserId, testTwo.UserId, *database)
-		time.Sleep(time.Second * 5)
 		want := v
 		if got != want {
 			t.Errorf("Got %v . Want %v .", got, want)

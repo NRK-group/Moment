@@ -94,6 +94,10 @@
     background-color: var(--subheading-color);
 }
 
+.blurry {
+    text-shadow: 0 0 32px black;
+    color: transparent;
+}
 
 .profileBestFriends {
     display: flex;
@@ -411,8 +415,7 @@ p {
     font-weight: bold;
 }
 
-
-.react-datepicker__input-container{
+.react-datepicker__input-container {
     display: flex;
     justify-content: center;
     align-items: center;

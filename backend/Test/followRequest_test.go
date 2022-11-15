@@ -56,6 +56,8 @@ func TestFollowReq(t *testing.T) {
 			wr := httptest.NewRecorder()
 			Env.FollowReq(wr, reqFol)
 			got := wr.Body.String()
+			t.Log("GOT === ", got)
+			t.Log("WANT === ", wants[i])
 			if got != wants[i] {
 				t.Errorf("got %v \n want %v", got, wants[i])
 			}

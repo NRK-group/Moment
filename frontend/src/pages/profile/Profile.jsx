@@ -66,7 +66,7 @@ export default function Profile({ userId }) {
                 />
                 <Card styleName={'profileDetails'}>
                     <Card styleName='profileDetailContainer'>
-                        <h1 className='profileDetailText profileFullName'>
+                        <h1 className= {'profileDetailText profileFullName'}>
                             {values.FirstName + ' ' + values.LastName}
                         </h1>
                         <h3 className='profileDetailText'>{values.NickName}</h3>

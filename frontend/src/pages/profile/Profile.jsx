@@ -7,6 +7,7 @@ import './Profile.css';
 import FollowStatUsers from '../../features/profile/FollowStatUsers';
 import CloseFriendsUsers from '../../features/profile/CloseFriendsUsers';
 import GetProfile from './ProfileData';
+import { GetCookie } from './ProfileData';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
@@ -20,11 +21,13 @@ export default function Profile({ userId }) {
     LastName:"",
     NickName:"",
     AboutMe:"",
-    Avatar: 'http://localhost:5070/images/profile/default-user.svg',
+    Avatar: 'images/profile/default-user.svg',
 });
     const [followStatus, setFollowStatus] = useState('Pending');
 
-    //if userId check if curr user follows profile user
+    
+    //if user is viewing their own profile
+    if (userId === GetCookie("session_token").split("&")[0]) userId = null
 
     useEffect(() => {
         if (userId) {

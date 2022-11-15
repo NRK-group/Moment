@@ -2,13 +2,19 @@ import './Messages.css';
 import { MessagesIcon } from '../../components/Icons/Icons';
 import { MessageContainer } from './components/messageContainer';
 import { MessageContent } from './components/MessageContent';
-import { ProfileIcon } from '../../components/Icons/Icons';
+import {
+    ProfileIcon,
+    FaceSmileIcon,
+    UploadIcon,
+} from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useScrollDown } from './hooks/scrollDown';
 import { debounce } from './hooks/debounce';
+import EmojiPicker from 'emoji-picker-react';
 export const Messages = ({ socket, currentUserInfo }) => {
+    const [emojiOpen, setEmojiOpen] = useState(0);
     const { chatId } = useParams();
     const location = useLocation();
     const { type, user, details } = location.state;
@@ -155,25 +161,46 @@ export const Messages = ({ socket, currentUserInfo }) => {
                         );
                     })}
             </div>
+
             <div className='isTypingContainer'>
                 <div className='isTyping' ref={isTyping}></div>
             </div>
             <div className='messageInputContainer'>
                 {/* this will be replace by the emoji btn */}
                 <div className='inputContainer'>
-                    <div>
-                        <MessagesIcon />
+                    <div className='emojiContainer'>
+                        <span
+                            onClick={() => {
+                                setEmojiOpen(emojiOpen ? 0 : 1);
+                            }}>
+                            <FaceSmileIcon />
+                        </span>
+                        <span
+                            className='emojiPickerContainer'
+                            style={{ opacity: emojiOpen }}>
+                            <EmojiPicker
+                                onEmojiClick={(emoji, e) => {
+                                    e.stopPropagation();
+                                    messageInput.current.value += emoji.emoji;
+                                }}
+                            />
+                        </span>
                     </div>
-                    {/* <
-                        placeholder='message'
-                        styleName='messageInput'></Input> */}
-                    <div className='messageInput'>
+                    <div
+                        className='messageInput'
+                        onClick={() => {
+                            setEmojiOpen(0);
+                        }}>
                         <textarea
+                            className='scrollbar-hidden'
                             type='submit'
                             rows='2'
                             placeholder='message'
                             ref={messageInput}
                             onKeyDown={handleKeyDown}></textarea>
+                    </div>
+                    <div>
+                        <UploadIcon />
                     </div>
                     <div onClick={sendMessage}>
                         <MessagesIcon />

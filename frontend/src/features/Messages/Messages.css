@@ -61,6 +61,10 @@
     border: 1px solid var(--terheading-color);
     border-radius: 20px;
 }
+.inputContainer .icon {
+    margin: 0px 5px;
+    opacity: 0.5;
+}
 .messageHeaderInfo {
     display: flex;
     flex-direction: row;
@@ -95,6 +99,18 @@
     padding: 0 20px;
     display: flex;
     margin: 10px;
+}
+.emojiContainer {
+    position: relative;
+}
+.emojiPickerContainer {
+    display: flex;
+    position: absolute;
+    top: -470px;
+    z-index: 1;
+}
+.emojiContainer .Flex.epr-preview.FlexRow {
+    display: none;
 }
 /* .messageInfo {
     height: 100%;

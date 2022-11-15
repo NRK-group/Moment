@@ -36,4 +36,21 @@ function FollowRelationshipUpdate(followingId) {
     });
 }
 
-export { FollowRelationshipUpdate };
+function UpdateRelationshipBtn(relationship, setter) {
+    switch(relationship) {
+        case "follow":
+            setter("Following")
+            break;
+        case "unfollow":
+            setter("Follow")
+            break;
+            case "pending":
+            setter("Pending")
+            break;
+        default:
+            setter("Error")
+            break;
+    }
+}
+
+export { FollowRelationshipUpdate, UpdateRelationshipBtn };

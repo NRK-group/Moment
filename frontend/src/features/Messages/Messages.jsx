@@ -14,11 +14,9 @@ import { useScrollDown } from './hooks/scrollDown';
 import { debounce } from './hooks/debounce';
 import InputEmoji from 'react-input-emoji';
 export const Messages = ({ socket, currentUserInfo }) => {
-    const [emojiOpen, setEmojiOpen] = useState(0);
     const { chatId } = useParams();
     const location = useLocation();
     const { type, user, details } = location.state;
-    let messageInput = useRef();
     let chatBox = useRef();
     let isTyping = useRef();
     const [messages, setMessages] = useState([]);
@@ -39,11 +37,10 @@ export const Messages = ({ socket, currentUserInfo }) => {
             data ? setMessages(data) : setMessages([]);
             return;
         });
-        console.log(user);
+        setText('');
     }, [chatId]);
     const sendMessage = (e) => {
         e.preventDefault();
-        // let message = messageInput.current.value;
         if (text.trim() !== '') {
             let data = {
                 type: type, // "privateMessage", "groupMessage", or "typing"

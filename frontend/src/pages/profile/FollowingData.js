@@ -36,6 +36,7 @@ function FollowRelationshipUpdate(followingId) {
     });
 }
 
+//UpdateRelationshipBtn updates the style of the rel button
 function UpdateRelationshipBtn(relationship, setter) {
     switch(relationship) {
         case "follow":
@@ -53,4 +54,22 @@ function UpdateRelationshipBtn(relationship, setter) {
     }
 }
 
-export { FollowRelationshipUpdate, UpdateRelationshipBtn };
+//SetRelBtn sets the class and value of the relationship button when the page is first loaded
+function SetRelBtn(rel, setter) {
+    switch(rel) {
+        case 'Not Following':
+            setter('Follow');
+            break;
+        case 'Following':
+            setter('Following');
+            break;
+        case 'Pending':
+            setter('Pending');
+            break;
+        default:
+            setter('Error');
+            break;
+    }
+}
+
+export { FollowRelationshipUpdate, UpdateRelationshipBtn, SetRelBtn };

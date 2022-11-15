@@ -2,11 +2,7 @@ import './Messages.css';
 import { MessagesIcon } from '../../components/Icons/Icons';
 import { MessageContainer } from './components/messageContainer';
 import { MessageContent } from './components/MessageContent';
-import {
-    ProfileIcon,
-    FaceSmileIcon,
-    UploadIcon,
-} from '../../components/Icons/Icons';
+import { ProfileIcon, UploadIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
@@ -52,7 +48,6 @@ export const Messages = ({ socket, currentUserInfo }) => {
             };
             socket.send(JSON.stringify(data));
             setMessages((messages) => [...messages, data]);
-            // messageInput.current.value = '';
         }
     };
     const handleKeyDown = (e) => {
@@ -122,12 +117,6 @@ export const Messages = ({ socket, currentUserInfo }) => {
                 ref={chatBox}>
                 {messages.length != 0 &&
                     messages.map((message, i) => {
-                        if (
-                            message.senderId ===
-                            'f9c12b93-22d9-4630-9629-2332b50a0754'
-                        ) {
-                            console.log('-----------', messages);
-                        }
                         if (message.senderId === currentUserInfo) {
                             return (
                                 <MessageContent

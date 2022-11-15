@@ -27,7 +27,7 @@ func (DB *Env) CloseFriends(w http.ResponseWriter, r *http.Request) {
 			return
 		} 
 		// Add closefriend to the database
-		resp := closefriend.UpdateCloseFriend(closeFriend.UserId, closeFriend.CloseFriendId, DB.Env)
+		resp := closefriend.UpdateCloseFriend(closeFriend.UserId, closeFriend.CloseFriendId, *DB.Env)
 		response.WriteMessage("Close Friend Updated", resp, w)
 	}
 }

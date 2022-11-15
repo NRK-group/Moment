@@ -21,7 +21,7 @@ export default function Profile({ userId }) {
     LastName:"",
     NickName:"",
     AboutMe:"",
-    Avatar: '',
+    Avatar: 'images/profile/default-user.svg',
 });
     const [followStatus, setFollowStatus] = useState('Pending');
 

@@ -25,7 +25,7 @@ func (DB *Env) CloseFriends(w http.ResponseWriter, r *http.Request) {
 		if bodyErr := GetBody(&closeFriend, w, r); bodyErr != nil { // Get the body of the request
 			response.WriteMessage("Error getting close friend body", "Unauthorised", w)
 			return
-		} 
+		}
 		// Add closefriend to the database
 		resp := closefriend.UpdateCloseFriend(closeFriend.UserId, closeFriend.CloseFriendId, *DB.Env)
 		response.WriteMessage("Close Friend Updated", resp, w)

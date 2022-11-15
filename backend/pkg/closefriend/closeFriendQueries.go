@@ -60,3 +60,19 @@ func AddCloseFriend(userId, closeFriendId string, database structs.DB) bool {
 	}
 	return true
 }
+
+func GetCloseFriends(userId string, database structs.DB) []string {
+	rows, err := database.DB.Query("SELECT closeFriendId FROM CloseFriends WHERE userId = ?", userId)
+	if err != nil {
+		log.Println("Error Querying closefrineds table to get closefriends")
+		return []string{}
+	}
+	var result []string
+	var temp string
+	defer rows.Close()
+	for rows.Next() {
+		rows.Scan(&temp)
+		result = append(result, temp)
+	}
+	return result
+}

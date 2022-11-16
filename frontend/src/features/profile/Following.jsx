@@ -39,8 +39,6 @@ export default function Following() {
                                         obj.lastName
                                     }
                                     profileId={obj.id}
-                                    // typeVal={'Following'}
-                                    // btnAction={FollowRelationshipUpdate}
                                     crossIcon='none'
                                 />
                             );

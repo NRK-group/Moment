@@ -29,11 +29,16 @@ export default function CloseFriendsUsers() {
     }, []);
     if (followers && closeFriends) {
         closeFriends.filter((value) => {
-          followers.forEach((val, index) => {
-          if (value["id"] === val["id"]) setFollowers(followers.slice(0, index).concat(followers.slice(index + 1)))
-        })
-        })
-        }
+            followers.forEach((val, index) => {
+                if (value['id'] === val['id'])
+                    setFollowers(
+                        followers
+                            .slice(0, index)
+                            .concat(followers.slice(index + 1))
+                    );
+            });
+        });
+    }
 
     return (
         <Card styleName='popUp'>
@@ -49,8 +54,8 @@ export default function CloseFriendsUsers() {
                             Close Friends
                         </span>
                     </span>
-                    {!closeFriends  ? (
-                        <Card styleName="block">No Close Friends</Card>
+                    {!closeFriends ? (
+                        <Card styleName='block'>No Close Friends</Card>
                     ) : (
                         closeFriends.map((obj, i) => {
                             return (
@@ -63,12 +68,11 @@ export default function CloseFriendsUsers() {
                                     profileUsernameHolder='followStatUsernameHold'
                                     profileUsernameText='followStatUsername'
                                     username={
-                                        // obj.firstName +
-                                        // " '" +
-                                        // obj.name +
-                                        // "' " +
-                                        // obj.lastName
-                                        obj.id
+                                        obj.firstName +
+                                        ' (' +
+                                        obj.name +
+                                        ') ' +
+                                        obj.lastName
                                     }
                                     profileId={obj.id}
                                     typeVal={'Remove'}
@@ -84,7 +88,7 @@ export default function CloseFriendsUsers() {
                         <span className='closeFriendsHeading'>Followers</span>
                     </span>
                     {!followers || followers.length === 0 ? (
-                        <Card styleName="block">No Followers</Card>
+                        <Card styleName='block'>No Followers</Card>
                     ) : (
                         followers.map((obj, i) => {
                             return (
@@ -94,12 +98,11 @@ export default function CloseFriendsUsers() {
                                     imgSrc={`http://localhost:5070/${obj.img}`}
                                     profileUsernameText='followStatUsername'
                                     username={
-                                        // obj.firstName +
-                                        // " '" +
-                                        // obj.name +
-                                        // "' " +
-                                        // obj.lastName
-                                        obj.id
+                                        obj.firstName +
+                                        ' (' +
+                                        obj.name +
+                                        ') ' +
+                                        obj.lastName
                                     }
                                     crossIcon='none'
                                     profileId={obj.id}

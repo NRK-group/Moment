@@ -29,26 +29,6 @@ func (DB *Env) Profile(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Error getting user: "+getErr.Error(), "User Not Found", w)
 			return
 		}
-		// for i := 0; i < 5; i++ {
-		// 	newFollower := structs.User{
-		// 		FirstName:   "HEllo",
-		// 		LastName:    "World",
-		// 		NickName:    "Nick",
-		// 		Email:       strings.ToLower("email@" + uuid.NewV4().String() + ".com"),
-		// 		Password:    "Password123",
-		// 		DateOfBirth: "06-08-2002",
-		// 		Avatar:      "images/profile/default-user.svg",
-		// 	}
-		// 	auth.InsertUser(newFollower, *DB.Env)
-		// 	var result structs.User
-		// 	auth.GetUser("email", newFollower.Email, &result, *DB.Env)
-		// 	follow.InsertFollow(result.UserId, userID, DB.Env)
-		// 	if i < 2 {
-		// 	closefriend.AddCloseFriend(userID, result.UserId, *DB.Env)
-		// 	}
-
-		// }
-
 		result.Password = ""
 		profileDetails, marshErr := json.Marshal(result)
 		if marshErr != nil {

@@ -5,10 +5,8 @@ import UserImg from './UserImg';
 export default function FollowStatUsers({
     imgSrc,
     username,
-    btnClass,
     btnAction,
     profileId,
-    btnValue,
     crossIcon,
     typeVal,
 }) {

@@ -61,12 +61,7 @@ export default function CloseFriendsUsers() {
                             return (
                                 <FollowStatUsers
                                     key={i}
-                                    profileStatUser='followStatUser profileCloseFriendsUser'
-                                    profileImgHolder='followStatAvatar'
-                                    profileImg='followStatAvatarImg'
                                     imgSrc={`http://localhost:5070/${obj.img}`}
-                                    profileUsernameHolder='followStatUsernameHold'
-                                    profileUsernameText='followStatUsername'
                                     username={
                                         obj.firstName +
                                         ' (' +
@@ -96,7 +91,6 @@ export default function CloseFriendsUsers() {
                                     key={i}
                                     profileImg='followStatAvatarImg'
                                     imgSrc={`http://localhost:5070/${obj.img}`}
-                                    profileUsernameText='followStatUsername'
                                     username={
                                         obj.firstName +
                                         ' (' +

@@ -21,7 +21,6 @@ import {
 
 export default function Profile({ userId }) {
     const navigate = useNavigate();
-
     const [values, setValues] = useState({
         FirstName: '',
         LastName: '',
@@ -76,10 +75,12 @@ export default function Profile({ userId }) {
                                     onClick={() => navigate('/profile/update')}>
                                     Edit
                                 </button>
-                                <Card styleName='profileBestFriends'>
+                                <button
+                                    className='profileDetailBtn grey'
+                                    onClick={() => navigate('/closefriends')}>
                                     <i className='fa-solid fa-user-group profileBestFriendsIcon'></i>
                                     Close Friends
-                                </Card>
+                                </button>
                             </span>
                         )}
                     </Card>
@@ -149,17 +150,6 @@ export default function Profile({ userId }) {
                 </Card>
             </FollowStatsPopUp>
 
-            <FollowStatsPopUp type='Close Friends' styleName='popUp none'>
-                <CloseFriendsUsers
-                    outerContainer='profileCloseFriendsHolder'
-                    innerTop='profileCurrentCloseFriends'
-                    innerTopHeading=''
-                    innerTopHeadingClass='profileCloseFriendsHeader'
-                    innerBottom='profileNotCloseFriends'
-                    innerBottomHeading='Followers'
-                    innerBottomHeadingClass='profileCloseFriendsHeader'
-                />
-            </FollowStatsPopUp>
             <ProfilePosts
                 contentSelector='profileContentSelector'
                 postBtn='profilePosts'

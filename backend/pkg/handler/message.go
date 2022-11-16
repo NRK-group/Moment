@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"backend/pkg/auth"
-	l "backend/pkg/log"
 	"backend/pkg/messages"
 	"backend/pkg/response"
 	"backend/pkg/structs"
@@ -37,14 +36,14 @@ func (DB *Env) Message(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Error getting messages", "Error", w)
 			return
 		}
-		resp, err := json.Marshal(msgs)
+		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Content-Type", "application/json")
+		err = json.NewEncoder(w).Encode(msgs)
 		if err != nil {
-			l.LogMessage("message.go", "Error marshalling messages", err)
 			response.WriteMessage("Error marshalling messages", "Error", w)
 			return
 		}
-		w.WriteHeader(http.StatusOK)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(resp)
+		return
 	}
+	http.Error(w, "Bad request", http.StatusBadRequest)
 }

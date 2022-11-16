@@ -31,3 +31,23 @@ func TestUpdateCloseFriend(t *testing.T) {
 		}
 	}
 }
+
+func TestGetCloseFriends(t *testing.T){
+	profileUser := CreateUser(database, t)
+	var ids []string
+	for i:=0; i<3; i++ {
+		//Create a user and make them follow profile user
+		tempUser := CreateUser(database, t)
+		closefriend.AddCloseFriend(profileUser.UserId, tempUser.UserId, *database)
+		ids = append(ids, tempUser.UserId)
+	}
+	got := closefriend.GetCloseFriends(profileUser.UserId, *database)
+	if len(got) != 3 {
+		t.Errorf("Expected length 3 got %v", len(got))
+	}
+	for i, v := range got {
+		if v.Id != ids[i] {
+			t.Errorf("got %v. Want %v.", v.Id, ids[i])
+		}
+	}
+}

@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"backend/pkg/auth"
+	"backend/pkg/closefriend"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
 
@@ -91,5 +92,38 @@ func TestCloseFriends(t *testing.T) {
 	want2 := `{"Message":"Removed"}`
 	if got2 != want2 {
 		t.Errorf("got %v. Want %v", got2, want2)
+	}
+}
+
+func TestCloseFriendList(t *testing.T) {
+	Env := handler.Env{Env: database}
+	profileUser := CreateUser(database, t)
+	var ids []string
+	for i:=0; i<3; i++ {
+		//Create a user and make them follow profile user
+		tempUser := CreateUser(database, t)
+		closefriend.AddCloseFriend(profileUser.UserId, tempUser.UserId, *database)
+		ids = append(ids, tempUser.UserId)
+	}
+	loginStruct := structs.User{Email: profileUser.Email, Password: "Password123"}
+	logUser, _ := json.Marshal(loginStruct)
+	// Create the bytes into a reader
+	logReq := bytes.NewReader(logUser)
+	req := httptest.NewRequest(http.MethodPost, "/login", logReq)
+	w := httptest.NewRecorder()
+	Env.Login(w, req)
+	getReq := httptest.NewRequest(http.MethodGet, "/getclosefriend", nil)
+	getReq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+	wr := httptest.NewRecorder()
+	Env.CloseFriendList(wr, getReq)
+	var got []structs.Info
+	json.Unmarshal(wr.Body.Bytes(), &got)
+	if len(got) != 3 {
+		t.Errorf("Expected length 3 got %v", len(got))
+	}
+	for i, v := range got {
+		if v.Id != ids[i] {
+			t.Errorf("got %v. Want %v.", v.Id, ids[i])
+		}
 	}
 }

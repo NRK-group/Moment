@@ -1,13 +1,33 @@
-import Card from "../../components/card/Card";
-import UserImg from "./UserImg";
+import { useState } from 'react';
+import Card from '../../components/card/Card';
+import UserImg from './UserImg';
 
-export default function FollowStatUsers(props) {
-  return (
-    <Card styleName={props.profileStatUser}>
-        <UserImg  userImgHolder={props.profileImgHolder} profileImg={props.profileImg} src={props.imgSrc} />
-        <Card styleName={props.profileUsernameHolder}> <h2 className={props.profileUsernameText}>{props.username}</h2> </Card>
-        <button className={props.btnClass}>{props.btnValue}</button>
-        <span className={props.crossIcon} >&#10005;</span>
-    </Card>
-  )
+export default function FollowStatUsers({
+    imgSrc,
+    username,
+    btnClass,
+    btnAction,
+    profileId,
+    btnValue,
+    crossIcon,
+    typeVal,
+}) {
+const [type, setType] = useState(typeVal)
+    return (
+        <Card styleName='followStatUser profileCloseFriendsUser'>
+            <UserImg
+                userImgHolder='followStatAvatar'
+                profileImg='followStatAvatarImg'
+                src={imgSrc}
+            />
+            <Card styleName='followStatUsernameHold'>
+                {' '}
+                <h2 className='followStatUsername'>{username}</h2>{' '}
+            </Card>
+            <button className={type} onClick={() => btnAction(profileId, setType)}>
+                {type}
+            </button>
+            <span className={crossIcon}>&#10005;</span>
+        </Card>
+    );
 }

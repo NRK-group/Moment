@@ -98,57 +98,6 @@ export default function Profile({ userId }) {
                 followers={values.NumFollowers}
                 following={values.NumFollowing}
             />
-            <FollowStatsPopUp type='following' styleName='popUp none'>
-                <Card styleName='followStatsPopUpUserSection'>
-                    <FollowStatUsers
-                        profileStatUser='followStatUser'
-                        profileImgHolder='followStatAvatar'
-                        profileImg='followStatAvatarImg'
-                        profileUsernameHolder='followStatUsernameHold'
-                        profileUsernameText='followStatUsername'
-                        profileUserRemoveBtn='followStatsRemove'
-                        username='Nate Russell'
-                        btnValue='Remove'
-                        crossIcon='none'
-                    />
-
-                    <FollowStatUsers
-                        profileStatUser='followStatUser'
-                        profileImgHolder='followStatAvatar'
-                        profileImg='followStatAvatarImg'
-                        profileUsernameHolder='followStatUsernameHold'
-                        profileUsernameText='followStatUsername'
-                        profileUserRemoveBtn='followStatsRemove'
-                        username='Nate Russell'
-                        btnValue='Remove'
-                        crossIcon='none'
-                    />
-
-                    <FollowStatUsers
-                        profileStatUser='followStatUser'
-                        profileImgHolder='followStatAvatar'
-                        profileImg='followStatAvatarImg'
-                        profileUsernameHolder='followStatUsernameHold'
-                        profileUsernameText='followStatUsername'
-                        profileUserRemoveBtn='followStatsRemove'
-                        username='Nate Russell'
-                        btnValue='Remove'
-                        crossIcon='none'
-                    />
-
-                    <FollowStatUsers
-                        profileStatUser='followStatUser'
-                        profileImgHolder='followStatAvatar'
-                        profileImg='followStatAvatarImg'
-                        profileUsernameHolder='followStatUsernameHold'
-                        profileUsernameText='followStatUsername'
-                        profileUserRemoveBtn='followStatsRemove'
-                        username='Nate Russell'
-                        btnValue='Remove'
-                        crossIcon='none'
-                    />
-                </Card>
-            </FollowStatsPopUp>
 
             <ProfilePosts
                 contentSelector='profileContentSelector'

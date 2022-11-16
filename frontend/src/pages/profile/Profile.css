@@ -244,28 +244,32 @@ p {
     word-wrap: none;
 }
 
-.followStatsRemove {
-    width: 20%;
+.Remove {
+    width: 25%;
     height: 25px;
     border: none;
     border-radius: 5px;
     background-color: rgb(74, 192, 74);
     color: white;
     margin-left: auto;
-    margin-right: 5%;
 }
 
-.followStatsAdd{
-    width: 20%;
+.Add{
+    width: 25%;
     height: 25px;
     border: none;
     border-radius: 5px;
     background-color: var(--button-color);
     color: white;
     margin-left: auto;
-    margin-right: 5%;
 }
 
+.block{
+    height: 35%;
+    margin: 10% auto;
+    display: flex;
+    justify-content: center;
+}
 .profilePostSection {
     height: fit-content;
 }

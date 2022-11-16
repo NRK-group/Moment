@@ -3,7 +3,9 @@ import FollowStatUsers from './FollowStatUsers';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import GetCloseFriends from '../../pages/profile/CloseFriend';
+import GetCloseFriends, {
+    UpdateCloseFriends,
+} from '../../pages/profile/CloseFriend';
 import GetFollowers from '../../pages/profile/Followers';
 
 export default function CloseFriendsUsers() {
@@ -14,10 +16,24 @@ export default function CloseFriendsUsers() {
     //Get the close friends
     useEffect(() => {
         //Fetch the close friends
-        GetCloseFriends().then((response) => setCloseFriends(response));
+        GetCloseFriends().then((response) => {
+            setCloseFriends(response);
+            console.log(response === null);
+        });
         //Fetch the Followers
-        GetFollowers().then(response => setFollowers(response) );
+        GetFollowers().then((response) => {
+            setFollowers(response);
+            console.log(response === null);
+        });
+        //Remove closefriends that are in followers
     }, []);
+    if (followers && closeFriends) {
+        closeFriends.filter((value) => {
+          followers.forEach((val, index) => {
+          if (value["id"] === val["id"]) setFollowers(followers.slice(0, index).concat(followers.slice(index + 1)))
+        })
+        })
+        }
 
     return (
         <Card styleName='popUp'>
@@ -33,61 +49,30 @@ export default function CloseFriendsUsers() {
                             Close Friends
                         </span>
                     </span>
-                    {/* <FollowStatUsers
-                    profileStatUser='followStatUser profileCloseFriendsUser'
-                    profileImgHolder='followStatAvatar'
-                    profileImg='followStatAvatarImg'
-                    profileUsernameHolder='followStatUsernameHold'
-                    profileUsernameText='followStatUsername'
-                    btnClass='followStatsRemove'
-                    username='Nate Russell'
-                    btnValue='Remove'
-                    crossIcon='none'
-                />
-                <FollowStatUsers
-                    profileStatUser='followStatUser profileCloseFriendsUser'
-                    profileImgHolder='followStatAvatar'
-                    profileImg='followStatAvatarImg'
-                    profileUsernameHolder='followStatUsernameHold'
-                    profileUsernameText='followStatUsername'
-                    btnClass='followStatsAdd'
-                    username='Nate Russell'
-                    btnValue='Remove'
-                    crossIcon='none'
-                />
-                <FollowStatUsers
-                    profileStatUser='followStatUser profileCloseFriendsUser'
-                    profileImgHolder='followStatAvatar'
-                    profileImg='followStatAvatarImg'
-                    profileUsernameHolder='followStatUsernameHold'
-                    profileUsernameText='followStatUsername'
-                    btnClass='followStatsAdd'
-                    username='Nate Russell'
-                    btnValue='Remove'
-                    crossIcon='none'
-                /> */}
-                    {closeFriends.length === 0 ? (
-                        <Card>No Close Friends</Card>
+                    {!closeFriends  ? (
+                        <Card styleName="block">No Close Friends</Card>
                     ) : (
-                        closeFriends.map((obj) => {
-                            console.log(obj);
+                        closeFriends.map((obj, i) => {
                             return (
                                 <FollowStatUsers
+                                    key={i}
                                     profileStatUser='followStatUser profileCloseFriendsUser'
                                     profileImgHolder='followStatAvatar'
                                     profileImg='followStatAvatarImg'
                                     imgSrc={`http://localhost:5070/${obj.img}`}
                                     profileUsernameHolder='followStatUsernameHold'
                                     profileUsernameText='followStatUsername'
-                                    btnClass='followStatsRemove'
                                     username={
-                                        obj.firstName +
-                                        " '" +
-                                        obj.name +
-                                        "' " +
-                                        obj.lastName
+                                        // obj.firstName +
+                                        // " '" +
+                                        // obj.name +
+                                        // "' " +
+                                        // obj.lastName
+                                        obj.id
                                     }
-                                    btnValue='Remove'
+                                    profileId={obj.id}
+                                    typeVal={'Remove'}
+                                    btnAction={UpdateCloseFriends}
                                     crossIcon='none'
                                 />
                             );
@@ -98,34 +83,32 @@ export default function CloseFriendsUsers() {
                     <span className='profileCloseFriendsHeader'>
                         <span className='closeFriendsHeading'>Followers</span>
                     </span>
-                    {closeFriends.length === 0 ? (
-                        <Card>No Close Friends</Card>
+                    {!followers || followers.length === 0 ? (
+                        <Card styleName="block">No Followers</Card>
                     ) : (
-                        followers.map((obj) => {
-                            console.log(obj);
+                        followers.map((obj, i) => {
                             return (
                                 <FollowStatUsers
-                                    profileStatUser='followStatUser profileCloseFriendsUser'
-                                    profileImgHolder='followStatAvatar'
+                                    key={i}
                                     profileImg='followStatAvatarImg'
                                     imgSrc={`http://localhost:5070/${obj.img}`}
-                                    profileUsernameHolder='followStatUsernameHold'
                                     profileUsernameText='followStatUsername'
-                                    btnClass='followStatsAdd'
                                     username={
-                                        obj.firstName +
-                                        " '" +
-                                        obj.name +
-                                        "' " +
-                                        obj.lastName
+                                        // obj.firstName +
+                                        // " '" +
+                                        // obj.name +
+                                        // "' " +
+                                        // obj.lastName
+                                        obj.id
                                     }
-                                    btnValue='Add'
                                     crossIcon='none'
+                                    profileId={obj.id}
+                                    typeVal={'Add'}
+                                    btnAction={UpdateCloseFriends}
                                 />
                             );
                         })
-                    )
-                    }
+                    )}
                 </Card>
             </Card>
         </Card>

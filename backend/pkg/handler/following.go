@@ -22,13 +22,12 @@ func (DB *Env) Following(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Cookie not found", "Unauthorised", w)
 			return
 		}
-		followingId := r.URL.Query().Get("followingID") // Get the query for the profile being checked
 		cookieSlc, slcErr := auth.SliceCookie(c.Value)
 		if slcErr != nil {
 			response.WriteMessage("Error slicing cookie", "Unauthorised", w)
 			return
 		}
-		// Check if cookieSlc[0] is following  followingId
+		followingId := r.URL.Query().Get("followingID") // Get the query for the profile being checked
 		if follow.CheckIfFollow(cookieSlc[0], followingId, DB.Env) { // User is following the profile
 			response.WriteMessage(cookieSlc[0]+" follows "+followingId, "Following", w)
 			return

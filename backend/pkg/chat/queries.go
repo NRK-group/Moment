@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"backend/pkg/follow"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
 
@@ -169,19 +170,14 @@ func GetUserGroups(userId string, database *structs.DB) ([]structs.Group, error)
 //	database: the database
 func GetAllMembersOfGroup(id string, database *structs.DB) ([]structs.Member, error) {
 	var members []structs.Member
+	var member structs.Member
 	rows, err := database.DB.Query("SELECT * FROM GroupMember WHERE groupId = ?", id)
 	if err != nil {
 		fmt.Print(err)
 		return nil, err
 	}
-	var userId, groupId, createdAt string
 	for rows.Next() {
-		rows.Scan(&groupId, &userId, &createdAt)
-		member := structs.Member{
-			UserId:    userId,
-			GroupId:   groupId,
-			CreatedAt: createdAt,
-		}
+		rows.Scan(&member.GroupId, &member.UserId, &member.CreatedAt)
 		members = append([]structs.Member{member}, members...)
 	}
 	return members, nil
@@ -231,8 +227,10 @@ func GetUserInfo(userId string, database *structs.DB) (structs.Info, error) {
 			return structs.Info{}, err
 		}
 		userInfo = structs.Info{
-			Id:  user.UserId,
-			Img: user.Avatar,
+			Id:        user.UserId,
+			FirstName: user.FirstName,
+			LastName:  user.LastName,
+			Img:       user.Avatar,
 		}
 		if user.NickName != "" {
 			userInfo.Name = user.NickName
@@ -241,4 +239,28 @@ func GetUserInfo(userId string, database *structs.DB) (structs.Info, error) {
 		}
 	}
 	return userInfo, nil
+}
+
+// GetFollowingInfo returns the following and follower info of the user
+//
+// return the following and follower information of the current user
+//
+// Param:
+//
+//	userId: the user id
+//	database: the database
+func GetFollowingInfo(userId string, database *structs.DB) ([]structs.Info, error) {
+	var userInfos []structs.Info
+	following, err := follow.GetFollowing(userId, database)
+	if err != nil {
+		return nil, err
+	}
+	for _, follower := range following {
+		userInfo, err := GetUserInfo(follower.FollowingId, database)
+		if err != nil {
+			return nil, err
+		}
+		userInfos = append(userInfos, userInfo)
+	}
+	return userInfos, nil
 }

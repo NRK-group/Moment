@@ -38,14 +38,13 @@ func (database *Env) Chat(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		chats = append(chats, groupChat...)
-		chatlist, err := json.Marshal(chats)
+		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Content-Type", "application/json")
+		err = json.NewEncoder(w).Encode(chats)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		w.WriteHeader(http.StatusOK)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(chatlist)
 		return
 	}
 

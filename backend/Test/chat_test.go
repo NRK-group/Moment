@@ -192,55 +192,53 @@ func TestChatHandler(t *testing.T) {
 		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 	}
-	t.Run("Chat handler", func(t *testing.T) {
-		err := auth.InsertUser(*inputUser, *Env.Env)
-		t.Run("Insert new user", func(t *testing.T) {
-			if err != nil {
-				t.Errorf("Error inserting test struct %v", err)
-			}
-		})
-		var result structs.User
-		err = auth.GetUser("email", validationValidEmail, &result, *Env.Env)
-		t.Run("Get user", func(t *testing.T) {
-			if err != nil {
-				t.Errorf("Error getting test struct %v", err)
-			}
-		})
-		sampleUser := &structs.User{
-			Email: validationValidEmail, Password: "Password123",
+	err := auth.InsertUser(*inputUser, *Env.Env)
+	t.Run("Insert new user", func(t *testing.T) {
+		if err != nil {
+			t.Errorf("Error inserting test struct %v", err)
 		}
-		sampleUserBytes, err := json.Marshal(sampleUser)
-		t.Run("Marshal user", func(t *testing.T) {
-			if err != nil {
-				t.Errorf("Error marshalling the sampleUser")
-			}
-		})
-		testReq := bytes.NewReader(sampleUserBytes) // Create the bytes into a reader
-		req := httptest.NewRequest(http.MethodPost, "/login", testReq)
-		w := httptest.NewRecorder()
-		Env.Login(w, req)
-		t.Run("Login user", func(t *testing.T) {
-			if w.Code != http.StatusOK {
-				t.Errorf("Expected status code %d, got %d", http.StatusOK, w.Code)
-			}
-		})
-		nr := httptest.NewRequest(http.MethodGet, "/chat", nil) // create a request
-		nr.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
-		nrr := httptest.NewRecorder() // create a response recorder
-		Env.Chat(nrr, nr)             // call the handler
-		// get cookies
-		cookie, _ := nr.Cookie("session_token")
-		got, _ := auth.SliceCookie(cookie.Value)
-		want := result.UserId
-		t.Run("Get cookie", func(t *testing.T) {
-			if got[0] != want {
-				t.Errorf("Expected %s, got %s", want, got[0])
-			}
-		})
-		t.Run("Get chat", func(t *testing.T) {
-			if nrr.Code != http.StatusOK {
-				t.Errorf("Expected status code %d, got %d", http.StatusOK, nrr.Code)
-			}
-		})
+	})
+	var result structs.User
+	err = auth.GetUser("email", validationValidEmail, &result, *Env.Env)
+	t.Run("Get user", func(t *testing.T) {
+		if err != nil {
+			t.Errorf("Error getting test struct %v", err)
+		}
+	})
+	sampleUser := &structs.User{
+		Email: validationValidEmail, Password: "Password123",
+	}
+	sampleUserBytes, err := json.Marshal(sampleUser)
+	t.Run("Marshal user", func(t *testing.T) {
+		if err != nil {
+			t.Errorf("Error marshalling the sampleUser")
+		}
+	})
+	testReq := bytes.NewReader(sampleUserBytes) // Create the bytes into a reader
+	req := httptest.NewRequest(http.MethodPost, "/login", testReq)
+	w := httptest.NewRecorder()
+	Env.Login(w, req)
+	t.Run("Login user", func(t *testing.T) {
+		if w.Code != http.StatusOK {
+			t.Errorf("Expected status code %d, got %d", http.StatusOK, w.Code)
+		}
+	})
+	nr := httptest.NewRequest(http.MethodGet, "/chat", nil) // create a request
+	nr.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+	nrr := httptest.NewRecorder() // create a response recorder
+	Env.Chat(nrr, nr)             // call the handler
+	// get cookies
+	cookie, _ := nr.Cookie("session_token")
+	got, _ := auth.SliceCookie(cookie.Value)
+	want := result.UserId
+	t.Run("Get cookie", func(t *testing.T) {
+		if got[0] != want {
+			t.Errorf("Expected %s, got %s", want, got[0])
+		}
+	})
+	t.Run("Get chat", func(t *testing.T) {
+		if nrr.Code != http.StatusOK {
+			t.Errorf("Expected status code %d, got %d", http.StatusOK, nrr.Code)
+		}
 	})
 }

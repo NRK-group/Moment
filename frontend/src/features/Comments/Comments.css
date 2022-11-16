@@ -17,6 +17,14 @@
     border: 1px solid var(--terheading-color);
 }
 
+
+.Comments-Img {
+    width: 120px;
+    overflow-x: scroll;
+    display: flex;
+
+}
+
 .CommentsImg img {
     object-fit: fill;
     height: inherit;

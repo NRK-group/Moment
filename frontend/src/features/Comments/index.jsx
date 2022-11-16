@@ -20,14 +20,9 @@ const Comments = ({ isMobile }) => {
     const [flag, setFlag] = useState(true);
 
     const [image, setImage] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [uploadedImage, setUploadedImage] = useState(null);
-
     const imageRef = useRef(null);
 
     useEffect(() => {
-        console.log({ state });
-
         window.document
             .querySelectorAll('.CommentsSectionUsers .miniUserCard .contentSep')
             .forEach((ele) => ele.remove());
@@ -55,7 +50,6 @@ const Comments = ({ isMobile }) => {
             let resp = await response.json();
             setText('');
 
-            console.log(resp[0].CommentID);
             if (image != null) {
                 const formData = new FormData();
                 formData.append('file', image);
@@ -64,7 +58,6 @@ const Comments = ({ isMobile }) => {
                 formData.append('id', resp[0].CommentID);
 
                 UploadImage(formData)
-                console.log("upload")
                 setImage(null);
             }
             return resp;
@@ -143,8 +136,10 @@ const Comments = ({ isMobile }) => {
                                     <div>
                                         <i
                                             className='fa-regular fa-circle-xmark'
+                                            onClick={() => setImage(null)}
                                             style={{
                                                 position: 'absolute',
+                                                cursor: 'pointer'
                                             }}></i>
                                         <img
                                             className='uploadImagesPrev'
@@ -152,7 +147,7 @@ const Comments = ({ isMobile }) => {
                                             width='20px'
                                             height='20px'
                                             alt='selected image...'
-                                            onClick={() => setImage(null)}
+                                            
                                         />
                                     </div>
                                 )}
@@ -226,6 +221,11 @@ const Comments = ({ isMobile }) => {
                                                         max={150}
                                                     />
                                                 </div>
+                                                { ele.ImageUpload &&
+                                                <div className='Comments-Img'>
+                                                    <img src={`http://localhost:5070/${ele.ImageUpload}`} alt="Girl in a jacket" style={{ width:"100px", height:""}}/>
+                                                  
+                                                    </div> }
                                             </>
                                         }>
                                         {' '}

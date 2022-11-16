@@ -93,6 +93,7 @@ const Comments = ({ isMobile }) => {
         }).then(async (response) => {
             let resp = await response.json();
             setCommentS(resp);
+            console.log(resp)
             return resp;
         });
 
@@ -212,7 +213,7 @@ const Comments = ({ isMobile }) => {
                                         optContent={
                                             <>
                                                 <h3>
-                                                    {ele.userId.split('-')[5]}:
+                                                    {ele.CommentName}:
                                                 </h3>
                                                 <div className=''>
                                                     <ReadMoreReact

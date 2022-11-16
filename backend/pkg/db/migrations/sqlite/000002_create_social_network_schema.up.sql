@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS "Post"(
     "groupId" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "image" TEXT,
+    "imageUpload" TEXT,
     "numLikes" INTEGER DEFAULT 0,
     "createdAt" DATETIME NOT NULL,
         FOREIGN KEY ("userId") 
@@ -18,6 +19,7 @@ CREATE TABLE IF NOT EXISTS "Comment"(
     "userId" TEXT NOT NULL,
     "content" NOT NULL,
     "image" TEXT,
+    "imageUpload" TEXT,
     "numLikes" INTEGER DEFAULT 0,
     "createdAt" DATETIME NOT NULL,
         FOREIGN KEY ("postId") 

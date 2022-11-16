@@ -47,17 +47,27 @@ const Comments = ({ isMobile }) => {
     };
 
     const PostComments = async () => {
-        const formData = new FormData();
-        formData.append('image', image);
         let comments = await fetch(`http://localhost:5070/comment/`, {
             credentials: 'include',
             method: 'POST',
-            body: JSON.stringify({ postId: state.PostId, content: text }) ,
+            body: JSON.stringify({ postId: state.PostId, content: text }),
         }).then(async (response) => {
             let resp = await response.json();
             setText('');
-           setCommentS(resp);
-           console.log(resp[0].CommentID)
+
+            console.log(resp[0].CommentID);
+            if (image != null) {
+                const formData = new FormData();
+                formData.append('image', image);
+                formData.append('table', 'comments');
+                formData.append('idType', 'commentId');
+                formData.append('id', resp[0].CommentID);
+                formData.append('postId', state.PostId);
+
+                UploadImage(formData)
+            }
+
+            setCommentS(resp);
             return resp;
         });
         setFlag(1);
@@ -66,6 +76,16 @@ const Comments = ({ isMobile }) => {
     function handleOnEnter() {
         PostComments();
     }
+
+    const UploadImage = (data) => {
+        let uploadImage = fetch(`http://localhost:5070/comment/`, {
+            credentials: 'include',
+            method: 'POST',
+            body: data,
+        }).then(async (res) => {
+            console.log(res);
+        });
+    };
 
     useEffect(() => {
         let comments = fetch(`http://localhost:5070/comment/${state.PostId}`, {
@@ -89,14 +109,12 @@ const Comments = ({ isMobile }) => {
     };
 
     const handleUploadImage = async () => {
-       
-            setLoading(true);
-            const formData = new FormData();
-            formData.append('image', image);
-           
-            setImage(null);
-            setLoading(false);
-        
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('image', image);
+
+        setImage(null);
+        setLoading(false);
     };
 
     const handleChangeImage = (e) => {
@@ -121,18 +139,23 @@ const Comments = ({ isMobile }) => {
                                 placeholder='Type a message'
                             />
                             <div className='CommentsIcon'>
-                            { image && <div>
-                                <i class="fa-regular fa-circle-xmark"  style={{ position: 'absolute',  }}></i>
-                                  <img
-                                className='uploadImagesPrev'
-                                src={URL.createObjectURL(image)}
-                                    width='20px'
-                                    height='20px'
-                                    alt='selected image...'
-                                    onClick={()=> setImage(null)}
-                                />
-                                </div>
-                            }
+                                {image && (
+                                    <div>
+                                        <i
+                                            class='fa-regular fa-circle-xmark'
+                                            style={{
+                                                position: 'absolute',
+                                            }}></i>
+                                        <img
+                                            className='uploadImagesPrev'
+                                            src={URL.createObjectURL(image)}
+                                            width='20px'
+                                            height='20px'
+                                            alt='selected image...'
+                                            onClick={() => setImage(null)}
+                                        />
+                                    </div>
+                                )}
                                 <input
                                     style={{ display: 'none' }}
                                     type='file'

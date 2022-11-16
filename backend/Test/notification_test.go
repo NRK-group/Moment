@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"backend/pkg/auth"
+	"backend/pkg/follow"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
 
@@ -20,11 +21,21 @@ func TestNotification(t *testing.T) {
 	user1 := &structs.User{
 		FirstName: "Adriell", LastName: "LastTest", NickName: "NickTest", Email: email, Password: "Password123",
 		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
-		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 5, NumFollowing: 5, NumPosts: 0,
+		IsLoggedIn: 0, IsPublic: 1, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 	}
 	auth.InsertUser(*user1, *database)
 	var result1 structs.User
 	auth.GetUser("email", user1.Email, &result1, *database)
+	email2 := "hello" + uuid.NewV4().String() + "@test.com"
+	user2 := &structs.User{
+		FirstName: "Adriell", LastName: "LastTest", NickName: "NickTest", Email: email2, Password: "Password123",
+		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 1, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	}
+	auth.InsertUser(*user2, *database)
+	var result2 structs.User
+	auth.GetUser("email", user2.Email, &result2, *database)
+	follow.FollowUser(result2.UserId, result1.UserId, database)
 	sampleUser := &structs.User{
 		Email: email, Password: "Password123",
 	}
@@ -50,12 +61,20 @@ func TestNotification(t *testing.T) {
 	req2.URL.RawQuery = values.Encode()
 	w2 := httptest.NewRecorder()
 	Env.Notification(w2, req2)
-	t.Run("Test notification", func(t *testing.T) {
+	t.Run("Test follow notification", func(t *testing.T) {
 		if w2.Code != http.StatusOK {
 			t.Errorf("Expected status code %d, got %d", http.StatusOK, w2.Code)
 		}
-		if w2.Body.String() != "follow" {
-			t.Errorf("Expected body %s, got %s", "follow", w2.Body.String())
+		var followNotif []structs.FollowerNotif
+		err := json.NewDecoder(w2.Body).Decode(&followNotif)
+		if err != nil {
+			t.Errorf("Error decoding the response body %s", err)
+		}
+		if len(followNotif) != 1 {
+			t.Errorf("Expected body %s, got %d", "1", len(followNotif))
+		}
+		if followNotif[0].UserId.Id != result2.UserId {
+			t.Errorf("Expected body %s, got %q", result2.UserId, followNotif[0].FollowingId.Id)
 		}
 	})
 	req3 := httptest.NewRequest(http.MethodGet, "/notification", nil)
@@ -65,12 +84,14 @@ func TestNotification(t *testing.T) {
 	req3.URL.RawQuery = values.Encode()
 	w3 := httptest.NewRecorder()
 	Env.Notification(w3, req3)
-	t.Run("Test notification", func(t *testing.T) {
+	t.Run("Test general notification", func(t *testing.T) {
 		if w3.Code != http.StatusOK {
 			t.Errorf("Expected status code %d, got %d", http.StatusOK, w3.Code)
 		}
-		if w3.Body.String() != "general" {
-			t.Errorf("Expected body %s, got %s", "general", w3.Body.String())
+		var generalNotif string
+		err = json.NewDecoder(w3.Body).Decode(&generalNotif)
+		if generalNotif != "general" {
+			t.Errorf("Expected body %s, got %s", "general", w3.Body)
 		}
 	})
 	req4 := httptest.NewRequest(http.MethodGet, "/notification", nil)
@@ -80,12 +101,14 @@ func TestNotification(t *testing.T) {
 	req4.URL.RawQuery = values.Encode()
 	w4 := httptest.NewRecorder()
 	Env.Notification(w4, req4)
-	t.Run("Test notification", func(t *testing.T) {
+	t.Run("Test group notification", func(t *testing.T) {
 		if w4.Code != http.StatusOK {
 			t.Errorf("Expected status code %d, got %d", http.StatusOK, w4.Code)
 		}
-		if w4.Body.String() != "group" {
-			t.Errorf("Expected body %s, got %s", "group", w4.Body.String())
+		var groupNotif string
+		err = json.NewDecoder(w4.Body).Decode(&groupNotif)
+		if groupNotif != "group" {
+			t.Errorf("Expected body %s, got %s", "group", w4.Body)
 		}
 	})
 }

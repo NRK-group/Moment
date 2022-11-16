@@ -18,10 +18,10 @@ func TestFollowers(t *testing.T) {
 	userOne := CreateUser(database, t)
 	userTwo := CreateUser(database, t)
 	userThree := CreateUser(database, t)
-	follow.FollowUser(userTwo.UserId, userOne.UserId, database)
-	follow.FollowUser(userThree.UserId, userOne.UserId, database)
+	follow.InsertFollow(userTwo.UserId, userOne.UserId, database)
+	follow.InsertFollow(userThree.UserId, userOne.UserId, database)
 	// Log user one in
-	loginStruct := structs.User{Email: userOne.Email, Password: userOne.Password}
+	loginStruct := structs.User{Email: userOne.Email, Password: "Password123"}
 	logUser, _ := json.Marshal(loginStruct)
 	// Create the bytes into a reader
 	logReq := bytes.NewReader(logUser)
@@ -35,7 +35,7 @@ func TestFollowers(t *testing.T) {
 	var got []structs.Info
 	json.Unmarshal(wr.Body.Bytes(), &got)
 	for _, v := range got {
-		if v.Id != userTwo.UserId || v.Id != userThree.UserId {
+		if !(v.Id == userTwo.UserId || v.Id == userThree.UserId) {
 			t.Errorf("got %v, want: %v OR %v", v, userThree.UserId, userTwo.UserId)
 		}
 	}

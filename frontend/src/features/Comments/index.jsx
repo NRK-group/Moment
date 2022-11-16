@@ -17,11 +17,12 @@ const Comments = ({ isMobile }) => {
 
     const [text, setText] = useState('');
     const [commentS, setCommentS] = useState([]);
-    const [flag, setFlag] = useState('');
+    const [flag, setFlag] = useState(true);
+
+    const [image, setImage] = useState(null);
+    const imageRef = useRef(null);
 
     useEffect(() => {
-        console.log({ state });
-
         window.document
             .querySelectorAll('.CommentsSectionUsers .miniUserCard .contentSep')
             .forEach((ele) => ele.remove());
@@ -48,15 +49,35 @@ const Comments = ({ isMobile }) => {
         }).then(async (response) => {
             let resp = await response.json();
             setText('');
-            setCommentS(resp);
+
+            if (image != null) {
+                const formData = new FormData();
+                formData.append('file', image);
+                formData.append('table', 'Comment');
+                formData.append('idType', 'commentId');
+                formData.append('id', resp[0].CommentID);
+
+                UploadImage(formData);
+                setImage(null);
+            }
             return resp;
         });
-        setFlag(1);
+        setFlag(!flag);
     };
 
     function handleOnEnter() {
         PostComments();
     }
+
+    const UploadImage = (data) => {
+        let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
+            credentials: 'include',
+            method: 'POST',
+            body: data,
+        }).then(async (res) => {
+            console.log(res);
+        });
+    };
 
     useEffect(() => {
         let comments = fetch(`http://localhost:5070/comment/${state.PostId}`, {
@@ -65,6 +86,7 @@ const Comments = ({ isMobile }) => {
         }).then(async (response) => {
             let resp = await response.json();
             setCommentS(resp);
+            console.log(resp);
             return resp;
         });
 
@@ -75,8 +97,12 @@ const Comments = ({ isMobile }) => {
 
     const formatDate = (data) => {
         let myDate = new Date(data);
-        let result = myDate.toString().slice(0,24);
-        return result
+        let result = myDate.toString().slice(0, 24);
+        return result;
+    };
+
+    const handleChangeImage = (e) => {
+        setImage(e.target.files[0]);
     };
 
     return (
@@ -97,7 +123,35 @@ const Comments = ({ isMobile }) => {
                                 placeholder='Type a message'
                             />
                             <div className='CommentsIcon'>
-                                <i className='fa-solid fa-upload'></i>
+                                {image && (
+                                    <div>
+                                        <i
+                                            className='fa-regular fa-circle-xmark'
+                                            onClick={() => setImage(null)}
+                                            style={{
+                                                position: 'absolute',
+                                                cursor: 'pointer',
+                                            }}></i>
+                                        <img
+                                            className='uploadImagesPrev'
+                                            src={URL.createObjectURL(image)}
+                                            width='20px'
+                                            height='20px'
+                                            alt='selected image...'
+                                        />
+                                    </div>
+                                )}
+                                <input
+                                    style={{ display: 'none' }}
+                                    type='file'
+                                    accept='image/*'
+                                    ref={imageRef}
+                                    onChange={handleChangeImage}
+                                />
+                                <i
+                                    className='fa-solid fa-upload'
+                                    onClick={() => imageRef.current.click()}
+                                    style={{ cursor: 'pointer' }}></i>
                                 <i onClick={PostComments}>
                                     {' '}
                                     <MessagesIcon />
@@ -114,7 +168,9 @@ const Comments = ({ isMobile }) => {
                                     styleName={'PostAvatarUsers'}
                                 />
 
-                                <p style={{ marginLeft: '4px' }}>{state.Name}</p>
+                                <p style={{ marginLeft: '4px' }}>
+                                    {state.Name}
+                                </p>
                             </div>
 
                             <div className='PostHeaderMenu'>
@@ -141,9 +197,7 @@ const Comments = ({ isMobile }) => {
                                         imgStyleName={'miniUserCardImg'}
                                         optContent={
                                             <>
-                                                <h3>
-                                                    {ele.userId.split('-')[5]}:
-                                                </h3>
+                                                <h3>{ele.CommentName}:</h3>
                                                 <div className=''>
                                                     <ReadMoreReact
                                                         text={ele.content}
@@ -155,6 +209,18 @@ const Comments = ({ isMobile }) => {
                                                         max={150}
                                                     />
                                                 </div>
+                                                {ele.ImageUpload && (
+                                                    <div className='Comments-Img'>
+                                                        <img
+                                                            src={`http://localhost:5070/${ele.ImageUpload}`}
+                                                            alt='Girl in a jacket'
+                                                            style={{
+                                                                width: '100px',
+                                                                height: '',
+                                                            }}
+                                                        />
+                                                    </div>
+                                                )}
                                             </>
                                         }>
                                         {' '}

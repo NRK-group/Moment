@@ -30,7 +30,9 @@ type ChatWriter struct {
 }
 
 type Info struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
-	Img  string `json:"img"`
+	Id        string `json:"id"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Name      string `json:"name"`
+	Img       string `json:"img"`
 }

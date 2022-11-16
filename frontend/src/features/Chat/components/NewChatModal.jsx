@@ -2,8 +2,19 @@ import Input from '../../../components/Input/Input';
 import { CloseIcon } from '../../../components/Icons/Icons';
 import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
 import { useNavigate } from 'react-router-dom';
+import { GetFollow } from '../hooks/getFollow';
+import { useState } from 'react';
 export const NewChatModal = () => {
     const navigate = useNavigate();
+    let following = GetFollow();
+    const [query, setQuery] = useState('');
+    let filteredItems = following.filter((item) => {
+        return (
+            item.name.toLowerCase().includes(query.toLowerCase()) ||
+            item.firstName.toLowerCase().includes(query.toLowerCase()) ||
+            item.lastName.toLowerCase().includes(query.toLowerCase())
+        );
+    });
     return (
         <div
             className='newChatModalContainer'
@@ -31,15 +42,24 @@ export const NewChatModal = () => {
                     <Input
                         styleName='searchFollowing'
                         placeholder={'Search . . .'}
+                        onChange={(e) => {
+                            setQuery(e.target.value);
+                        }}
                     />
                 </div>
                 <div className='searchResult scrollbar-hidden'>
-                    <MiniUserCard propsId={'1'} name='First'>
-                        <div>online</div>
-                    </MiniUserCard>
-                    <MiniUserCard propsId={'2'} name='Second'>
-                        <div>offline</div>
-                    </MiniUserCard>
+                    {filteredItems
+                        ? filteredItems.map(
+                              ({ id, firstName, lastName, name, img }) => (
+                                  <MiniUserCard
+                                      propsId={id}
+                                      name={firstName + ' ' + lastName}
+                                      img={img}>
+                                      {name}
+                                  </MiniUserCard>
+                              )
+                          )
+                        : null}
                 </div>
             </div>
         </div>

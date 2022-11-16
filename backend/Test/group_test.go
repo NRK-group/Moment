@@ -3,7 +3,6 @@ package Test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -67,15 +66,14 @@ func TestCreateGroup(t *testing.T) {
 	})
 
 	t.Run("get all groups", func(t *testing.T) {
-		groups, err := group.AllGroups("6t78t8t87", database)
-		fmt.Println(groups)
+		_, err := group.AllGroups("6t78t8t87", database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 	})
 }
 
-func TestPostHandlerMakeAGroup(t *testing.T) {
+func TestGroupHandlerMakeAGroup(t *testing.T) {
 	group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
 	body, _ := json.Marshal(group1)
 
@@ -95,7 +93,7 @@ func TestPostHandlerMakeAGroup(t *testing.T) {
 	}
 }
 
-func TestPostHandlerGettingAllGroups(t *testing.T) {
+func TestGroupHandlerGettingAllGroups(t *testing.T) {
 	req, err := http.NewRequest("GET", "/group", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -104,7 +102,6 @@ func TestPostHandlerGettingAllGroups(t *testing.T) {
 	Env := &handler.Env{Env: database}
 	handler := http.HandlerFunc(Env.Group)
 	handler.ServeHTTP(rr, req)
-	fmt.Println(rr.Body.String())
 	expected := http.StatusOK
 	if status := rr.Code; status != expected && strings.Contains(rr.Body.String(), "GroupID") {
 		t.Errorf("handler returned unexpected body: got %v want %v",
@@ -112,8 +109,10 @@ func TestPostHandlerGettingAllGroups(t *testing.T) {
 	}
 }
 
-var groupID string
-var postIdArr []string
+var (
+	groupID   string
+	postIdArr []string
+)
 
 func TestGettingAllPostFromAGroup(t *testing.T) {
 	t.Run("Creating a 10 group", func(t *testing.T) {

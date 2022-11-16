@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS "Post"(
 
 CREATE TABLE IF NOT EXISTS "Comment"(
     "commentId" TEXT NOT NULL PRIMARY KEY,
+    "nickName" TEXT NOT NULL,
     "postId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "content" NOT NULL,

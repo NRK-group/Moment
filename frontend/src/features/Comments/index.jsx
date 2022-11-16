@@ -17,7 +17,7 @@ const Comments = ({ isMobile }) => {
 
     const [text, setText] = useState('');
     const [commentS, setCommentS] = useState([]);
-    const [flag, setFlag] = useState('');
+    const [flag, setFlag] = useState(true);
 
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -58,19 +58,18 @@ const Comments = ({ isMobile }) => {
             console.log(resp[0].CommentID);
             if (image != null) {
                 const formData = new FormData();
-                formData.append('image', image);
-                formData.append('table', 'comments');
+                formData.append('file', image);
+                formData.append('table', 'Comment');
                 formData.append('idType', 'commentId');
                 formData.append('id', resp[0].CommentID);
-                formData.append('postId', state.PostId);
 
                 UploadImage(formData)
+                console.log("upload")
+                setImage(null);
             }
-
-            setCommentS(resp);
             return resp;
         });
-        setFlag(1);
+        setFlag(!flag);
     };
 
     function handleOnEnter() {
@@ -78,7 +77,7 @@ const Comments = ({ isMobile }) => {
     }
 
     const UploadImage = (data) => {
-        let uploadImage = fetch(`http://localhost:5070/comment/`, {
+        let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
             credentials: 'include',
             method: 'POST',
             body: data,
@@ -142,7 +141,7 @@ const Comments = ({ isMobile }) => {
                                 {image && (
                                     <div>
                                         <i
-                                            class='fa-regular fa-circle-xmark'
+                                            className='fa-regular fa-circle-xmark'
                                             style={{
                                                 position: 'absolute',
                                             }}></i>

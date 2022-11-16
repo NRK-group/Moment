@@ -27,7 +27,7 @@ func TestCreateCommets(t *testing.T) {
 		var currentResult structs.User
 		auth.GetUser("email", currentEmail, &currentResult, *database)
 
-		_, errc := commets.CreateComment(currentResult.UserId, postId, content, "", database)
+		_, errc := commets.CreateComment(currentResult.UserId, postId, content, database)
 		if errc != nil {
 			t.Errorf("Error inputing a comment in the db %v", err)
 		}

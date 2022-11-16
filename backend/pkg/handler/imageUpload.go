@@ -1,12 +1,11 @@
 package handler
 
 import (
-	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
 	"backend/pkg/auth"
-	commet "backend/pkg/commets"
 )
 
 func (database *Env) ImageUpload(w http.ResponseWriter, r *http.Request) {
@@ -15,7 +14,9 @@ func (database *Env) ImageUpload(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("404 - Not Found"))
 		return
 	}
+
 	SetupCorsResponse(w)
+
 	if r.Method == http.MethodPost {
 
 		cookie, err := r.Cookie("session_token")
@@ -39,24 +40,22 @@ func (database *Env) ImageUpload(w http.ResponseWriter, r *http.Request) {
 		table := r.FormValue("table")
 		id := r.FormValue("id")
 		idType := r.FormValue("idType")
-		postId := r.FormValue("postid")
 
 		successful, reason := auth.WriteImage("images/"+table+"/", r)
-
+		fmt.Println("successful - ", successful)
 		if successful {
 			updateErr := auth.Update(table, "imageUpload", reason, idType, id, *database.Env)
 			if updateErr != nil {
-				log.Println("Error updating profile image in db: ", updateErr)
+				log.Println("Error updating image in db: ", updateErr)
 			}
-
-			commets, _ := commet.GetComments(postId, database.Env)
-			arrComment, _ := json.Marshal(commets)
+			w.Header().Add("Content-Type", "application/text")
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(arrComment))
+			w.Write([]byte("Image upload"))
 			return
 		} else {
+			w.Header().Add("Content-Type", "application/text")
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("error uploading file"))
+			w.Write([]byte("error uploading Image"))
 			return
 		}
 	}

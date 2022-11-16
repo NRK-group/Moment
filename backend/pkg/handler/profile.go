@@ -23,6 +23,21 @@ func (DB *Env) Profile(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		userID := r.URL.Query().Get("userID") // Get the parameter
+		// for i := 0; i < 15; i++ {
+		// 	newFollower := structs.User{
+		// 		FirstName: "HEllo",
+		// 		LastName: "World",
+		// 		NickName: "Nick",
+		// 		Email: strings.ToLower("email@"+uuid.NewV4().String()+".com"),
+		// 		Password: "Password123",
+		// 		DateOfBirth: "06-08-2002",
+		// 	}
+		// 	auth.InsertUser(newFollower, *DB.Env)
+		// 	var result structs.User
+		// 	auth.GetUser("email", newFollower.Email, &result, *DB.Env)
+		// 	follow.InsertFollow(result.UserId, userID, DB.Env)
+
+		// }
 		var result structs.User
 		getErr := auth.GetUser("userId", userID, &result, *DB.Env)
 		if getErr != nil {

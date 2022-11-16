@@ -24,20 +24,9 @@ func AllPost(uID string, database *structs.DB) ([]structs.Post, error) {
 		return nil, err
 	}
 
-	var numLikes int
-	var postId, userId, groupId, content, image, createdAt string
 	for rows.Next() {
-		rows.Scan(&postId, &userId, &groupId, &content, &image, &numLikes, &createdAt)
-		post = structs.Post{
-			PostID:    postId,
-			UserID:    userId,
-			GroupID:   groupId,
-			CreatedAt: createdAt,
-			Content:   content,
-			Image:     image,
-			NumLikes:  numLikes,
-		}
-		arr, _ := commets.GetComments(postId, database)
+		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt)
+		arr, _ := commets.GetComments(post.PostID, database)
 		post.NumOfComment = len(arr)
 		posts = append([]structs.Post{post}, posts...)
 	}
@@ -54,7 +43,7 @@ func CreatePost(userID, groupId, image, content string, database *structs.DB) (s
 	err2 := auth.GetUser("userId", userID, &reUser, *database)
 	if err2 != nil {
 		fmt.Print(err2)
-		return  "CreatePost", err2
+		return "CreatePost", err2
 	}
 
 	stmt, _ := database.DB.Prepare(`

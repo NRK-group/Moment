@@ -17,6 +17,14 @@
     border: 1px solid var(--terheading-color);
 }
 
+
+.Comments-Img {
+    width: 120px;
+    overflow-x: scroll;
+    display: flex;
+
+}
+
 .CommentsImg img {
     object-fit: fill;
     height: inherit;
@@ -131,6 +139,9 @@
 width: 530px;
 }
 
+
+
+
 @media only screen and (max-width: 700px) {
     .Comments {
         flex-direction: column;
@@ -143,6 +154,7 @@ width: 530px;
 
     .CommentsImg img {
         height:100%;
+        width: 97.8%;
       }
 
       .CommentsChatIcons input {

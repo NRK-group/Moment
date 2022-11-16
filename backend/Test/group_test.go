@@ -44,7 +44,7 @@ func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
 	}
 }
 
-func TestHealthCheckGroupHttpPost(t *testing.T) {
+func TestHealthCheckGroupHttpGet(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/group", nil)
 		w := httptest.NewRecorder()
 

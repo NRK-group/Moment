@@ -58,6 +58,7 @@ func (database *Env) Comment(w http.ResponseWriter, r *http.Request) {
 
 		var commentS structs.Comment
 		err := GetBody(&commentS, w, r)
+
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return

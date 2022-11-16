@@ -42,6 +42,16 @@ func CreateUser(database *structs.DB, t *testing.T) structs.User {
 	return currentResult
 }
 
+func CreatePost( GroupId  string ,database *structs.DB, t *testing.T) string {
+	newUser := CreateUser(database, t)
+		post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: GroupId, Image: "wasfdfgfd"}
+		postId, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
+		if err != nil {
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+		return postId
+}
+
 func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
 	// database := DatabaseSetup()
 	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll

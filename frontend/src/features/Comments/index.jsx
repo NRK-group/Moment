@@ -57,7 +57,7 @@ const Comments = ({ isMobile }) => {
                 formData.append('idType', 'commentId');
                 formData.append('id', resp[0].CommentID);
 
-                UploadImage(formData)
+                UploadImage(formData);
                 setImage(null);
             }
             return resp;
@@ -86,7 +86,7 @@ const Comments = ({ isMobile }) => {
         }).then(async (response) => {
             let resp = await response.json();
             setCommentS(resp);
-            console.log(resp)
+            console.log(resp);
             return resp;
         });
 
@@ -99,15 +99,6 @@ const Comments = ({ isMobile }) => {
         let myDate = new Date(data);
         let result = myDate.toString().slice(0, 24);
         return result;
-    };
-
-    const handleUploadImage = async () => {
-        setLoading(true);
-        const formData = new FormData();
-        formData.append('image', image);
-
-        setImage(null);
-        setLoading(false);
     };
 
     const handleChangeImage = (e) => {
@@ -139,7 +130,7 @@ const Comments = ({ isMobile }) => {
                                             onClick={() => setImage(null)}
                                             style={{
                                                 position: 'absolute',
-                                                cursor: 'pointer'
+                                                cursor: 'pointer',
                                             }}></i>
                                         <img
                                             className='uploadImagesPrev'
@@ -147,7 +138,6 @@ const Comments = ({ isMobile }) => {
                                             width='20px'
                                             height='20px'
                                             alt='selected image...'
-                                            
                                         />
                                     </div>
                                 )}
@@ -207,9 +197,7 @@ const Comments = ({ isMobile }) => {
                                         imgStyleName={'miniUserCardImg'}
                                         optContent={
                                             <>
-                                                <h3>
-                                                    {ele.CommentName}:
-                                                </h3>
+                                                <h3>{ele.CommentName}:</h3>
                                                 <div className=''>
                                                     <ReadMoreReact
                                                         text={ele.content}
@@ -221,11 +209,18 @@ const Comments = ({ isMobile }) => {
                                                         max={150}
                                                     />
                                                 </div>
-                                                { ele.ImageUpload &&
-                                                <div className='Comments-Img'>
-                                                    <img src={`http://localhost:5070/${ele.ImageUpload}`} alt="Girl in a jacket" style={{ width:"100px", height:""}}/>
-                                                  
-                                                    </div> }
+                                                {ele.ImageUpload && (
+                                                    <div className='Comments-Img'>
+                                                        <img
+                                                            src={`http://localhost:5070/${ele.ImageUpload}`}
+                                                            alt='Girl in a jacket'
+                                                            style={{
+                                                                width: '100px',
+                                                                height: '',
+                                                            }}
+                                                        />
+                                                    </div>
+                                                )}
                                             </>
                                         }>
                                         {' '}

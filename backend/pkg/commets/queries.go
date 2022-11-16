@@ -22,7 +22,7 @@ func GetComments(pID string, database *structs.DB) ([]structs.Comment, error) {
 	}
 
 	for rows.Next() {
-		rows.Scan(&comment.CommentID, &comment.PostID, &comment.UserID, &comment.Content, &comment.Image, &comment.NumLikes, &comment.CreatedAt)
+		rows.Scan(&comment.CommentID, &comment.CommentName, &comment.PostID, &comment.UserID, &comment.Content, &comment.Image, &comment.ImageUpload, &comment.NumLikes, &comment.CreatedAt)
 		comments = append([]structs.Comment{comment}, comments...)
 	}
 	return comments, err
@@ -42,9 +42,9 @@ func CreateComment(userID, postID, content string, database *structs.DB) (string
 	image := reUser.Avatar 
 
 	stmt, _ := database.DB.Prepare(`
-		INSERT INTO Comment values (?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO Comment values (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`)
-	_, err = stmt.Exec(commentID, reUser.NickName, postID, userID, content, image, 0, createdAt)
+	_, err = stmt.Exec(commentID, reUser.NickName, postID, userID, content, image, "", 0, createdAt)
 	if err != nil {
 		return "", err
 	}

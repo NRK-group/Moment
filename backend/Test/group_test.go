@@ -9,11 +9,10 @@ import (
 	"strings"
 	"testing"
 
-	"backend/pkg/handler"
 	"backend/pkg/group"
+	"backend/pkg/handler"
 	"backend/pkg/structs"
 )
-
 
 var database = DatabaseSetup()
 
@@ -46,23 +45,22 @@ func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
 
 func TestHealthCheckGroupHttpGet(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/group", nil)
-		w := httptest.NewRecorder()
+	w := httptest.NewRecorder()
 
-		Env := handler.Env{Env: database}
-		Env.Group (w, req)
-		want := 200
-		got := w.Code
+	Env := handler.Env{Env: database}
+	Env.Group(w, req)
+	want := 200
+	got := w.Code
 
-		if got != want {
-			t.Errorf("Expected %v got %v", want, got)
-		}
+	if got != want {
+		t.Errorf("Expected %v got %v", want, got)
+	}
 }
 
 func TestCreateGroup(t *testing.T) {
 	t.Run("Creating a group", func(t *testing.T) {
 		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
-		str, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
-		fmt.Println(str)
+		_, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
@@ -78,7 +76,6 @@ func TestCreateGroup(t *testing.T) {
 }
 
 func TestPostHandlerMakeAGroup(t *testing.T) {
-
 	group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
 	body, _ := json.Marshal(group1)
 
@@ -99,7 +96,6 @@ func TestPostHandlerMakeAGroup(t *testing.T) {
 }
 
 func TestPostHandlerGettingAllGroups(t *testing.T) {
-
 	req, err := http.NewRequest("GET", "/group", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -114,4 +110,51 @@ func TestPostHandlerGettingAllGroups(t *testing.T) {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)
 	}
+}
+
+var groupID string
+var postIdArr []string
+
+func TestGettingAllPostFromAGroup(t *testing.T) {
+	t.Run("Creating a 10 group", func(t *testing.T) {
+		newUser := CreateUser(database, t)
+		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: newUser.UserId}
+		Id, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
+		groupID = Id
+
+		for i := 0; i < 10; i++ {
+			if i%2 == 0 {
+				groupID = "Id"
+			}
+			postId := CreatePost(groupID, database, t)
+			if err != nil {
+				t.Errorf("Error Inserting the struct into the db %v", err)
+			}
+			if i%2 != 0 {
+				postIdArr = append([]string{postId}, postIdArr...)
+			}
+		}
+	})
+
+	t.Run("get all group posts", func(t *testing.T) {
+		groups, err := group.AllGroupPosts(groupID, database)
+		if err != nil {
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+
+		var num int
+		expected := 5
+
+		for i := 0; i < len(groups); i++ {
+			for r := 0; r < len(postIdArr); r++ {
+				if postIdArr[r] == groups[i].PostID {
+					num = num + 1
+				}
+			}
+		}
+
+		if num != expected {
+			t.Errorf("Error posts doesn't match %d ", num)
+		}
+	})
 }

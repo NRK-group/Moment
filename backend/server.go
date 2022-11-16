@@ -113,6 +113,7 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/following", database.Following)
 	http.HandleFunc("/followers", database.Followers)
 	http.HandleFunc("/closefriend", database.CloseFriends)
+	http.HandleFunc("/getclosefriend", database.CloseFriendList)
 	http.HandleFunc("/followrequest", database.FollowReq)
 	http.HandleFunc("/notification", database.Notification)
 	http.HandleFunc("/message/new", database.NewMessage)

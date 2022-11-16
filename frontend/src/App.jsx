@@ -18,6 +18,7 @@ import Validation from './components/Validation/Validation';
 import { Menu } from './layouts/Menu/Menu';
 import ValidRedirect from './components/Validation/ValidRedirect';
 import useWindowDimensions from './components/hooks/useWindowDimensions';
+import CloseFriendsUsers from './features/profile/CloseFriendsUsers';
 function App() {
     const [auth, setAuthorised] = useState(false);
     const authorised = Validation(auth);
@@ -87,6 +88,8 @@ function App() {
                             element={<Notification />}
                         />
                         <Route path='/profile' element={<Profile />} />
+                        <Route path='/closefriends' element={<CloseFriendsUsers />} />
+
                         <Route path='/profile/update' element={<ProfileInfoPopUp styleName='popUp' />} />
                         <Route path='/stories' element={<Stories />} />
                     </Routes>

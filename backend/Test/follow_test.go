@@ -187,7 +187,7 @@ func TestFollow(t *testing.T) {
 		follow.InsertFollowNotif("Hello1", FollowingTestId, "pending", database)
 		follow.InsertFollowNotif("Hello2", FollowingTestId, "pending", database)
 		follow.InsertFollowNotif("Hello3", FollowingTestId, "pending", database)
-		fot, err := follow.GetFollowingNotifs(FollowingTestId, database)
+		fot, err := follow.GetFollowNotifs(FollowingTestId, database)
 		if err != nil {
 			t.Errorf("got %v, want %v", err, nil)
 		}
@@ -199,145 +199,43 @@ func TestFollow(t *testing.T) {
 	})
 	t.Run("Pending deleted", func(t *testing.T) {
 		emailOne := "follow@" + uuid.NewV4().String() + ".com"
-			emailTwo := "follow@" + uuid.NewV4().String() + ".com"
-			Env := handler.Env{Env: database}
-	
-	
-			userOne := structs.User{FirstName: "Follow", LastName: "Follow", NickName: "Follow", AboutMe: "Follow", Email: emailOne, Password: "Password123", DateOfBirth: "06-08-2002"}
-			userTwo := structs.User{FirstName: "FollowTwo", LastName: "FollowTwo", NickName: "FollowTwo", AboutMe: "FollowTwo", Email: emailTwo, Password: "Password123", DateOfBirth: "06-08-2002", IsPublic: 0}
-			auth.InsertUser(userOne, *database)
-			auth.InsertUser(userTwo, *database)
-			var testOne, testTwo structs.User
-			auth.GetUser("email", emailOne, &testOne, *database)
-			auth.GetUser("email", emailTwo, &testTwo, *database)
-			// login userone
-			loginOne := structs.User{Email: emailOne, Password: "Password123"}
-			loginBytes, err := json.Marshal(loginOne)
-			if err != nil {
-				t.Errorf("Error marshalling the sampleUser")
-				return
-			}
-	
-			// Create the bytes into a reader
-			testlogin := bytes.NewReader(loginBytes)
-			req := httptest.NewRequest(http.MethodPost, "/login", testlogin)
-			w := httptest.NewRecorder()
-			Env.Login(w, req)
-			//Now let user one follow user two
-			followPending := structs.Follower{FollowerId: testOne.UserId, FollowingId: testTwo.UserId }
-			followReqBytes, _ := json.Marshal(followPending)
-			followReader := bytes.NewReader(followReqBytes)
-			follow.FollowUser(testOne.UserId, testTwo.UserId, database)
-	
-			reqFol := httptest.NewRequest(http.MethodPut, "/followrequest", followReader)
-			reqFol.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
-			wr := httptest.NewRecorder()
-			Env.FollowReq(wr, reqFol)
-			got := wr.Body.String()
-			want := `{"Message":"unfollow"}`
-			if got != want {
-				t.Errorf("got %v \n want %v", got, want)
-			}
+		emailTwo := "follow@" + uuid.NewV4().String() + ".com"
+		Env := handler.Env{Env: database}
+
+		userOne := structs.User{FirstName: "Follow", LastName: "Follow", NickName: "Follow", AboutMe: "Follow", Email: emailOne, Password: "Password123", DateOfBirth: "06-08-2002"}
+		userTwo := structs.User{FirstName: "FollowTwo", LastName: "FollowTwo", NickName: "FollowTwo", AboutMe: "FollowTwo", Email: emailTwo, Password: "Password123", DateOfBirth: "06-08-2002", IsPublic: 0}
+		auth.InsertUser(userOne, *database)
+		auth.InsertUser(userTwo, *database)
+		var testOne, testTwo structs.User
+		auth.GetUser("email", emailOne, &testOne, *database)
+		auth.GetUser("email", emailTwo, &testTwo, *database)
+		// login userone
+		loginOne := structs.User{Email: emailOne, Password: "Password123"}
+		loginBytes, err := json.Marshal(loginOne)
+		if err != nil {
+			t.Errorf("Error marshalling the sampleUser")
+			return
+		}
+
+		// Create the bytes into a reader
+		testlogin := bytes.NewReader(loginBytes)
+		req := httptest.NewRequest(http.MethodPost, "/login", testlogin)
+		w := httptest.NewRecorder()
+		Env.Login(w, req)
+		// Now let user one follow user two
+		followPending := structs.Follower{FollowerId: testOne.UserId, FollowingId: testTwo.UserId}
+		followReqBytes, _ := json.Marshal(followPending)
+		followReader := bytes.NewReader(followReqBytes)
+		follow.FollowUser(testOne.UserId, testTwo.UserId, database)
+
+		reqFol := httptest.NewRequest(http.MethodPut, "/followrequest", followReader)
+		reqFol.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+		wr := httptest.NewRecorder()
+		Env.FollowReq(wr, reqFol)
+		got := wr.Body.String()
+		want := `{"Message":"unfollow"}`
+		if got != want {
+			t.Errorf("got %v \n want %v", got, want)
+		}
 	})
 }
-
-// func TestCheckIfFollowPending(t *testing.T) {
-// 	t.Run("Follow is pending", func(t *testing.T) {
-// 		Env := handler.Env{Env: database}
-// 		emailOne := strings.ToLower("handlertest@" + uuid.NewV4().String() + ".com")
-// 		emailTwo := strings.ToLower("handlertest@" + uuid.NewV4().String() + ".com")
-
-// 		// Create the struct that will be inserted
-// 		firstUser := structs.User{
-// 			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: emailOne, Password: "TestPass",
-// 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
-// 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-// 		}
-// 		auth.InsertUser(firstUser, *Env.Env)
-
-
-// 		// Create the struct that will be inserted
-// 		secondUser := structs.User{
-// 			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: emailTwo, Password: "TestPass",
-// 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
-// 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-// 		}
-
-// 		auth.InsertUser(secondUser, *Env.Env)
-// 		// Get the two users
-// 		var userOne, userTwo structs.User
-// 		auth.GetUser("email", emailOne, &userOne, *Env.Env)
-// 		auth.GetUser("email", emailTwo, &userTwo, *Env.Env)
-// 		follow.InsertFollowNotif(userOne.UserId, userTwo.UserId, "pending", database)
-// 		got := follow.CheckIfFollowPending(userOne.UserId, userTwo.UserId, database)
-// 		want := true
-// 		if got != want {
-// 			t.Errorf("got %v, want %v", got, want)
-// 		}
-// 	})
-// 	t.Run("follow doesn't equal pending", func(t *testing.T) {
-// 		Env := handler.Env{Env: database}
-// 		emailOne := strings.ToLower("handlertest@" + uuid.NewV4().String() + ".com")
-// 		emailTwo := strings.ToLower("handlertest@" + uuid.NewV4().String() + ".com")
-
-// 		// Create the struct that will be inserted
-// 		firstUser := structs.User{
-// 			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: emailOne, Password: "TestPass",
-// 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
-// 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-// 		}
-// 		auth.InsertUser(firstUser, *Env.Env)
-
-
-// 		// Create the struct that will be inserted
-// 		secondUser := structs.User{
-// 			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: emailTwo, Password: "TestPass",
-// 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
-// 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-// 		}
-
-// 		auth.InsertUser(secondUser, *Env.Env)
-// 		// Get the two users
-// 		var userOne, userTwo structs.User
-// 		auth.GetUser("email", emailOne, &userOne, *Env.Env)
-// 		auth.GetUser("email", emailTwo, &userTwo, *Env.Env)
-// 		follow.InsertFollowNotif(userOne.UserId, userTwo.UserId, "follow", database)
-// 		got := follow.CheckIfFollowPending(userOne.UserId, userTwo.UserId, database)
-// 		want := true
-// 		if got != want {
-// 		t.Errorf("got %v, want %v", got, want)
-// 		}
-// 	})
-// 	t.Run("Not row in the db", func(t *testing.T) {
-// 		Env := handler.Env{Env: database}
-// 		emailOne := strings.ToLower("handlertest@" + uuid.NewV4().String() + ".com")
-// 		emailTwo := strings.ToLower("handlertest@" + uuid.NewV4().String() + ".com")
-
-// 		// Create the struct that will be inserted
-// 		firstUser := structs.User{
-// 			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: emailOne, Password: "TestPass",
-// 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
-// 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-// 		}
-// 		auth.InsertUser(firstUser, *Env.Env)
-
-
-// 		// Create the struct that will be inserted
-// 		secondUser := structs.User{
-// 			FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: emailTwo, Password: "TestPass",
-// 			DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "-", SessionId: "-",
-// 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
-// 		}
-
-// 		auth.InsertUser(secondUser, *Env.Env)
-// 		// Get the two users
-// 		var userOne, userTwo structs.User
-// 		auth.GetUser("email", emailOne, &userOne, *Env.Env)
-// 		auth.GetUser("email", emailTwo, &userTwo, *Env.Env)
-// 		got := follow.CheckIfFollowPending(userOne.UserId, userTwo.UserId, database)
-// 		want := false
-// 		if got != want {
-// 		t.Errorf("got %v, want %v", got, want)
-// 		}
-// 	})
-// }

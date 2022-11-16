@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"backend/pkg/chat"
+	"backend/pkg/helper"
 	"backend/pkg/structs"
 )
 
@@ -77,7 +77,7 @@ func GetCloseFriends(userId string, database structs.DB) []structs.Info {
 	}
 	var closeFriends []structs.Info
 	for _, v := range result {
-		temp, getErr := chat.GetUserInfo(v, &database)
+		temp, getErr := helper.GetUserInfo(v, &database)
 		if getErr != nil {
 			log.Println("Error getting close friend information")
 			return []structs.Info{}

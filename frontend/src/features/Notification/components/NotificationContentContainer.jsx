@@ -1,27 +1,31 @@
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
 import { NoNotifications } from './NoNotifications';
+import { CalculateTimeDiff } from '../hooks/calculateTimediff';
+import { GetNotif } from '../hooks/getNotif';
 export const NotificationContentContainer = () => {
-    const [notif, setNotif] = useState([]);
-    let generalNotif = [];
-    let followNotif = [];
-    let groupNotif = [];
     const { type } = useParams();
-    console.log(type);
+    const message = {
+        follow: 'started following you •',
+        pending: 'wants to follow you •',
+    };
+    let notif = GetNotif(type);
     return (
         <div className='notificationContentContainer'>
-            {notif && notif.length !== 0 ? (
-                notif.map(({ img, id, name, content, optContent }) => (
-                    <MiniUserCard
-                        key={id}
-                        img={img}
-                        propsId={`notif` + id}
-                        name={name}
-                        optContent={optContent}>
-                        {content}
-                    </MiniUserCard>
-                ))
+            {Array.isArray(notif) && notif.length !== 0 ? (
+                notif.map(({ userId, status, createdAt }) => {
+                    return (
+                        <MiniUserCard
+                            key={userId.id}
+                            img={userId.Img}
+                            propsId={`notif` + userId.id}
+                            name={userId.name}>
+                            {message[status] +
+                                ' ' +
+                                CalculateTimeDiff(createdAt)}
+                        </MiniUserCard>
+                    );
+                })
             ) : (
                 <NoNotifications />
             )}

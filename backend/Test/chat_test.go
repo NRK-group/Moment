@@ -13,6 +13,7 @@ import (
 	"backend/pkg/follow"
 	"backend/pkg/group"
 	"backend/pkg/handler"
+	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/member"
 	"backend/pkg/structs"
@@ -92,7 +93,7 @@ func TestPrivateChat(t *testing.T) {
 			t.Errorf("InsertNewGroupChat() error = %v", err)
 		}
 	})
-	_, err = chat.GetUserInfo(result1.UserId, Env.Env)
+	_, err = helper.GetUserInfo(result1.UserId, Env.Env)
 	t.Run("Get userinfo for the chat", func(t *testing.T) {
 		if err != nil {
 			t.Errorf("GetUserInfoForChat() error = %v", err)

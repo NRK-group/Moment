@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS "Post"(
     "postId" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
     "groupId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "image" TEXT,
     "imageUpload" TEXT,

@@ -4,6 +4,7 @@ import (
 	"log"
 	"time"
 
+	"backend/pkg/chat"
 	"backend/pkg/structs"
 )
 
@@ -61,11 +62,11 @@ func AddCloseFriend(userId, closeFriendId string, database structs.DB) bool {
 	return true
 }
 
-func GetCloseFriends(userId string, database structs.DB) []string {
+func GetCloseFriends(userId string, database structs.DB) []structs.Info {
 	rows, err := database.DB.Query("SELECT closeFriendId FROM CloseFriends WHERE userId = ?", userId)
 	if err != nil {
 		log.Println("Error Querying closefrineds table to get closefriends")
-		return []string{}
+		return []structs.Info{}
 	}
 	var result []string
 	var temp string
@@ -74,5 +75,14 @@ func GetCloseFriends(userId string, database structs.DB) []string {
 		rows.Scan(&temp)
 		result = append(result, temp)
 	}
-	return result
+	var closeFriends []structs.Info
+	for _, v := range result {
+		temp, getErr := chat.GetUserInfo(v, &database)
+		if getErr != nil {
+			log.Println("Error getting close friend information")
+			return []structs.Info{}
+		}
+		closeFriends = append(closeFriends, temp)
+	}
+	return closeFriends
 }

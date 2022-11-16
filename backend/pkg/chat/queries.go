@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"backend/pkg/follow"
+	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
 
@@ -34,7 +35,7 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 		}
 		m := make(map[string]structs.Info)
 		if prevChat.User1 == userId {
-			userInfo, _ := GetUserInfo(prevChat.User2, database)
+			userInfo, _ := helper.GetUserInfo(prevChat.User2, database)
 			m[prevChat.User2] = userInfo
 			chatList = append([]structs.ChatWriter{{
 				Type:    "privateMessage",
@@ -43,7 +44,7 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 				Member:  m,
 			}}, chatList...)
 		} else {
-			userInfo, _ := GetUserInfo(prevChat.User1, database)
+			userInfo, _ := helper.GetUserInfo(prevChat.User1, database)
 			m[prevChat.User1] = userInfo
 			chatList = append([]structs.ChatWriter{{
 				Type:    "privateMessage",
@@ -106,7 +107,7 @@ func GetPreviousGroupChat(userId string, database *structs.DB) ([]structs.ChatWr
 			m := make(map[string]structs.Info)
 			for _, member := range group.Members {
 				fmt.Println(member.UserId)
-				userInfo, err := GetUserInfo(member.UserId, database)
+				userInfo, err := helper.GetUserInfo(member.UserId, database)
 				if err != nil {
 					return prevChatlist, err
 				}
@@ -205,42 +206,6 @@ func InsertNewGroupChat(groupId string, database *structs.DB) error {
 	return nil
 }
 
-// GetUserInfo returns the user info for the chat writer
-//
-// Param:
-//
-//	userId: the user id
-//	database: the database
-func GetUserInfo(userId string, database *structs.DB) (structs.Info, error) {
-	var userInfo structs.Info
-	var user structs.User
-	stmt, err := database.DB.Query("SELECT userId, firstName, lastName, nickName, avatar FROM User WHERE userId = ?", userId)
-	if err != nil {
-		l.LogMessage("Chat", "GetUserInfo - Query Error", err)
-		return userInfo, err
-	}
-	defer stmt.Close()
-	for stmt.Next() {
-		err = stmt.Scan(&user.UserId, &user.FirstName, &user.LastName, &user.NickName, &user.Avatar)
-		if err != nil {
-			l.LogMessage("Chat", "GetUserInfo - Scan Error", err)
-			return structs.Info{}, err
-		}
-		userInfo = structs.Info{
-			Id:        user.UserId,
-			FirstName: user.FirstName,
-			LastName:  user.LastName,
-			Img:       user.Avatar,
-		}
-		if user.NickName != "" {
-			userInfo.Name = user.NickName
-		} else {
-			userInfo.Name = user.FirstName + " " + user.LastName
-		}
-	}
-	return userInfo, nil
-}
-
 // GetFollowingInfo returns the following and follower info of the user
 //
 // return the following and follower information of the current user
@@ -256,7 +221,7 @@ func GetFollowingInfo(userId string, database *structs.DB) ([]structs.Info, erro
 		return nil, err
 	}
 	for _, follower := range following {
-		userInfo, err := GetUserInfo(follower.FollowingId, database)
+		userInfo, err := helper.GetUserInfo(follower.FollowingId, database)
 		if err != nil {
 			return nil, err
 		}

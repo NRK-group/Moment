@@ -4,7 +4,6 @@ import (
 	"log"
 	"time"
 
-	"backend/pkg/chat"
 	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
@@ -308,11 +307,11 @@ func GetFollowNotifs(userId string, database *structs.DB) ([]structs.FollowerNot
 			l.LogMessage("follow.go", "GetFollowerNotif", err)
 			return nil, err
 		}
-		followerNotif.UserId, err = chat.GetUserInfo(followerId, database)
+		followerNotif.UserId, err = helper.GetUserInfo(followerId, database)
 		if err != nil {
 			return nil, err
 		}
-		followerNotif.FollowingId, err = chat.GetUserInfo(followingID, database)
+		followerNotif.FollowingId, err = helper.GetUserInfo(followingID, database)
 		if err != nil {
 			return nil, err
 		}

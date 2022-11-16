@@ -9,11 +9,13 @@ import (
 	"strings"
 	"testing"
 
+	"backend/pkg/auth"
 	"backend/pkg/db/sqlite"
 	"backend/pkg/handler"
 	"backend/pkg/post"
 	"backend/pkg/structs"
 
+	uuid "github.com/satori/go.uuid"
 )
 
 func DatabaseSetup() *structs.DB {
@@ -25,6 +27,19 @@ func DatabaseSetup() *structs.DB {
 	database := &structs.DB{DB: db}
 
 	return database
+}
+
+func CreateUser(database *structs.DB, t *testing.T) structs.User {
+	currentEmail := "hello" + uuid.NewV4().String() + "@test.com"
+	currentUser := &structs.User{
+		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: currentEmail, Password: "Password123",
+		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 1, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	}
+	auth.InsertUser(*currentUser, *database)
+	var currentResult structs.User
+	auth.GetUser("email", currentEmail, &currentResult, *database)
+	return currentResult
 }
 
 func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
@@ -58,7 +73,8 @@ func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
 func TestCreatePost(t *testing.T) {
 	t.Run("Insert Post to DB", func(t *testing.T) {
 		// database := DatabaseSetup()
-		post1 := structs.Post{UserID: "3232131221", Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
+		newUser := CreateUser(database, t)
+		post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
 		str, err := post.CreatePost(post1.UserID, post1.Content, post1.GroupID, post1.Image, database)
 		fmt.Println(str)
 		if err != nil {
@@ -79,8 +95,8 @@ func TestCreatePost(t *testing.T) {
 
 func TestPostHandlerMakeAPost(t *testing.T) {
 	// database := DatabaseSetup()
-
-	post1 := structs.Post{UserID: "3232131221", Content: "hey2", GroupID: "3233234", Image: "wasfdfgfd"}
+	newUser := CreateUser(database, t)
+	post1 := structs.Post{UserID: newUser.UserId, Content: "hey2", GroupID: "3233234", Image: "wasfdfgfd"}
 	body, _ := json.Marshal(post1)
 
 	req, err := http.NewRequest("POST", "/post", bytes.NewBuffer(body))

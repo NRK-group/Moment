@@ -1,10 +1,10 @@
 package follow
 
 import (
-	"fmt"
 	"log"
 	"time"
 
+	"backend/pkg/chat"
 	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
@@ -97,7 +97,7 @@ func CheckIfFollow(followerId, followingId string, database *structs.DB) bool {
 //	status: the status of the follow (follow or pending)
 //	database: the database to insert the follow notification into
 func InsertFollowNotif(followerId, followingId, status string, database *structs.DB) error {
-	createdAt := time.Now().String()
+	createdAt := time.Now()
 	stmt, err := database.DB.Prepare("INSERT INTO FollowNotif (userId, followingId, status, createdAt, read) VALUES (?, ?, ?, ?, ?)")
 	if err != nil {
 		l.LogMessage("follow.go", "InsertFollowNotif", err)
@@ -239,12 +239,10 @@ func FollowUser(followerId, followingId string, database *structs.DB) (string, e
 		return "unfollow", nil
 	}
 	if CheckIfFollowPending(followerId, followingId, database) {
-		fmt.Println("INHERE ----- ")
 		if err := DeleteFollow(followerId, followingId, database); err != nil {
 			return "Error", err
 		}
 		return "unfollow", nil
-
 	}
 	if helper.CheckUserIfPublic(followingId, database) {
 		InsertFollow(followerId, followingId, database)
@@ -294,7 +292,7 @@ func DeclineFollow(followerId, followingId string, database *structs.DB) {
 //
 //	userId: the id of the user who is being followed - current user
 //	database: the database to get the follow notifications from
-func GetFollowingNotifs(userId string, database *structs.DB) ([]structs.FollowerNotif, error) {
+func GetFollowNotifs(userId string, database *structs.DB) ([]structs.FollowerNotif, error) {
 	var followerNotif structs.FollowerNotif
 	var followerNotifs []structs.FollowerNotif
 	rows, err := database.DB.Query("SELECT * FROM FollowNotif WHERE followingId = ?", userId)
@@ -303,10 +301,19 @@ func GetFollowingNotifs(userId string, database *structs.DB) ([]structs.Follower
 		return nil, err
 	}
 	defer rows.Close()
+	var followerId, followingID string
 	for rows.Next() {
-		err = rows.Scan(&followerNotif.UserId, &followerNotif.FollowingId, &followerNotif.Status, &followerNotif.CreatedAt, &followerNotif.Read)
+		err = rows.Scan(&followerId, &followingID, &followerNotif.CreatedAt, &followerNotif.Status, &followerNotif.Read)
 		if err != nil {
 			l.LogMessage("follow.go", "GetFollowerNotif", err)
+			return nil, err
+		}
+		followerNotif.UserId, err = chat.GetUserInfo(followerId, database)
+		if err != nil {
+			return nil, err
+		}
+		followerNotif.FollowingId, err = chat.GetUserInfo(followingID, database)
+		if err != nil {
 			return nil, err
 		}
 		followerNotifs = append([]structs.FollowerNotif{followerNotif}, followerNotifs...)

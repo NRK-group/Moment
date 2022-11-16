@@ -140,6 +140,29 @@
     margin: auto;
 }
 
+.stats:hover {
+    cursor: pointer;
+}
+
+div.Following, div.Follow, div.Pending {
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    width: 22%;
+    height: 25px;
+    color: white;
+
+}
+
+div.Following {
+}
+
+div.Following:hover, div.Follow:hover, div.Pending:hover {
+    cursor: pointer;
+}
+
 p {
     display: flex;
     justify-content: center;

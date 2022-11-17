@@ -45,6 +45,11 @@
     z-index: 1;
 }
 
+.regDob{
+    font-weight: lighter;
+    font-size: 75%;
+}
+
 select::-webkit-scrollbar {
     width: 10px;
 }

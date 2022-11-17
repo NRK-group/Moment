@@ -69,7 +69,7 @@ const Comments = ({ isMobile }) => {
         PostComments();
     }
 
-    const UploadImage = (data) => {
+     const UploadImage = (data) => {
         let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
             credentials: 'include',
             method: 'POST',

@@ -64,20 +64,30 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 //	user1Id: the user id
 //	user2Id: the user id
 //	database: the database
-func InsertNewChat(user1Id string, user2Id string, database *structs.DB) (string, error) {
+func InsertNewChat(user1Id string, user2Id string, database *structs.DB) (structs.ChatWriter, error) {
 	stmt, err := database.DB.Prepare("INSERT INTO Chat (chatId, user1, user2, groupId, updatedAt) VALUES (?, ?, ?, ?, ?)")
 	chatId := uuid.NewV4().String()
 	updateAt := time.Now()
+	var chat structs.ChatWriter
 	if err != nil {
 		l.LogMessage("Chat", "InsertNewChat - Insert Error", err)
-		return "", err
+		return chat, err
 	}
 	_, err = stmt.Exec(chatId, user1Id, user2Id, "", updateAt)
 	if err != nil {
 		l.LogMessage("Chat", "InsertNewChat - Exec Error", err)
-		return "", err
+		return chat, err
 	}
-	return chatId, nil
+	m := make(map[string]structs.Info)
+	userInfo, _ := helper.GetUserInfo(user2Id, database)
+	m[user2Id] = userInfo
+	chat = structs.ChatWriter{
+		Type:    "privateMessage",
+		ChatId:  chatId,
+		Details: userInfo,
+		Member:  m,
+	}
+	return chat, nil
 }
 
 // GetPreviousGroupChat returns the previous chat messages

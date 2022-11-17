@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../../components/card/Card';
@@ -8,6 +9,10 @@ import './NewPost.css';
 export default function NewPost() {
     const navigate = useNavigate('');
     let imgUpload = useRef();
+    const [image, setImage] = useState(null);
+    const handleChangeImage = (e) => {
+        setImage(e.target.files[0]);
+    };
     return (
         <Card styleName='popUp'>
             <Card styleName='newPostBox'>
@@ -22,15 +27,23 @@ export default function NewPost() {
 
                 <Card styleName='NewPostContent'>
                     <Card styleName='newPostPhotoSection'>
-                        <Card styleName='newPostImgHolder'></Card>
-                        <button className='newPostImgBtn' onClick={() => imgUpload.current.click()}>
+                        {image ? (
+                            <img
+                                className='newPostImg'
+                                src={URL.createObjectURL(image)}></img>
+                        ) : (
+                            <Card styleName='newPostImgHolder'></Card>
+                        )}
+                        <button
+                            className='newPostImgBtn'
+                            onClick={() => imgUpload.current.click()}>
                             Select a photo
                         </button>
                         <input
                             type='file'
                             className='none'
                             ref={imgUpload}
-                            onChange={() => {}}
+                            onChange={handleChangeImage}
                         />
                     </Card>
 

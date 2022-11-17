@@ -144,7 +144,9 @@
     cursor: pointer;
 }
 
-div.Following, div.Follow, div.Pending {
+div.Following,
+div.Follow,
+div.Pending {
     margin-left: auto;
     display: flex;
     justify-content: center;
@@ -153,12 +155,12 @@ div.Following, div.Follow, div.Pending {
     width: 22%;
     height: 25px;
     color: white;
-
 }
 
-
-
-div.Following:hover, div.Follow:hover, div.Pending:hover, .followStatUsername:hover {
+div.Following:hover,
+div.Follow:hover,
+div.Pending:hover,
+.followStatUsername:hover {
     cursor: pointer;
 }
 
@@ -276,7 +278,7 @@ p {
     margin-left: auto;
 }
 
-.Add{
+.Add {
     width: 25%;
     height: 25px;
     border: none;
@@ -286,12 +288,28 @@ p {
     margin-left: auto;
 }
 
-.block{
+.block {
     height: 35%;
     margin: 10% auto;
     display: flex;
     justify-content: center;
 }
+
+.restrictedAccount {
+    width: 20%;
+    height: 25%;
+    margin: auto;
+}
+.restrictedAccount > span {
+    display: block;
+    margin: auto;
+    width: fit-content;
+    margin-bottom: 5%;
+
+    font-weight: bold;
+}
+
+
 .profilePostSection {
     height: fit-content;
 }
@@ -426,7 +444,6 @@ p {
     border-radius: 5px;
     border: 2px solid var(--terheading-color);
     background-color: var(--background-color);
-
 }
 
 .profileCloseFriendsHolder::-webkit-scrollbar {
@@ -473,7 +490,7 @@ p {
     cursor: pointer;
 }
 
-.closeFriendsHeading{
+.closeFriendsHeading {
     margin: 1% auto;
 }
 
@@ -485,7 +502,6 @@ p {
 .grey {
     background-color: var(--subheading-color);
 }
-
 
 @media all and (max-width: 780px) {
     .profileSection {

@@ -106,16 +106,22 @@ export default function Profile() {
                 id={id}
             />
 
-        {
-            !id || values.isPublic === 1 || followStatus === "Following" ? (<ProfilePosts
-                contentSelector='profileContentSelector'
-                postBtn='profilePosts'
-                favBtn='profileFavourites'
-                likeBtn='profileLiked'
-                postContainer='profilePostContainer noContent'
-            />) : <Card styleName="restrictedAccount"><span className='locked'><i className="fa-solid fa-lock fa-3x"></i></span><span>This account is private</span></Card>
-        }
-            
+            {!id || values.isPublic === 1 || followStatus === 'Following' ? (
+                <ProfilePosts
+                    contentSelector='profileContentSelector'
+                    postBtn='profilePosts'
+                    favBtn='profileFavourites'
+                    likeBtn='profileLiked'
+                    postContainer='profilePostContainer noContent'
+                />
+            ) : (
+                <Card styleName='restrictedAccount'>
+                    <span>
+                        <i className='fa-solid fa-lock fa-3x'></i>
+                    </span>
+                    <span>This account is private</span>
+                </Card>
+            )}
         </Card>
     );
 }

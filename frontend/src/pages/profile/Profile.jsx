@@ -33,7 +33,6 @@ export default function Profile() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     let id = urlParams.get('id');
-    console.log('ID PARAM ==== ', id);
 
     //if user is viewing their own profile
     if (id === GetCookie('session_token').split('&')[0] || id === '') id = null;
@@ -58,62 +57,64 @@ export default function Profile() {
     );
     return (
         <Card styleName='profileCard'>
-            <Card styleName='profileSection'>
-                <UserImg
-                    src={`http://localhost:5070/` + values.Avatar}
-                    profileImg='profileAvatarImg'
-                    userImgHolder={'profileAvatar'}
-                />
-                <Card styleName={'profileDetails'}>
-                    <Card styleName='profileDetailContainer'>
-                        <h1 className={'profileDetailText profileFullName'}>
-                            {values.FirstName + ' ' + values.LastName}
-                        </h1>
-                        <h3 className='profileDetailText'>{values.NickName}</h3>
-                        <p className='profileAboutMe'>{values.AboutMe}</p>
-                        {id ? (
-                            relBtn
-                        ) : (
-                            <span className='profileButtonHolder'>
-                                <button
-                                    className='profileDetailBtn'
-                                    onClick={() => navigate('/update')}>
-                                    Edit
-                                </button>
-                                <button
-                                    className='profileDetailBtn grey'
-                                    onClick={() => navigate('/closefriends')}>
-                                    <i className='fa-solid fa-user-group profileBestFriendsIcon'></i>
-                                    Close Friends
-                                </button>
-                            </span>
-                        )}
+
+            {!id || values.isPublic === 1 || followStatus === 'Following' ? (
+                <article>
+                    <Card styleName='profileSection'>
+                        <UserImg
+                            src={`http://localhost:5070/` + values.Avatar}
+                            profileImg='profileAvatarImg'
+                            userImgHolder={'profileAvatar'}
+                        />
+                        <Card styleName={'profileDetails'}>
+                            <Card styleName='profileDetailContainer'>
+                                <h1 className={'profileDetailText profileFullName'}>
+                                    {values.FirstName + ' ' + values.LastName}
+                                </h1>
+                                <h3 className='profileDetailText'>{values.NickName}</h3>
+                                <p className='profileAboutMe'>{values.AboutMe}</p>
+                                {id ? (
+                                    relBtn
+                                ) : (
+                                    <span className='profileButtonHolder'>
+                                        <button
+                                            className='profileDetailBtn'
+                                            onClick={() => navigate('/update')}>
+                                            Edit
+                                        </button>
+                                        <button
+                                            className='profileDetailBtn grey'
+                                            onClick={() => navigate('/closefriends')}>
+                                            <i className='fa-solid fa-user-group profileBestFriendsIcon'></i>
+                                            Close Friends
+                                        </button>
+                                    </span>
+                                )}
+                            </Card>
+                            <ProfileStats
+                                styleName={'profileStats'}
+                                posts={values.NumPosts}
+                                followers={values.NumFollowers}
+                                following={values.NumFollowing}
+                                id={id}
+                            />
+                        </Card>
                     </Card>
                     <ProfileStats
-                        styleName={'profileStats'}
+                        styleName={'profileStats_1'}
                         posts={values.NumPosts}
                         followers={values.NumFollowers}
                         following={values.NumFollowing}
                         id={id}
                     />
-                </Card>
-            </Card>
-            <ProfileStats
-                styleName={'profileStats_1'}
-                posts={values.NumPosts}
-                followers={values.NumFollowers}
-                following={values.NumFollowing}
-                id={id}
-            />
-
-            {!id || values.isPublic === 1 || followStatus === 'Following' ? (
-                <ProfilePosts
-                    contentSelector='profileContentSelector'
-                    postBtn='profilePosts'
-                    favBtn='profileFavourites'
-                    likeBtn='profileLiked'
-                    postContainer='profilePostContainer noContent'
-                />
+                        <ProfilePosts
+                            contentSelector='profileContentSelector'
+                            postBtn='profilePosts'
+                            favBtn='profileFavourites'
+                            likeBtn='profileLiked'
+                            postContainer='profilePostContainer noContent'
+                        />
+                </article>
             ) : (
                 <Card styleName='restrictedAccount'>
                     <span>

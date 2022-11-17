@@ -110,3 +110,19 @@ func GetGroupMessages(chatId string, database structs.DB) ([]structs.Message, er
 	}
 	return messages, nil
 }
+
+// GetLastMessage returns the last message from a chat
+//
+// Param:
+//
+// chatId: the id of the chat
+// database: the database
+func GetLastMessage(chatId string, database *structs.DB) structs.Message {
+	var message structs.Message
+	row := database.DB.QueryRow("SELECT * FROM PrivateMessage WHERE chatId = ? ORDER BY createdAt DESC LIMIT 1", chatId)
+	err := row.Scan(&message.MessageId, &message.ChatId, &message.SenderId, &message.ReceiverId, &message.Content, &message.CreatedAt)
+	if err != nil {
+		return message
+	}
+	return message
+}

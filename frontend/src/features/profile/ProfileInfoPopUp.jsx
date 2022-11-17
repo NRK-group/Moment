@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import UpdateProfile from '../../pages/profile/updateProfile';
 
 export default function ProfileStatsPopUp(props) {
     const navigate = useNavigate();
@@ -92,7 +93,7 @@ export default function ProfileStatsPopUp(props) {
 
                 <button
                     className='loginInput profileInput profileAttemptBtn'
-                    onClick={() => console.log({ DOB })}>
+                    onClick={() => UpdateProfile(data, accPriv.current.value)}>
                     Update
                 </button>
             </Card>

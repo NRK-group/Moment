@@ -23,11 +23,10 @@ export default function Post({
     postId,
 }) {
     const dropdown = useRef(null);
-    const PostContentText = useRef(null);
     const navigate = useNavigate();
 
     const [toggle, setToggle] = useState(true);
-  //  const [comments, setComments] = useState([]);
+
 
     const OpenDropdownMenu = () => {
         setToggle(!toggle);
@@ -39,8 +38,8 @@ export default function Post({
         }
     };
 
+
     const OpenCommets = async (postId) => {
-   
         navigate('/comments', {
             state: {
                 PostId: postId,
@@ -82,13 +81,15 @@ export default function Post({
                     </div>
                 </Card>
                 <Card styleName={'PostBody'}>
-                    {(postBodyText && <p>{postBodyText}</p>) ||
-                        (postBodyImgSrc && <img src={postBodyImgSrc} />)}
+                    {(postBodyImgSrc && <img src={postBodyImgSrc} />) ||
+                        (postContent && <p>{postContent}</p>)}
                 </Card>
                 <Card styleName={'PostContent'}>
                     <div className='PostContentIcons'>
                         <div className='PostContentIconsLeft'>
-                           <i onClick={()=>console.log("we need")}><LikeIcon /></i> 
+                            <i onClick={() => console.log('we need')}>
+                                <LikeIcon />
+                            </i>
                             <CommentIcon />
                             <MessagesIcon />
                         </div>
@@ -97,9 +98,9 @@ export default function Post({
                     <div>
                         <p className='PostContentLikes'>{likes} Likes</p>
                     </div>
-                    <p ref={PostContentText} className='PostContentText'>
-                        {postContent}
-                    </p>
+                    {postBodyImgSrc && (
+                        <p className='PostContentText'>{postContent}</p>
+                    )}
                     <p className='PostContentVBtn'>
                         <a onClick={() => OpenCommets(postId)}>
                             View all {commentsnum} comments

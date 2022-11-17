@@ -101,7 +101,7 @@ func TestLogout(t *testing.T) {
 		Env.Login(w, req)
 		auth.CreateCookie(w, testUser.Email, database)
 		// request the logout handler
-		req.Header = http.Header{"Cookie": w.HeaderMap["Set-Cookie"]}
+		req.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 
 		_, err = req.Cookie("session_token")
 		if err != nil {
@@ -173,13 +173,13 @@ func TestLogout(t *testing.T) {
 		}
 
 		// Now log the user out
-		sampleUserBytes, err = json.Marshal(sampleUser)
-		if err != nil {
-			t.Errorf("Error marshalling the sampleUser")
-		}
+		// sampleUserBytes, err = json.Marshal(sampleUser)
+		// if err != nil {
+		// 	t.Errorf("Error marshalling the sampleUser")
+		// }
 
 		// Create the bytes into a reader
-		testReq = bytes.NewReader(sampleUserBytes)
+		// testReq = bytes.NewReader(sampleUserBytes)
 
 		r := httptest.NewRequest(http.MethodGet, "/logout", nil)
 		r.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}

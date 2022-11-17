@@ -9,6 +9,7 @@
 
 .profileSection {
     display: flex;
+    align-items: center;
     height: fit-content;
     width: 75%;
     min-width: 500px;
@@ -111,6 +112,13 @@
     border-radius: 5px;
     margin: auto;
     cursor: pointer;
+}
+
+.smallProfileDetail{
+    font-size: 75%;
+    margin: 1% auto;
+    font-weight: normal;
+
 }
 
 .profileBestFriends > * {
@@ -298,7 +306,7 @@ p {
 .restrictedAccount {
     width: 50%;
     height: 25%;
-    margin: 10% auto;
+    margin: 1% auto;
 }
 .restrictedAccount > span {
     display: block;

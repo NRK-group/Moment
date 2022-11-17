@@ -6,7 +6,7 @@ import ProfilePosts from '../../features/profile/ProfilePosts';
 import './Profile.css';
 import FollowStatUsers from '../../features/profile/FollowStatUsers';
 import CloseFriendsUsers from '../../features/profile/CloseFriendsUsers';
-import GetProfile from './ProfileData';
+import GetProfile, { FormatDOB } from './ProfileData';
 import { GetCookie } from './ProfileData';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -57,64 +57,83 @@ export default function Profile() {
     );
     return (
         <Card styleName='profileCard'>
+            <Card styleName='profileSection'>
+                <UserImg
+                    src={`http://localhost:5070/` + values.Avatar}
+                    profileImg='profileAvatarImg'
+                    userImgHolder={'profileAvatar'}
+                />
+                <Card styleName={'profileDetails'}>
+                    <Card styleName='profileDetailContainer'>
+                        <h1 className={'profileDetailText profileFullName'}>
+                            {values.FirstName + ' ' + values.LastName}
+                        </h1>
 
-            {!id || values.isPublic === 1 || followStatus === 'Following' ? (
-                <article>
-                    <Card styleName='profileSection'>
-                        <UserImg
-                            src={`http://localhost:5070/` + values.Avatar}
-                            profileImg='profileAvatarImg'
-                            userImgHolder={'profileAvatar'}
-                        />
-                        <Card styleName={'profileDetails'}>
-                            <Card styleName='profileDetailContainer'>
-                                <h1 className={'profileDetailText profileFullName'}>
-                                    {values.FirstName + ' ' + values.LastName}
-                                </h1>
-                                <h3 className='profileDetailText'>{values.NickName}</h3>
-                                <p className='profileAboutMe'>{values.AboutMe}</p>
-                                {id ? (
-                                    relBtn
-                                ) : (
-                                    <span className='profileButtonHolder'>
-                                        <button
-                                            className='profileDetailBtn'
-                                            onClick={() => navigate('/update')}>
-                                            Edit
-                                        </button>
-                                        <button
-                                            className='profileDetailBtn grey'
-                                            onClick={() => navigate('/closefriends')}>
-                                            <i className='fa-solid fa-user-group profileBestFriendsIcon'></i>
-                                            Close Friends
-                                        </button>
-                                    </span>
-                                )}
-                            </Card>
-                            <ProfileStats
-                                styleName={'profileStats'}
-                                posts={values.NumPosts}
-                                followers={values.NumFollowers}
-                                following={values.NumFollowing}
-                                id={id}
-                            />
-                        </Card>
+                        <h3 className='profileDetailText'>{values.NickName}</h3>
+                        {!id ||
+                        values.isPublic === 1 ||
+                        followStatus === 'Following' ? (
+                            <span>
+                                <p className='profileAboutMe'>
+                                    {values.AboutMe}
+                                </p>
+                                <p className='smallProfileDetail'>
+                                    {values.Email}
+                                </p>
+                                <p className='smallProfileDetail'>
+                                    {FormatDOB(values.DateOfBirth)}
+                                </p>
+                            </span>
+                        ) : null}
+                        {id ? (
+                            relBtn
+                        ) : (
+                            <span className='profileButtonHolder'>
+                                <button
+                                    className='profileDetailBtn'
+                                    onClick={() => navigate('/update')}>
+                                    Edit
+                                </button>
+                                <button
+                                    className='profileDetailBtn grey'
+                                    onClick={() => navigate('/closefriends')}>
+                                    <i className='fa-solid fa-user-group profileBestFriendsIcon'></i>
+                                    Close Friends
+                                </button>
+                            </span>
+                        )}
+                        {!id ||
+                        values.isPublic === 1 ||
+                        followStatus === 'Following' ? (
+                            <span>
+                                <ProfileStats
+                                    styleName={'profileStats'}
+                                    posts={values.NumPosts}
+                                    followers={values.NumFollowers}
+                                    following={values.NumFollowing}
+                                    id={id}
+                                />
+
+                                <ProfileStats
+                                    styleName={'profileStats_1'}
+                                    posts={values.NumPosts}
+                                    followers={values.NumFollowers}
+                                    following={values.NumFollowing}
+                                    id={id}
+                                />
+                            </span>
+                        ) : null}
                     </Card>
-                    <ProfileStats
-                        styleName={'profileStats_1'}
-                        posts={values.NumPosts}
-                        followers={values.NumFollowers}
-                        following={values.NumFollowing}
-                        id={id}
-                    />
-                        <ProfilePosts
-                            contentSelector='profileContentSelector'
-                            postBtn='profilePosts'
-                            favBtn='profileFavourites'
-                            likeBtn='profileLiked'
-                            postContainer='profilePostContainer noContent'
-                        />
-                </article>
+                </Card>
+            </Card>
+            {!id || values.isPublic === 1 || followStatus === 'Following' ? (
+                <ProfilePosts
+                    contentSelector='profileContentSelector'
+                    postBtn='profilePosts'
+                    favBtn='profileFavourites'
+                    likeBtn='profileLiked'
+                    postContainer='profilePostContainer noContent'
+                />
             ) : (
                 <Card styleName='restrictedAccount'>
                     <span>

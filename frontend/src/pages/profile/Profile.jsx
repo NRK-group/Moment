@@ -55,7 +55,6 @@ export default function Profile() {
                 );
             }}></Button>
     );
-    console.log('VAlues === ', values);
     return (
         <Card styleName='profileCard'>
             <Card styleName='profileSection'>

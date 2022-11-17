@@ -56,6 +56,13 @@ func TestMessage(t *testing.T) {
 			t.Errorf("Error inserting message: %v", err)
 		}
 	})
+	t.Run("Test Get Last Message", func(t *testing.T) {
+		msg := messages.GetLastMessage(chatId.ChatId, database)
+		l.LogMessage("message_test.go", "Test Get Last Message", msg)
+		if msg.Content != message.Content {
+			t.Errorf("Expected %v, got %v", message.Content, msg.Content)
+		}
+	})
 	t.Run("Test Get Messages", func(t *testing.T) {
 		msgs, err := messages.GetPrivateMessages(chatId.ChatId, *database)
 		l.LogMessage("message_test.go", "Test Get Messages", msgs)

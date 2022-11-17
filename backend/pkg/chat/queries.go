@@ -273,18 +273,18 @@ func DeleteChat(chatId string, database *structs.DB) error {
 //	user1: the user id
 //	user2: the user id
 //	database: the database
-func CheckIfChatExists(user1 string, user2 string, database *structs.DB) (bool, structs.ChatWriter, error) {
+func CheckIfChatExists(user1 string, user2 string, database *structs.DB) (bool, structs.ChatWriter) {
 	var prevChat structs.Chat
 	var chat structs.ChatWriter
 	row := database.DB.QueryRow("SELECT * FROM Chat WHERE user1 = ? AND user2 = ? OR user1 = ? AND user2 = ?", user1, user2, user2, user1)
 	err := row.Scan(&prevChat.ChatId, &prevChat.GroupId, &prevChat.User1, &prevChat.User2, &prevChat.UpdatedAt)
 	if err != nil {
-		return false, chat, err
+		return false, chat
 	}
 	if prevChat.User1 == user1 {
 		userInfo, err := helper.GetUserInfo(prevChat.User2, database)
 		if err != nil {
-			return false, chat, err
+			return false, chat
 		}
 		chat = structs.ChatWriter{
 			Type:    "privateMessage",
@@ -294,7 +294,7 @@ func CheckIfChatExists(user1 string, user2 string, database *structs.DB) (bool, 
 	} else {
 		userInfo, err := helper.GetUserInfo(prevChat.User1, database)
 		if err != nil {
-			return false, chat, err
+			return false, chat
 		}
 		chat = structs.ChatWriter{
 			Type:    "privateMessage",
@@ -302,5 +302,5 @@ func CheckIfChatExists(user1 string, user2 string, database *structs.DB) (bool, 
 			Details: userInfo,
 		}
 	}
-	return true, chat, nil
+	return true, chat
 }

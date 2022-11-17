@@ -98,12 +98,7 @@ func TestPrivateChat(t *testing.T) {
 			t.Errorf("GetUserInfoForChat() error = %v", err)
 		}
 	})
-	b, r, err := chat.CheckIfChatExists(result1.UserId, result2.UserId, Env.Env)
-	t.Run("Check if chat exists", func(t *testing.T) {
-		if err != nil {
-			t.Errorf("CheckIfChatExists() error = %v", err)
-		}
-	})
+	b, r := chat.CheckIfChatExists(result1.UserId, result2.UserId, Env.Env)
 	t.Run("Check if chat exists", func(t *testing.T) {
 		if b != true {
 			t.Errorf("Error expected true, got %v", err)
@@ -114,12 +109,7 @@ func TestPrivateChat(t *testing.T) {
 			t.Errorf("Error expected %v, got %v", result2.UserId, r)
 		}
 	})
-	b, r, err = chat.CheckIfChatExists(result2.UserId, result1.UserId, Env.Env)
-	t.Run("Check if chat exists", func(t *testing.T) {
-		if err != nil {
-			t.Errorf("CheckIfChatExists() error = %v", err)
-		}
-	})
+	b, r = chat.CheckIfChatExists(result2.UserId, result1.UserId, Env.Env)
 	t.Run("Check if chat exists", func(t *testing.T) {
 		if b != true {
 			t.Errorf("Error expected true, got %v", err)

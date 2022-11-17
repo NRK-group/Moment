@@ -13,7 +13,7 @@ func TestCreateCommets(t *testing.T) {
 		content := "test23"
 		newUser := CreateUser(database, t)
 		post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
-		postId, err := post.CreatePost(post1.UserID, post1.Content, post1.GroupID, post1.Image, database)
+		postId, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Content, database)
 		_, errc := commets.CreateComment(newUser.UserId, postId, content, database)
 		if errc != nil {
 			t.Errorf("Error inputing a comment in the db %v", err)

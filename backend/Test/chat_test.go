@@ -30,7 +30,6 @@ func TestPrivateChat(t *testing.T) {
 		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 1, NumFollowers: 5, NumFollowing: 5, NumPosts: 0,
 	}
-
 	auth.InsertUser(*user1, *Env.Env)
 	var result1 structs.User
 	err := auth.GetUser("email", user1.Email, &result1, *Env.Env)
@@ -83,8 +82,8 @@ func TestPrivateChat(t *testing.T) {
 		}
 	})
 	t.Run("Get Previous Private chat", func(t *testing.T) {
-		if len(chats) != 1 {
-			t.Errorf("Error expected 1 chat, got %v", len(chats))
+		if len(chats) != 0 {
+			t.Errorf("Error expected 0 chat, got %v", len(chats))
 		}
 	})
 	err = chat.InsertNewGroupChat("hello", Env.Env)
@@ -97,6 +96,38 @@ func TestPrivateChat(t *testing.T) {
 	t.Run("Get userinfo for the chat", func(t *testing.T) {
 		if err != nil {
 			t.Errorf("GetUserInfoForChat() error = %v", err)
+		}
+	})
+	b, r, err := chat.CheckIfChatExists(result1.UserId, result2.UserId, Env.Env)
+	t.Run("Check if chat exists", func(t *testing.T) {
+		if err != nil {
+			t.Errorf("CheckIfChatExists() error = %v", err)
+		}
+	})
+	t.Run("Check if chat exists", func(t *testing.T) {
+		if b != true {
+			t.Errorf("Error expected true, got %v", err)
+		}
+	})
+	t.Run("Check if chat exists", func(t *testing.T) {
+		if r.Details.Id != result2.UserId {
+			t.Errorf("Error expected %v, got %v", result2.UserId, r)
+		}
+	})
+	b, r, err = chat.CheckIfChatExists(result2.UserId, result1.UserId, Env.Env)
+	t.Run("Check if chat exists", func(t *testing.T) {
+		if err != nil {
+			t.Errorf("CheckIfChatExists() error = %v", err)
+		}
+	})
+	t.Run("Check if chat exists", func(t *testing.T) {
+		if b != true {
+			t.Errorf("Error expected true, got %v", err)
+		}
+	})
+	t.Run("Check if chat exists", func(t *testing.T) {
+		if r.Details.Id != result1.UserId {
+			t.Errorf("Error expected %v, got %v", result1.UserId, r)
 		}
 	})
 }

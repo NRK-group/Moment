@@ -7,6 +7,7 @@ import (
 	"backend/pkg/follow"
 	"backend/pkg/helper"
 	l "backend/pkg/log"
+	"backend/pkg/messages"
 	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -27,31 +28,38 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 		return chatList, err
 	}
 	defer row.Close()
+
 	for row.Next() {
 		err = row.Scan(&prevChat.ChatId, &prevChat.GroupId, &prevChat.User1, &prevChat.User2, &prevChat.UpdatedAt)
 		if err != nil {
 			l.LogMessage("Chat", "GetPreviousPrivateChat - Scan", err)
 			return chatList, err
 		}
-		m := make(map[string]structs.Info)
-		if prevChat.User1 == userId {
-			userInfo, _ := helper.GetUserInfo(prevChat.User2, database)
-			m[prevChat.User2] = userInfo
-			chatList = append([]structs.ChatWriter{{
-				Type:    "privateMessage",
-				ChatId:  prevChat.ChatId,
-				Details: userInfo,
-				Member:  m,
-			}}, chatList...)
-		} else {
-			userInfo, _ := helper.GetUserInfo(prevChat.User1, database)
-			m[prevChat.User1] = userInfo
-			chatList = append([]structs.ChatWriter{{
-				Type:    "privateMessage",
-				ChatId:  prevChat.ChatId,
-				Details: userInfo,
-				Member:  m,
-			}}, chatList...)
+		lastMessage := messages.GetLastMessage(prevChat.ChatId, database)
+		var msg structs.Message
+		if lastMessage != msg {
+			m := make(map[string]structs.Info)
+			if prevChat.User1 == userId {
+				userInfo, _ := helper.GetUserInfo(prevChat.User2, database)
+				m[prevChat.User2] = userInfo
+				chatList = append([]structs.ChatWriter{{
+					Type:    "privateMessage",
+					ChatId:  prevChat.ChatId,
+					Details: userInfo,
+					Member:  m,
+					Content: lastMessage,
+				}}, chatList...)
+			} else {
+				userInfo, _ := helper.GetUserInfo(prevChat.User1, database)
+				m[prevChat.User1] = userInfo
+				chatList = append([]structs.ChatWriter{{
+					Type:    "privateMessage",
+					ChatId:  prevChat.ChatId,
+					Details: userInfo,
+					Member:  m,
+					Content: lastMessage,
+				}}, chatList...)
+			}
 		}
 	}
 	return chatList, nil

@@ -242,4 +242,31 @@ func TestChatHandler(t *testing.T) {
 			t.Errorf("Expected status code %d, got %d", http.StatusOK, nrr.Code)
 		}
 	})
+	type Receiver struct {
+		Id string `json:"receiverId"`
+	}
+
+	receiver := &Receiver{
+		Id: result.UserId,
+	}
+	receiverBytes, err := json.Marshal(receiver)
+	rBody := bytes.NewReader(receiverBytes)
+	nr2 := httptest.NewRequest(http.MethodPost, "/chat", rBody) // create a request
+	nr2.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+	nrr2 := httptest.NewRecorder() // create a response recorder
+	Env.Chat(nrr2, nr2)            // call the handler
+	// get cookies
+	cookie2, _ := nr.Cookie("session_token")
+	got2, _ := auth.SliceCookie(cookie2.Value)
+	want2 := result.UserId
+	t.Run("Get cookie", func(t *testing.T) {
+		if got2[0] != want2 {
+			t.Errorf("Expected %s, got %s", want2, got2[0])
+		}
+	})
+	t.Run("Get chat", func(t *testing.T) {
+		if nrr2.Code != http.StatusOK {
+			t.Errorf("Expected status code %d, got %d", http.StatusOK, nrr2.Code)
+		}
+	})
 }

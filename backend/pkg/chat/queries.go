@@ -247,3 +247,60 @@ func GetFollowingInfo(userId string, database *structs.DB) ([]structs.Info, erro
 	}
 	return userInfos, nil
 }
+
+// DeleteChat deletes a chat
+//
+// Param:
+//
+//	chatId: the chat id
+//	database: the database
+func DeleteChat(chatId string, database *structs.DB) error {
+	stmt, err := database.DB.Prepare("DELETE FROM Chat WHERE chatId = ?")
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(chatId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// CheckIfChatExists checks if a chat exists and return the chat writer
+//
+// Param:
+//
+//	user1: the user id
+//	user2: the user id
+//	database: the database
+func CheckIfChatExists(user1 string, user2 string, database *structs.DB) (bool, structs.ChatWriter, error) {
+	var prevChat structs.Chat
+	var chat structs.ChatWriter
+	row := database.DB.QueryRow("SELECT * FROM Chat WHERE user1 = ? AND user2 = ? OR user1 = ? AND user2 = ?", user1, user2, user2, user1)
+	err := row.Scan(&prevChat.ChatId, &prevChat.GroupId, &prevChat.User1, &prevChat.User2, &prevChat.UpdatedAt)
+	if err != nil {
+		return false, chat, err
+	}
+	if prevChat.User1 == user1 {
+		userInfo, err := helper.GetUserInfo(prevChat.User2, database)
+		if err != nil {
+			return false, chat, err
+		}
+		chat = structs.ChatWriter{
+			Type:    "privateMessage",
+			ChatId:  prevChat.ChatId,
+			Details: userInfo,
+		}
+	} else {
+		userInfo, err := helper.GetUserInfo(prevChat.User1, database)
+		if err != nil {
+			return false, chat, err
+		}
+		chat = structs.ChatWriter{
+			Type:    "privateMessage",
+			ChatId:  prevChat.ChatId,
+			Details: userInfo,
+		}
+	}
+	return true, chat, nil
+}

@@ -1,15 +1,17 @@
 package structs
 
+import "time"
+
 type Follower struct {
-	FollowingId string `json:"followingId"`
-	FollowerId  string `json:"followerId"`
-	CreatedAt   string `json:"createdAt"`
+	FollowingId string    `json:"followingId"`
+	FollowerId  string    `json:"followerId"`
+	CreatedAt   time.Time `json:"createdAt"`
 }
 
 type FollowerNotif struct {
-	UserId      string `json:"userId"`
-	FollowingId string `json:"followingId"`
-	CreatedAt   string `json:"createdAt"`
-	Status      string `json:"status"`
-	Read        int    `json:"read"`
+	UserId      Info      `json:"userId"`
+	FollowingId Info      `json:"followingId"`
+	CreatedAt   time.Time `json:"createdAt"`
+	Status      string    `json:"status"`
+	Read        int       `json:"read"`
 }

@@ -2,8 +2,10 @@ CREATE TABLE IF NOT EXISTS "Post"(
     "postId" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
     "groupId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "image" TEXT,
+    "imageUpload" TEXT,
     "numLikes" INTEGER DEFAULT 0,
     "createdAt" DATETIME NOT NULL,
         FOREIGN KEY ("userId") 
@@ -14,10 +16,12 @@ CREATE TABLE IF NOT EXISTS "Post"(
 
 CREATE TABLE IF NOT EXISTS "Comment"(
     "commentId" TEXT NOT NULL PRIMARY KEY,
+    "nickName" TEXT NOT NULL,
     "postId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "content" NOT NULL,
     "image" TEXT,
+    "imageUpload" TEXT,
     "numLikes" INTEGER DEFAULT 0,
     "createdAt" DATETIME NOT NULL,
         FOREIGN KEY ("postId") 

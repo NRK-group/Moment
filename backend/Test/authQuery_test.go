@@ -67,7 +67,7 @@ func TestInsertUser(t *testing.T) {
 		rows, err := database.DB.Query(`SELECT * FROM User WHERE Email = ?`, sampleUser.Email)
 		// var userId, sessionId, firstName, lastName, nickName, email, DOB, avatar, aboutMe, createdAt, isLoggedIn, isPublic, numFollowers, numFollowing, numPosts, password string
 		var resultUser structs.User
-
+defer rows.Close()
 		for rows.Next() {
 			rows.Scan(&resultUser.UserId, &resultUser.SessionId, &resultUser.FirstName, &resultUser.LastName, &resultUser.NickName, &resultUser.Email, &resultUser.DateOfBirth, &resultUser.Avatar, &resultUser.AboutMe, &resultUser.CreatedAt, &resultUser.IsLoggedIn, &resultUser.IsPublic, &resultUser.NumFollowers, &resultUser.NumFollowing, &resultUser.NumPosts, &resultUser.Password)
 		}
@@ -256,6 +256,7 @@ func TestUpdateSessionId(t *testing.T) {
 			return
 		}
 		var gotsess, gotuser, date string
+defer rows.Close()
 		for rows.Next() {
 			rows.Scan(&gotsess, &gotuser, &date)
 		}
@@ -310,6 +311,7 @@ func TestUpdateSessionId(t *testing.T) {
 		auth.GetUser("email", randEmail, &result, *database)
 		rows, _ := database.DB.Query(`SELECT * FROM UserSessions WHERE userId = ?`, result.UserId) // Check the row doesnt exsist
 		counter := 0
+defer rows.Close()
 		for rows.Next() {
 			counter++
 		}
@@ -423,7 +425,7 @@ func TestUpdateUserProfile(t *testing.T) {
 
 func TestActiveEmail(t *testing.T) {
 	t.Run("test where email doesn't exsist in db", func(t *testing.T) {
-		
+
 		got := auth.ActiveEmail("", "Notexsist", *database)
 		want := false
 		if got != want {
@@ -439,7 +441,7 @@ func TestActiveEmail(t *testing.T) {
 			IsLoggedIn: 0, IsPublic: 0, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
 		}
 		auth.InsertUser(sampleUser, *database)
-		
+
 		auth.GetUser("email", newEmail, &sampleUser, *database)
 		got := auth.ActiveEmail(sampleUser.UserId, newEmail, *database)
 		want := false

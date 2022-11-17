@@ -9,12 +9,13 @@ import (
 	"strings"
 	"testing"
 
+	"backend/pkg/auth"
 	"backend/pkg/db/sqlite"
 	"backend/pkg/handler"
 	"backend/pkg/post"
 	"backend/pkg/structs"
 
-	"github.com/stretchr/testify/assert"
+	uuid "github.com/satori/go.uuid"
 )
 
 func DatabaseSetup() *structs.DB {
@@ -26,6 +27,29 @@ func DatabaseSetup() *structs.DB {
 	database := &structs.DB{DB: db}
 
 	return database
+}
+
+func CreateUser(database *structs.DB, t *testing.T) structs.User {
+	currentEmail := "hello" + uuid.NewV4().String() + "@test.com"
+	currentUser := &structs.User{
+		FirstName: "FirstTest", LastName: "LastTest", NickName: "NickTest", Email: currentEmail, Password: "Password123",
+		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
+		IsLoggedIn: 0, IsPublic: 1, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	}
+	auth.InsertUser(*currentUser, *database)
+	var currentResult structs.User
+	auth.GetUser("email", currentEmail, &currentResult, *database)
+	return currentResult
+}
+
+func CreatePost( GroupId  string ,database *structs.DB, t *testing.T) string {
+	newUser := CreateUser(database, t)
+		post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: GroupId, Image: "wasfdfgfd"}
+		postId, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
+		if err != nil {
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+		return postId
 }
 
 func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
@@ -56,18 +80,12 @@ func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
 	}
 }
 
-func TestHealthCheckPostHttpPost(t *testing.T) {
-	w := httptest.NewRecorder()
-	http.NewRequest("POST", "/post", nil)
-	assert.Equal(t, 200, w.Code)
-}
-
 func TestCreatePost(t *testing.T) {
 	t.Run("Insert Post to DB", func(t *testing.T) {
 		// database := DatabaseSetup()
-		post1 := structs.Post{UserID: "3232131221", Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
-		str, err := post.CreatePost(post1.UserID, post1.Content, post1.GroupID, post1.Image, database)
-		fmt.Println(str)
+		newUser := CreateUser(database, t)
+		post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
+		_, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
@@ -77,8 +95,7 @@ func TestCreatePost(t *testing.T) {
 		// database := DatabaseSetup()
 
 		posts, err := post.AllPost("6t78t8t87", database)
-		fmt.Println(posts)
-		if err != nil {
+		if err != nil || len(posts) == 0{
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 	})
@@ -86,8 +103,8 @@ func TestCreatePost(t *testing.T) {
 
 func TestPostHandlerMakeAPost(t *testing.T) {
 	// database := DatabaseSetup()
-
-	post1 := structs.Post{UserID: "3232131221", Content: "hey2", GroupID: "3233234", Image: "wasfdfgfd"}
+	newUser := CreateUser(database, t)
+	post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
 	body, _ := json.Marshal(post1)
 
 	req, err := http.NewRequest("POST", "/post", bytes.NewBuffer(body))

@@ -29,6 +29,7 @@ func (DB *Env) Profile(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Error getting user: "+getErr.Error(), "User Not Found", w)
 			return
 		}
+
 		result.Password = ""
 		profileDetails, marshErr := json.Marshal(result)
 		if marshErr != nil {

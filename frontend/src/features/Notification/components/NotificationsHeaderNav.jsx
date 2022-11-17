@@ -17,7 +17,7 @@ export const NotificationsHeaderNav = () => {
                 className={({ isActive }) =>
                     isActive ? 'notifActive' : 'inactive'
                 }
-                to='/notifications/followrequest'>
+                to='/notifications/follow'>
                 <div className='notifIcon'>
                     <div className='notificationHeader'>Follow</div>
                     {notif || <span className='notif'></span>}

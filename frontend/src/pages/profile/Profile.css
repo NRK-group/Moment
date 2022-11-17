@@ -81,17 +81,23 @@
     width: 50%;
     height: 20%;
     color: white;
-    margin: auto;
+    margin: 3% auto;
     display: flex;
     justify-content: center;
 }
 
-.followBtn {
+.Follow {
     background-color: var(--button-color);
 }
 
-.followingBtn {
+.Following,
+.Pending {
     background-color: var(--subheading-color);
+}
+
+.blurry {
+    text-shadow: 0 0 32px black;
+    color: transparent;
 }
 
 .profileBestFriends {
@@ -132,6 +138,29 @@
 .stats {
     width: 30%;
     margin: auto;
+}
+
+.stats:hover {
+    cursor: pointer;
+}
+
+div.Following, div.Follow, div.Pending {
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    width: 22%;
+    height: 25px;
+    color: white;
+
+}
+
+div.Following {
+}
+
+div.Following:hover, div.Follow:hover, div.Pending:hover {
+    cursor: pointer;
 }
 
 p {
@@ -238,18 +267,32 @@ p {
     word-wrap: none;
 }
 
-.followStatsRemove {
-    width: 20%;
+.Remove {
+    width: 25%;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(74, 192, 74);
+    color: white;
+    margin-left: auto;
+}
+
+.Add{
+    width: 25%;
     height: 25px;
     border: none;
     border-radius: 5px;
     background-color: var(--button-color);
     color: white;
-    /* float: right; */
     margin-left: auto;
-    margin-right: 5%;
 }
 
+.block{
+    height: 35%;
+    margin: 10% auto;
+    display: flex;
+    justify-content: center;
+}
 .profilePostSection {
     height: fit-content;
 }
@@ -376,10 +419,25 @@ p {
 
 .profileCloseFriendsHolder {
     height: 88%;
-    width: 100%;
+    width: fit-content;
     border-radius: inherit;
-    margin: 0;
+    margin: 5% auto;
+    padding: 0.5%;
     overflow-y: auto;
+    border-radius: 5px;
+    border: 2px solid var(--terheading-color);
+    background-color: var(--background-color);
+
+}
+
+.profileCloseFriendsHolder::-webkit-scrollbar {
+    background-color: #fff0;
+    width: 10px;
+    height: 50%;
+}
+.profileCloseFriendsHolder::-webkit-scrollbar-thumb {
+    background-color: var(--subheading-color);
+    border-radius: 30px;
 }
 
 .profileCloseFriendsUser {
@@ -389,33 +447,46 @@ p {
 
 .profileCurrentCloseFriends {
     height: fit-content;
-    width: 100%;
+    width: 30vw;
+    min-width: 375px;
     padding: 2%;
     margin: 1% auto;
     border-bottom: 2px solid var(--terheading-color);
 }
 
-.profileNotCloseFriends {
-    height: fit-content;
+.profileCloseFriendsHeader {
+    position: relative;
+    display: flex;
     width: 100%;
     margin: 1% auto;
-    padding: 2%;
-    /* border-top: 2px solid var(--subheading-color); */
-}
-
-.profileCloseFriendsHeader {
-    display: flex;
-    width: fit-content;
-    margin: 2% auto;
     font-weight: bold;
+    text-align: center;
+    align-items: center;
+    /* justify-content: center; */
+}
+.crossIcon {
+    position: absolute;
+    background-color: #fff0;
+    border: none;
+    font-size: 110%;
+}
+.crossIcon:hover {
+    cursor: pointer;
 }
 
+.closeFriendsHeading{
+    margin: 1% auto;
+}
 
-.react-datepicker__input-container{
+.react-datepicker__input-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.grey {
+    background-color: var(--subheading-color);
+}
+
 
 @media all and (max-width: 780px) {
     .profileSection {
@@ -519,6 +590,7 @@ p {
         min-width: 0;
         width: 85%;
     }
+
     .profilePostContainer {
         width: 100%;
     }

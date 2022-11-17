@@ -32,4 +32,5 @@ function GetCookie(name) {
     return null;
 }
 
-// export { GetCookie, GetProfile };
+export { GetCookie };
+

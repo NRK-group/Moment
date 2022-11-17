@@ -1,27 +1,29 @@
 import './Messages.css';
-import { MessagesIcon, UserIcon } from '../../components/Icons/Icons';
+import { MessagesIcon } from '../../components/Icons/Icons';
 import { MessageContainer } from './components/messageContainer';
 import { MessageContent } from './components/MessageContent';
-import { ProfileIcon } from '../../components/Icons/Icons';
+import { ProfileIcon, UploadIcon } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useScrollDown } from './hooks/scrollDown';
 import { debounce } from './hooks/debounce';
+import InputEmoji from 'react-input-emoji';
 export const Messages = ({ socket, currentUserInfo }) => {
     const { chatId } = useParams();
     const location = useLocation();
-    const { receiverId, receiverImg, receiverName } = location.state;
-    let messageInput = useRef();
+    const { type, user, details } = location.state;
     let chatBox = useRef();
     let isTyping = useRef();
     const [messages, setMessages] = useState([]);
+    const [text, setText] = useState('');
     useScrollDown(chatBox, messages);
     useEffect(() => {
         fetch(
             'http://localhost:5070/message?' +
                 new URLSearchParams({
                     chatId: chatId,
+                    type: type,
                 }),
             {
                 credentials: 'include',
@@ -31,22 +33,21 @@ export const Messages = ({ socket, currentUserInfo }) => {
             data ? setMessages(data) : setMessages([]);
             return;
         });
+        setText('');
     }, [chatId]);
     const sendMessage = (e) => {
         e.preventDefault();
-        let message = messageInput.current.value;
-        if (message.trim() !== '') {
+        if (text.trim() !== '') {
             let data = {
-                type: 'privateMessage', // "privateMessage", "groupMessage", or "typing"
-                receiverId: receiverId,
+                type: type, // "privateMessage", "groupMessage", or "typing"
+                receiverId: details.id,
                 senderId: currentUserInfo, //chnage to current userid
                 chatId: chatId,
-                content: messageInput.current.value, // content of the message
+                content: text, // content of the message
                 createAt: Date().toLocaleString(),
             };
             socket.send(JSON.stringify(data));
             setMessages((messages) => [...messages, data]);
-            messageInput.current.value = '';
         }
     };
     const handleKeyDown = (e) => {
@@ -60,9 +61,10 @@ export const Messages = ({ socket, currentUserInfo }) => {
         }
         socket.send(
             JSON.stringify({
-                type: 'typing', // message, notification, followrequest
+                type: type + 'typing', // message, notification, followrequest // "privateMessage", "groupMessage", or "typing"
+                chatId: chatId,
                 senderId: currentUserInfo, // senderid
-                receiverId: receiverId, //change to the id of the receiver
+                receiverId: details.id, //change to the id of the receiver
             })
         );
     };
@@ -70,18 +72,20 @@ export const Messages = ({ socket, currentUserInfo }) => {
         socket.onmessage = (event) => {
             if (event.data) {
                 let data = JSON.parse(event.data);
-                if (data.type === 'privateMessage') {
-                    data.img = receiverImg;
-                    setMessages((messages) => [...messages, data]);
-                    isTyping.current.style.display = 'none';
-                }
-                if (data.type === 'typing') {
-                    isTyping.current.innerText = `${data.senderId} is typing...`;
-                    //change the typing status
-                    isTyping.current.style.display = 'block';
-                    debounce(() => {
+                if (data.chatId === chatId) {
+                    if (data.type === type) {
+                        setMessages((messages) => [...messages, data]);
                         isTyping.current.style.display = 'none';
-                    }, 2000);
+                    }
+                    if (data.type === type + 'typing') {
+                        isTyping.current.innerText = `${data.senderId} is typing...`;
+                        //change the typing status
+                        isTyping.current.style.display = 'block';
+                        debounce(() => {
+                            isTyping.current.style.display = 'none';
+                        }, 2000);
+                    }
+                    return;
                 }
             }
         };
@@ -96,12 +100,12 @@ export const Messages = ({ socket, currentUserInfo }) => {
                                 <ProfileIcon
                                     iconStyleName='imgIcon'
                                     imgStyleName='imgIcon'
-                                    img={receiverImg}
+                                    img={details.img}
                                 />
                             }
                         </span>
                         <span className='messageHeaderName longTextElipsis'>
-                            {receiverName}
+                            {details.name}
                         </span>
                     </div>
                     {/* this will be replace by the elipsis btn */}
@@ -111,7 +115,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
             <div
                 className='chatMessageContainer scrollbar-hidden'
                 ref={chatBox}>
-                {messages &&
+                {messages.length != 0 &&
                     messages.map((message, i) => {
                         if (message.senderId === currentUserInfo) {
                             return (
@@ -128,8 +132,14 @@ export const Messages = ({ socket, currentUserInfo }) => {
                             <MessageContainer
                                 key={message + i}
                                 message={message}
-                                name={receiverName}
-                                img={receiverImg}>
+                                name={
+                                    user[message.senderId] &&
+                                    user[message.senderId].name
+                                }
+                                img={
+                                    user[message.senderId] &&
+                                    user[message.senderId].img
+                                }>
                                 <MessageContent
                                     date={'date'}
                                     content={message.content}
@@ -138,25 +148,22 @@ export const Messages = ({ socket, currentUserInfo }) => {
                         );
                     })}
             </div>
+
             <div className='isTypingContainer'>
                 <div className='isTyping' ref={isTyping}></div>
             </div>
             <div className='messageInputContainer'>
-                {/* this will be replace by the emoji btn */}
                 <div className='inputContainer'>
+                    <InputEmoji
+                        theme={'light'}
+                        value={text}
+                        onChange={setText}
+                        onKeyDown={handleKeyDown}
+                        cleanOnEnter
+                        placeholder='Type a message'
+                    />
                     <div>
-                        <MessagesIcon />
-                    </div>
-                    {/* <
-                        placeholder='message'
-                        styleName='messageInput'></Input> */}
-                    <div className='messageInput'>
-                        <textarea
-                            type='submit'
-                            rows='2'
-                            placeholder='message'
-                            ref={messageInput}
-                            onKeyDown={handleKeyDown}></textarea>
+                        <UploadIcon />
                     </div>
                     <div onClick={sendMessage}>
                         <MessagesIcon />

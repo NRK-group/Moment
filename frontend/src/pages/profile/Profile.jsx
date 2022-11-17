@@ -7,29 +7,50 @@ import './Profile.css';
 import FollowStatUsers from '../../features/profile/FollowStatUsers';
 import CloseFriendsUsers from '../../features/profile/CloseFriendsUsers';
 import GetProfile from './ProfileData';
+import { GetCookie } from './ProfileData';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button } from '../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
+import CheckFollowing from './FollowingData';
+import {
+    FollowRelationshipUpdate,
+    UpdateRelationshipBtn,
+    SetRelBtn,
+} from './FollowingData';
 
 export default function Profile({ userId }) {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const [values, setValues] = useState({
+        FirstName: '',
+        LastName: '',
+        NickName: '',
+        AboutMe: '',
+        Avatar: 'images/profile/default-user.svg',
+    });
+    const [followStatus, setFollowStatus] = useState('Follow');
 
-    const [values, setValues] = useState({});
-    //if userId check if curr user follows profile user
-    const relBtn = (
-        <Button
-            content='Follow'
-            styleName='relationship followBtn'
-            action={() => {
-                console.log('Hello World');
-            }}></Button>
-    );
+    //if user is viewing their own profile
+    if (userId === GetCookie('session_token').split('&')[0]) userId = null;
+
     useEffect(() => {
+        if (userId) {
+            CheckFollowing(userId).then((response) => {
+                SetRelBtn(response.Message, setFollowStatus);
+            });
+        }
         GetProfile(userId).then((response) => setValues(response));
     }, []);
-    {
-    }
+    const relBtn = (
+        <Button
+            content={followStatus}
+            styleName={'relationship ' + followStatus}
+            action={() => {
+                FollowRelationshipUpdate(userId).then((response) =>
+                    UpdateRelationshipBtn(response.Message, setFollowStatus)
+                );
+            }}></Button>
+    );
     return (
         <Card styleName='profileCard'>
             <Card styleName='profileSection'>
@@ -40,7 +61,7 @@ export default function Profile({ userId }) {
                 />
                 <Card styleName={'profileDetails'}>
                     <Card styleName='profileDetailContainer'>
-                        <h1 className='profileDetailText profileFullName'>
+                        <h1 className={'profileDetailText profileFullName'}>
                             {values.FirstName + ' ' + values.LastName}
                         </h1>
                         <h3 className='profileDetailText'>{values.NickName}</h3>
@@ -49,13 +70,17 @@ export default function Profile({ userId }) {
                             relBtn
                         ) : (
                             <span className='profileButtonHolder'>
-                                <button className='profileDetailBtn' onClick={()=> navigate("/profile/update") }>
+                                <button
+                                    className='profileDetailBtn'
+                                    onClick={() => navigate('/profile/update')}>
                                     Edit
                                 </button>
-                                <Card styleName='profileBestFriends'>
+                                <button
+                                    className='profileDetailBtn grey'
+                                    onClick={() => navigate('/closefriends')}>
                                     <i className='fa-solid fa-user-group profileBestFriendsIcon'></i>
                                     Close Friends
-                                </Card>
+                                </button>
                             </span>
                         )}
                     </Card>
@@ -73,69 +98,7 @@ export default function Profile({ userId }) {
                 followers={values.NumFollowers}
                 following={values.NumFollowing}
             />
-            <FollowStatsPopUp type='following' styleName='popUp none'>
-                <Card styleName='followStatsPopUpUserSection'>
-                    <FollowStatUsers
-                        profileStatUser='followStatUser'
-                        profileImgHolder='followStatAvatar'
-                        profileImg='followStatAvatarImg'
-                        profileUsernameHolder='followStatUsernameHold'
-                        profileUsernameText='followStatUsername'
-                        profileUserRemoveBtn='followStatsRemove'
-                        username='Nate Russell'
-                        btnValue='Remove'
-                        crossIcon='none'
-                    />
 
-                    <FollowStatUsers
-                        profileStatUser='followStatUser'
-                        profileImgHolder='followStatAvatar'
-                        profileImg='followStatAvatarImg'
-                        profileUsernameHolder='followStatUsernameHold'
-                        profileUsernameText='followStatUsername'
-                        profileUserRemoveBtn='followStatsRemove'
-                        username='Nate Russell'
-                        btnValue='Remove'
-                        crossIcon='none'
-                    />
-
-                    <FollowStatUsers
-                        profileStatUser='followStatUser'
-                        profileImgHolder='followStatAvatar'
-                        profileImg='followStatAvatarImg'
-                        profileUsernameHolder='followStatUsernameHold'
-                        profileUsernameText='followStatUsername'
-                        profileUserRemoveBtn='followStatsRemove'
-                        username='Nate Russell'
-                        btnValue='Remove'
-                        crossIcon='none'
-                    />
-
-                    <FollowStatUsers
-                        profileStatUser='followStatUser'
-                        profileImgHolder='followStatAvatar'
-                        profileImg='followStatAvatarImg'
-                        profileUsernameHolder='followStatUsernameHold'
-                        profileUsernameText='followStatUsername'
-                        profileUserRemoveBtn='followStatsRemove'
-                        username='Nate Russell'
-                        btnValue='Remove'
-                        crossIcon='none'
-                    />
-                </Card>
-            </FollowStatsPopUp>
-
-            <FollowStatsPopUp type='Close Friends' styleName='popUp none'>
-                <CloseFriendsUsers
-                    outerContainer='profileCloseFriendsHolder'
-                    innerTop='profileCurrentCloseFriends'
-                    innerTopHeading=''
-                    innerTopHeadingClass='profileCloseFriendsHeader'
-                    innerBottom='profileNotCloseFriends'
-                    innerBottomHeading='Followers'
-                    innerBottomHeadingClass='profileCloseFriendsHeader'
-                />
-            </FollowStatsPopUp>
             <ProfilePosts
                 contentSelector='profileContentSelector'
                 postBtn='profilePosts'
@@ -143,7 +106,6 @@ export default function Profile({ userId }) {
                 likeBtn='profileLiked'
                 postContainer='profilePostContainer noContent'
             />
-            
         </Card>
     );
 }

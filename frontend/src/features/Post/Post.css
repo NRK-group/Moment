@@ -13,6 +13,11 @@
 
 .PostBody img {
     object-fit: fill;
+    height: inherit;
+}
+
+.PostBody div {
+    display: flex;
 }
 
 .PostBody:hover {
@@ -137,6 +142,8 @@
 }
 .PostContentIconsfooter .CommentsChatIcons input {
 width: 300px;
+border-top-style: hidden;
+border-bottom-style: hidden;
 }
 
 .PostAvatarUsers {

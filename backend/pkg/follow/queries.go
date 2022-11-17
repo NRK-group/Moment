@@ -1,6 +1,7 @@
 package follow
 
 import (
+	"log"
 	"time"
 
 	"backend/pkg/helper"
@@ -95,7 +96,7 @@ func CheckIfFollow(followerId, followingId string, database *structs.DB) bool {
 //	status: the status of the follow (follow or pending)
 //	database: the database to insert the follow notification into
 func InsertFollowNotif(followerId, followingId, status string, database *structs.DB) error {
-	createdAt := time.Now().String()
+	createdAt := time.Now()
 	stmt, err := database.DB.Prepare("INSERT INTO FollowNotif (userId, followingId, status, createdAt, read) VALUES (?, ?, ?, ?, ?)")
 	if err != nil {
 		l.LogMessage("follow.go", "InsertFollowNotif", err)
@@ -122,6 +123,7 @@ func GetNumOfFollowing(userId string, database *structs.DB) (int, error) {
 		return 0, nil
 	}
 	var user structs.User
+	defer stmt.Close()
 	for stmt.Next() {
 		stmt.Scan(
 			&user.NumFollowing,
@@ -143,6 +145,7 @@ func GetNumOfFollowers(userId string, database *structs.DB) (int, error) {
 		return 0, nil
 	}
 	var user structs.User
+	defer stmt.Close()
 	for stmt.Next() {
 		stmt.Scan(
 			&user.NumFollowers,
@@ -234,6 +237,12 @@ func FollowUser(followerId, followingId string, database *structs.DB) (string, e
 		UpdateNumOfFollowers(followingId, otherUserNumOfFollowers-1, database)
 		return "unfollow", nil
 	}
+	if CheckIfFollowPending(followerId, followingId, database) {
+		if err := DeleteFollow(followerId, followingId, database); err != nil {
+			return "Error", err
+		}
+		return "unfollow", nil
+	}
 	if helper.CheckUserIfPublic(followingId, database) {
 		InsertFollow(followerId, followingId, database)
 		currentUserNumOfFollowing, _ := GetNumOfFollowing(followerId, database)
@@ -282,7 +291,7 @@ func DeclineFollow(followerId, followingId string, database *structs.DB) {
 //
 //	userId: the id of the user who is being followed - current user
 //	database: the database to get the follow notifications from
-func GetFollowingNotifs(userId string, database *structs.DB) ([]structs.FollowerNotif, error) {
+func GetFollowNotifs(userId string, database *structs.DB) ([]structs.FollowerNotif, error) {
 	var followerNotif structs.FollowerNotif
 	var followerNotifs []structs.FollowerNotif
 	rows, err := database.DB.Query("SELECT * FROM FollowNotif WHERE followingId = ?", userId)
@@ -290,14 +299,96 @@ func GetFollowingNotifs(userId string, database *structs.DB) ([]structs.Follower
 		l.LogMessage("follow.go", "GetFollowerNotif", err)
 		return nil, err
 	}
+	defer rows.Close()
+	var followerId, followingID string
 	for rows.Next() {
-		err = rows.Scan(&followerNotif.UserId, &followerNotif.FollowingId, &followerNotif.Status, &followerNotif.CreatedAt, &followerNotif.Read)
+		err = rows.Scan(&followerId, &followingID, &followerNotif.CreatedAt, &followerNotif.Status, &followerNotif.Read)
 		if err != nil {
 			l.LogMessage("follow.go", "GetFollowerNotif", err)
+			return nil, err
+		}
+		followerNotif.UserId, err = helper.GetUserInfo(followerId, database)
+		if err != nil {
+			return nil, err
+		}
+		followerNotif.FollowingId, err = helper.GetUserInfo(followingID, database)
+		if err != nil {
 			return nil, err
 		}
 		followerNotifs = append([]structs.FollowerNotif{followerNotif}, followerNotifs...)
 	}
 	l.LogMessage("follow.go", "GetFollowerNotif", followerNotifs)
 	return followerNotifs, nil
+}
+
+// CheckIfFollowPending will check the status of a follow notification
+//
+// Params:
+//
+//	followerId: the id of the user who is following - current user
+//	followingId: the id of the user who is being followed - other user
+//	database: the database to update the follow notification status in
+func CheckIfFollowPending(followerId, followingId string, database *structs.DB) bool {
+	rows, err := database.DB.Query("SELECT status FROM FollowNotif WHERE userId = ? AND followingID = ?", followerId, followingId)
+	if err != nil {
+		log.Println("Error Preparing statment to check follow notif status")
+		return false
+	}
+	var status string
+	defer rows.Close()
+	for rows.Next() {
+		rows.Scan(&status)
+		if status == "pending" {
+			return true
+		}
+	}
+	return false
+}
+
+// Getfollower returns the follower of the user
+//
+// return the follower of the current user
+//
+// Param:
+//
+//	userId: the user id
+//	database: the database
+func GetFollowers(userId string, database *structs.DB) ([]structs.Follower, error) {
+	var follower structs.Follower
+	var followers []structs.Follower
+	row, err := database.DB.Query("SELECT * FROM Follower WHERE FollowingId = ?", userId)
+	if err != nil {
+		l.LogMessage("Chat", "Getfollower - Query Error", err)
+		return nil, err
+	}
+	defer row.Close()
+	for row.Next() {
+		row.Scan(&follower.FollowingId, &follower.FollowerId, &follower.CreatedAt)
+		followers = append([]structs.Follower{follower}, followers...)
+	}
+	return followers, nil
+}
+
+// GetFollowing returns the following of the user
+//
+// return the following of the current user
+//
+// Param:
+//
+//	userId: the user id
+//	database: the database
+func GetFollowing(userId string, database *structs.DB) ([]structs.Follower, error) {
+	var follower structs.Follower
+	var followers []structs.Follower
+	row, err := database.DB.Query("SELECT * FROM Follower WHERE FollowerId = ?", userId)
+	if err != nil {
+		l.LogMessage("Chat", "GetFollowing - Query Error", err)
+		return nil, err
+	}
+	defer row.Close()
+	for row.Next() {
+		row.Scan(&follower.FollowingId, &follower.FollowerId, &follower.CreatedAt)
+		followers = append([]structs.Follower{follower}, followers...)
+	}
+	return followers, nil
 }

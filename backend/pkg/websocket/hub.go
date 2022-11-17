@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"backend/pkg/chat"
+	l "backend/pkg/log"
 	"backend/pkg/messages"
 	"backend/pkg/structs"
 )
@@ -52,16 +54,48 @@ func (h *Hub) Run() {
 			if msg.MessageType == "privateMessage" {
 				msg, err := messages.InsertMessage(msg, *h.Database)
 				if err != nil {
-					fmt.Println("error inserting message", err)
+					l.LogMessage("Hub.go", "Run() - InsertMessage", err)
 				}
 				if _, valid := h.Clients[msg.ReceiverId]; valid {
 					resp, _ := json.Marshal(msg)
 					h.Clients[msg.ReceiverId].Send <- resp
 				}
 			}
-			if msg.MessageType == "typing" {
+			if msg.MessageType == "groupMessage" {
+				msg, err := messages.InsertGroupMessage(msg, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - InsertGroupMessage", err)
+				}
+				members, err := chat.GetAllMembersOfGroup(msg.ReceiverId, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - GetAllMembersOfGroup", err)
+				}
+				for _, member := range members {
+					if member.UserId != msg.SenderId {
+						if _, valid := h.Clients[member.UserId]; valid {
+							resp, _ := json.Marshal(msg)
+							h.Clients[member.UserId].Send <- resp
+						}
+					}
+				}
+			}
+			if msg.MessageType == "privateMessagetyping" {
 				if _, valid := h.Clients[msg.ReceiverId]; valid {
 					h.Clients[msg.ReceiverId].Send <- message
+				}
+			}
+			if msg.MessageType == "groupMessagetyping" {
+				members, err := chat.GetAllMembersOfGroup(msg.ReceiverId, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - GetAllMembersOfGroup", err)
+				}
+				for _, member := range members {
+					if member.UserId != msg.SenderId {
+						if _, valid := h.Clients[member.UserId]; valid {
+							resp, _ := json.Marshal(msg)
+							h.Clients[member.UserId].Send <- resp
+						}
+					}
 				}
 			}
 			// for userId, client := range h.Clients {

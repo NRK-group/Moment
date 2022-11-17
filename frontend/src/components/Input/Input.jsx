@@ -2,7 +2,7 @@ import Icon from '../Icon/Icon';
 import './Input.css';
 import { useState } from 'react';
 
-const Input = ({ styleName, placeholder, type }) => {
+const Input = ({ styleName, placeholder, type, onChange }) => {
     const [focused, setFocused] = useState(false);
     const onFocus = () => setFocused(true);
     const onBlur = () => setFocused(false);
@@ -60,6 +60,7 @@ const Input = ({ styleName, placeholder, type }) => {
                     className='input'
                     type='text'
                     placeholder={placeholder}
+                    onChange={onChange}
                 />
             )}
         </div>

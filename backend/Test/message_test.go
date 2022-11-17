@@ -11,8 +11,10 @@ import (
 	"backend/pkg/auth"
 	"backend/pkg/chat"
 	"backend/pkg/follow"
+	"backend/pkg/group"
 	"backend/pkg/handler"
 	l "backend/pkg/log"
+	"backend/pkg/member"
 	"backend/pkg/messages"
 	"backend/pkg/structs"
 
@@ -26,7 +28,6 @@ func TestMessage(t *testing.T) {
 		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 0, NumFollowers: 5, NumFollowing: 5, NumPosts: 0,
 	}
-
 	auth.InsertUser(*user1, *database)
 	var result1 structs.User
 	auth.GetUser("email", user1.Email, &result1, *database)
@@ -57,6 +58,45 @@ func TestMessage(t *testing.T) {
 	})
 	t.Run("Test Get Messages", func(t *testing.T) {
 		msgs, err := messages.GetPrivateMessages(chatId, *database)
+		l.LogMessage("message_test.go", "Test Get Messages", msgs)
+		if err != nil {
+			t.Errorf("Error getting messages: %v", err)
+		}
+	})
+	groupId, err := group.CreateGroup("Test Group", "Test Description", result1.UserId, database)
+	t.Run("Create Group", func(t *testing.T) {
+		if err != nil {
+			t.Errorf("Error creating group: %v", err)
+		}
+	})
+	t.Run("Add Member", func(t *testing.T) {
+		_, err = member.AddMember(groupId, result2.UserId, database)
+		if err != nil {
+			t.Errorf("Error adding member: %v", err)
+		}
+	})
+	chatlist, err := chat.GetPreviousGroupChat(result1.UserId, database)
+	l.LogMessage("message_test.go", "Test Get Previous Group Chat", chatlist)
+	t.Run("Get Previous Group Chat", func(t *testing.T) {
+		if err != nil {
+			t.Errorf("Error getting previous group chat: %v", err)
+		}
+	})
+	message = structs.Message{
+		ChatId:     chatlist[0].ChatId,
+		SenderId:   result1.UserId,
+		ReceiverId: result2.UserId,
+		Content:    "Hello World",
+	}
+	t.Run("Insert group message", func(t *testing.T) {
+		msg, err := messages.InsertGroupMessage(message, database)
+		l.LogMessage("message_test.go", "Test Insert Group Message", msg)
+		if err != nil {
+			t.Errorf("Error inserting group message: %v", err)
+		}
+	})
+	t.Run("Test Get Messages", func(t *testing.T) {
+		msgs, err := messages.GetGroupMessages(chatlist[0].ChatId, *database)
 		l.LogMessage("message_test.go", "Test Get Messages", msgs)
 		if err != nil {
 			t.Errorf("Error getting messages: %v", err)

@@ -54,7 +54,7 @@ func TestRemoveCookie(t *testing.T) {
 
 	auth.RemoveCookie(recorderDeleted) // Now try removing the cookie
 	requestDeleted := &http.Request{Header: http.Header{"Cookie": recorderDeleted.Header()["Set-Cookie"]}}
-	cookie, err := requestDeleted.Cookie("session_token") // Check if the cookie has been removed
+	cookie, _ := requestDeleted.Cookie("session_token") // Check if the cookie has been removed
 	got := cookie.Value
 	want := ""
 	if got != want {

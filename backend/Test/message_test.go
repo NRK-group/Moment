@@ -44,7 +44,7 @@ func TestMessage(t *testing.T) {
 	follow.FollowUser(result2.UserId, result1.UserId, database)
 	chatId, _ := chat.InsertNewChat(result1.UserId, result2.UserId, database)
 	message := structs.Message{
-		ChatId:     chatId,
+		ChatId:     chatId.ChatId,
 		SenderId:   result1.UserId,
 		ReceiverId: result2.UserId,
 		Content:    "Hello World",
@@ -56,8 +56,15 @@ func TestMessage(t *testing.T) {
 			t.Errorf("Error inserting message: %v", err)
 		}
 	})
+	t.Run("Test Get Last Message", func(t *testing.T) {
+		msg := messages.GetLastMessage(chatId.ChatId, database)
+		l.LogMessage("message_test.go", "Test Get Last Message", msg)
+		if msg.Content != message.Content {
+			t.Errorf("Expected %v, got %v", message.Content, msg.Content)
+		}
+	})
 	t.Run("Test Get Messages", func(t *testing.T) {
-		msgs, err := messages.GetPrivateMessages(chatId, *database)
+		msgs, err := messages.GetPrivateMessages(chatId.ChatId, *database)
 		l.LogMessage("message_test.go", "Test Get Messages", msgs)
 		if err != nil {
 			t.Errorf("Error getting messages: %v", err)
@@ -128,7 +135,7 @@ func TestMessageHandler(t *testing.T) {
 	follow.FollowUser(result2.UserId, result1.UserId, database)
 	chatId, _ := chat.InsertNewChat(result1.UserId, result2.UserId, database)
 	message := structs.Message{
-		ChatId:      chatId,
+		ChatId:      chatId.ChatId,
 		MessageType: "privateMessage",
 		SenderId:    result1.UserId,
 		ReceiverId:  result2.UserId,
@@ -161,7 +168,7 @@ func TestMessageHandler(t *testing.T) {
 	nr := httptest.NewRequest(http.MethodGet, "/message", nil)
 	nr.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 	values := nr.URL.Query()
-	values.Add("chatId", chatId)
+	values.Add("chatId", chatId.ChatId)
 	nr.URL.RawQuery = values.Encode()
 	nrr := httptest.NewRecorder()
 	Env.Message(nrr, nr)

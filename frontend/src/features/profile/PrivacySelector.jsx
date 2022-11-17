@@ -3,18 +3,15 @@ function AddCloseFriends(close) {
     return <option key='closeFiendSelector'>Close Friends</option>;
 }
 export default function PrivacySelector(props) {
-    let select 
-    (props.value === 1) ? select = "publicSelector" : select = "privateSelector"
-        
-   
-
+    let pub, priv 
+    (props.value === 1) ? pub = true : priv = true
     return (
-      <select className={props.styleName} ref={props.refr} defaultValue={select}>;
+      <select className={props.styleName} ref={props.refr} >;
         
-            <option key='privateSelector' >
+            <option key='privateSelector' id="privateSelector" selected = {priv} >
                 Private
             </option>
-            <option key='publicSelector' >
+            <option key='publicSelector' id="publicSelector"  selected = {pub}  >
                 Public
             </option>
 

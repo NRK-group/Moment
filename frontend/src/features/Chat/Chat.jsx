@@ -7,11 +7,19 @@ import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { GetChatList } from './hooks/getChatList';
+import { useEffect, useState } from 'react';
 const Chat = ({ isMobile, socket }) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
     let user = document.cookie.split('=')[1].split('&')[0];
-    const chatList = GetChatList();
+    const [chatList, setClist] = useState([]);
+    GetChatList(setClist);
+    const [addToChatList, setAddToChatList] = useState();
+    useEffect(() => {
+        if (addToChatList) {
+            setClist((prev) => [addToChatList, ...prev]);
+        }
+    }, [addToChatList]);
     return (
         <>
             <Body styleName={bodyStyleName}>
@@ -36,7 +44,13 @@ const Chat = ({ isMobile, socket }) => {
                                         />
                                         <Route
                                             path='new'
-                                            element={<NewChatModal />}
+                                            element={
+                                                <NewChatModal
+                                                    setAddToChatList={
+                                                        setAddToChatList
+                                                    }
+                                                />
+                                            }
                                         />
                                         <Route
                                             path=':chatId'

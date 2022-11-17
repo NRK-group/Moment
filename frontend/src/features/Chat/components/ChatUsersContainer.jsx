@@ -10,23 +10,29 @@ export const ChatUsersContainer = ({
         <div className={`chatUsersContainer ${styleName}`}>
             <ChatContainerHeader userName={currentUserInfo} />
             <div className='chatUsers scrollbar-hidden'>
-                {chatList.map(({ type, chatId, details, member, content }) => (
-                    <NavLink
-                        key={details.id}
-                        to={`/messages/${chatId}`}
-                        state={{
-                            type: type,
-                            details: details,
-                            user: member,
-                        }}>
-                        <MiniUserCard
-                            img={details.img}
-                            propsId={`chat` + details.id}
-                            name={details.name}>
-                            {content.content}
-                        </MiniUserCard>
-                    </NavLink>
-                ))}
+                {Array.isArray(chatList)
+                    ? chatList.map(
+                          ({ type, chatId, details, member, content }) => {
+                              return (
+                                  <NavLink
+                                      key={details.id}
+                                      to={`/messages/${chatId}`}
+                                      state={{
+                                          type: type,
+                                          details: details,
+                                          user: member,
+                                      }}>
+                                      <MiniUserCard
+                                          img={details.img}
+                                          propsId={`chat` + details.id}
+                                          name={details.name}>
+                                          {content.content}
+                                      </MiniUserCard>
+                                  </NavLink>
+                              );
+                          }
+                      )
+                    : null}
                 <Outlet />
             </div>
         </div>

@@ -46,7 +46,7 @@ func createNewPost(userId string, database *structs.DB ) {
 	post1 := structs.Post{UserID: userId, Content: "hey"+uuid.NewV4().String() }
 		_, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
 		if err != nil {
-			fmt.Println("Error Inserting the struct into the db %v", err)
+			fmt.Println("Error Inserting the struct into the db", err.Error())
 		}
 }
 
@@ -137,18 +137,23 @@ func TestPostHandlerGettingAllPost(t *testing.T) {
 			rr.Body.String(), expected)
 	}
 }
+var newUser, newUser2 structs.User
+
 
 func TestGetingUserPosts(t *testing.T) {
 	t.Run("Insert Posts to DB", func(t *testing.T) {
-		newUser := CreateUser(database, t)
-		2newUser := CreateUser(database, t)
-		createNewPost(2newUser)
+		newUser = CreateUser(database, t)
+		newUser2 = CreateUser(database, t)
+		createNewPost(newUser2.UserId,database )
+		createNewPost(newUser2.UserId,database )
+		createNewPost(newUser2.UserId,database )
+		createNewPost(newUser.UserId,database )
 	})
 
 	t.Run("Read all user Posts from the DB", func(t *testing.T) {
 		
-		posts, err := post.AllPost(database)
-		if err != nil || len(posts) == 0{
+		posts, err := post.AllUserPost(newUser.UserId, database)
+		if err != nil || len(posts) != 1{
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 	})

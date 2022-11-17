@@ -117,4 +117,5 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/notification", database.Notification)
 	http.HandleFunc("/message/new", database.NewMessage)
 	http.HandleFunc("/imageUpload", database.ImageUpload)
+	http.HandleFunc("/getUserPosts", database.GetUserPosts)
 }

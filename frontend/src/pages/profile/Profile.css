@@ -156,10 +156,9 @@ div.Following, div.Follow, div.Pending {
 
 }
 
-div.Following {
-}
 
-div.Following:hover, div.Follow:hover, div.Pending:hover {
+
+div.Following:hover, div.Follow:hover, div.Pending:hover, .followStatUsername:hover {
     cursor: pointer;
 }
 

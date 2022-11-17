@@ -19,7 +19,7 @@ import {
     SetRelBtn,
 } from './FollowingData';
 
-export default function Profile({ userId }) {
+export default function Profile({ id }) {
     const navigate = useNavigate();
     const [values, setValues] = useState({
         FirstName: '',
@@ -30,23 +30,28 @@ export default function Profile({ userId }) {
     });
     const [followStatus, setFollowStatus] = useState('Follow');
 
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    id = urlParams.get('id');
+    console.log('ID PARAM ==== ', id);
+
     //if user is viewing their own profile
-    if (userId === GetCookie('session_token').split('&')[0]) userId = null;
+    if (id === GetCookie('session_token').split('&')[0] || id === '') id = null;
 
     useEffect(() => {
-        if (userId) {
-            CheckFollowing(userId).then((response) => {
+        if (id) {
+            CheckFollowing(id).then((response) => {
                 SetRelBtn(response.Message, setFollowStatus);
             });
         }
-        GetProfile(userId).then((response) => setValues(response));
+        GetProfile(id).then((response) => setValues(response));
     }, []);
     const relBtn = (
         <Button
             content={followStatus}
             styleName={'relationship ' + followStatus}
             action={() => {
-                FollowRelationshipUpdate(userId).then((response) =>
+                FollowRelationshipUpdate(id).then((response) =>
                     UpdateRelationshipBtn(response.Message, setFollowStatus)
                 );
             }}></Button>
@@ -66,18 +71,18 @@ export default function Profile({ userId }) {
                         </h1>
                         <h3 className='profileDetailText'>{values.NickName}</h3>
                         <p className='profileAboutMe'>{values.AboutMe}</p>
-                        {userId ? (
+                        {id ? (
                             relBtn
                         ) : (
                             <span className='profileButtonHolder'>
                                 <button
                                     className='profileDetailBtn'
-                                    onClick={() => navigate('/profile/update')}>
+                                    onClick={() => navigate('/update')}>
                                     Edit
                                 </button>
                                 <button
                                     className='profileDetailBtn grey'
-                                    onClick={() => navigate('/profile/closefriends')}>
+                                    onClick={() => navigate('/closefriends')}>
                                     <i className='fa-solid fa-user-group profileBestFriendsIcon'></i>
                                     Close Friends
                                 </button>
@@ -89,6 +94,7 @@ export default function Profile({ userId }) {
                         posts={values.NumPosts}
                         followers={values.NumFollowers}
                         following={values.NumFollowing}
+                        id={id}
                     />
                 </Card>
             </Card>
@@ -97,6 +103,7 @@ export default function Profile({ userId }) {
                 posts={values.NumPosts}
                 followers={values.NumFollowers}
                 following={values.NumFollowing}
+                id={id}
             />
 
             <ProfilePosts

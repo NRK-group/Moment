@@ -90,13 +90,13 @@ function App() {
                             element={<Notification />}
                         />
                         <Route path='/profile' element={<Profile />} />
-                        <Route path='/profile/closefriends' element={<CloseFriendsUsers />} />
-                        <Route path='/profile/followers' element={<Followers />} />
-                        <Route path='/profile/following' element={<Following />} />
+                        <Route path='/closefriends' element={<CloseFriendsUsers />} />
+                        <Route path='/followers' element={<Followers />} />
+                        <Route path='/following' element={<Following />} />
 
 
 
-                        <Route path='/profile/update' element={<ProfileInfoPopUp styleName='popUp' />} />
+                        <Route path='/update' element={<ProfileInfoPopUp styleName='popUp' />} />
                         <Route path='/stories' element={<Stories />} />
                     </Routes>
                 </>

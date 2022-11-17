@@ -15,7 +15,7 @@ export default function ProfileStats(props) {
                 </p>
             </Card>
             <Card styleName='followingStats stats'>
-                <p>{props.following} following</p>
+                <p onClick={() => navigate('/following')}>{props.following} following</p>
             </Card>
         </Card>
     );

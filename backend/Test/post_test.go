@@ -42,6 +42,14 @@ func CreateUser(database *structs.DB, t *testing.T) structs.User {
 	return currentResult
 }
 
+func createNewPost(userId string, database *structs.DB ) {
+	post1 := structs.Post{UserID: userId, Content: "hey"+uuid.NewV4().String() }
+		_, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
+		if err != nil {
+			fmt.Println("Error Inserting the struct into the db %v", err)
+		}
+}
+
 func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
 	// database := DatabaseSetup()
 	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll
@@ -83,8 +91,7 @@ func TestCreatePost(t *testing.T) {
 
 	t.Run("Read all Posts from the DB", func(t *testing.T) {
 		// database := DatabaseSetup()
-
-		posts, err := post.AllPost("6t78t8t87", database)
+		posts, err := post.AllPost(database)
 		if err != nil || len(posts) == 0{
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
@@ -94,7 +101,7 @@ func TestCreatePost(t *testing.T) {
 func TestPostHandlerMakeAPost(t *testing.T) {
 	// database := DatabaseSetup()
 	newUser := CreateUser(database, t)
-	post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
+	post1 := structs.Post{UserID: newUser.UserId, Content: "hey", Image: "wasfdfgfd"}
 	body, _ := json.Marshal(post1)
 
 	req, err := http.NewRequest("POST", "/post", bytes.NewBuffer(body))
@@ -130,3 +137,21 @@ func TestPostHandlerGettingAllPost(t *testing.T) {
 			rr.Body.String(), expected)
 	}
 }
+
+func TestGetingUserPosts(t *testing.T) {
+	t.Run("Insert Posts to DB", func(t *testing.T) {
+		newUser := CreateUser(database, t)
+		2newUser := CreateUser(database, t)
+		createNewPost(2newUser)
+	})
+
+	t.Run("Read all user Posts from the DB", func(t *testing.T) {
+		
+		posts, err := post.AllPost(database)
+		if err != nil || len(posts) == 0{
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+	})
+}
+
+

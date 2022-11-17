@@ -16,7 +16,7 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 	}
 	SetupCorsResponse(w)
 	if r.Method == "GET" {
-		posts, err := post.AllPost("6t78t8t87", database.Env)
+		posts, err := post.AllPost(database.Env)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)

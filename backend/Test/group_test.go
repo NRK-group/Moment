@@ -3,7 +3,6 @@ package Test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -127,7 +126,7 @@ func TestGettingAllPostFromAGroup(t *testing.T) {
 			if i%2 == 0 {
 				postId = CreatePost("Id", database, t)
 			} else {
-			postId = CreatePost(groupID, database, t)
+				postId = CreatePost(groupID, database, t)
 			}
 			if err != nil {
 				t.Errorf("Error Inserting the struct into the db %v", err)

@@ -17,4 +17,5 @@ type User struct {
 	NumFollowers int    `json:"NumFollowers"`
 	NumFollowing int    `json:"NumFollowing"`
 	NumPosts     int    `json:"NumPosts"`
+	Message      string `json:"Message"`
 }

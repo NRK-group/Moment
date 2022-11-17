@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"io"
+	"encoding/json"
 	"net/http"
 	"strings"
 
 	"backend/pkg/auth"
+	"backend/pkg/response"
 	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -28,12 +29,12 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 		}
 		successfulLogin, validationMsg := auth.CheckCredentials(strings.ToLower(userLogin.Email), userLogin.Password, DB.Env) // Validate the login creds
 		if !successfulLogin {
-			io.WriteString(w, validationMsg)
+			response.WriteMessage("Invalid credentials when logging in", validationMsg, w)
 			return
 		}
 		sessionErr := auth.UpdateSessionId(strings.ToLower(userLogin.Email), uuid.NewV4().String(), *DB.Env) // Create a sessionID
 		if sessionErr != nil {
-			io.WriteString(w, validationMsg)
+			response.WriteMessage("Error creating the session", validationMsg, w)
 			return
 		}
 		err = auth.CreateCookie(w, strings.ToLower(userLogin.Email), DB.Env) // Create the cookie
@@ -41,8 +42,14 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		w.Header().Add("Content-Type", "application/text")
-		io.WriteString(w, validationMsg)
+		var result structs.User
+		auth.GetUser("email", userLogin.Email, &result, *DB.Env)
+		data, marshErr := json.Marshal(result)
+		if marshErr != nil {
+			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+		return
+		}
+		w.Write(data)
 		return
 	}
 }

@@ -55,6 +55,7 @@ export default function Profile() {
                 );
             }}></Button>
     );
+    console.log('VAlues === ', values);
     return (
         <Card styleName='profileCard'>
             <Card styleName='profileSection'>
@@ -71,7 +72,7 @@ export default function Profile() {
 
                         <h3 className='profileDetailText'>{values.NickName}</h3>
                         {!id ||
-                        values.isPublic === 1 ||
+                        values.IsPublic === 1 ||
                         followStatus === 'Following' ? (
                             <span>
                                 <p className='profileAboutMe'>
@@ -103,7 +104,7 @@ export default function Profile() {
                             </span>
                         )}
                         {!id ||
-                        values.isPublic === 1 ||
+                        values.IsPublic === 1 ||
                         followStatus === 'Following' ? (
                             <span>
                                 <ProfileStats
@@ -126,7 +127,7 @@ export default function Profile() {
                     </Card>
                 </Card>
             </Card>
-            {!id || values.isPublic === 1 || followStatus === 'Following' ? (
+            {!id || values.IsPublic === 1 || followStatus === 'Following' ? (
                 <ProfilePosts
                     contentSelector='profileContentSelector'
                     postBtn='profilePosts'

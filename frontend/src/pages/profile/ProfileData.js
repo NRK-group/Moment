@@ -32,5 +32,14 @@ function GetCookie(name) {
     return null;
 }
 
-export { GetCookie };
+function FormatDOB(date) {
+    if (!date) return
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+    let result = (date.split("T")[0]).split("-")
+    return `${result[2]} ${monthNames[result[1]-1]}  ${result[0]}`
+}
+
+export { GetCookie, FormatDOB };
 

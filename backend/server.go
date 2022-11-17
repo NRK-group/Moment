@@ -58,6 +58,7 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/chat", database.Chat)
 	http.HandleFunc("/comment/", database.Comment)
 	http.HandleFunc("/profile", database.Profile)
+	http.HandleFunc("/updateprofileinfo", database.ProfileChange)
 	http.HandleFunc("/message", database.Message)
 	http.HandleFunc("/following", database.Following)
 	http.HandleFunc("/getfollowing", database.GetFollowing)

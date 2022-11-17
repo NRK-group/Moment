@@ -77,7 +77,7 @@ export default function Profile({ userId }) {
                                 </button>
                                 <button
                                     className='profileDetailBtn grey'
-                                    onClick={() => navigate('/closefriends')}>
+                                    onClick={() => navigate('/profile/closefriends')}>
                                     <i className='fa-solid fa-user-group profileBestFriendsIcon'></i>
                                     Close Friends
                                 </button>

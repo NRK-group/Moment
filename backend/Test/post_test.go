@@ -123,11 +123,11 @@ func TestPostHandlerMakeAPost(t *testing.T) {
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(Env.Post)
 	handler.ServeHTTP(rr, req)
-	expected := rr.Body.String()
-	expectedStr := "successfully posted"
+	expected := rr.Code
+	expectedStr := 200
 	if expectedStr != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
+			 expected, expectedStr)
 	}
 }
 

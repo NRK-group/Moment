@@ -48,6 +48,12 @@
     margin: auto;
 }
 
+.newPostImg{
+    margin: 5% auto;
+    height: 75px;
+    width: 50%;
+    max-width: 150px;
+}
 .newPostImgHolder{
     display: flex;
     justify-content: center;

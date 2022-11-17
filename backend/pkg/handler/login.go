@@ -44,6 +44,7 @@ func (DB *Env) Login(w http.ResponseWriter, r *http.Request) {
 		}
 		var result structs.User
 		auth.GetUser("email", userLogin.Email, &result, *DB.Env)
+		result.Message = validationMsg
 		data, marshErr := json.Marshal(result)
 		if marshErr != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)

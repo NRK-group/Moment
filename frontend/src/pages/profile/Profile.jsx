@@ -19,7 +19,7 @@ import {
     SetRelBtn,
 } from './FollowingData';
 
-export default function Profile({ id }) {
+export default function Profile() {
     const navigate = useNavigate();
     const [values, setValues] = useState({
         FirstName: '',
@@ -32,7 +32,7 @@ export default function Profile({ id }) {
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    id = urlParams.get('id');
+    let id = urlParams.get('id');
     console.log('ID PARAM ==== ', id);
 
     //if user is viewing their own profile

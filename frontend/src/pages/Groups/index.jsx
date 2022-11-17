@@ -3,6 +3,7 @@ import Avatar from '../../components/Avatar';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
 import Post from '../../features/Post';
+import Modal from '../../features/Modal';
 import Input from '../../components/Input/Input';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 import {
@@ -13,12 +14,19 @@ import {
 } from '../../components/Icons/Icons';
 import { useRef, useState } from 'react';
 
-function Groups({ bodyStyleName, cardStyleName }) {
+function Groups({ isMobile }) {
+
+    let bodyStyleName = isMobile ? 'mobile' : 'desktop';
+    let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
+
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);
     const GroupsPostsArea = useRef(null);
 
     const [toggle, setToggle] = useState(true);
+    const [groupS, setGroupS] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
+
 
     const OpenGroupsLeftMenu = () => {
         GroupsLeftMenu.current.style.width = '670px';
@@ -63,6 +71,7 @@ function Groups({ bodyStyleName, cardStyleName }) {
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
                 <div className='Groups'>
+                  { openModal &&  <Modal setOpenModal={setOpenModal}/> }
                     <div className='GroupsLeftMenu' ref={GroupsLeftMenu}>
                         <span
                             onClick={() => {
@@ -75,9 +84,11 @@ function Groups({ bodyStyleName, cardStyleName }) {
                             <h2>Groups</h2>
                         </div>
                         <div className='GroupsList'>
-                            <MiniUserCard name={'Go'} />
-                            <MiniUserCard name={'Fishing'} />
-                            <MiniUserCard name={'Racing'} />
+                            {groupS.length > 0 ? groupS.map(ele => {
+
+                            }) : <div className="Join-Group">  <span onClick={()=>setOpenModal(true)}>Join a group</span> </div>}
+
+                           
                         </div>
                         {toggle ? (
                             <p

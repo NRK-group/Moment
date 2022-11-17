@@ -73,6 +73,12 @@
     cursor: 'pointer';
 }
 
+
+.Join-Group {
+    text-align: center;
+    cursor: pointer;
+}
+
 @media only screen and (max-width: 600px) {
     .GroupsRightMenu {
         width: 0%;

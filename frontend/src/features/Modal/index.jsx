@@ -1,10 +1,10 @@
 import './Modal.css';
 
-const Modal = ({ children }) => {
+const Modal = ({ children, setOpenModal  }) => {
 
     window.onclick = function (event) {
         if (event.target == document.getElementById('Modal')) {
-            document.getElementById('Modal').style.display = "none"
+            setOpenModal(false)
         }
     };
     return <div id='Modal' className='Modal'>{children}</div>;

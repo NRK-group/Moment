@@ -115,17 +115,19 @@ var (
 )
 
 func TestGettingAllPostFromAGroup(t *testing.T) {
-	t.Run("Creating a 10 group", func(t *testing.T) {
+	t.Run("Creating 10 posts for a group", func(t *testing.T) {
 		newUser := CreateUser(database, t)
 		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: newUser.UserId}
 		Id, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		groupID = Id
+		var postId string
 
 		for i := 0; i < 10; i++ {
 			if i%2 == 0 {
-				groupID = "Id"
+				postId = CreatePost("Id", database, t)
+			} else {
+				postId = CreatePost(groupID, database, t)
 			}
-			postId := CreatePost(groupID, database, t)
 			if err != nil {
 				t.Errorf("Error Inserting the struct into the db %v", err)
 			}

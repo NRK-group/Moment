@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 
+	"backend/pkg/auth"
 	"backend/pkg/group"
 	"backend/pkg/structs"
 )
@@ -15,8 +17,25 @@ func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 not found.", http.StatusNotFound)
 		return
 	}
+
+	SetupCorsResponse(w)
+
 	if r.Method == "GET" {
-		groups, err := group.AllGroups("fdsfdsff", database.Env)
+
+		c, err := r.Cookie("session_token")
+		if err != nil {
+			log.Println("No cookie found in validate")
+			http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+			return
+		}
+		if !auth.ValidateCookie(c, database.Env, w) {
+			http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		cookie, _ := auth.SliceCookie(c.Value)
+
+		groups, err := group.AllGroups(cookie[0], database.Env)
 		if err != nil {
 			fmt.Print(err)
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)

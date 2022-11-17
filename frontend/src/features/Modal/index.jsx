@@ -1,13 +1,19 @@
 import './Modal.css';
 
-const Modal = ({ children, setOpenModal  }) => {
-
+const Modal = ({ children, setOpenModal }) => {
     window.onclick = function (event) {
-        if (event.target == document.getElementById('Modal')) {
-            setOpenModal(false)
+        if (
+            event.target == document.getElementById('GroupListContainer') ||
+            event.target == document.getElementById('Modal')
+        ) {
+            setOpenModal(false);
         }
     };
-    return <div id='Modal' className='Modal'>{children}</div>;
+    return (
+        <div id='Modal' className='Modal'>
+            {children}
+        </div>
+    );
 };
 
 export default Modal;

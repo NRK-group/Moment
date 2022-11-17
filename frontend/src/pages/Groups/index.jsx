@@ -6,6 +6,7 @@ import Post from '../../features/Post';
 import Modal from '../../features/Modal';
 import Input from '../../components/Input/Input';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
+import GroupList from './components/GroupList';
 import {
     ChevronRightIcon,
     ChevronLeftIcon,
@@ -15,7 +16,6 @@ import {
 import { useRef, useState } from 'react';
 
 function Groups({ isMobile }) {
-
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
 
@@ -25,8 +25,8 @@ function Groups({ isMobile }) {
 
     const [toggle, setToggle] = useState(true);
     const [groupS, setGroupS] = useState([]);
+    const [groupSM, setGroupSM] = useState([]);
     const [openModal, setOpenModal] = useState(false);
-
 
     const OpenGroupsLeftMenu = () => {
         GroupsLeftMenu.current.style.width = '670px';
@@ -63,15 +63,28 @@ function Groups({ isMobile }) {
         setToggle(true);
     };
 
-    const Getgroups = ()=> {
-        
-    }
+    const Getgroups = async () => {
+        let fetchGroups = await fetch('http://localhost:5070/group', {
+            credentials: 'include',
+            method: 'GET',
+        }).then(async (resp) => await resp.json())
+        .then((data) => data);
+        console.log({fetchGroups})
+        setGroupSM(fetchGroups)
+        setOpenModal(true)
+    };
+
 
     return (
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
                 <div className='Groups'>
-                  { openModal &&  <Modal setOpenModal={setOpenModal}/> }
+                    {openModal && (
+                        <Modal setOpenModal={setOpenModal}>
+                            {' '}
+                            <GroupList data={groupSM} />
+                        </Modal>
+                    )}
                     <div className='GroupsLeftMenu' ref={GroupsLeftMenu}>
                         <span
                             onClick={() => {
@@ -84,15 +97,20 @@ function Groups({ isMobile }) {
                             <h2>Groups</h2>
                         </div>
                         <div className='GroupsList'>
-                            {groupS.length > 0 ? groupS.map(ele => {
-
-                            }) : <div className="Join-Group">  <span onClick={()=>setOpenModal(true)}>Join a group</span> </div>}
-
-                           
+                            {groupS.length > 0 ? (
+                                groupS.map((ele) => {})
+                            ) : (
+                                <div className='Join-Group'>
+                                    {' '}
+                                    <span onClick={() => Getgroups()}>
+                                        Join a group
+                                    </span>{' '}
+                                </div>
+                            )}
                         </div>
                         {toggle ? (
                             <p
-                            style={{ marginTop: '12px',  cursor: 'pointer'}}
+                                style={{ marginTop: '12px', cursor: 'pointer' }}
                                 onClick={() => {
                                     Events();
                                 }}>
@@ -100,7 +118,7 @@ function Groups({ isMobile }) {
                             </p>
                         ) : (
                             <p
-                            style={{ marginTop: '12px',  cursor: 'pointer'}}
+                                style={{ marginTop: '12px', cursor: 'pointer' }}
                                 onClick={() => {
                                     Users();
                                 }}>

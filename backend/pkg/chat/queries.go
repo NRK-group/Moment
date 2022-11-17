@@ -7,6 +7,7 @@ import (
 	"backend/pkg/follow"
 	"backend/pkg/helper"
 	l "backend/pkg/log"
+	"backend/pkg/messages"
 	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -27,31 +28,38 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 		return chatList, err
 	}
 	defer row.Close()
+
 	for row.Next() {
 		err = row.Scan(&prevChat.ChatId, &prevChat.GroupId, &prevChat.User1, &prevChat.User2, &prevChat.UpdatedAt)
 		if err != nil {
 			l.LogMessage("Chat", "GetPreviousPrivateChat - Scan", err)
 			return chatList, err
 		}
-		m := make(map[string]structs.Info)
-		if prevChat.User1 == userId {
-			userInfo, _ := helper.GetUserInfo(prevChat.User2, database)
-			m[prevChat.User2] = userInfo
-			chatList = append([]structs.ChatWriter{{
-				Type:    "privateMessage",
-				ChatId:  prevChat.ChatId,
-				Details: userInfo,
-				Member:  m,
-			}}, chatList...)
-		} else {
-			userInfo, _ := helper.GetUserInfo(prevChat.User1, database)
-			m[prevChat.User1] = userInfo
-			chatList = append([]structs.ChatWriter{{
-				Type:    "privateMessage",
-				ChatId:  prevChat.ChatId,
-				Details: userInfo,
-				Member:  m,
-			}}, chatList...)
+		lastMessage := messages.GetLastMessage(prevChat.ChatId, database)
+		var msg structs.Message
+		if lastMessage != msg {
+			m := make(map[string]structs.Info)
+			if prevChat.User1 == userId {
+				userInfo, _ := helper.GetUserInfo(prevChat.User2, database)
+				m[prevChat.User2] = userInfo
+				chatList = append([]structs.ChatWriter{{
+					Type:    "privateMessage",
+					ChatId:  prevChat.ChatId,
+					Details: userInfo,
+					Member:  m,
+					Content: lastMessage,
+				}}, chatList...)
+			} else {
+				userInfo, _ := helper.GetUserInfo(prevChat.User1, database)
+				m[prevChat.User1] = userInfo
+				chatList = append([]structs.ChatWriter{{
+					Type:    "privateMessage",
+					ChatId:  prevChat.ChatId,
+					Details: userInfo,
+					Member:  m,
+					Content: lastMessage,
+				}}, chatList...)
+			}
 		}
 	}
 	return chatList, nil
@@ -64,20 +72,30 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 //	user1Id: the user id
 //	user2Id: the user id
 //	database: the database
-func InsertNewChat(user1Id string, user2Id string, database *structs.DB) (string, error) {
+func InsertNewChat(user1Id string, user2Id string, database *structs.DB) (structs.ChatWriter, error) {
 	stmt, err := database.DB.Prepare("INSERT INTO Chat (chatId, user1, user2, groupId, updatedAt) VALUES (?, ?, ?, ?, ?)")
 	chatId := uuid.NewV4().String()
 	updateAt := time.Now()
+	var chat structs.ChatWriter
 	if err != nil {
 		l.LogMessage("Chat", "InsertNewChat - Insert Error", err)
-		return "", err
+		return chat, err
 	}
 	_, err = stmt.Exec(chatId, user1Id, user2Id, "", updateAt)
 	if err != nil {
 		l.LogMessage("Chat", "InsertNewChat - Exec Error", err)
-		return "", err
+		return chat, err
 	}
-	return chatId, nil
+	m := make(map[string]structs.Info)
+	userInfo, _ := helper.GetUserInfo(user2Id, database)
+	m[user2Id] = userInfo
+	chat = structs.ChatWriter{
+		Type:    "privateMessage",
+		ChatId:  chatId,
+		Details: userInfo,
+		Member:  m,
+	}
+	return chat, nil
 }
 
 // GetPreviousGroupChat returns the previous chat messages
@@ -228,4 +246,61 @@ func GetFollowingInfo(userId string, database *structs.DB) ([]structs.Info, erro
 		userInfos = append(userInfos, userInfo)
 	}
 	return userInfos, nil
+}
+
+// DeleteChat deletes a chat
+//
+// Param:
+//
+//	chatId: the chat id
+//	database: the database
+func DeleteChat(chatId string, database *structs.DB) error {
+	stmt, err := database.DB.Prepare("DELETE FROM Chat WHERE chatId = ?")
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(chatId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// CheckIfChatExists checks if a chat exists and return the chat writer
+//
+// Param:
+//
+//	user1: the user id
+//	user2: the user id
+//	database: the database
+func CheckIfChatExists(user1 string, user2 string, database *structs.DB) (bool, structs.ChatWriter) {
+	var prevChat structs.Chat
+	var chat structs.ChatWriter
+	row := database.DB.QueryRow("SELECT * FROM Chat WHERE user1 = ? AND user2 = ? OR user1 = ? AND user2 = ?", user1, user2, user2, user1)
+	err := row.Scan(&prevChat.ChatId, &prevChat.GroupId, &prevChat.User1, &prevChat.User2, &prevChat.UpdatedAt)
+	if err != nil {
+		return false, chat
+	}
+	if prevChat.User1 == user1 {
+		userInfo, err := helper.GetUserInfo(prevChat.User2, database)
+		if err != nil {
+			return false, chat
+		}
+		chat = structs.ChatWriter{
+			Type:    "privateMessage",
+			ChatId:  prevChat.ChatId,
+			Details: userInfo,
+		}
+	} else {
+		userInfo, err := helper.GetUserInfo(prevChat.User1, database)
+		if err != nil {
+			return false, chat
+		}
+		chat = structs.ChatWriter{
+			Type:    "privateMessage",
+			ChatId:  prevChat.ChatId,
+			Details: userInfo,
+		}
+	}
+	return true, chat
 }

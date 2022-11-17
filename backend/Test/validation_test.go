@@ -52,8 +52,7 @@ func TestGetBody(t *testing.T) {
 		var resultUser structs.User
 
 		got := handler.GetBody(resultUser, w, req)
-		var want error
-		want = nil
+		var want error = nil
 		// If the error is nil the function hasn't registered there is an invalid body
 		if got == want {
 			t.Errorf("Error expected instead got %v", got)

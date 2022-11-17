@@ -4,7 +4,7 @@ import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
 import { useNavigate } from 'react-router-dom';
 import { GetFollow } from '../hooks/getFollow';
 import { useState } from 'react';
-export const NewChatModal = () => {
+export const NewChatModal = ({ setAddToChatList }) => {
     const navigate = useNavigate();
     let following = GetFollow();
     const [query, setQuery] = useState('');
@@ -15,6 +15,34 @@ export const NewChatModal = () => {
             item.lastName.toLowerCase().includes(query.toLowerCase())
         );
     });
+    const handleNewMessage = (e) => {
+        let receiverId = e.currentTarget.getAttribute('data-receiverid');
+        fetch('http://localhost:5070/chat', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({
+                receiverId: receiverId,
+            }),
+            credentials: 'include',
+        })
+            .then(async (res) => {
+                let data = await res.json();
+                console.log(data);
+                data ? setAddToChatList(data) : setAddToChatList([]);
+                navigate(`/messages/${data.chatId}`, {
+                    state: {
+                        type: 'privateMessage',
+                        user: data.user,
+                        details: data.details,
+                    },
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     return (
         <div
             className='newChatModalContainer'
@@ -51,12 +79,17 @@ export const NewChatModal = () => {
                     {filteredItems
                         ? filteredItems.map(
                               ({ id, firstName, lastName, name, img }) => (
-                                  <MiniUserCard
-                                      propsId={id}
-                                      name={firstName + ' ' + lastName}
-                                      img={img}>
-                                      {name}
-                                  </MiniUserCard>
+                                  <div
+                                      key={id}
+                                      data-receiverid={id}
+                                      onClick={handleNewMessage}>
+                                      <MiniUserCard
+                                          propsId={id}
+                                          name={firstName + ' ' + lastName}
+                                          img={img}>
+                                          {name}
+                                      </MiniUserCard>
+                                  </div>
                               )
                           )
                         : null}

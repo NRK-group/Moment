@@ -47,7 +47,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
                 createAt: Date().toLocaleString(),
             };
             socket.send(JSON.stringify(data));
-            setMessages((messages) => [...messages, data]);
+            setMessages((msg) => [...msg, data]);
         }
     };
     const handleKeyDown = (e) => {
@@ -115,7 +115,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
             <div
                 className='chatMessageContainer scrollbar-hidden'
                 ref={chatBox}>
-                {messages.length != 0 &&
+                {Array.isArray(messages) &&
                     messages.map((message, i) => {
                         if (message.senderId === currentUserInfo) {
                             return (

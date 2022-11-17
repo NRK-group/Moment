@@ -55,13 +55,24 @@ func (database *Env) Chat(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
+		isChat, info := chat.CheckIfChatExists(cookie[0], receiver.Id, database.Env)
+		if isChat {
+			w.WriteHeader(http.StatusOK)
+			w.Header().Set("Content-Type", "application/json")
+			err = json.NewEncoder(w).Encode(info)
+			if err != nil {
+				http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+				return
+			}
+			return
+		}
 		chatData, err := chat.InsertNewChat(cookie[0], receiver.Id, database.Env)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Header().Set("Content-Type", "application/text")
+		w.Header().Set("Content-Type", "application/json")
 		err = json.NewEncoder(w).Encode(chatData)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)

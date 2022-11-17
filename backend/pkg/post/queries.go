@@ -2,7 +2,6 @@ package post
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"backend/pkg/auth"
@@ -37,9 +36,9 @@ func AllPost(uID string, database *structs.DB) ([]structs.Post, error) {
 
 // CreatePost
 // is a method of database that add post in it.
-func CreatePost(userID, groupId, content string, database *structs.DB) (string, error) {
+func CreatePost(userID, groupId, imageUpload, content string, database *structs.DB) (string, error) {
 	createdAt := time.Now().String()
-	postID := uuid.NewV4().String()
+	postID := uuid.NewV4()
 	var reUser structs.User
 	err2 := auth.GetUser("userId", userID, &reUser, *database)
 	if err2 != nil {
@@ -47,17 +46,13 @@ func CreatePost(userID, groupId, content string, database *structs.DB) (string, 
 		return "CreatePost", err2
 	}
 
-	stmt, preErr := database.DB.Prepare(`
-		INSERT INTO Post (postId, userId, groupId, content, numLikes, createdAt ) values ( ?, ?, ?, ?, ?,?)
+	stmt, _ := database.DB.Prepare(`
+		INSERT INTO Post (postId, userId, groupId, name, content, image, imageUpload, numLikes, createdAt ) values (?, ?, ?, ?, ?, ?, ?, ?,?)
 	`)
-	if preErr != nil {
-		log.Println("Error preparing the post insert: ", preErr)
-		return preErr.Error(), preErr
-	}
-	_, err := stmt.Exec(postID, userID, groupId, content, 0, createdAt)
+	_, err := stmt.Exec(postID, userID, groupId, reUser.NickName, content, reUser.Avatar, imageUpload, 0, createdAt)
 	if err != nil {
 		fmt.Println("inside Create Post", err)
 		return "", err
 	}
-	return postID, nil
+	return postID.String(), nil
 }

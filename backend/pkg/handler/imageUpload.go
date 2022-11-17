@@ -44,7 +44,7 @@ func (database *Env) ImageUpload(w http.ResponseWriter, r *http.Request) {
 		successful, reason := auth.WriteImage("images/"+table+"/", r)
 		fmt.Println("successful - ", successful)
 		if successful {
-			updateErr := auth.Update(table, "image", reason, idType, id, *database.Env)
+			updateErr := auth.Update(table, "imageUpload", reason, idType, id, *database.Env)
 			if updateErr != nil {
 				log.Println("Error updating image in db: ", updateErr)
 			}

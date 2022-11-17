@@ -2,7 +2,6 @@ package commets
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"backend/pkg/auth"
@@ -42,14 +41,10 @@ func CreateComment(userID, postID, content string, database *structs.DB) (string
 
 	image := reUser.Avatar 
 
-	stmt, prepErr := database.DB.Prepare(`
-		INSERT INTO Comment values (?, ?, ?, ?, ?, ?, ?)
+	stmt, _ := database.DB.Prepare(`
+		INSERT INTO Comment values (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`)
-	if prepErr != nil {
-		log.Println("Error Preparing comment insert: ", prepErr)
-		return prepErr.Error(), prepErr
-	}
-	_, err = stmt.Exec(commentID, postID, userID, content, image, 0, createdAt)
+	_, err = stmt.Exec(commentID, reUser.NickName, postID, userID, content, image, "", 0, createdAt)
 	if err != nil {
 		return "", err
 	}

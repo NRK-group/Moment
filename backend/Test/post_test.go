@@ -45,7 +45,7 @@ func CreateUser(database *structs.DB, t *testing.T) structs.User {
 func CreatePost( GroupId  string ,database *structs.DB, t *testing.T) string {
 	newUser := CreateUser(database, t)
 		post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: GroupId, Image: "wasfdfgfd"}
-		postId, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Content, database)
+		postId, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
@@ -85,7 +85,7 @@ func TestCreatePost(t *testing.T) {
 		// database := DatabaseSetup()
 		newUser := CreateUser(database, t)
 		post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
-		_, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Content, database)
+		_, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}

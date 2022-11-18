@@ -44,6 +44,7 @@ const Header = ({
                         type={'search'}
                         placeholder='search'
                         onChange={onChange}
+                        open={setIsSearchModalOpen}
                     />
                 </div>
                 <DesktopHeaderNav setIsMenuOpen={setIsMenuOpen} />

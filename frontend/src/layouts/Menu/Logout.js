@@ -1,5 +1,3 @@
-import LogoutComp from "./LogoutComp";
-
 export default function Logout(redir, setauth) {
     fetch('http://localhost:5070/logout', {
         credentials: 'include',

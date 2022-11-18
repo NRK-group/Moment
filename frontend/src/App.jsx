@@ -103,10 +103,7 @@ function App() {
                             element={<ProfileInfoPopUp styleName='popUp' />}
                         />
                         <Route path='/stories' element={<Stories />} />
-                        <Route
-                            path='/logout'
-                            element={<LogoutComp auth={setAuthorised} />}
-                        />
+                        
                     </Routes>
                 </>
             )}

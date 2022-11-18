@@ -22,13 +22,12 @@ import (
 func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.ChatWriter, error) {
 	var prevChat structs.Chat
 	var chatList []structs.ChatWriter
-	row, err := database.DB.Query("SELECT * FROM Chat WHERE user1 = ? or user2 = ?", userId, userId)
+	row, err := database.DB.Query("SELECT * FROM Chat WHERE user1 = ? or user2 = ? ORDER BY updatedAt DESC", userId, userId)
 	if err != nil {
 		l.LogMessage("Chat", "GetPreviousPrivateChat - Query", err)
 		return chatList, err
 	}
 	defer row.Close()
-
 	for row.Next() {
 		err = row.Scan(&prevChat.ChatId, &prevChat.GroupId, &prevChat.User1, &prevChat.User2, &prevChat.UpdatedAt)
 		if err != nil {
@@ -42,23 +41,25 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 			if prevChat.User1 == userId {
 				userInfo, _ := helper.GetUserInfo(prevChat.User2, database)
 				m[prevChat.User2] = userInfo
-				chatList = append([]structs.ChatWriter{{
-					Type:    "privateMessage",
-					ChatId:  prevChat.ChatId,
-					Details: userInfo,
-					Member:  m,
-					Content: lastMessage,
-				}}, chatList...)
+				chatList = append(chatList, structs.ChatWriter{
+					Type:      "privateMessage",
+					ChatId:    prevChat.ChatId,
+					Details:   userInfo,
+					Member:    m,
+					Content:   lastMessage,
+					UpdatedAt: prevChat.UpdatedAt,
+				})
 			} else {
 				userInfo, _ := helper.GetUserInfo(prevChat.User1, database)
 				m[prevChat.User1] = userInfo
-				chatList = append([]structs.ChatWriter{{
-					Type:    "privateMessage",
-					ChatId:  prevChat.ChatId,
-					Details: userInfo,
-					Member:  m,
-					Content: lastMessage,
-				}}, chatList...)
+				chatList = append(chatList, structs.ChatWriter{
+					Type:      "privateMessage",
+					ChatId:    prevChat.ChatId,
+					Details:   userInfo,
+					Member:    m,
+					Content:   lastMessage,
+					UpdatedAt: prevChat.UpdatedAt,
+				})
 			}
 		}
 	}
@@ -90,10 +91,11 @@ func InsertNewChat(user1Id string, user2Id string, database *structs.DB) (struct
 	userInfo, _ := helper.GetUserInfo(user2Id, database)
 	m[user2Id] = userInfo
 	chat = structs.ChatWriter{
-		Type:    "privateMessage",
-		ChatId:  chatId,
-		Details: userInfo,
-		Member:  m,
+		Type:      "privateMessage",
+		ChatId:    chatId,
+		Details:   userInfo,
+		Member:    m,
+		UpdatedAt: updateAt,
 	}
 	return chat, nil
 }
@@ -113,7 +115,7 @@ func GetPreviousGroupChat(userId string, database *structs.DB) ([]structs.ChatWr
 	for _, group := range groups {
 		var prevChat structs.Chat
 		var info structs.Info
-		row, err := database.DB.Query("SELECT chatId, groupId, updatedAt  FROM Chat WHERE groupId = ?", group.GroupID)
+		row, err := database.DB.Query("SELECT chatId, groupId, updatedAt FROM Chat WHERE groupId = ? ORDER BY updatedAt DESC", group.GroupID)
 		if err != nil {
 			return prevChatlist, err
 		}
@@ -136,12 +138,14 @@ func GetPreviousGroupChat(userId string, database *structs.DB) ([]structs.ChatWr
 				Name: group.Name,
 				Img:  group.Img,
 			}
-			prevChatlist = append([]structs.ChatWriter{{
-				Type:    "groupMessage",
-				ChatId:  prevChat.ChatId,
-				Details: info,
-				Member:  m,
-			}}, prevChatlist...)
+			prevChatlist = append(prevChatlist, structs.ChatWriter{
+				Type:      "groupMessage",
+				ChatId:    prevChat.ChatId,
+				Details:   info,
+				Member:    m,
+				Content:   messages.GetLastGroupMessage(prevChat.ChatId, database),
+				UpdatedAt: prevChat.UpdatedAt,
+			})
 		}
 	}
 	return prevChatlist, nil
@@ -287,9 +291,10 @@ func CheckIfChatExists(user1 string, user2 string, database *structs.DB) (bool, 
 			return false, chat
 		}
 		chat = structs.ChatWriter{
-			Type:    "privateMessage",
-			ChatId:  prevChat.ChatId,
-			Details: userInfo,
+			Type:      "privateMessage",
+			ChatId:    prevChat.ChatId,
+			Details:   userInfo,
+			UpdatedAt: time.Now(),
 		}
 	} else {
 		userInfo, err := helper.GetUserInfo(prevChat.User1, database)
@@ -297,10 +302,33 @@ func CheckIfChatExists(user1 string, user2 string, database *structs.DB) (bool, 
 			return false, chat
 		}
 		chat = structs.ChatWriter{
-			Type:    "privateMessage",
-			ChatId:  prevChat.ChatId,
-			Details: userInfo,
+			Type:      "privateMessage",
+			ChatId:    prevChat.ChatId,
+			Details:   userInfo,
+			UpdatedAt: time.Now(),
 		}
 	}
 	return true, chat
+}
+
+// insert group to the chat
+// merge sort the chat by updated at
+// return the chat
+func ArrangeChat(chat []structs.ChatWriter, group []structs.ChatWriter) []structs.ChatWriter {
+	result := []structs.ChatWriter{}
+	if len(chat) == 0 {
+		return group
+	}
+	if len(group) == 0 {
+		return chat
+	}
+	// merge sort
+	if chat[0].UpdatedAt.After(group[0].UpdatedAt) {
+		result = append(result, chat[0])
+		result = append(result, ArrangeChat(chat[1:], group)...)
+	} else {
+		result = append(result, group[0])
+		result = append(result, ArrangeChat(chat, group[1:])...)
+	}
+	return result
 }

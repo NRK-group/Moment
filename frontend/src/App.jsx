@@ -10,10 +10,9 @@ import Profile from './pages/profile/Profile';
 import ProfileInfoPopUp from './features/profile/ProfileInfoPopUp';
 import Stories from './pages/stories/stories';
 import Comments from './features/Comments';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
-import { Search } from './features/Search/Search';
 import Validation from './components/Validation/Validation';
 import { Menu } from './layouts/Menu/Menu';
 import ValidRedirect from './components/Validation/ValidRedirect';
@@ -21,27 +20,39 @@ import useWindowDimensions from './components/hooks/useWindowDimensions';
 import CloseFriendsUsers from './features/profile/CloseFriendsUsers';
 import Followers from './features/profile/Followers';
 import Following from './features/profile/Following';
+import { SearchModal } from './features/Search/SearchModal';
 function App() {
     const [authorised, setAuthorised] = useState(false);
     Validation(setAuthorised);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
     const { width } = useWindowDimensions();
+    const [query, setQuery] = useState('');
     let isMobile = width < 600;
     return (
         <div
             className='App'
             onClick={() => {
                 setIsMenuOpen(false);
+                setIsSearchModalOpen(false);
             }}>
             {authorised && (
-                <Header setSocket={setSocket} setIsMenuOpen={setIsMenuOpen} />
+                <Header
+                    setSocket={setSocket}
+                    setIsMenuOpen={setIsMenuOpen}
+                    setIsSearchModalOpen={setIsSearchModalOpen}
+                    onChange={(e) => {
+                        setQuery(e.target.value);
+                    }}
+                />
             )}
             <>
-                {isMenuOpen && (
+                {isMenuOpen ? (
                     <Menu setIsMenuOpen={setIsMenuOpen} auth={setAuthorised} />
-                )}
+                ) : null}
             </>
+            <>{isSearchModalOpen ? <SearchModal query={query} /> : null}</>
             <>
                 <Routes>
                     <Route
@@ -71,7 +82,6 @@ function App() {
                             path='/home'
                             element={<Home isMobile={isMobile} />}
                         />
-                        <Route path='/search' element={<Search />} />
                         <Route path='/newpost' element={<NewPost />} />
                         <Route
                             path='/messages/*'
@@ -105,7 +115,9 @@ function App() {
                     </Routes>
                 </>
             )}
-            {authorised ? <Footer /> : null}
+            {authorised ? (
+                <Footer setIsSearchModalOpen={setIsSearchModalOpen} />
+            ) : null}
         </div>
     );
 }

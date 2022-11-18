@@ -12,9 +12,9 @@
     width: 100%;
     display: flex;
     justify-content: end;
-    max-width: 875px;
+    max-width: 975px;
     height: 100px;
-    margin-right: 10px;
+
 }
 .menuDropdown {
     position: absolute;

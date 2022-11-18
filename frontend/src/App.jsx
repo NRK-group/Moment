@@ -21,7 +21,6 @@ import useWindowDimensions from './components/hooks/useWindowDimensions';
 import CloseFriendsUsers from './features/profile/CloseFriendsUsers';
 import Followers from './features/profile/Followers';
 import Following from './features/profile/Following';
-import LogoutComp from './layouts/Menu/LogoutComp';
 function App() {
     const [authorised, setAuthorised] = useState(false);
     Validation(setAuthorised);

@@ -27,7 +27,6 @@ func (database *Env) GetUserPosts(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
 			return
 		}
-		// cookie, _ := auth.SliceCookie(c.Value)
 		userID := r.URL.Query().Get("userID") // Get the parameter
 
 

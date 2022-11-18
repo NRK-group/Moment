@@ -196,6 +196,9 @@ func TestGetUserPostHandlerGetAllUserPost(t *testing.T) {
 
 		reqGetUserPosts, err := http.NewRequest("GET", "/getUserPosts", nil)
 		reqGetUserPosts.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+		values := reqGetUserPosts.URL.Query()
+		values.Add("userID", newUser.UserId)
+		reqGetUserPosts.URL.RawQuery = values.Encode()
 		if err != nil {
 			t.Fatal(err)
 		}

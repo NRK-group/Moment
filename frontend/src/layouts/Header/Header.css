@@ -8,6 +8,7 @@
     width: 100%;
     top: 0;
     background-color: var(--background-color);
+    z-index: 1;
 }
 .header {
     max-width: 601px;

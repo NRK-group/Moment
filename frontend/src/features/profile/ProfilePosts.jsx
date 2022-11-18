@@ -1,5 +1,14 @@
+import { useState } from "react"
+import { useEffect } from "react"
 import Card from "../../components/card/Card"
+import GetPosts from "../../pages/profile/ProfilePosts"
+import Post from "../Post"
 export default function ProfilePosts(props) {
+  const [posts, setPosts] = useState([])
+  useEffect(()=>{
+    GetPosts(props.id).then(resp => setPosts(resp))
+
+  },[])
   return (
     <section className="profilePostSection">
     <Card styleName={props.contentSelector}>
@@ -8,6 +17,23 @@ export default function ProfilePosts(props) {
             <span className={props.likeBtn}><i className="fa-solid fa-heart"></i> Liked</span>
     </Card>
     <Card styleName={props.postContainer}>
+    { posts && posts.map((data) => (
+                                    <Post
+                                    key={data.PostID}
+                                        avatarSrc={
+                                            `http://localhost:5070/${data.Image}`
+                                        }
+                                        name={data.NickName}
+                                        postContent={
+                                            data.Content
+                                        }
+                                        userID={data.UserID}
+                                        likes={data.NumLikes}
+                                        commentsnum={data.NumOfComment}
+                                       postBodyImgSrc={data.ImageUpload}
+                                        postId={data.PostID}
+                                    />
+                                ))}
     </Card>
     </section>
   )

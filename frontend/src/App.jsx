@@ -22,8 +22,8 @@ import Followers from './features/profile/Followers';
 import Following from './features/profile/Following';
 import { SearchModal } from './features/Search/SearchModal';
 function App() {
-    const [auth, setAuthorised] = useState(false);
-    const authorised = Validation(auth);
+    const [authorised, setAuthorised] = useState(false);
+    Validation(setAuthorised);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
@@ -111,6 +111,7 @@ function App() {
                             element={<ProfileInfoPopUp styleName='popUp' />}
                         />
                         <Route path='/stories' element={<Stories />} />
+                        
                     </Routes>
                 </>
             )}

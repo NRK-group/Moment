@@ -27,9 +27,11 @@ func (database *Env) GetUserPosts(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
 			return
 		}
-		cookie, _ := auth.SliceCookie(c.Value)
+		// cookie, _ := auth.SliceCookie(c.Value)
+		userID := r.URL.Query().Get("userID") // Get the parameter
 
-		posts, err := post.AllUserPost(cookie[0], database.Env)
+
+		posts, err := post.AllUserPost(userID, database.Env)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)

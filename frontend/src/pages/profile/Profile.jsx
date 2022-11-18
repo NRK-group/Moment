@@ -44,6 +44,7 @@ export default function Profile() {
             });
         }
         GetProfile(id).then((response) => setValues(response));
+    
     }, []);
     const relBtn = (
         <Button
@@ -133,6 +134,7 @@ export default function Profile() {
                     favBtn='profileFavourites'
                     likeBtn='profileLiked'
                     postContainer='profilePostContainer noContent'
+                    id={id}
                 />
             ) : (
                 <Card styleName='restrictedAccount'>

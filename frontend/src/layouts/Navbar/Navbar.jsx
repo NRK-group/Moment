@@ -10,7 +10,7 @@ import {
 } from '../../components/Icons/Icons';
 import './Navbar.css';
 
-const FooterNav = () => {
+const FooterNav = ({ setIsSearchModalOpen }) => {
     let notif = '';
     return (
         <div className='navbar'>
@@ -19,9 +19,13 @@ const FooterNav = () => {
                 <NavLink to='/home'>
                     <HomeIcon />
                 </NavLink>
-                <NavLink to='/search'>
+                <div
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setIsSearchModalOpen(true);
+                    }}>
                     <SearchIcon />
-                </NavLink>
+                </div>
                 <NavLink to='/newpost'>
                     <NewPostIcon />
                 </NavLink>

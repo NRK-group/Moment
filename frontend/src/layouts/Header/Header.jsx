@@ -3,7 +3,7 @@ import { DesktopHeaderNav, MobileHeaderNav } from '../Navbar/Navbar';
 import Input from '../../components/Input/Input';
 import { CreateWebSocket } from '../../utils/createWebsocket';
 import { useEffect } from 'react';
-const Header = ({ setSocket, setIsMenuOpen }) => {
+const Header = ({ setSocket, setIsMenuOpen, setIsSearchModalOpen }) => {
     useEffect(() => {
         setSocket(CreateWebSocket());
     }, []);
@@ -29,11 +29,17 @@ const Header = ({ setSocket, setIsMenuOpen }) => {
                         <use id='Moment' href='#img1' x='0' y='0' />
                     </svg>
                 </div>
-                <Input
-                    styleName={'search'}
-                    type={'search'}
-                    placeholder='search'
-                />
+                <div
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setIsSearchModalOpen(true);
+                    }}>
+                    <Input
+                        styleName={'search'}
+                        type={'search'}
+                        placeholder='search'
+                    />
+                </div>
                 <DesktopHeaderNav setIsMenuOpen={setIsMenuOpen} />
                 <MobileHeaderNav setIsMenuOpen={setIsMenuOpen} />
             </div>

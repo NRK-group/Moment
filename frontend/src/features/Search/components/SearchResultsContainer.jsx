@@ -2,9 +2,9 @@ import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
 import { NoSearchResult } from './NoSearchResult';
 export const SearchResultsContainer = ({ searchResult }) => {
     return (
-        <div className='searchResultsContainer'>
+        <>
             {searchResult && searchResult.length !== 0 ? (
-                <div className='searchResultsContent'>
+                <div className='searchResultsContent scrollbar-hidden'>
                     {searchResult.map(({ name, id, content, img }) => (
                         <MiniUserCard
                             key={id}
@@ -18,6 +18,6 @@ export const SearchResultsContainer = ({ searchResult }) => {
             ) : (
                 <NoSearchResult />
             )}
-        </div>
+        </>
     );
 };

@@ -1,11 +1,11 @@
 import { FooterNav } from '../Navbar/Navbar';
 import './Footer.css';
 
-const Footer = () => {
+const Footer = ({ setIsSearchModalOpen }) => {
     return (
         <div className='footerContainer'>
             <div className='footer'>
-                <FooterNav />
+                <FooterNav setIsSearchModalOpen={setIsSearchModalOpen} />
             </div>
         </div>
     );

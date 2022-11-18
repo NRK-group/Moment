@@ -87,16 +87,19 @@ function App() {
                         <Route path='notifications' element={<></>} />
                         <Route
                             path='notifications/:type'
-                            element={<Notification />}
+                            element={<Notification socket={socket} />}
                         />
                         <Route path='/profile' element={<Profile />} />
-                        <Route path='/closefriends' element={<CloseFriendsUsers />} />
+                        <Route
+                            path='/closefriends'
+                            element={<CloseFriendsUsers />}
+                        />
                         <Route path='/followers' element={<Followers />} />
                         <Route path='/following' element={<Following />} />
-
-
-
-                        <Route path='/update' element={<ProfileInfoPopUp styleName='popUp' />} />
+                        <Route
+                            path='/update'
+                            element={<ProfileInfoPopUp styleName='popUp' />}
+                        />
                         <Route path='/stories' element={<Stories />} />
                     </Routes>
                 </>

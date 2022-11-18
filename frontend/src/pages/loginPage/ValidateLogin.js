@@ -41,16 +41,16 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
         body: JSON.stringify(LOGIN_CREDS),
     })
         .then((response) => {
-            return response.text();
+            return response.json();
         })
         .then((resp) => {
             errMsg.innerHTML = "";
 
-            if (resp !== 'Valid Login') {
-                errMsg.innerHTML = resp;
+            if (resp.Message !== 'Valid Login') {
+                errMsg.innerHTML = resp.Message;
                 return false;
             }
-            if (resp === 'Valid Login') return true;
+            if (resp.Message === 'Valid Login') return true;
         });
     return auth;
 }

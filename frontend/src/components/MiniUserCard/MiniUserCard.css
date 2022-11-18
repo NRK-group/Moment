@@ -3,8 +3,8 @@
     width: 100%;
     padding: 8px 16px;
     display: flex;
+    align-items: center;
     font-size: var(--secondary-font-size);
-    cursor: pointer;
 }
 .miniUserCard:hover {
     background-color: var(--secondary-background-color);
@@ -43,6 +43,23 @@
 }
 .contentSep {
     margin: 0 5px;
+}
+.miniUserCardContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.miniUserCardButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    margin-left: auto;
+    width: 50%;
 }
 @media only screen and (min-width: 601px) {
     .miniUserCardImg {

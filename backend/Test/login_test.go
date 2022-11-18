@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"backend/pkg/auth"
@@ -86,8 +87,9 @@ func TestLogin(t *testing.T) {
 			want := value[0]
 			got := w.Body.String()
 
-			if got != want {
+			if !strings.Contains(got, want)  {
 				t.Errorf("got: %v. Want: %v.", got, want)
+				return
 			}
 		}
 	})

@@ -23,7 +23,6 @@ import Followers from './features/profile/Followers';
 import Following from './features/profile/Following';
 import LogoutComp from './layouts/Menu/LogoutComp';
 function App() {
-    const  = useNavigate()
     const [auth, setAuthorised] = useState(false);
     const authorised = Validation(auth);
     const [socket, setSocket] = useState(null);

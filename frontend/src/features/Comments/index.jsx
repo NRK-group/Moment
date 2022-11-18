@@ -93,6 +93,8 @@ const Comments = ({ isMobile }) => {
         window.document
             .querySelectorAll('.CommentsSectionUsers .miniUserCard .contentSep')
             .forEach((ele) => ele.remove());
+
+        console.log(flag)
     }, [flag]);
 
     const formatDate = (data) => {
@@ -110,9 +112,11 @@ const Comments = ({ isMobile }) => {
             <Card styleName={cardStyleName}>
                 <div className='Comments'>
                     <div className='CommentsLeft'>
+                        { state.PostBodyImgSrc &&
                         <div className='CommentsImg'>
-                            <img src={state.PostBodyImgSrc} />
-                        </div>
+                            <img src={`http://localhost:5070/${state.PostBodyImgSrc}`}  style={{height:"300px", width:"200px"}} />
+                        </div> || state.PostContent && <div className='CommentsText'> <p>{state.PostContent}</p> </div>
+}
                         <div className='Comments-Emoji'></div>
                         <div className='CommentsChat'>
                             <InputEmoji

@@ -4,7 +4,6 @@
     display: flex;
     background-color: var(--background-color);
     justify-content: center;
-  
 }
 
 .CommentsImg {
@@ -17,18 +16,30 @@
     border: 1px solid var(--terheading-color);
 }
 
+.CommentsText {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+    border: 1px solid var(--terheading-color);
+    display: table;
+}
+
+.CommentsText p {
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
 
 .Comments-Img {
     width: 120px;
     overflow-x: scroll;
     display: flex;
-
 }
 
 .CommentsImg img {
     object-fit: fill;
     height: inherit;
-  width:fit-content;
+    width: fit-content;
 }
 
 .CommentsSection {
@@ -61,7 +72,6 @@
 .CommentsChatIcons input {
     width: 400px;
     margin-left: 4px;
-   
 }
 
 .CommentsChat p {
@@ -72,7 +82,7 @@
 }
 
 .CommentsSection .dropdown-content {
-    top: 100%
+    top: 100%;
 }
 
 .CommentsSection .PostHeaderMenu {
@@ -94,20 +104,20 @@
 }
 
 .Commet-Content {
-    font:bold;
+    font: bold;
 }
 
 .CommentsSectionUsers .optContent {
     color: black;
 }
 
-.CommentsSectionUsers .optContent .displayed-text{
+.CommentsSectionUsers .optContent .displayed-text {
     width: 200px;
     overflow-wrap: anywhere;
 }
 
 .CommentsSectionUsers .optContent P {
-    justify-content:left;
+    justify-content: left;
     align-items: left;
 }
 
@@ -122,25 +132,22 @@
     left: 1vw;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;  
+    z-index: 1;
 }
 
-   .CommentsChat .react-emoji {
+.CommentsChat .react-emoji {
     flex-direction: row-reverse;
 }
 
 .CommentsIcon {
     display: flex;
-   width: 100px;
-   justify-content: space-around;
+    width: 100px;
+    justify-content: space-around;
 }
 
 .CommentsLeft .react-input-emoji--input {
-width: 530px;
+    width: 530px;
 }
-
-
-
 
 @media only screen and (max-width: 700px) {
     .Comments {
@@ -153,15 +160,14 @@ width: 530px;
     }
 
     .CommentsImg img {
-        height:100%;
+        height: 100%;
         width: 97.8%;
-      }
+    }
 
-      .CommentsChatIcons input {
+    .CommentsChatIcons input {
         width: 70vw;
         margin-left: 4px;
     }
- 
 
     .CommentsChat {
         height: auto;
@@ -171,7 +177,6 @@ width: 530px;
         width: 100%;
         height: 60%;
     }
-
 
     .CommentsSection .PostHeader {
         height: 12%;
@@ -184,5 +189,5 @@ width: 530px;
     .CommentsLeft .react-input-emoji--input {
         width: 220px;
         height: inherit;
-        }
+    }
 }

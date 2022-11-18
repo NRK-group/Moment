@@ -53,7 +53,7 @@ func (h *Hub) Run() {
 			var msg structs.Message
 			json.Unmarshal(message, &msg)
 			if msg.MessageType == "privateMessage" {
-				msg, err := messages.InsertMessage(msg, *h.Database)
+				msg, err := messages.InsertMessage(msg, h.Database)
 				if err != nil {
 					l.LogMessage("Hub.go", "Run() - InsertMessage", err)
 				}

@@ -22,11 +22,12 @@ type Chat struct {
 }
 
 type ChatWriter struct {
-	ChatId  string          `json:"chatId"`
-	Type    string          `json:"type"`
-	Details Info            `json:"details"`
-	Member  map[string]Info `json:"member"`
-	Content Message         `json:"content"`
+	ChatId    string          `json:"chatId"`
+	Type      string          `json:"type"`
+	Details   Info            `json:"details"`
+	Member    map[string]Info `json:"member"`
+	Content   Message         `json:"content"`
+	UpdatedAt time.Time       `json:"updatedAt"`
 }
 
 type Info struct {

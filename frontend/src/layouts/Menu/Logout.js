@@ -9,7 +9,6 @@ export default function Logout(redir, setauth) {
         })
         .then((resp) => {
             if (resp === 'Logged Out') {
-                location.reload()
                 setauth(false)
                 redir('/')
                 return true;

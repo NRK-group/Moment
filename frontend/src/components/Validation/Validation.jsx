@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 export default function Validation(auth) {
-    const [authorised, setAuthorised] = useState(false);
+    // const [authorised, setAuthorised] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
         fetch('http://localhost:5070/validate', {
@@ -9,13 +9,12 @@ export default function Validation(auth) {
         }).then(async (resp) => {
             const response = await resp.text();
             if (response !== 'Validated') {
-                setAuthorised(false);
+                auth(false);
                 navigate('/');
                 return;
             }
-            setAuthorised(true);
+            auth(true);
             return;
         });
-    }, [auth]);
-    return authorised;
+    }, []);
 }

@@ -23,8 +23,8 @@ import Followers from './features/profile/Followers';
 import Following from './features/profile/Following';
 import LogoutComp from './layouts/Menu/LogoutComp';
 function App() {
-    const [auth, setAuthorised] = useState(false);
-    const authorised = Validation(auth);
+    const [authorised, setAuthorised] = useState(false);
+    Validation(setAuthorised);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { width } = useWindowDimensions();

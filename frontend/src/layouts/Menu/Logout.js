@@ -8,11 +8,10 @@ export default function Logout(redir, setauth) {
             return await response.text();
         })
         .then((resp) => {
-            console.log({ authorised });
             if (resp === 'Logged Out') {
                 location.reload()
                 setauth(false)
-                setTimeout(redir('/'), 5000)
+                redir('/')
                 return true;
             }
             return false;

@@ -8,7 +8,6 @@ export default function Validation(auth) {
             credentials: 'include',
         }).then(async (resp) => {
             const response = await resp.text();
-            console.log("RESULT WHILE VALIDATING:   ", response)
             if (response !== 'Validated') {
                 setAuthorised(false);
                 navigate('/');

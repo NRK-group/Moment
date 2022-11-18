@@ -2,7 +2,7 @@ import './App.css';
 import Footer from './layouts/Footer/Footer';
 import Header from './layouts/Header/Header';
 import Home from './pages/Home';
-import { Route, Routes, } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
@@ -91,16 +91,22 @@ function App() {
                             element={<Notification />}
                         />
                         <Route path='/profile' element={<Profile />} />
-                        <Route path='/closefriends' element={<CloseFriendsUsers />} />
+                        <Route
+                            path='/closefriends'
+                            element={<CloseFriendsUsers />}
+                        />
                         <Route path='/followers' element={<Followers />} />
                         <Route path='/following' element={<Following />} />
 
-
-
-                        <Route path='/update' element={<ProfileInfoPopUp styleName='popUp' />} />
+                        <Route
+                            path='/update'
+                            element={<ProfileInfoPopUp styleName='popUp' />}
+                        />
                         <Route path='/stories' element={<Stories />} />
-                        <Route path='/logout' element={<LogoutComp auth={setAuthorised} />} />
-
+                        <Route
+                            path='/logout'
+                            element={<LogoutComp auth={setAuthorised} />}
+                        />
                     </Routes>
                 </>
             )}

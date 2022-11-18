@@ -5,15 +5,15 @@ import { NoSearchResult } from './NoSearchResult';
 export const SearchResultsContainer = ({ query }) => {
     let searchResult = GetAllUser();
     let filteredItems = searchResult.filter((item) => {
+        let fullName = item.firstName + ' ' + item.lastName;
         return (
             item.name.toLowerCase().includes(query.toLowerCase()) ||
-            item.firstName.toLowerCase().includes(query.toLowerCase()) ||
-            item.lastName.toLowerCase().includes(query.toLowerCase())
+            fullName.toLowerCase().includes(query.toLowerCase())
         );
     });
     return (
         <>
-            {filteredItems ? (
+            {filteredItems.length != 0 ? (
                 <div className='searchResultsContent scrollbar-hidden'>
                     {filteredItems.map(
                         ({ name, id, firstName, lastName, img }) => {

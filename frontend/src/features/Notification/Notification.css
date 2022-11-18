@@ -83,3 +83,15 @@
     justify-content: center;
     align-items: center;
 }
+.acceptBtn {
+    font-size: var(--subheading-font-size);
+    background-color: var(--button-color);
+    color: var(--background-color);
+    margin: 0 10px;
+}
+.declineBtn {
+    font-size: var(--subheading-font-size);
+    background-color: var(--terheading-color);
+    color: var(--content-color);
+    margin: 0 10px;
+}

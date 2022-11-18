@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-export const GetNotif = (type) => {
+export const GetNotif = (type, setNotifications) => {
     const [notif, setNotif] = useState([]);
     useEffect(() => {
         fetch(
@@ -12,6 +12,7 @@ export const GetNotif = (type) => {
             .then(async (res) => {
                 const data = await res.json();
                 setNotif(data);
+                setNotifications(data);
                 return data;
             })
             .catch(() => {

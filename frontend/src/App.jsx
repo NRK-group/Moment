@@ -10,7 +10,7 @@ import Profile from './pages/profile/Profile';
 import ProfileInfoPopUp from './features/profile/ProfileInfoPopUp';
 import Stories from './pages/stories/stories';
 import Comments from './features/Comments';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
 import Validation from './components/Validation/Validation';
@@ -28,6 +28,7 @@ function App() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
     const { width } = useWindowDimensions();
+    const [query, setQuery] = useState('');
     let isMobile = width < 600;
     return (
         <div
@@ -41,6 +42,9 @@ function App() {
                     setSocket={setSocket}
                     setIsMenuOpen={setIsMenuOpen}
                     setIsSearchModalOpen={setIsSearchModalOpen}
+                    onChange={(e) => {
+                        setQuery(e.target.value);
+                    }}
                 />
             )}
             <>
@@ -48,7 +52,7 @@ function App() {
                     <Menu setIsMenuOpen={setIsMenuOpen} auth={setAuthorised} />
                 ) : null}
             </>
-            <>{isSearchModalOpen ? <SearchModal /> : null}</>
+            <>{isSearchModalOpen ? <SearchModal query={query} /> : null}</>
             <>
                 <Routes>
                     <Route

@@ -3,7 +3,12 @@ import { DesktopHeaderNav, MobileHeaderNav } from '../Navbar/Navbar';
 import Input from '../../components/Input/Input';
 import { CreateWebSocket } from '../../utils/createWebsocket';
 import { useEffect } from 'react';
-const Header = ({ setSocket, setIsMenuOpen, setIsSearchModalOpen }) => {
+const Header = ({
+    setSocket,
+    setIsMenuOpen,
+    setIsSearchModalOpen,
+    onChange,
+}) => {
     useEffect(() => {
         setSocket(CreateWebSocket());
     }, []);
@@ -38,6 +43,7 @@ const Header = ({ setSocket, setIsMenuOpen, setIsSearchModalOpen }) => {
                         styleName={'search'}
                         type={'search'}
                         placeholder='search'
+                        onChange={onChange}
                     />
                 </div>
                 <DesktopHeaderNav setIsMenuOpen={setIsMenuOpen} />

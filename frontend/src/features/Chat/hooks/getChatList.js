@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-export const GetChatList = (setClist) => {
+export const GetChatList = (setClist, newMessage) => {
     const [chatList, setChatList] = useState([]);
     useEffect(() => {
         fetch('http://localhost:5070/chat', {
@@ -10,6 +10,6 @@ export const GetChatList = (setClist) => {
             data ? setClist(data) : setClist([]);
             return;
         });
-    }, []);
+    }, [newMessage]);
     return chatList;
 };

@@ -9,7 +9,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { useScrollDown } from './hooks/scrollDown';
 import { debounce } from './hooks/debounce';
 import InputEmoji from 'react-input-emoji';
-export const Messages = ({ socket, currentUserInfo }) => {
+export const Messages = ({ socket, currentUserInfo, setNewMessage }) => {
     const { chatId } = useParams();
     const location = useLocation();
     const { type, user, details } = location.state;
@@ -48,6 +48,7 @@ export const Messages = ({ socket, currentUserInfo }) => {
             };
             socket.send(JSON.stringify(data));
             setMessages((msg) => [...msg, data]);
+            setNewMessage((prev) => prev + 1);
         }
     };
     const handleKeyDown = (e) => {
@@ -72,6 +73,12 @@ export const Messages = ({ socket, currentUserInfo }) => {
         socket.onmessage = (event) => {
             if (event.data) {
                 let data = JSON.parse(event.data);
+                if (
+                    data.type === 'privateMessage' ||
+                    data.type === 'groupMessage'
+                ) {
+                    setNewMessage((prev) => prev + 1);
+                }
                 if (data.chatId === chatId) {
                     if (data.type === type) {
                         setMessages((messages) => [...messages, data]);

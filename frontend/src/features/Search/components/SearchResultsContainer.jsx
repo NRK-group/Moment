@@ -1,7 +1,9 @@
 import { NavLink } from 'react-router-dom';
 import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
+import { GetAllUser } from '../hooks/getAllUser';
 import { NoSearchResult } from './NoSearchResult';
-export const SearchResultsContainer = ({ searchResult, query }) => {
+export const SearchResultsContainer = ({ query }) => {
+    let searchResult = GetAllUser();
     let filteredItems = searchResult.filter((item) => {
         return (
             item.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -15,7 +17,6 @@ export const SearchResultsContainer = ({ searchResult, query }) => {
                 <div className='searchResultsContent scrollbar-hidden'>
                     {filteredItems.map(
                         ({ name, id, firstName, lastName, img }) => {
-                            console.log(searchResult);
                             return (
                                 <NavLink key={id} to={`/profile?id=${id}`}>
                                     <MiniUserCard

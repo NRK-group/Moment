@@ -2,7 +2,7 @@ import './App.css';
 import Footer from './layouts/Footer/Footer';
 import Header from './layouts/Header/Header';
 import Home from './pages/Home';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, } from 'react-router-dom';
 import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
@@ -27,7 +27,6 @@ function App() {
     const authorised = Validation(auth);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-   
     const { width } = useWindowDimensions();
     let isMobile = width < 600;
     return (

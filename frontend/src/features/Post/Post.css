@@ -85,6 +85,15 @@
     transition: 0.3s;
 }
 
+.postCommentInput{
+    padding: 1%;
+}
+
+.PostContent > * {
+    padding: 3px;
+
+}
+
 .PostContentIcons {
     display: flex;
     justify-content: space-between;
@@ -105,7 +114,6 @@
 }
 
 .PostContentLikes {
-    padding-top: 3px;
     font-size: var(--tertiary-font-size);
 }
 
@@ -167,6 +175,7 @@ border-bottom-style: hidden;
     border: 1px solid var(--terheading-color);
     margin: auto;
     width: 400px;
+    border-radius: 5px;
 }
 
 @media only screen and (max-width: 600px) {

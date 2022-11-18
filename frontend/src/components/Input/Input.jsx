@@ -2,10 +2,13 @@ import Icon from '../Icon/Icon';
 import './Input.css';
 import { useState } from 'react';
 
-const Input = ({ styleName, placeholder, type, onChange }) => {
+const Input = ({ styleName, placeholder, type, onChange, open }) => {
     const [focused, setFocused] = useState(false);
     const onFocus = () => setFocused(true);
-    const onBlur = () => setFocused(false);
+    const onBlur = () => {
+        setFocused(false);
+        open(false);
+    };
     return (
         <div className={styleName}>
             {type === 'search' ? (
@@ -26,6 +29,7 @@ const Input = ({ styleName, placeholder, type, onChange }) => {
                         onBlur={onBlur}
                         className='input'
                         type='text'
+                        onChange={onChange}
                         placeholder={'Search'}
                     />
                     {focused && (

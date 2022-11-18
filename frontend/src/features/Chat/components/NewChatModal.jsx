@@ -9,10 +9,10 @@ export const NewChatModal = ({ setAddToChatList }) => {
     let following = GetFollow();
     const [query, setQuery] = useState('');
     let filteredItems = following.filter((item) => {
+        let fullName = item.firstName + ' ' + item.lastName;
         return (
             item.name.toLowerCase().includes(query.toLowerCase()) ||
-            item.firstName.toLowerCase().includes(query.toLowerCase()) ||
-            item.lastName.toLowerCase().includes(query.toLowerCase())
+            fullName.toLowerCase().includes(query.toLowerCase())
         );
     });
     const handleNewMessage = (e) => {

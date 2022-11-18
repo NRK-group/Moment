@@ -23,15 +23,12 @@ import Followers from './features/profile/Followers';
 import Following from './features/profile/Following';
 import LogoutComp from './layouts/Menu/LogoutComp';
 function App() {
-    const navigate = useNavigate()
+    const  = useNavigate()
     const [auth, setAuthorised] = useState(false);
     const authorised = Validation(auth);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isHeaderOpen, setIsHeaderOpen] = useState(false);
-    function UpdateAuth(set) {
-        authorised = set
-    }
+   
     const { width } = useWindowDimensions();
     let isMobile = width < 600;
     return (
@@ -104,7 +101,7 @@ function App() {
 
                         <Route path='/update' element={<ProfileInfoPopUp styleName='popUp' />} />
                         <Route path='/stories' element={<Stories />} />
-                        <Route path='/logout' element={<LogoutComp auth={setAuthorised} authorised={authorised} />} />
+                        <Route path='/logout' element={<LogoutComp auth={setAuthorised} />} />
 
                     </Routes>
                 </>

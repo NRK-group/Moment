@@ -1,5 +1,5 @@
 import './Groups.css';
-import Avatar from '../../components/Avatar';
+
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
 import Post from '../../features/Post';
@@ -67,13 +67,13 @@ function Groups({ isMobile }) {
         let fetchGroups = await fetch('http://localhost:5070/group', {
             credentials: 'include',
             method: 'GET',
-        }).then(async (resp) => await resp.json())
-        .then((data) => data);
-        console.log({fetchGroups})
-        setGroupSM(fetchGroups)
-        setOpenModal(true)
+        })
+            .then(async (resp) => await resp.json())
+            .then((data) => data);
+        console.log({ fetchGroups });
+        setGroupSM(fetchGroups);
+        setOpenModal(true);
     };
-
 
     return (
         <Body styleName={bodyStyleName}>
@@ -108,24 +108,32 @@ function Groups({ isMobile }) {
                                 </div>
                             )}
                         </div>
-                        {toggle ? (
-                            <p
-                                style={{ marginTop: '12px', cursor: 'pointer' }}
-                                onClick={() => {
-                                    Events();
-                                }}>
-                                Events
-                            </p>
-                        ) : (
-                            <p
-                                style={{ marginTop: '12px', cursor: 'pointer' }}
-                                onClick={() => {
-                                    Users();
-                                }}>
-                                {' '}
-                                User
-                            </p>
-                        )}
+                        <div className='GroupPageMenu'>
+                            {groupS.length > 0 ? (
+                                <>
+                                    <p
+                                        style={{
+                                            marginTop: '12px',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() => {}}>
+                                        Create Events
+                                    </p>
+
+                                    <p
+                                        style={{
+                                            marginTop: '12px',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() => {}}>
+                                        {' '}
+                                        Create group Post
+                                    </p>
+                                </>
+                            ) : (
+                                <></>
+                            )}
+                        </div>
                     </div>
                     <div ref={GroupsPostsArea} className='GroupsPostsArea'>
                         <Card styleName={'PostHeader'}>
@@ -137,12 +145,7 @@ function Groups({ isMobile }) {
                                     }}>
                                     <BarsIcon />
                                 </div>
-                                <Avatar
-                                    avatarSrc={
-                                        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png'
-                                    }
-                                    styleName={'PostAvatarUsers'}
-                                />
+                              
 
                                 <p style={{ marginLeft: '4px' }}>{name}</p>
                             </div>
@@ -154,10 +157,7 @@ function Groups({ isMobile }) {
                                 <GroupsIcon />
                             </div>
                         </Card>
-                        <div className='Group-Post'>
-                            <Post />
-                            <Post />
-                        </div>
+                        <div className='Group-Post'></div>
                     </div>
 
                     <div ref={GroupsRightMenu} className='GroupsRightMenu'>
@@ -176,10 +176,7 @@ function Groups({ isMobile }) {
                                 placeholder={'Search User'}
                             />
                         </div>
-                        <MiniUserCard />
-                        <MiniUserCard />
-                        <MiniUserCard />
-                        <MiniUserCard />
+                        {'   Group members'}
                     </div>
                 </div>
             </Card>

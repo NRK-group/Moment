@@ -73,6 +73,10 @@
     cursor: 'pointer';
 }
 
+.GroupPageMenu p {
+    margin-top: '12px';
+     cursor: 'pointer';
+}  
 
 .Join-Group {
     text-align: center;

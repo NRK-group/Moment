@@ -2,7 +2,7 @@ import './App.css';
 import Footer from './layouts/Footer/Footer';
 import Header from './layouts/Header/Header';
 import Home from './pages/Home';
-import { Route, Routes, useNavigation } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
@@ -21,33 +21,26 @@ import useWindowDimensions from './components/hooks/useWindowDimensions';
 import CloseFriendsUsers from './features/profile/CloseFriendsUsers';
 import Followers from './features/profile/Followers';
 import Following from './features/profile/Following';
-import { useEffect } from 'react';
+import LogoutComp from './layouts/Menu/LogoutComp';
 function App() {
+    const navigate = useNavigate()
     const [auth, setAuthorised] = useState(false);
-    const navigate = useNavigation()
-    // const authorised = Validation(auth);
+    const authorised = Validation(auth);
     const [socket, setSocket] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isHeaderOpen, setIsHeaderOpen] = useState(false);
+    function UpdateAuth(set) {
+        authorised = set
+    }
     const { width } = useWindowDimensions();
     let isMobile = width < 600;
-    useEffect(()=> {
-        Validation(false).then(resp => {
-             if (resp !== 'Validated') {
-                setAuthorised(false);
-                // navigate('/');
-                return;
-            }
-            setAuthorised(true);
-            return;
-        })
-    },[])
     return (
         <div
             className='App'
             onClick={() => {
                 setIsMenuOpen(false);
             }}>
-            {auth && (
+            {authorised && (
                 <Header setSocket={setSocket} setIsMenuOpen={setIsMenuOpen} />
             )}
             <>
@@ -77,7 +70,7 @@ function App() {
                     <Route path='*' element={<></>} />
                 </Routes>
             </>
-            {auth ? (
+            {authorised && (
                 <>
                     <Routes>
                         <Route
@@ -111,10 +104,12 @@ function App() {
 
                         <Route path='/update' element={<ProfileInfoPopUp styleName='popUp' />} />
                         <Route path='/stories' element={<Stories />} />
+                        <Route path='/logout' element={<LogoutComp auth={setAuthorised} authorised={authorised} />} />
+
                     </Routes>
                 </>
-            ): navigate('/')}
-            {auth ? <Footer /> : null}
+            )}
+            {authorised ? <Footer /> : null}
         </div>
     );
 }

@@ -24,7 +24,7 @@ export const Menu = ({ setIsMenuOpen, auth }) => {
                         content='Logout'
                         action={() => {
                             setIsMenuOpen(false)
-                            Logout(navigate, auth);
+                            navigate('/logout')
                         }}
                     />
                 </div>

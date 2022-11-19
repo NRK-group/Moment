@@ -79,14 +79,13 @@ func AllGroupPosts(groupID string, database *structs.DB) ([]structs.Post, error)
 	return posts, nil
 }
 
-
-
 // AllGroups
 // return all groups
 func AllUserGroups(uID string, database *structs.DB) ([]structs.Group, error) {
 	var group structs.Group
 	var groups []structs.Group
 	var err error
+	var flag bool
 	rows, err := database.DB.Query("SELECT * FROM Groups ")
 	if err != nil {
 		fmt.Print(err)
@@ -102,8 +101,23 @@ func AllUserGroups(uID string, database *structs.DB) ([]structs.Group, error) {
 			Description: description,
 			Admin:       admin,
 		}
-		
-		groups = append([]structs.Group{group}, groups...)
+
+		members, err := member.GetMembers(groupId, database)
+		if err != nil {
+			fmt.Print(err)
+			return nil, err
+		}
+
+		for _, m := range members {
+			if m.UserId == uID {
+				flag = true
+			}
+		}
+
+		if flag {
+			groups = append([]structs.Group{group}, groups...)
+			flag = false
+		}
 	}
 	return groups, nil
 }

@@ -14,11 +14,20 @@ import {
     BarsIcon,
     GroupsIcon,
 } from '../../components/Icons/Icons';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 function Groups({ isMobile }) {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
+
+
+    useEffect(() => {
+      
+    }, []);
+
+    
+
+
 
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);

@@ -162,3 +162,39 @@ func UpdateChat(chatId string, database *structs.DB) error {
 	}
 	return nil
 }
+
+// InsertMessageNotif inserts a new message notification into the database or updates it
+//
+// Param:
+//
+// chatId: the id of the chat
+// receiverId: the id of the receiver
+// database: the database
+func InsertOrUpdateMessageNotif(chatId string, receiverId string, database *structs.DB) error {
+	// Check if the notification already exists in the database
+	row := database.DB.QueryRow("SELECT * FROM MessageNotif WHERE chatId = ? AND receiverId = ?", chatId, receiverId)
+	var notif structs.MessageNotif
+	err := row.Scan(&notif.ChatId, &notif.ReceiverId, &notif.Notif)
+	if err != nil {
+		// Insert the notification into the database
+		stmt, err := database.DB.Prepare("INSERT INTO MessageNotif (chatId, receiverId, notif) VALUES (?, ?, ?)")
+		if err != nil {
+			return err
+		}
+		_, err = stmt.Exec(chatId, receiverId, 1)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	// Update the notification in the database
+	stmt, err := database.DB.Prepare("UPDATE MessageNotif SET notif = ? WHERE chatId = ? AND receiverId = ?")
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(notif.Notif+1, chatId, receiverId)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -72,9 +72,8 @@ function Groups({ isMobile }) {
         })
             .then(async (resp) => await resp.json())
             .then((data) => data);
-        
-        setGroupSM(fetchGroups);
-        setEle(<GroupList data={groupSM} />)
+ 
+        setEle(<GroupList data={fetchGroups} />)
         setOpenModal(true);
     };
 

@@ -20,31 +20,34 @@ function Groups({ isMobile }) {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
 
-
     useEffect(() => {
-        GetAllUsergroups()
+        GetAllUsergroups();
     }, []);
 
     const GetAllUsergroups = async () => {
-        let fetchAllUsergroups = await fetch('http://localhost:5070/getUserGroups', {
-            credentials: 'include',
-            method: 'GET',
-        })
+        let fetchAllUsergroups = await fetch(
+            'http://localhost:5070/getUserGroups',
+            {
+                credentials: 'include',
+                method: 'GET',
+            }
+        )
             .then(async (resp) => await resp.json())
             .then((data) => data);
- 
-        console.log({fetchAllUsergroups})
-        setGroupS(fetchAllUsergroups)
+        console.log(fetchAllUsergroups[0]);
+        setGroupS(fetchAllUsergroups);
+        if (fetchAllUsergroups !== null) {
+            setGroupSelect(fetchAllUsergroups[0]);
+        }
     };
-
 
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);
     const GroupsPostsArea = useRef(null);
 
-    const [toggle, setToggle] = useState(true);
+    const [groupPosts, setGroupPosts] = useState(null);
     const [groupS, setGroupS] = useState([]);
-    const [groupSM, setGroupSM] = useState([]);
+    const [groupSelect, setGroupSelect] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [ele, setEle] = useState(null);
 
@@ -70,18 +73,6 @@ function Groups({ isMobile }) {
         GroupsPostsArea.current.style.width = '100%';
     };
 
-    const Events = () => {
-        CloseGroupsRightMenu();
-        GroupsPostsArea.current.style.width = '100%';
-        setToggle(false);
-    };
-
-    const Users = () => {
-        GroupsRightMenu.current.style.display = 'block';
-        GroupsRightMenu.current.style.width = '25%';
-        GroupsPostsArea.current.style.width = '50%';
-        setToggle(true);
-    };
 
     const Getgroups = async () => {
         let fetchGroups = await fetch('http://localhost:5070/group', {
@@ -90,12 +81,15 @@ function Groups({ isMobile }) {
         })
             .then(async (resp) => await resp.json())
             .then((data) => data);
- 
-        setEle(<GroupList data={fetchGroups} />)
+
+        setEle(<GroupList data={fetchGroups} />);
         setOpenModal(true);
     };
 
-    const switchModalChildren = (element) => {};
+    const switchGroup = (element) => {
+
+        setGroupSelect(element)
+    };
 
     //AddGroup
     // <GroupList data={groupSM} />
@@ -119,12 +113,21 @@ function Groups({ isMobile }) {
                         </div>
                         <div className='GroupsList'>
                             {groupS !== null ? (
-                                groupS.map((ele) => {console.log(ele)})
+                                groupS.map((ele) => (
+                                    <span key={ele.GroupID} onClick={()=>setGroupSelect(ele)}>
+                                        <MiniUserCard
+                                            imgStyleName={'miniUserCardImg'}
+                                            optContent={ele.Name}>
+                                            {' '}
+                                        </MiniUserCard>
+                                    </span>
+                                ))
                             ) : (
                                 <div className='Join-Group'>
                                     {' '}
-                                    <span onClick={() =>{ 
-                                        Getgroups()
+                                    <span
+                                        onClick={() => {
+                                            Getgroups();
                                         }}>
                                         Join a group
                                     </span>{' '}
@@ -159,7 +162,10 @@ function Groups({ isMobile }) {
                                             marginTop: '12px',
                                             cursor: 'pointer',
                                         }}
-                                        onClick={() => {}}>
+                                        onClick={() => {
+                                            setEle(<AddGroup />);
+                                            setOpenModal(true);
+                                        }}>
                                         {' '}
                                         Create A Group
                                     </p>
@@ -193,7 +199,7 @@ function Groups({ isMobile }) {
                                     <BarsIcon />
                                 </div>
 
-                                <p style={{ marginLeft: '4px' }}>{name}</p>
+                                <p style={{ marginLeft: '4px' }}>{ groupSelect && groupSelect.Name}</p>
                             </div>
                             <div
                                 className='GroupHeaderIcons'
@@ -203,7 +209,27 @@ function Groups({ isMobile }) {
                                 <GroupsIcon />
                             </div>
                         </Card>
-                        <div className='Group-Post'></div>
+                        <div className='Group-Post'>
+
+                        { groupPosts && groupPosts.map((data) => (
+                                    <Post
+                                    key={data.PostID}
+                                        avatarSrc={
+                                            `http://localhost:5070/${data.Image}`
+                                        }
+                                        name={data.NickName}
+                                        postContent={
+                                            data.Content
+                                        }
+                                        userID={data.UserID}
+                                        likes={data.NumLikes}
+                                        commentsnum={data.NumOfComment}
+                                       postBodyImgSrc={data.ImageUpload}
+                                        postId={data.PostID}
+                                    />
+                                ))}
+
+                        </div>
                     </div>
 
                     <div ref={GroupsRightMenu} className='GroupsRightMenu'>
@@ -222,7 +248,19 @@ function Groups({ isMobile }) {
                                 placeholder={'Search User'}
                             />
                         </div>
-                        {'   Group members'}
+                        { groupSelect && (
+                            groupSelect.Members.map((ele) => (
+                                <span key={ele.UserId}>
+                                    <MiniUserCard
+                                        imgStyleName={'miniUserCardImg'}
+                                        optContent={ele.UserName}>
+                                        {' '}
+                                    </MiniUserCard>
+                                </span>
+                            ))
+                        ) || (
+                            <> Group members</>
+                        )}
                     </div>
                 </div>
             </Card>

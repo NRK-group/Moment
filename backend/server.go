@@ -84,5 +84,6 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/search", database.Search)
 	http.HandleFunc("/getUserPosts", database.GetUserPosts)
 	http.HandleFunc("/getGroupPost", database.GetGroupPost)
+	http.HandleFunc("/getUserGroups", database.GetUserGroups)
 	
 }

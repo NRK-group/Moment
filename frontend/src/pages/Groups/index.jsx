@@ -38,8 +38,25 @@ function Groups({ isMobile }) {
         setGroupS(fetchAllUsergroups);
         if (fetchAllUsergroups !== null) {
             setGroupSelect(fetchAllUsergroups[0]);
+            GetAllGroupPosts(fetchAllUsergroups[0].GroupID)
         }
     };
+
+
+    const GetAllGroupPosts = async (id)=> {
+        let fetchAllgroupPosts = await fetch(
+            `http://localhost:5070/getGroupPost?groupId=${id}`,
+            {
+                credentials: 'include',
+                method: 'GET',
+            }
+        )
+            .then(async (resp) => await resp.json())
+            .then((data) => data);
+
+            console.log({fetchAllgroupPosts})
+    }
+
 
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);

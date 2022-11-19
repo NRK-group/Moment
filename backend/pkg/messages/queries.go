@@ -198,3 +198,20 @@ func InsertOrUpdateMessageNotif(chatId string, receiverId string, database *stru
 	}
 	return nil
 }
+
+// GetNotif returns the number of notifications for a user
+//
+// Param:
+//
+// chatId: the id of the chat
+// receiverId: the id of the receiver
+// database: the database
+func GetNotif(chatId string, receiverId string, database *structs.DB) int {
+	row := database.DB.QueryRow("SELECT notif FROM MessageNotif WHERE chatId = ? AND receiverId = ?", chatId, receiverId)
+	var notif int
+	err := row.Scan(&notif)
+	if err != nil {
+		return 0
+	}
+	return notif
+}

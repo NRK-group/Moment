@@ -8,6 +8,7 @@ import Modal from '../../features/Modal';
 import Input from '../../components/Input/Input';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 import GroupList from './components/GroupList';
+import GroupPost from './components/GroupPost';
 import {
     ChevronRightIcon,
     ChevronLeftIcon,
@@ -54,7 +55,7 @@ function Groups({ isMobile }) {
             .then(async (resp) => await resp.json())
             .then((data) => data);
 
-            console.log({fetchAllgroupPosts})
+            setGroupPosts(fetchAllgroupPosts)
     }
 
 
@@ -169,7 +170,9 @@ function Groups({ isMobile }) {
                                             cursor: 'pointer',
                                         }}
                                         onClick={() => {
-                                            setEle();
+                                            setEle(<GroupPost groupId={groupSelect.GroupID}
+                                                setOpenModal={setOpenModal} />);
+                                            setOpenModal(true);
                                         }}>
                                         {' '}
                                         Create group Post

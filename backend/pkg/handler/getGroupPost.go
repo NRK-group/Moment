@@ -39,11 +39,11 @@ func (database *Env) GetGroupPost(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-
 		marshallPosts, err := json.Marshal(posts)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(marshallPosts))

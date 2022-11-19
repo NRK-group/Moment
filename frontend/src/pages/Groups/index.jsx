@@ -119,7 +119,7 @@ function Groups({ isMobile }) {
                         </div>
                         <div className='GroupsList'>
                             {groupS !== null ? (
-                                groupS.map((ele) => {})
+                                groupS.map((ele) => {console.log(ele)})
                             ) : (
                                 <div className='Join-Group'>
                                     {' '}

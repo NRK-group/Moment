@@ -101,7 +101,6 @@ func AllUserGroups(uID string, database *structs.DB) ([]structs.Group, error) {
 			Description: description,
 			Admin:       admin,
 		}
-
 		members, err := member.GetMembers(groupId, database)
 		if err != nil {
 			fmt.Print(err)
@@ -115,6 +114,7 @@ func AllUserGroups(uID string, database *structs.DB) ([]structs.Group, error) {
 		}
 
 		if flag {
+			group.Members = members
 			groups = append([]structs.Group{group}, groups...)
 			flag = false
 		}

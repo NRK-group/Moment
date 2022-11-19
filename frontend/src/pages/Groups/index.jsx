@@ -21,10 +21,7 @@ function Groups({ isMobile }) {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
 
-    useEffect(() => {
-        GetAllUsergroups();
-    }, []);
-
+   
     const GetAllUsergroups = async () => {
         let fetchAllUsergroups = await fetch(
             'http://localhost:5070/getUserGroups',
@@ -69,6 +66,12 @@ function Groups({ isMobile }) {
     const [openModal, setOpenModal] = useState(false);
     const [ele, setEle] = useState(null);
 
+
+    useEffect(() => {
+        GetAllUsergroups();
+    }, []);
+
+
     const OpenGroupsLeftMenu = () => {
         GroupsLeftMenu.current.style.width = '670px';
         GroupsLeftMenu.current.style.display = 'inline-table';
@@ -105,8 +108,8 @@ function Groups({ isMobile }) {
     };
 
     const switchGroup = (element) => {
-
         setGroupSelect(element)
+        GetAllGroupPosts(element.GroupID)
     };
 
     //AddGroup
@@ -132,7 +135,7 @@ function Groups({ isMobile }) {
                         <div className='GroupsList'>
                             {groupS !== null ? (
                                 groupS.map((ele) => (
-                                    <span key={ele.GroupID} onClick={()=>setGroupSelect(ele)}>
+                                    <span key={ele.GroupID} onClick={()=>switchGroup(ele)}>
                                         <MiniUserCard
                                             imgStyleName={'miniUserCardImg'}
                                             optContent={ele.Name}>

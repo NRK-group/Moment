@@ -57,6 +57,7 @@ func (h *Hub) Run() {
 				if err != nil {
 					l.LogMessage("Hub.go", "Run() - InsertMessage", err)
 				}
+				messages.InsertOrUpdateMessageNotif(msg.ChatId, msg.ReceiverId, h.Database)
 				if _, valid := h.Clients[msg.ReceiverId]; valid {
 					resp, _ := json.Marshal(msg)
 					h.Clients[msg.ReceiverId].Send <- resp
@@ -73,6 +74,7 @@ func (h *Hub) Run() {
 				}
 				for _, member := range members {
 					if member.UserId != msg.SenderId {
+						messages.InsertOrUpdateMessageNotif(msg.ChatId, member.UserId, h.Database)
 						if _, valid := h.Clients[member.UserId]; valid {
 							resp, _ := json.Marshal(msg)
 							h.Clients[member.UserId].Send <- resp

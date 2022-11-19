@@ -72,7 +72,7 @@ export default function GroupEvent({ groupId, setOpenModal }) {
     }
     return (
         <div id='GroupEvent'>
-        <Card styleName='newPostBox'>
+        <Card styleName='newPostBoxEvent'>
             <Card styleName='newPostHeader'>
                 <span className='newPostTitle'>Create a Event </span>
             </Card>

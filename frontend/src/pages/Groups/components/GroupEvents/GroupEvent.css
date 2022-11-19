@@ -1,3 +1,9 @@
-.newPostBox  {
+.newPostBoxEvent  {
     height: 655px;
+    width: 600px;
+    background-color: var(--background-color);
+    margin: auto;
+    margin-top: 7%;
+    border-radius: 5px;
+    padding: 1%;
 }

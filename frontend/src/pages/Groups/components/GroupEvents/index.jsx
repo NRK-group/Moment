@@ -5,8 +5,19 @@ import Card from '../../../../components/card/Card';
 import { MessagesIcon } from '../../../../components/Icons/Icons';
 import { GetCookie } from '../../../../pages/profile/ProfileData';
 import '../../../../features/newpost/NewPost.css';
+import Datetime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
+import './GroupEvent.css'
 
-export default function GroupPost({groupId, setOpenModal}) {
+export default function GroupEvent({ groupId, setOpenModal }) {
+    const [startDate, setStartDate] = useState(
+        new Date(new Date().setFullYear(new Date().getFullYear()))
+    );
+
+    const [endDate, setEndDate] = useState(
+        new Date(new Date().setFullYear(new Date().getFullYear()))
+    );
+
     const navigate = useNavigate('');
     let imgUpload = useRef(),
         content = useRef();
@@ -29,12 +40,17 @@ export default function GroupPost({groupId, setOpenModal}) {
     function UploadPost(textVal) {
         if (textVal.trim() === '') return;
 
+
         fetch(`http://localhost:5070/post`, {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({
-                Content: textVal,
+                Description: textVal,
                 GroupID: groupId,
+                Name: eventName,
+                Location: location,
+                StartTime: startDate,
+                EndTime: endDate,
                 UserID: GetCookie('session_token').split('&')[0],
             }),
         }).then(async (response) => {
@@ -50,16 +66,15 @@ export default function GroupPost({groupId, setOpenModal}) {
                 UploadImage(formData);
                 setImage(null);
             }
-            setOpenModal(false)
+            setOpenModal(false);
             return resp;
         });
-
     }
     return (
-        <div id='GroupPost'>
+        <div id='GroupEvent'>
         <Card styleName='newPostBox'>
             <Card styleName='newPostHeader'>
-                <span className='newPostTitle'>Create a post </span>
+                <span className='newPostTitle'>Create a Event </span>
             </Card>
 
             <Card styleName='NewPostContent'>
@@ -82,6 +97,28 @@ export default function GroupPost({groupId, setOpenModal}) {
                         ref={imgUpload}
                         onChange={handleChangeImage}
                     />
+
+                    <div>
+                        <h4>Name:</h4>
+                        <input></input>
+                        <br/>
+                        <h4>Location:</h4>
+                        <input></input>
+                        <br/>
+                        <br/>
+                        <span>Start Date</span>
+                        <Datetime
+                            value={startDate}
+                            onChange={(date) => setStartDate(date)}
+                        />
+                        <br />
+
+                        <span>End Date</span>
+                        <Datetime
+                            value={endDate}
+                            onChange={(date) => setEndDate(date)}
+                        />
+                    </div>
                 </Card>
 
                 <Card styleName='NewPostContentInput'>
@@ -92,7 +129,7 @@ export default function GroupPost({groupId, setOpenModal}) {
                         wrap='hard'
                         className='newPostTextContent'
                         maxLength='280'
-                        placeholder='What happened today ?'
+                        placeholder='What the event about?'
                     />
                     <button
                         className='NewPostSendBtn'

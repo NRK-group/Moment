@@ -9,6 +9,7 @@ import Input from '../../components/Input/Input';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 import GroupList from './components/GroupList';
 import GroupPost from './components/GroupPost';
+import GroupEvent from './components/GroupEvents';
 import {
     ChevronRightIcon,
     ChevronLeftIcon,
@@ -112,8 +113,6 @@ function Groups({ isMobile }) {
         GetAllGroupPosts(element.GroupID)
     };
 
-    //AddGroup
-    // <GroupList data={groupSM} />
     return (
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
@@ -163,7 +162,11 @@ function Groups({ isMobile }) {
                                             marginTop: '12px',
                                             cursor: 'pointer',
                                         }}
-                                        onClick={() => {}}>
+                                        onClick={() => {
+                                            setEle(<GroupEvent groupId={groupSelect.GroupID}
+                                                setOpenModal={setOpenModal} />);
+                                            setOpenModal(true);
+                                        }}>
                                         Create Events
                                     </p>
 
@@ -251,7 +254,6 @@ function Groups({ isMobile }) {
                                         postId={data.PostID}
                                     />
                                 ))}
-
                         </div>
                     </div>
 

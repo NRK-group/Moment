@@ -1,14 +1,14 @@
 package structs
 
 type Event struct {
-	EventId     string
-	UserId      string
-	GroupId     string
-	Name        string
-	Description string
-	Location    string
-	StartTime   string
-	EndTime     string
+	EventId     string 
+	UserId      string `json:"UserId"`
+	GroupId     string `json:"GroupId"`
+	Name        string `json:"Name"`
+	Description string `json:"Description"`
+	Location    string `json:"Location"`
+	StartTime   string `json:"StartTime"`
+	EndTime     string `json:"EndTime"`
 	CreatedAt   string
 }
 

@@ -12,7 +12,14 @@ export const ChatUsersContainer = ({
             <div className='chatUsers scrollbar-hidden'>
                 {Array.isArray(chatList)
                     ? chatList.map(
-                          ({ type, chatId, details, member, content }) => {
+                          ({
+                              type,
+                              chatId,
+                              details,
+                              member,
+                              content,
+                              notif,
+                          }) => {
                               return (
                                   <NavLink
                                       key={details.id}
@@ -25,7 +32,16 @@ export const ChatUsersContainer = ({
                                       <MiniUserCard
                                           img={details.img}
                                           propsId={`chat` + details.id}
-                                          name={details.name}>
+                                          name={details.name}
+                                          button={
+                                              <>
+                                                  {notif && notif != 0 ? (
+                                                      <div className='messageNotifIndicator'>
+                                                          {notif}
+                                                      </div>
+                                                  ) : null}
+                                              </>
+                                          }>
                                           {content.content}
                                       </MiniUserCard>
                                   </NavLink>

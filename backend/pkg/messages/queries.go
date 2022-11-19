@@ -215,3 +215,22 @@ func GetNotif(chatId string, receiverId string, database *structs.DB) int {
 	}
 	return notif
 }
+
+// DeleteNotif reset the number of the notification to 0
+//
+// Param:
+//
+// chatId: the id of the chat
+// currentUser: the id of the current user
+// database: the database
+func DeleteNotif(chatId string, currentUser string, database *structs.DB) error {
+	stmt, err := database.DB.Prepare("UPDATE MessageNotif SET notif = ? WHERE chatId = ? AND receiverId = ?")
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(0, chatId, currentUser)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -189,6 +189,7 @@ p {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.671);
     top: 0;
+    z-index: 11;
 }
 
 .followStatsPopUp {
@@ -395,6 +396,7 @@ p {
     background-color: var(--background-color);
     border: 2px solid var(--border-color);
     overflow: auto;
+    z-index: 10;
 }
 
 .profileUpdate::-webkit-scrollbar {

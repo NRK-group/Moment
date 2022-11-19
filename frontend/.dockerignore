@@ -1,0 +1,7 @@
+//All files that arenot needed to build
+Dockerfile
+.dockerignore
+.gitignore
+
+//Ignore files that get built
+# node_modules

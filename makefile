@@ -14,3 +14,17 @@ runJs:
 runTest:
 	rm -rf backend/Test/social_network_test.db
 	cd backend/Test && go test -v .
+
+
+backendDocker:
+	cd backend
+	docker build -t $(imageName) .
+	docker run --rm -p 5070:5070 $(imageName)
+
+
+
+frontendDocker:
+	cd frontend
+	docker build -t $(imageName) .
+	docker run --rm -p 8070:8070 $(imageName)
+

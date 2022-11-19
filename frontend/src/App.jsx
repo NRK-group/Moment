@@ -1,26 +1,25 @@
 import './App.css';
-import Footer from './layouts/Footer/Footer';
-import Header from './layouts/Header/Header';
-import Home from './pages/Home';
+import Footer from './Layouts/Footer/Footer';
+import Header from './Layouts/Header/Header';
+import Home from './Pages/Home/Index';
 import { Route, Routes } from 'react-router-dom';
-import Login from './pages/loginPage/Login';
-import Registration from './pages/regPage/Registration';
-import Chat from './features/Chat/Chat';
-import Profile from './pages/profile/Profile';
-import ProfileInfoPopUp from './features/profile/ProfileInfoPopUp';
-import Stories from './pages/stories/stories';
-import Comments from './features/Comments';
+import Login from './Pages/LoginPage/Login';
+import Registration from './Pages/RegPage/Registration';
+import Chat from './Features/Chat/Chat';
+import Profile from './Pages/Profile/Profile';
+import ProfileInfoPopUp from './Features/Profile/ProfileInfoPopUp';
+import Comments from './Features/Comments/Index';
 import { useEffect, useState } from 'react';
-import NewPost from './features/newpost/NewPost';
-import { Notification } from './features/Notification/Notification';
-import Validation from './components/Validation/Validation';
-import { Menu } from './layouts/Menu/Menu';
-import ValidRedirect from './components/Validation/ValidRedirect';
-import useWindowDimensions from './components/hooks/useWindowDimensions';
-import CloseFriendsUsers from './features/profile/CloseFriendsUsers';
-import Followers from './features/profile/Followers';
-import Following from './features/profile/Following';
-import { SearchModal } from './features/Search/SearchModal';
+import NewPost from './Features/Newpost/NewPost';
+import { Notification } from './Features/Notification/Notification';
+import Validation from './Components/Validation/Validation';
+import { Menu } from './Layouts/Menu/Menu';
+import ValidRedirect from './Components/Validation/ValidRedirect';
+import useWindowDimensions from './Components/Hooks/UseWindowDimensions';
+import CloseFriendsUsers from './Features/Profile/CloseFriendsUsers';
+import Followers from './Features/Profile/Followers';
+import Following from './Features/Profile/Following';
+import { SearchModal } from './Features/Search/SearchModal';
 function App() {
     const [authorised, setAuthorised] = useState(false);
     Validation(setAuthorised);
@@ -110,8 +109,6 @@ function App() {
                             path='/update'
                             element={<ProfileInfoPopUp styleName='popUp' />}
                         />
-                        <Route path='/stories' element={<Stories />} />
-                        
                     </Routes>
                 </>
             )}

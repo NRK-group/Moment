@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import FollowStatUsers from './FollowStatUsers';
-import GetFollowers from '../../pages/profile/Followers';
-import Card from '../../components/card/Card';
+import GetFollowers from '../../Pages/Profile/Followers';
+import Card from '../../Components/Card/Card';
 import { useNavigate } from 'react-router-dom';
-import { FollowRelationshipUpdate } from '../../pages/profile/FollowingData';
+import { FollowRelationshipUpdate } from '../../Pages/Profile/FollowingData';
 import FollowerHolder from './FollowerHolder';
 
 export default function Followers() {
-    const navigate = useNavigate('')
+    const navigate = useNavigate('');
     const [follower, setFollower] = useState([]);
     useEffect(() => {
         GetFollowers().then((response) => setFollower(response));

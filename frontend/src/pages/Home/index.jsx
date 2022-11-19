@@ -1,8 +1,8 @@
 import './Home.css';
-import Avatar from '../../components/Avatar';
-import Post from '../../features/Post';
-import Body from '../../components/Body/Body';
-import Card from '../../components/card/Card';
+import Avatar from '../../Components/Avatar/Index';
+import Post from '../../Features/Post/Index';
+import Body from '../../Components/Body/Body';
+import Card from '../../Components/Card/Card';
 import { useState, useEffect } from 'react';
 
 function Home({ isMobile }) {
@@ -14,7 +14,7 @@ function Home({ isMobile }) {
         let fetchPost = await fetch('http://localhost:5070/post')
             .then(async (resp) => await resp.json())
             .then((data) => data);
-            console.log({fetchPost})
+        console.log({ fetchPost });
         setPosts(fetchPost);
     };
     useEffect(() => {
@@ -51,23 +51,20 @@ function Home({ isMobile }) {
                             </div>
                             <br />
                             <div className='homePagePostArea'>
-                                { posts && posts.map((data) => (
-                                    <Post
-                                    key={data.PostID}
-                                        avatarSrc={
-                                            `http://localhost:5070/${data.Image}`
-                                        }
-                                        name={data.NickName}
-                                        postContent={
-                                            data.Content
-                                        }
-                                        userID={data.UserID}
-                                        likes={data.NumLikes}
-                                        commentsnum={data.NumOfComment}
-                                       postBodyImgSrc={data.ImageUpload}
-                                        postId={data.PostID}
-                                    />
-                                ))}
+                                {posts &&
+                                    posts.map((data) => (
+                                        <Post
+                                            key={data.PostID}
+                                            avatarSrc={`http://localhost:5070/${data.Image}`}
+                                            name={data.NickName}
+                                            postContent={data.Content}
+                                            userID={data.UserID}
+                                            likes={data.NumLikes}
+                                            commentsnum={data.NumOfComment}
+                                            postBodyImgSrc={data.ImageUpload}
+                                            postId={data.PostID}
+                                        />
+                                    ))}
                             </div>
                         </div>
                         <div className='homePageProfile'>

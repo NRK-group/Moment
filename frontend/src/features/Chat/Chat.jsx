@@ -1,12 +1,12 @@
 import './Chat.css';
-import Body from '../../components/Body/Body';
-import Card from '../../components/card/Card';
-import SendMessageBox from '../Messages/components/SendMessageBox';
-import { ChatUsersContainer } from './components/chatUsersContainer';
+import Body from '../../Components/Body/Body';
+import Card from '../../Components/Card/Card';
+import SendMessageBox from '../Messages/Components/SendMessageBox';
+import { ChatUsersContainer } from './Components/ChatUsersContainer';
 import { Messages } from '../Messages/Messages';
-import { NewChatModal } from './components/NewChatModal';
+import { NewChatModal } from './Components/NewChatModal';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { GetChatList } from './hooks/getChatList';
+import { GetChatList } from './Hooks/GetChatList';
 import { useEffect, useState } from 'react';
 const Chat = ({ isMobile, socket }) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';

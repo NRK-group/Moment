@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { WriteIcon } from '../../../components/Icons/Icons';
+import { WriteIcon } from '../../../Components/Icons/Icons';
 import { useNavigate } from 'react-router-dom';
 const ChatContainerHeader = ({ userName }) => {
     const navigate = useNavigate();

@@ -1,21 +1,21 @@
-import AuthAlternative from '../../features/authentication/AuthAlternative';
-import AuthCard from '../../features/authentication/AuthCard';
-import AuthInput from '../../features/authentication/AuthInput';
+import AuthAlternative from '../../Features/Authentication/AuthAlternative';
+import AuthCard from '../../Features/Authentication/AuthCard';
+import AuthInput from '../../Features/Authentication/AuthInput';
 import './Login.css';
 import ValidateLoginAttempt from './ValidateLogin';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Card from '../../components/card/Card';
+import Card from '../../Components/Card/Card';
 
-export default function Login({auth}) {
+export default function Login({ auth }) {
     let email = useRef(),
         password = useRef(),
         errMsg = useRef();
     let navigate = useNavigate();
     function successfulLogin() {
-        navigate('/home')
-        auth(true)
+        navigate('/home');
+        auth(true);
     }
 
     return (
@@ -35,15 +35,15 @@ export default function Login({auth}) {
             <Card styleName='errMsgHolder' refr={errMsg} />
             <button
                 className='loginInput loginAttemptBtn'
-                onClick={ () => {
-                   ValidateLoginAttempt(
-                     email.current.value,
-                     password.current.value,
-                     errMsg.current).then(resp => {
-                        if (resp) successfulLogin()
-                     })
-                }
-                }>
+                onClick={() => {
+                    ValidateLoginAttempt(
+                        email.current.value,
+                        password.current.value,
+                        errMsg.current
+                    ).then((resp) => {
+                        if (resp) successfulLogin();
+                    });
+                }}>
                 Log in
             </button>
 

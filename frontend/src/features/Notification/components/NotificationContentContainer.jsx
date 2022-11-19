@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
-import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
+import MiniUserCard from '../../../Components/MiniUserCard/MiniUserCard';
 import { NoNotifications } from './NoNotifications';
-import { CalculateTimeDiff } from '../hooks/calculateTimediff';
-import { GetNotif } from '../hooks/getNotif';
-import { Button } from '../../../components/Button/Button';
+import { CalculateTimeDiff } from '../Hooks/CalculateTimediff';
+import { GetNotif } from '../Hooks/GetNotif';
+import { Button } from '../../../Components/Button/Button';
 import { useState } from 'react';
 import { useEffect } from 'react';
 export const NotificationContentContainer = ({ socket }) => {

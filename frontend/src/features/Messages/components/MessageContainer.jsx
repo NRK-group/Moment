@@ -1,6 +1,6 @@
-import { UserIcon } from '../../../components/Icons/Icons';
+import { UserIcon } from '../../../Components/Icons/Icons';
 import { MessageContent } from './MessageContent';
-import { ProfileIcon } from '../../../components/Icons/Icons';
+import { ProfileIcon } from '../../../Components/Icons/Icons';
 export const MessageContainer = ({ name, img, children }) => {
     return (
         <div className='messageContentContainer'>

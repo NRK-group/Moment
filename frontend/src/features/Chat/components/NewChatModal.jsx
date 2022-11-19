@@ -1,8 +1,8 @@
-import Input from '../../../components/Input/Input';
-import { CloseIcon } from '../../../components/Icons/Icons';
-import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
+import Input from '../../../Components/Input/Input';
+import { CloseIcon } from '../../../Components/Icons/Icons';
+import MiniUserCard from '../../../Components/MiniUserCard/MiniUserCard';
 import { useNavigate } from 'react-router-dom';
-import { GetFollow } from '../hooks/getFollow';
+import { GetFollow } from '../Hooks/GetFollow';
 import { useState } from 'react';
 export const NewChatModal = ({ setAddToChatList }) => {
     const navigate = useNavigate();

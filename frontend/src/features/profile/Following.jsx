@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-import Card from '../../components/card/Card';
+import Card from '../../Components/Card/Card';
 import FollowerHolder from './FollowerHolder';
-import GetFollowing from '../../pages/profile/Following';
+import GetFollowing from '../../Pages/Profile/Following';
 
 export default function Following() {
     const navigate = useNavigate('');

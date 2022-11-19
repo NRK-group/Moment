@@ -1,8 +1,8 @@
 import { useRef } from 'react';
-import Card from '../../components/card/Card';
-import AuthAlternative from '../../features/authentication/AuthAlternative';
-import AuthCard from '../../features/authentication/AuthCard';
-import AuthInput from '../../features/authentication/AuthInput';
+import Card from '../../Components/Card/Card';
+import AuthAlternative from '../../Features/Authentication/AuthAlternative';
+import AuthCard from '../../Features/Authentication/AuthCard';
+import AuthInput from '../../Features/Authentication/AuthInput';
 import { SendRegistration, UpdateProfleImg } from './ValidRegistration';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
@@ -115,7 +115,7 @@ export default function Registration() {
                             regPassword.current.value,
                             regConfirm.current.value,
                             startDate,
-                            profileImg.current
+                            profileImg.current,
                         ],
                         regErrMsg.current
                     )

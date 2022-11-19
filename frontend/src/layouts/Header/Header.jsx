@@ -1,7 +1,7 @@
 import './Header.css';
 import { DesktopHeaderNav, MobileHeaderNav } from '../Navbar/Navbar';
-import Input from '../../components/Input/Input';
-import { CreateWebSocket } from '../../utils/createWebsocket';
+import Input from '../../Components/Input/Input';
+import { CreateWebSocket } from '../../Utils/createWebsocket';
 import { useEffect } from 'react';
 const Header = ({
     setSocket,

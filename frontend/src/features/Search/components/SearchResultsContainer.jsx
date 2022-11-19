@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
-import { GetAllUser } from '../hooks/getAllUser';
+import MiniUserCard from '../../../Components/MiniUserCard/MiniUserCard';
+import { GetAllUser } from '../Hooks/GetAllUser';
 import { NoSearchResult } from './NoSearchResult';
 export const SearchResultsContainer = ({ query }) => {
     let searchResult = GetAllUser();

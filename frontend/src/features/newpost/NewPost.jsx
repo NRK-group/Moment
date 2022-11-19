@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../../components/card/Card';
-import { MessagesIcon } from '../../components/Icons/Icons';
-import { GetCookie } from '../../pages/profile/ProfileData';
-import PrivacySelector from '../profile/PrivacySelector';
+import Card from '../../Components/Card/Card';
+import { MessagesIcon } from '../../Components/Icons/Icons';
+import { GetCookie } from '../../Pages/Profile/ProfileData';
+import PrivacySelector from '../Profile/PrivacySelector';
 import './NewPost.css';
 
 export default function NewPost() {
     const navigate = useNavigate('');
     let imgUpload = useRef(),
-    content = useRef();
+        content = useRef();
     const [image, setImage] = useState(null);
 
     const handleChangeImage = (e) => {
@@ -18,22 +18,25 @@ export default function NewPost() {
     };
 
     const UploadImage = (data) => {
-      let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
-          credentials: 'include',
-          method: 'POST',
-          body: data,
-      }).then(async (res) => {
-          console.log(res);
-      });
-  };
-
-    function UploadPost(textVal) {
-      if (textVal.trim() === "") return
-
-      fetch(`http://localhost:5070/post`, {
+        let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
             credentials: 'include',
             method: 'POST',
-            body: JSON.stringify({ Content: textVal, UserID: GetCookie("session_token").split("&")[0], }),
+            body: data,
+        }).then(async (res) => {
+            console.log(res);
+        });
+    };
+
+    function UploadPost(textVal) {
+        if (textVal.trim() === '') return;
+
+        fetch(`http://localhost:5070/post`, {
+            credentials: 'include',
+            method: 'POST',
+            body: JSON.stringify({
+                Content: textVal,
+                UserID: GetCookie('session_token').split('&')[0],
+            }),
         }).then(async (response) => {
             let resp = await response.json();
             console.log(resp);
@@ -47,8 +50,8 @@ export default function NewPost() {
 
                 UploadImage(formData);
                 setImage(null);
-              }
-              navigate('/home')
+            }
+            navigate('/home');
             return resp;
         });
     }
@@ -93,7 +96,7 @@ export default function NewPost() {
                         />
 
                         <textarea
-                        ref={content}
+                            ref={content}
                             cols='100'
                             rows='7'
                             wrap='hard'
@@ -101,7 +104,9 @@ export default function NewPost() {
                             maxLength='280'
                             placeholder='What happened today ?'
                         />
-                        <button className='NewPostSendBtn' onClick={() => UploadPost(content.current.value)}>
+                        <button
+                            className='NewPostSendBtn'
+                            onClick={() => UploadPost(content.current.value)}>
                             <span className='shareText'>Share</span>
                             <MessagesIcon />
                         </button>

@@ -1,8 +1,8 @@
 import './Notification.css';
-import Body from '../../components/Body/Body';
-import Card from '../../components/card/Card';
-import { NotificationContentContainer } from './components/NotificationContentContainer';
-import { NotificationsHeaderNav } from './components/NotificationsHeaderNav';
+import Body from '../../Components/Body/Body';
+import Card from '../../Components/Card/Card';
+import { NotificationContentContainer } from './Components/NotificationContentContainer';
+import { NotificationsHeaderNav } from './Components/NotificationsHeaderNav';
 export const Notification = ({ socket }) => {
     return (
         <Body styleName='mobile'>

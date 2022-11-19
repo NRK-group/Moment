@@ -7,7 +7,7 @@ import {
     GroupsIcon,
     NotificationsIcon,
     ProfileIcon,
-} from '../../components/Icons/Icons';
+} from '../../Components/Icons/Icons';
 import './Navbar.css';
 
 const FooterNav = ({ setIsSearchModalOpen }) => {

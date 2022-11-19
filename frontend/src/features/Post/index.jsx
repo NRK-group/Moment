@@ -1,13 +1,13 @@
-import Card from '../../components/card/Card';
-import Avatar from '../../components/Avatar';
-import ChatInput from '../../components/ChatInput';
+import Card from '../../Components/Card/Card';
+import Avatar from '../../Components/Avatar/Index';
+import ChatInput from '../../Components/ChatInput/Index';
 import { useNavigate } from 'react-router-dom';
 import {
     LikeIcon,
     FavoriteIcon,
     MessagesIcon,
     CommentIcon,
-} from '../../components/Icons/Icons';
+} from '../../Components/Icons/Icons';
 import './Post.css';
 import { useRef, useState } from 'react';
 
@@ -27,7 +27,6 @@ export default function Post({
 
     const [toggle, setToggle] = useState(true);
 
-
     const OpenDropdownMenu = () => {
         setToggle(!toggle);
         if (toggle) {
@@ -37,7 +36,6 @@ export default function Post({
             dropdown.current.style.display = 'none';
         }
     };
-
 
     const OpenCommets = async (postId) => {
         navigate('/comments', {
@@ -81,7 +79,9 @@ export default function Post({
                     </div>
                 </Card>
                 <Card styleName={'PostBody'}>
-                    {(postBodyImgSrc && <img src={`http://localhost:5070/${postBodyImgSrc}`} />) ||
+                    {(postBodyImgSrc && (
+                        <img src={`http://localhost:5070/${postBodyImgSrc}`} />
+                    )) ||
                         (postContent && <p>{postContent}</p>)}
                 </Card>
                 <Card styleName={'PostContent'}>

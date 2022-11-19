@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Card from '../../components/card/Card';
+import Card from '../../Components/Card/Card';
 import UserImg from './UserImg';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,8 +11,8 @@ export default function FollowStatUsers({
     crossIcon,
     typeVal,
 }) {
-const [type, setType] = useState(typeVal)
-const navigate = useNavigate("/")
+    const [type, setType] = useState(typeVal);
+    const navigate = useNavigate('/');
     return (
         <Card styleName='followStatUser profileCloseFriendsUser'>
             <UserImg
@@ -22,9 +22,15 @@ const navigate = useNavigate("/")
             />
             <Card styleName='followStatUsernameHold'>
                 {' '}
-                <h2 className='followStatUsername' onClick={()=>navigate("/profile?id="+ profileId)}>{username}</h2>{' '}
+                <h2
+                    className='followStatUsername'
+                    onClick={() => navigate('/profile?id=' + profileId)}>
+                    {username}
+                </h2>{' '}
             </Card>
-            <button className={type} onClick={() => btnAction(profileId, setType)}>
+            <button
+                className={type}
+                onClick={() => btnAction(profileId, setType)}>
                 {type}
             </button>
             <span className={crossIcon}>&#10005;</span>

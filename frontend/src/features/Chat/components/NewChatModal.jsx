@@ -4,7 +4,7 @@ import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
 import { useNavigate } from 'react-router-dom';
 import { GetFollow } from '../hooks/getFollow';
 import { useState } from 'react';
-export const NewChatModal = ({ setAddToChatList }) => {
+export const NewChatModal = () => {
     const navigate = useNavigate();
     let following = GetFollow();
     const [query, setQuery] = useState('');
@@ -29,8 +29,6 @@ export const NewChatModal = ({ setAddToChatList }) => {
         })
             .then(async (res) => {
                 let data = await res.json();
-                console.log(data);
-                data ? setAddToChatList(data) : setAddToChatList([]);
                 navigate(`/messages/${data.chatId}`, {
                     state: {
                         type: 'privateMessage',

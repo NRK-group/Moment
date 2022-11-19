@@ -15,12 +15,6 @@ const Chat = ({ isMobile, socket }) => {
     let [newMessage, setNewMessage] = useState(0);
     const [chatList, setClist] = useState([]);
     GetChatList(setClist, newMessage);
-    const [addToChatList, setAddToChatList] = useState();
-    useEffect(() => {
-        if (addToChatList) {
-            setClist((prev) => [addToChatList, ...prev]);
-        }
-    }, [addToChatList]);
     if (socket) {
         socket.onmessage = (e) => {
             let data = JSON.parse(e.data);
@@ -56,13 +50,7 @@ const Chat = ({ isMobile, socket }) => {
                                         />
                                         <Route
                                             path='new'
-                                            element={
-                                                <NewChatModal
-                                                    setAddToChatList={
-                                                        setAddToChatList
-                                                    }
-                                                />
-                                            }
+                                            element={<NewChatModal />}
                                         />
                                         <Route
                                             path=':chatId'

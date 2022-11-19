@@ -42,13 +42,18 @@ func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		marshallPosts, err := json.Marshal(groups)
+
+		if len(groups) == 0 {
+			groups = append([]structs.Group{{Name: "Threre are no groups", Description: "", Admin: "none"}}, groups...)
+		}
+
+		marshallGroups, err := json.Marshal(groups)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(marshallPosts))
+		w.Write([]byte(marshallGroups))
 		return
 	}
 

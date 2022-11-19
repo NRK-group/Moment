@@ -4,6 +4,7 @@ const Modal = ({ children, setOpenModal }) => {
     window.onclick = function (event) {
         if (
             event.target == document.getElementById('GroupListContainer') ||
+            event.target == document.getElementById('AddGroup')||
             event.target == document.getElementById('Modal')
         ) {
             setOpenModal(false);

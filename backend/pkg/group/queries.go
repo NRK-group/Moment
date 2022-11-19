@@ -78,3 +78,32 @@ func AllGroupPosts(groupID string, database *structs.DB) ([]structs.Post, error)
 
 	return posts, nil
 }
+
+
+
+// AllGroups
+// return all groups
+func AllUserGroups(uID string, database *structs.DB) ([]structs.Group, error) {
+	var group structs.Group
+	var groups []structs.Group
+	var err error
+	rows, err := database.DB.Query("SELECT * FROM Groups ")
+	if err != nil {
+		fmt.Print(err)
+		return nil, err
+	}
+	var groupId, admin, name, description, createdAt string
+	for rows.Next() {
+		rows.Scan(&groupId, &admin, &name, &description, &createdAt)
+		group = structs.Group{
+			CreatedAt:   createdAt,
+			Name:        name,
+			GroupID:     groupId,
+			Description: description,
+			Admin:       admin,
+		}
+		
+		groups = append([]structs.Group{group}, groups...)
+	}
+	return groups, nil
+}

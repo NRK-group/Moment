@@ -3,6 +3,7 @@ import './Groups.css';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
 import Post from '../../features/Post';
+import AddGroup from './components/AddGroup';
 import Modal from '../../features/Modal';
 import Input from '../../components/Input/Input';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
@@ -27,6 +28,7 @@ function Groups({ isMobile }) {
     const [groupS, setGroupS] = useState([]);
     const [groupSM, setGroupSM] = useState([]);
     const [openModal, setOpenModal] = useState(false);
+    const [ele, setEle] = useState(null);
 
     const OpenGroupsLeftMenu = () => {
         GroupsLeftMenu.current.style.width = '670px';
@@ -70,20 +72,22 @@ function Groups({ isMobile }) {
         })
             .then(async (resp) => await resp.json())
             .then((data) => data);
-        console.log({ fetchGroups });
+        
         setGroupSM(fetchGroups);
+        setEle(<GroupList data={groupSM} />)
         setOpenModal(true);
     };
 
+    const switchModalChildren = (element) => {};
+
+    //AddGroup
+    // <GroupList data={groupSM} />
     return (
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
                 <div className='Groups'>
                     {openModal && (
-                        <Modal setOpenModal={setOpenModal}>
-                            {' '}
-                            <GroupList data={groupSM} />
-                        </Modal>
+                        <Modal setOpenModal={setOpenModal}> {ele}</Modal>
                     )}
                     <div className='GroupsLeftMenu' ref={GroupsLeftMenu}>
                         <span
@@ -102,7 +106,9 @@ function Groups({ isMobile }) {
                             ) : (
                                 <div className='Join-Group'>
                                     {' '}
-                                    <span onClick={() => Getgroups()}>
+                                    <span onClick={() =>{ 
+                                        Getgroups()
+                                        }}>
                                         Join a group
                                     </span>{' '}
                                 </div>
@@ -125,13 +131,37 @@ function Groups({ isMobile }) {
                                             marginTop: '12px',
                                             cursor: 'pointer',
                                         }}
-                                        onClick={() => {}}>
+                                        onClick={() => {
+                                            setEle();
+                                        }}>
                                         {' '}
                                         Create group Post
                                     </p>
+                                    <p
+                                        style={{
+                                            marginTop: '12px',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() => {}}>
+                                        {' '}
+                                        Create A Group
+                                    </p>
                                 </>
                             ) : (
-                                <></>
+                                <>
+                                    <p
+                                        style={{
+                                            marginTop: '12px',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() => {
+                                            setEle(<AddGroup />);
+                                            setOpenModal(true);
+                                        }}>
+                                        {' '}
+                                        Create A Group
+                                    </p>
+                                </>
                             )}
                         </div>
                     </div>
@@ -145,7 +175,6 @@ function Groups({ isMobile }) {
                                     }}>
                                     <BarsIcon />
                                 </div>
-                              
 
                                 <p style={{ marginLeft: '4px' }}>{name}</p>
                             </div>

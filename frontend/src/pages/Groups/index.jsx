@@ -22,11 +22,20 @@ function Groups({ isMobile }) {
 
 
     useEffect(() => {
-      
+        GetAllUsergroups()
     }, []);
 
-    
-
+    const GetAllUsergroups = async () => {
+        let fetchAllUsergroups = await fetch('http://localhost:5070/getUserGroups', {
+            credentials: 'include',
+            method: 'GET',
+        })
+            .then(async (resp) => await resp.json())
+            .then((data) => data);
+ 
+        console.log({fetchAllUsergroups})
+        setGroupS(fetchAllUsergroups)
+    };
 
 
     const GroupsLeftMenu = useRef(null);
@@ -109,7 +118,7 @@ function Groups({ isMobile }) {
                             <h2>Groups</h2>
                         </div>
                         <div className='GroupsList'>
-                            {groupS.length > 0 ? (
+                            {groupS !== null ? (
                                 groupS.map((ele) => {})
                             ) : (
                                 <div className='Join-Group'>
@@ -123,7 +132,7 @@ function Groups({ isMobile }) {
                             )}
                         </div>
                         <div className='GroupPageMenu'>
-                            {groupS.length > 0 ? (
+                            {groupS !== null ? (
                                 <>
                                     <p
                                         style={{

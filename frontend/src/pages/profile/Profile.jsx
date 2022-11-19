@@ -6,7 +6,7 @@ import ProfilePosts from '../../features/profile/ProfilePosts';
 import './Profile.css';
 import FollowStatUsers from '../../features/profile/FollowStatUsers';
 import CloseFriendsUsers from '../../features/profile/CloseFriendsUsers';
-import GetProfile from './ProfileData';
+import GetProfile, { FormatDOB } from './ProfileData';
 import { GetCookie } from './ProfileData';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -19,7 +19,7 @@ import {
     SetRelBtn,
 } from './FollowingData';
 
-export default function Profile({ userId }) {
+export default function Profile() {
     const navigate = useNavigate();
     const [values, setValues] = useState({
         FirstName: '',
@@ -30,23 +30,28 @@ export default function Profile({ userId }) {
     });
     const [followStatus, setFollowStatus] = useState('Follow');
 
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    let id = urlParams.get('id');
+
     //if user is viewing their own profile
-    if (userId === GetCookie('session_token').split('&')[0]) userId = null;
+    if (id === GetCookie('session_token').split('&')[0] || id === '') id = null;
 
     useEffect(() => {
-        if (userId) {
-            CheckFollowing(userId).then((response) => {
+        if (id) {
+            CheckFollowing(id).then((response) => {
                 SetRelBtn(response.Message, setFollowStatus);
             });
         }
-        GetProfile(userId).then((response) => setValues(response));
+        GetProfile(id).then((response) => setValues(response));
+    
     }, []);
     const relBtn = (
         <Button
             content={followStatus}
             styleName={'relationship ' + followStatus}
             action={() => {
-                FollowRelationshipUpdate(userId).then((response) =>
+                FollowRelationshipUpdate(id).then((response) =>
                     UpdateRelationshipBtn(response.Message, setFollowStatus)
                 );
             }}></Button>
@@ -64,15 +69,30 @@ export default function Profile({ userId }) {
                         <h1 className={'profileDetailText profileFullName'}>
                             {values.FirstName + ' ' + values.LastName}
                         </h1>
+
                         <h3 className='profileDetailText'>{values.NickName}</h3>
-                        <p className='profileAboutMe'>{values.AboutMe}</p>
-                        {userId ? (
+                        {!id ||
+                        values.IsPublic === 1 ||
+                        followStatus === 'Following' ? (
+                            <span>
+                                <p className='profileAboutMe'>
+                                    {values.AboutMe}
+                                </p>
+                                <p className='smallProfileDetail'>
+                                    {values.Email}
+                                </p>
+                                <p className='smallProfileDetail'>
+                                    {FormatDOB(values.DateOfBirth)}
+                                </p>
+                            </span>
+                        ) : null}
+                        {id ? (
                             relBtn
                         ) : (
                             <span className='profileButtonHolder'>
                                 <button
                                     className='profileDetailBtn'
-                                    onClick={() => navigate('/profile/update')}>
+                                    onClick={() => navigate('/update')}>
                                     Edit
                                 </button>
                                 <button
@@ -83,29 +103,47 @@ export default function Profile({ userId }) {
                                 </button>
                             </span>
                         )}
+                        {!id ||
+                        values.IsPublic === 1 ||
+                        followStatus === 'Following' ? (
+                            <span>
+                                <ProfileStats
+                                    styleName={'profileStats'}
+                                    posts={values.NumPosts}
+                                    followers={values.NumFollowers}
+                                    following={values.NumFollowing}
+                                    id={id}
+                                />
+
+                                <ProfileStats
+                                    styleName={'profileStats_1'}
+                                    posts={values.NumPosts}
+                                    followers={values.NumFollowers}
+                                    following={values.NumFollowing}
+                                    id={id}
+                                />
+                            </span>
+                        ) : null}
                     </Card>
-                    <ProfileStats
-                        styleName={'profileStats'}
-                        posts={values.NumPosts}
-                        followers={values.NumFollowers}
-                        following={values.NumFollowing}
-                    />
                 </Card>
             </Card>
-            <ProfileStats
-                styleName={'profileStats_1'}
-                posts={values.NumPosts}
-                followers={values.NumFollowers}
-                following={values.NumFollowing}
-            />
-
-            <ProfilePosts
-                contentSelector='profileContentSelector'
-                postBtn='profilePosts'
-                favBtn='profileFavourites'
-                likeBtn='profileLiked'
-                postContainer='profilePostContainer noContent'
-            />
+            {!id || values.IsPublic === 1 || followStatus === 'Following' ? (
+                <ProfilePosts
+                    contentSelector='profileContentSelector'
+                    postBtn='profilePosts'
+                    favBtn='profileFavourites'
+                    likeBtn='profileLiked'
+                    postContainer='profilePostContainer noContent'
+                    id={id}
+                />
+            ) : (
+                <Card styleName='restrictedAccount'>
+                    <span>
+                        <i className='fa-solid fa-lock fa-3x'></i>
+                    </span>
+                    <span>This account is private</span>
+                </Card>
+            )}
         </Card>
     );
 }

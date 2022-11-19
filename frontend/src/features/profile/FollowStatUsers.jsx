@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Card from '../../components/card/Card';
 import UserImg from './UserImg';
+import { useNavigate } from 'react-router-dom';
 
 export default function FollowStatUsers({
     imgSrc,
@@ -11,6 +12,7 @@ export default function FollowStatUsers({
     typeVal,
 }) {
 const [type, setType] = useState(typeVal)
+const navigate = useNavigate("/")
     return (
         <Card styleName='followStatUser profileCloseFriendsUser'>
             <UserImg
@@ -20,7 +22,7 @@ const [type, setType] = useState(typeVal)
             />
             <Card styleName='followStatUsernameHold'>
                 {' '}
-                <h2 className='followStatUsername'>{username}</h2>{' '}
+                <h2 className='followStatUsername' onClick={()=>navigate("/profile?id="+ profileId)}>{username}</h2>{' '}
             </Card>
             <button className={type} onClick={() => btnAction(profileId, setType)}>
                 {type}

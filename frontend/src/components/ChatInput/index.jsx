@@ -5,7 +5,7 @@ const Chat = ({geter}) => {
     return(
     <div className='CommentsChat'>
     <div className='CommentsChatIcons'><FaceSmileIcon/>
-       <input></input>
+       <input className='postCommentInput'></input>
        </div>   
        <p>Post</p>
    </div>

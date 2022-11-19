@@ -6,7 +6,7 @@ export const GetFollow = () => {
             credentials: 'include',
         }).then(async (res) => {
             let data = await res.json();
-            setFollowing(data);
+            data ? setFollowing(data) : setFollowing([]);
         });
     }, []);
     return following;

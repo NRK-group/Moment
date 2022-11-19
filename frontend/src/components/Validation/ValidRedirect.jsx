@@ -12,7 +12,6 @@ export default function ValidRedirect({children}) {
                 return resp.text();
             })
             .then((response) => {
-                console.log({response})
                 if (response === 'Validated') {
                     navigate('/home')
                     return

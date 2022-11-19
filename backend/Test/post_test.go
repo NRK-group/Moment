@@ -42,14 +42,22 @@ func CreateUser(database *structs.DB, t *testing.T) structs.User {
 	return currentResult
 }
 
-func CreatePost( GroupId  string ,database *structs.DB, t *testing.T) string {
+func CreatePost(GroupId string, database *structs.DB, t *testing.T) string {
 	newUser := CreateUser(database, t)
-		post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: GroupId, Image: "wasfdfgfd"}
-		postId, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
-		if err != nil {
-			t.Errorf("Error Inserting the struct into the db %v", err)
-		}
-		return postId
+	post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: GroupId, Image: "wasfdfgfd"}
+	postId, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
+	if err != nil {
+		t.Errorf("Error Inserting the struct into the db %v", err)
+	}
+	return postId
+}
+
+func createNewPost(userId string, database *structs.DB) {
+	post1 := structs.Post{UserID: userId, Content: "hey" + uuid.NewV4().String()}
+	_, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, database)
+	if err != nil {
+		fmt.Println("Error Inserting the struct into the db", err.Error())
+	}
 }
 
 func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
@@ -93,9 +101,8 @@ func TestCreatePost(t *testing.T) {
 
 	t.Run("Read all Posts from the DB", func(t *testing.T) {
 		// database := DatabaseSetup()
-
-		posts, err := post.AllPost("6t78t8t87", database)
-		if err != nil || len(posts) == 0{
+		posts, err := post.AllPost(database)
+		if err != nil || len(posts) == 0 {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 	})
@@ -104,7 +111,7 @@ func TestCreatePost(t *testing.T) {
 func TestPostHandlerMakeAPost(t *testing.T) {
 	// database := DatabaseSetup()
 	newUser := CreateUser(database, t)
-	post1 := structs.Post{UserID: newUser.UserId, Content: "hey", GroupID: "3233234", Image: "wasfdfgfd"}
+	post1 := structs.Post{UserID: newUser.UserId, Content: "hey", Image: "wasfdfgfd"}
 	body, _ := json.Marshal(post1)
 
 	req, err := http.NewRequest("POST", "/post", bytes.NewBuffer(body))
@@ -116,11 +123,11 @@ func TestPostHandlerMakeAPost(t *testing.T) {
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(Env.Post)
 	handler.ServeHTTP(rr, req)
-	expected := rr.Body.String()
-	expectedStr := "successfully posted"
+	expected := rr.Code
+	expectedStr := 200
 	if expectedStr != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
+			 expected, expectedStr)
 	}
 }
 
@@ -139,4 +146,70 @@ func TestPostHandlerGettingAllPost(t *testing.T) {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)
 	}
+}
+
+var newUser, newUser2 structs.User
+
+func TestGetingUserPosts(t *testing.T) {
+	t.Run("Insert Posts to DB", func(t *testing.T) {
+		newUser = CreateUser(database, t)
+		newUser2 = CreateUser(database, t)
+		createNewPost(newUser2.UserId, database)
+		createNewPost(newUser2.UserId, database)
+		createNewPost(newUser2.UserId, database)
+		createNewPost(newUser.UserId, database)
+	})
+
+	t.Run("Read all user Posts from the DB", func(t *testing.T) {
+		posts, err := post.AllUserPost(newUser.UserId, database)
+		if err != nil || len(posts) != 1 {
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+	})
+}
+
+func TestGetUserPostHandlerGetAllUserPost(t *testing.T) {
+	t.Run("Creating users and Posts to DB", func(t *testing.T) {
+		newUser = CreateUser(database, t)
+		newUser2 = CreateUser(database, t)
+		createNewPost(newUser2.UserId, database)
+		createNewPost(newUser2.UserId, database)
+		createNewPost(newUser2.UserId, database)
+		createNewPost(newUser.UserId, database)
+	})
+
+	t.Run("Testing the get user post handler ", func(t *testing.T) {
+
+		loginStruct := structs.User{Email: newUser.Email, Password: "Password123"}
+
+		loginUserBytes, err := json.Marshal(loginStruct)
+		if err != nil {
+			t.Errorf("Error marshalling the sampleUser")
+		}
+		Env := &handler.Env{Env: database}
+
+		// Create the bytes into a reader
+		loginReq := bytes.NewReader(loginUserBytes)
+		req := httptest.NewRequest(http.MethodPost, "/login", loginReq)
+		w := httptest.NewRecorder()
+		Env.Login(w, req)
+
+		reqGetUserPosts, err := http.NewRequest("GET", "/getUserPosts", nil)
+		reqGetUserPosts.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+		values := reqGetUserPosts.URL.Query()
+		values.Add("userID", newUser.UserId)
+		reqGetUserPosts.URL.RawQuery = values.Encode()
+		if err != nil {
+			t.Fatal(err)
+		}
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(Env.GetUserPosts)
+		fmt.Println("test")
+		handler.ServeHTTP(rr, reqGetUserPosts)
+		expected := http.StatusOK
+		if status := rr.Code; status != expected && len(strings.Split(rr.Body.String(), "PostID")) == 2 {
+			t.Errorf("handler returned unexpected body: got %v want %v",
+				rr.Body.String(), expected)
+		}
+	})
 }

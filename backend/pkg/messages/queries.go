@@ -14,7 +14,7 @@ import (
 //
 // message struct: the message information
 // database: the database
-func InsertMessage(message structs.Message, database structs.DB) (structs.Message, error) {
+func InsertMessage(message structs.Message, database *structs.DB) (structs.Message, error) {
 	messageId := uuid.NewV4().String()
 	createdAt := time.Now()
 	msg := structs.Message{}
@@ -36,6 +36,7 @@ func InsertMessage(message structs.Message, database structs.DB) (structs.Messag
 		Content:     message.Content,
 		CreatedAt:   createdAt,
 	}
+	UpdateChat(message.ChatId, database)
 	return msg, nil
 }
 
@@ -91,6 +92,7 @@ func InsertGroupMessage(message structs.Message, database *structs.DB) (structs.
 		Content:     message.Content,
 		CreatedAt:   createdAt,
 	}
+	UpdateChat(message.ChatId, database)
 	return msg, nil
 }
 
@@ -109,4 +111,54 @@ func GetGroupMessages(chatId string, database structs.DB) ([]structs.Message, er
 		messages = append(messages, message)
 	}
 	return messages, nil
+}
+
+// GetLastMessage returns the last message from a chat
+//
+// Param:
+//
+// chatId: the id of the chat
+// database: the database
+func GetLastMessage(chatId string, database *structs.DB) structs.Message {
+	var message structs.Message
+	row := database.DB.QueryRow("SELECT * FROM PrivateMessage WHERE chatId = ? ORDER BY createdAt DESC LIMIT 1", chatId)
+	err := row.Scan(&message.MessageId, &message.ChatId, &message.SenderId, &message.ReceiverId, &message.Content, &message.CreatedAt)
+	if err != nil {
+		return message
+	}
+	return message
+}
+
+// GetLastGroupMessage returns the last message from a chat
+//
+// Param:
+//
+// chatId: the id of the chat
+// database: the database
+func GetLastGroupMessage(chatId string, database *structs.DB) structs.Message {
+	var message structs.Message
+	row := database.DB.QueryRow("SELECT * FROM GroupMessage WHERE chatId = ? ORDER BY createdAt DESC LIMIT 1", chatId)
+	err := row.Scan(&message.MessageId, &message.ReceiverId, &message.SenderId, &message.ChatId, &message.Content, &message.CreatedAt)
+	if err != nil {
+		return message
+	}
+	return message
+}
+
+// UpdateChat updates the chat
+//
+// Param:
+//
+//	chatId: the chat id
+//	database: the database
+func UpdateChat(chatId string, database *structs.DB) error {
+	stmt, err := database.DB.Prepare("UPDATE Chat SET updatedAt = ? WHERE chatId = ?")
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(time.Now(), chatId)
+	if err != nil {
+		return err
+	}
+	return nil
 }

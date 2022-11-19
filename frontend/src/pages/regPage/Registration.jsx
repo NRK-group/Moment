@@ -66,6 +66,7 @@ export default function Registration() {
                 placeholder='Nickname'
                 refr={nickName}
             />
+            <p className='regDob'> Date of Birth</p>
             <DatePicker
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}

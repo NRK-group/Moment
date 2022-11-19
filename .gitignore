@@ -2,3 +2,11 @@ notes/*
 *.db
 backend/populate/
 backend/images/profile/*
+
+# exclude everything
+backend/images/Comment/*
+backend/images/Post/*
+
+# exception to the rule
+!backend/images/Comment/.gitkeep 
+!backend/images/Post/.gitkeep 

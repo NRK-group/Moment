@@ -7,11 +7,31 @@ import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { GetChatList } from './hooks/getChatList';
+import { useEffect, useState } from 'react';
 const Chat = ({ isMobile, socket }) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
     let user = document.cookie.split('=')[1].split('&')[0];
-    const chatList = GetChatList();
+    let [newMessage, setNewMessage] = useState(0);
+    const [chatList, setClist] = useState([]);
+    GetChatList(setClist, newMessage);
+    const [addToChatList, setAddToChatList] = useState();
+    useEffect(() => {
+        if (addToChatList) {
+            setClist((prev) => [addToChatList, ...prev]);
+        }
+    }, [addToChatList]);
+    if (socket) {
+        socket.onmessage = (e) => {
+            let data = JSON.parse(e.data);
+            if (
+                data.type === 'privateMessage' ||
+                data.type === 'groupMessage'
+            ) {
+                setNewMessage((prev) => prev + 1);
+            }
+        };
+    }
     return (
         <>
             <Body styleName={bodyStyleName}>
@@ -36,7 +56,13 @@ const Chat = ({ isMobile, socket }) => {
                                         />
                                         <Route
                                             path='new'
-                                            element={<NewChatModal />}
+                                            element={
+                                                <NewChatModal
+                                                    setAddToChatList={
+                                                        setAddToChatList
+                                                    }
+                                                />
+                                            }
                                         />
                                         <Route
                                             path=':chatId'
@@ -44,6 +70,9 @@ const Chat = ({ isMobile, socket }) => {
                                                 <Messages
                                                     currentUserInfo={user} // change to user info
                                                     socket={socket}
+                                                    setNewMessage={
+                                                        setNewMessage
+                                                    }
                                                 />
                                             }
                                         />

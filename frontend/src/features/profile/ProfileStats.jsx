@@ -10,12 +10,14 @@ export default function ProfileStats(props) {
                 <p>{props.posts} posts</p>
             </Card>
             <Card styleName='followersStats stats'>
-                <p onClick={() => navigate('/followers')}>
+                <p onClick={() => (props.id ? null : navigate('/followers'))}>
                     {props.followers} followers
                 </p>
             </Card>
             <Card styleName='followingStats stats'>
-                <p onClick={() => navigate('/following')}>{props.following} following</p>
+                <p onClick={() => (props.id ? null : navigate('/following'))}>
+                    {props.following} following
+                </p>
             </Card>
         </Card>
     );

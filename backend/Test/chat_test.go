@@ -30,7 +30,6 @@ func TestPrivateChat(t *testing.T) {
 		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
 		IsLoggedIn: 0, IsPublic: 1, NumFollowers: 5, NumFollowing: 5, NumPosts: 0,
 	}
-
 	auth.InsertUser(*user1, *Env.Env)
 	var result1 structs.User
 	err := auth.GetUser("email", user1.Email, &result1, *Env.Env)
@@ -83,8 +82,8 @@ func TestPrivateChat(t *testing.T) {
 		}
 	})
 	t.Run("Get Previous Private chat", func(t *testing.T) {
-		if len(chats) != 1 {
-			t.Errorf("Error expected 1 chat, got %v", len(chats))
+		if len(chats) != 0 {
+			t.Errorf("Error expected 0 chat, got %v", len(chats))
 		}
 	})
 	err = chat.InsertNewGroupChat("hello", Env.Env)
@@ -97,6 +96,28 @@ func TestPrivateChat(t *testing.T) {
 	t.Run("Get userinfo for the chat", func(t *testing.T) {
 		if err != nil {
 			t.Errorf("GetUserInfoForChat() error = %v", err)
+		}
+	})
+	b, r := chat.CheckIfChatExists(result1.UserId, result2.UserId, Env.Env)
+	t.Run("Check if chat exists", func(t *testing.T) {
+		if b != true {
+			t.Errorf("Error expected true, got %v", err)
+		}
+	})
+	t.Run("Check if chat exists", func(t *testing.T) {
+		if r.Details.Id != result2.UserId {
+			t.Errorf("Error expected %v, got %v", result2.UserId, r)
+		}
+	})
+	b, r = chat.CheckIfChatExists(result2.UserId, result1.UserId, Env.Env)
+	t.Run("Check if chat exists", func(t *testing.T) {
+		if b != true {
+			t.Errorf("Error expected true, got %v", err)
+		}
+	})
+	t.Run("Check if chat exists", func(t *testing.T) {
+		if r.Details.Id != result1.UserId {
+			t.Errorf("Error expected %v, got %v", result1.UserId, r)
 		}
 	})
 }
@@ -240,6 +261,33 @@ func TestChatHandler(t *testing.T) {
 	t.Run("Get chat", func(t *testing.T) {
 		if nrr.Code != http.StatusOK {
 			t.Errorf("Expected status code %d, got %d", http.StatusOK, nrr.Code)
+		}
+	})
+	type Receiver struct {
+		Id string `json:"receiverId"`
+	}
+
+	receiver := &Receiver{
+		Id: result.UserId,
+	}
+	receiverBytes, err := json.Marshal(receiver)
+	rBody := bytes.NewReader(receiverBytes)
+	nr2 := httptest.NewRequest(http.MethodPost, "/chat", rBody) // create a request
+	nr2.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+	nrr2 := httptest.NewRecorder() // create a response recorder
+	Env.Chat(nrr2, nr2)            // call the handler
+	// get cookies
+	cookie2, _ := nr.Cookie("session_token")
+	got2, _ := auth.SliceCookie(cookie2.Value)
+	want2 := result.UserId
+	t.Run("Get cookie", func(t *testing.T) {
+		if got2[0] != want2 {
+			t.Errorf("Expected %s, got %s", want2, got2[0])
+		}
+	})
+	t.Run("Get chat", func(t *testing.T) {
+		if nrr2.Code != http.StatusOK {
+			t.Errorf("Expected status code %d, got %d", http.StatusOK, nrr2.Code)
 		}
 	})
 }

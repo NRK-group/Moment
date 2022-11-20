@@ -1,13 +1,4 @@
 import Card from '../../components/card/Card';
-import Avatar from '../../components/Avatar';
-import ChatInput from '../../components/ChatInput';
-import { useNavigate } from 'react-router-dom';
-import {
-    LikeIcon,
-    FavoriteIcon,
-    MessagesIcon,
-    CommentIcon,
-} from '../../components/Icons/Icons';
 import './Event.css';
 import { useRef, useState } from 'react';
 
@@ -43,12 +34,18 @@ export default function Event({
     //     });
     // };
 
+    const UpdateAttends = () => {
+        console.log({ attending });
+        console.log({ eventId });
+    };
+
+
     return (
         <>
             <Card styleName={'EventContainer'}>
                 <Card styleName={'EventHeader'}>
                     <div style={{ display: 'flex' }}>
-                        <p style={{ marginLeft: '4px' }}>{name}</p>
+                        <p>{name}</p>
                     </div>
                 </Card>
                 <Card styleName={'EventBody'}>
@@ -60,18 +57,19 @@ export default function Event({
                 <Card styleName={'EventContent'}>
                     <br />
                     <label>Location:</label>
-                    <span>London</span>
+                    <span>{location}</span>
                     <br />
                     <br />
                     <label>Start:</label>
-                    <span>London</span>
+                    <span>{start}</span>
                     <br />
                     <br />
                     <label>End:</label>
-                    <span>London</span>
+                    <span>{end}</span>
                     <br />
                     <br />
-                    <label>Attending:</label> <button>Going</button>
+                    <label>Attending:</label>{' '}
+                    <button onClick={() => UpdateAttends()}>{attending}</button>
                 </Card>
             </Card>
             <br />

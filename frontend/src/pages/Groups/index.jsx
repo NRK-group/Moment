@@ -39,6 +39,7 @@ function Groups({ isMobile }) {
             setGroupS(fetchAllUsergroups);
             setGroupSelect(fetchAllUsergroups[0]);
             GetAllGroupPosts(fetchAllUsergroups[0].GroupID);
+            GetAllGroupEvents();
         }
     };
 
@@ -57,20 +58,14 @@ function Groups({ isMobile }) {
     };
 
     const GetAllGroupEvents = async () => {
-        let fetchAllgroupEvents = await fetch(
-            `http://localhost:5070/event`,
-            {
-                credentials: 'include',
-                method: 'GET',
-            }
-        )
+        let fetchAllgroupEvents = await fetch(`http://localhost:5070/event`, {
+            credentials: 'include',
+            method: 'GET',
+        })
             .then(async (resp) => await resp.json())
             .then((data) => data);
-console.log({fetchAllgroupEvents})
-
+        setGroupE(fetchAllgroupEvents);
     };
-
-    GetAllGroupEvents()
 
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);
@@ -78,6 +73,7 @@ console.log({fetchAllgroupEvents})
 
     const [groupPosts, setGroupPosts] = useState(null);
     const [groupS, setGroupS] = useState(null);
+    const [groupE, setGroupE] = useState(null);
     const [groupSelect, setGroupSelect] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [ele, setEle] = useState(null);
@@ -123,6 +119,7 @@ console.log({fetchAllgroupEvents})
     const switchGroup = (element) => {
         setGroupSelect(element);
         GetAllGroupPosts(element.GroupID);
+        GetAllGroupEvents();
     };
 
     return (
@@ -278,7 +275,20 @@ console.log({fetchAllgroupEvents})
                                         postId={data.PostID}
                                     />
                                 ))}
-                            <Event />
+                            {groupE &&
+                                groupE.map((data) => (
+                                    <Event
+                                    key={data.EventId}
+                                        eventContent={data.Description}
+                                        location={data.Location}
+                                        start={data.StartTime}
+                                        end={data.EndTime}
+                                        attending={data.Status}
+                                        eventBodyImgSrc={data.ImageUpload}
+                                        name={data.Name}
+                                        eventId={data.EventId}
+                                    />
+                                ))}
                         </div>
                     </div>
 

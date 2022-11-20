@@ -36,15 +36,12 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
 		var retEvents []structs.Event
-
 		groups, err := group.AllUserGroups(cookie[0], database.Env)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error. AllUserGroups", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-
-		fmt.Println("groups -- ", groups)
 
 		for _, group := range groups {
 			events, err := event.AllEventByGroup(group.GroupID, database.Env)
@@ -53,27 +50,21 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
-
-			fmt.Println("groups -- ", groups)
-			fmt.Println("events -- ", events)
 			for _, eventl := range events {
 				EventP, _ := event.AllEventParticipant(eventl.EventId, database.Env)
-				for _, user := range EventP {
+				for i, user := range EventP {
 					if user.UserId == cookie[0] {
-						eventl.Status = "true"
+						events[i].Status = "Going"
 					}
 				}
 			}
-			
 			retEvents = events
 		}
-
 		marshallEvents, err := json.Marshal(retEvents)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
-
 		w.WriteHeader(http.StatusOK)
 		w.Write(marshallEvents)
 		return

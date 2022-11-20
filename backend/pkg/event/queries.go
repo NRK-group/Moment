@@ -21,21 +21,10 @@ func AllEventByGroup(groupId string, database *structs.DB) ([]structs.Event, err
 		fmt.Print(err)
 		return nil, err
 	}
-	
-	var eventId, userId, groupId2, name, description, location, startTime, endTime, createdAt string
+
 	for rows.Next() {
-		rows.Scan(&eventId, &userId, &groupId2, &name, &description, &location, &startTime, &endTime, &createdAt)
-		event = structs.Event{
-			EventId:     eventId,
-			UserId:      userId,
-			GroupId:     groupId2,
-			Name:        name,
-			Description: description,
-			Location:    location,
-			StartTime:   startTime,
-			EndTime:     endTime,
-			CreatedAt:   createdAt,
-		}
+		rows.Scan(&event.EventId, &event.UserId, &event.GroupId, &event.Name, &event.ImageUpload, &event.Description, &event.Location, &event.StartTime, &event.EndTime, &event.CreatedAt)
+
 		events = append([]structs.Event{event}, events...)
 	}
 	return events, nil
@@ -163,7 +152,7 @@ func AddEvent(groupId string, event structs.Event, database *structs.DB) (string
 		l.LogMessage("Event.go", "AddEvent", err)
 		return "", err
 	}
-	_, err = stmt.Exec(eventId, event.UserId, groupId, event.Name,"", event.Description, event.Location, event.StartTime, event.EndTime, createdAt)
+	_, err = stmt.Exec(eventId, event.UserId, groupId, event.Name, "", event.Description, event.Location, event.StartTime, event.EndTime, createdAt)
 	if err != nil {
 		fmt.Println("inside Create Addevent", err)
 		return "", err

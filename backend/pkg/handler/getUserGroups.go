@@ -41,7 +41,6 @@ func (database *Env) GetUserGroups(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		fmt.Println()
 
 		marshallGroups, err := json.Marshal(groups)
 		if err != nil {

@@ -56,6 +56,22 @@ function Groups({ isMobile }) {
         setGroupPosts(fetchAllgroupPosts);
     };
 
+    const GetAllGroupEvents = async () => {
+        let fetchAllgroupEvents = await fetch(
+            `http://localhost:5070/event`,
+            {
+                credentials: 'include',
+                method: 'GET',
+            }
+        )
+            .then(async (resp) => await resp.json())
+            .then((data) => data);
+console.log({fetchAllgroupEvents})
+
+    };
+
+    GetAllGroupEvents()
+
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);
     const GroupsPostsArea = useRef(null);

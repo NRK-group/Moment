@@ -8,6 +8,7 @@ import (
 
 	"backend/pkg/auth"
 	"backend/pkg/event"
+	"backend/pkg/group"
 	"backend/pkg/structs"
 )
 
@@ -30,10 +31,51 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	cookie, _ := auth.SliceCookie(c.Value)
+
 	if r.Method == "GET" {
 
+		var retEvents []structs.Event
+
+		groups, err := group.AllUserGroups(cookie[0], database.Env)
+		if err != nil {
+			http.Error(w, "500 Internal Server Error. AllUserGroups", http.StatusInternalServerError)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		fmt.Println("groups -- ", groups)
+
+		for _, group := range groups {
+			events, err := event.AllEventByGroup(group.GroupID, database.Env)
+			if err != nil {
+				http.Error(w, "500 Internal Server Error. AllEventByGroup", http.StatusInternalServerError)
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
+			fmt.Println("groups -- ", groups)
+			fmt.Println("events -- ", events)
+			for _, eventl := range events {
+				EventP, _ := event.AllEventParticipant(eventl.EventId, database.Env)
+				for _, user := range EventP {
+					if user.UserId == cookie[0] {
+						eventl.Status = "true"
+					}
+				}
+			}
+			
+			retEvents = events
+		}
+
+		marshallEvents, err := json.Marshal(retEvents)
+		if err != nil {
+			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("event get"))
+		w.Write(marshallEvents)
 		return
 	}
 
@@ -51,7 +93,7 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		_, errE:= event.AddEventParticipant(eventId, eventS.UserId, database.Env)
+		_, errE := event.AddEventParticipant(eventId, eventS.UserId, database.Env)
 
 		if errE != nil {
 			http.Error(w, "500 Internal Server Error with AddEventParticipant ", http.StatusInternalServerError)

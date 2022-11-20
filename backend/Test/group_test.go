@@ -17,8 +17,7 @@ import (
 
 var database = DatabaseSetup()
 
-func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
-
+func LoginUser(database *structs.DB, t *testing.T) (*httptest.ResponseRecorder, *handler.Env, structs.User) {
 	newUser := CreateUser(database, t)
 	loginStruct := structs.User{Email: newUser.Email, Password: "Password123"}
 
@@ -34,6 +33,11 @@ func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
 	w := httptest.NewRecorder()
 	Env.Login(w, req)
 
+	return w, Env, newUser
+}
+
+func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
+	w, Env, _ := LoginUser(database, t)
 
 	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll
 	// pass 'nil' as the third parameter.
@@ -63,25 +67,12 @@ func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
 }
 
 func TestHealthCheckGroupHttpGet(t *testing.T) {
-	newUser := CreateUser(database, t)
-	loginStruct := structs.User{Email: newUser.Email, Password: "Password123"}
-
-	loginUserBytes, err := json.Marshal(loginStruct)
-	if err != nil {
-		t.Errorf("Error marshalling the sampleUser")
-	}
-	Env := &handler.Env{Env: database}
-
-	// Create the bytes into a reader
-	loginReq := bytes.NewReader(loginUserBytes)
-	req := httptest.NewRequest(http.MethodPost, "/login", loginReq)
-	w := httptest.NewRecorder()
-	Env.Login(w, req)
+	w, Env, _:= LoginUser(database, t)
 
 	reqq := httptest.NewRequest(http.MethodGet, "/group", nil)
 	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 
-	Env.Group(w, req)
+	Env.Group(w, reqq)
 	want := 200
 	got := w.Code
 
@@ -109,20 +100,7 @@ func TestCreateGroup(t *testing.T) {
 }
 
 func TestGroupHandlerMakeAGroup(t *testing.T) {
-	newUser := CreateUser(database, t)
-	loginStruct := structs.User{Email: newUser.Email, Password: "Password123"}
-
-	loginUserBytes, err := json.Marshal(loginStruct)
-	if err != nil {
-		t.Errorf("Error marshalling the sampleUser")
-	}
-	Env := &handler.Env{Env: database}
-
-	// Create the bytes into a reader
-	loginReq := bytes.NewReader(loginUserBytes)
-	req := httptest.NewRequest(http.MethodPost, "/login", loginReq)
-	w := httptest.NewRecorder()
-	Env.Login(w, req)
+	w, Env, newUser := LoginUser(database, t)
 
 	group1 := structs.Group{Name: "Pie" + uuid.NewV4().String(), Description: "Eating Pie", Admin: newUser.UserId}
 	body, _ := json.Marshal(group1)

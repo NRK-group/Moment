@@ -21,6 +21,7 @@ func AllEventByGroup(groupId string, database *structs.DB) ([]structs.Event, err
 		fmt.Print(err)
 		return nil, err
 	}
+	
 	var eventId, userId, groupId2, name, description, location, startTime, endTime, createdAt string
 	for rows.Next() {
 		rows.Scan(&eventId, &userId, &groupId2, &name, &description, &location, &startTime, &endTime, &createdAt)
@@ -156,13 +157,13 @@ func AddEvent(groupId string, event structs.Event, database *structs.DB) (string
 	eventId := uuid.NewV4().String()
 
 	stmt, err := database.DB.Prepare(`
-	INSERT INTO Event values (?, ?, ?, ?, ?, ?, ?, ?, ?)
+	INSERT INTO Event values (?, ?, ?, ?, ?, ?, ?, ?, ?,?)
 `)
 	if err != nil {
 		l.LogMessage("Event.go", "AddEvent", err)
 		return "", err
 	}
-	_, err = stmt.Exec(eventId, event.UserId, groupId, event.Name, event.Description, event.Location, event.StartTime, event.EndTime, createdAt)
+	_, err = stmt.Exec(eventId, event.UserId, groupId, event.Name,"", event.Description, event.Location, event.StartTime, event.EndTime, createdAt)
 	if err != nil {
 		fmt.Println("inside Create Addevent", err)
 		return "", err

@@ -18,9 +18,13 @@ export default function GroupEvent({ groupId, setOpenModal }) {
         new Date(new Date().setFullYear(new Date().getFullYear()))
     );
 
-    const navigate = useNavigate('');
+
     let imgUpload = useRef(),
-        content = useRef();
+        content = useRef(),
+        eventName = useRef(),
+        attending = useRef(),
+        location = useRef();
+
     const [image, setImage] = useState(null);
 
     const handleChangeImage = (e) => {
@@ -37,8 +41,10 @@ export default function GroupEvent({ groupId, setOpenModal }) {
         });
     };
 
-    function UploadPost(textVal) {
+    function UploadPost(textVal, location, eventName) {
         if (textVal.trim() === '') return;
+        if (location.trim() === '') return;
+        if (eventName.trim() === '') return;
 
         fetch(`http://localhost:5070/post`, {
             credentials: 'include',
@@ -50,6 +56,7 @@ export default function GroupEvent({ groupId, setOpenModal }) {
                 Location: location,
                 StartTime: startDate,
                 EndTime: endDate,
+                Status: attending.current.value,
                 UserID: GetCookie('session_token').split('&')[0],
             }),
         }).then(async (response) => {
@@ -58,8 +65,8 @@ export default function GroupEvent({ groupId, setOpenModal }) {
             if (image != null) {
                 const formData = new FormData();
                 formData.append('file', image);
-                formData.append('table', 'Post');
-                formData.append('idType', 'postId');
+                formData.append('table', 'Event');
+                formData.append('idType', 'eventId');
                 formData.append('id', resp.Message);
 
                 UploadImage(formData);
@@ -99,12 +106,12 @@ export default function GroupEvent({ groupId, setOpenModal }) {
 
                         <div>
                             <h4>Title:</h4>
-                            <input></input>
+                            <input ref={eventName}></input>
                             <br />
                             <h4>Location:</h4>
-                            <input></input>
+                            <input ref={location}></input>
                             <br />
-                            <br />
+
                             <span>Start Date</span>
                             <Datetime
                                 value={startDate}
@@ -118,12 +125,12 @@ export default function GroupEvent({ groupId, setOpenModal }) {
                                 onChange={(date) => setEndDate(date)}
                             />
                         </div>
-                        <br/>
-                        <label for="attending">Attending? :  </label>
-  <select name="attending" id="attending">
-    <option value={true}>Going</option>
-    <option value={false}>Not going</option>
-  </select>
+                        <br />
+                        <label for='attending'>Attending? : </label>
+                        <select ref={attending} name='attending' id='attending'>
+                            <option value={true}>Going</option>
+                            <option value={false}>Not going</option>
+                        </select>
                     </Card>
 
                     <Card styleName='NewPostContentInput'>
@@ -138,7 +145,13 @@ export default function GroupEvent({ groupId, setOpenModal }) {
                         />
                         <button
                             className='NewPostSendBtn'
-                            onClick={() => UploadPost(content.current.value)}>
+                            onClick={() =>
+                                UploadPost(
+                                    content.current.value,
+                                    location.current.value,
+                                    eventName.current.value
+                                )
+                            }>
                             <span className='shareText'>Share</span>
                             <MessagesIcon />
                         </button>

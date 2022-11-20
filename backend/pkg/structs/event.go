@@ -10,7 +10,7 @@ type Event struct {
 	StartTime   string `json:"StartTime"`
 	EndTime     string `json:"EndTime"`
 	CreatedAt   string
-	Status      string `json:"Status"`
+	Status      bool `json:"Status"`
 	ImageUpload string `json:"ImageUpload"`
 }
 

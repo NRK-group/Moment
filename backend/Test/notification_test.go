@@ -9,7 +9,10 @@ import (
 
 	"backend/pkg/auth"
 	"backend/pkg/follow"
+	"backend/pkg/group"
 	"backend/pkg/handler"
+	l "backend/pkg/log"
+	"backend/pkg/member"
 	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -36,6 +39,8 @@ func TestNotification(t *testing.T) {
 	var result2 structs.User
 	auth.GetUser("email", user2.Email, &result2, *database)
 	follow.FollowUser(result2.UserId, result1.UserId, database)
+	group, _ := group.CreateGroup("TestGroup", "TestGroup", result1.UserId, database)
+	member.AddInvitationNotif(group, result2.UserId, result1.UserId, "join", database)
 	sampleUser := &structs.User{
 		Email: email, Password: "Password123",
 	}
@@ -105,10 +110,20 @@ func TestNotification(t *testing.T) {
 		if w4.Code != http.StatusOK {
 			t.Errorf("Expected status code %d, got %d", http.StatusOK, w4.Code)
 		}
-		var groupNotif string
+		var groupNotif []structs.GroupNotifWriter
 		err = json.NewDecoder(w4.Body).Decode(&groupNotif)
-		if groupNotif != "group" {
-			t.Errorf("Expected body %s, got %s", "group", w4.Body)
+		l.LogMessage("Tes", "decode", groupNotif)
+		if len(groupNotif) != 1 {
+			t.Errorf("Expected body %s, got %d", "1", len(groupNotif))
+		}
+		if groupNotif[0].GroupId.Id != group {
+			t.Error("Expected ", group, " got ", groupNotif[0].GroupId.Id)
+		}
+		if groupNotif[0].UserId.Id != result2.UserId {
+			t.Error("Expected ", result1.UserId, " got ", groupNotif[0].UserId.Id)
+		}
+		if groupNotif[0].ReceiverId.Id != result1.UserId {
+			t.Error("Expected ", result2.UserId, " got ", groupNotif[0].ReceiverId.Id)
 		}
 	})
 }

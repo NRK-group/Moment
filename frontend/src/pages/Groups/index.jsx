@@ -298,6 +298,7 @@ function Groups({ isMobile }) {
                                         eventBodyImgSrc={data.ImageUpload}
                                         name={data.Name}
                                         eventId={data.EventId}
+                                        eventObj={data}
                                     />
                                 ))}
                         </div>

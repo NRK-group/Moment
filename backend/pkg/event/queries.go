@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"backend/pkg/auth"
 	l "backend/pkg/log"
 	"backend/pkg/member"
 	"backend/pkg/structs"
@@ -42,6 +43,19 @@ func AddEventParticipant(eventId, userId string, database *structs.DB) (string, 
 		return "", err
 	}
 	return eventId, nil
+}
+
+func UpdateEventParticipant(event structs.Event, database structs.DB) (string, error) {
+	var returnE error
+	if event.Status == "Going" {
+		returnE = auth.Delete("EventParticipant", "userId", event.UserId, database)
+		return "Remove", returnE
+	} 
+	str, err := AddEvent(event.GroupId,event, &database)
+	if err != nil {
+		fmt.Println("Error Inserting the struct into the db %v", err)
+	}
+	return str, err
 }
 
 func CheckIfUserInEventAndIfNotAddThem(eventId, userId string, database *structs.DB) (bool, error) {

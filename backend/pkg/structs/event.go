@@ -1,7 +1,7 @@
 package structs
 
 type Event struct {
-	EventId     string
+	EventId     string `json:"EventId"`
 	UserId      string `json:"UserId"`
 	GroupId     string `json:"GroupId"`
 	Name        string `json:"Name"`

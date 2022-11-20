@@ -106,10 +106,6 @@ export default function Post({
                             View all {commentsnum} comments
                         </a>
                     </p>
-
-                    <div className='PostContentIconsfooter'>
-                        <ChatInput />
-                    </div>
                 </Card>
             </Card>
             <br />

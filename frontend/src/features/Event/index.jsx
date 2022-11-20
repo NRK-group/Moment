@@ -3,18 +3,14 @@ import './Event.css';
 import { useRef, useState } from 'react';
 
 export default function Event({
-    userID,
+    eventObj,
     name,
-    eventBodyText,
     location,
     start,
     end,
     attending,
     eventBodyImgSrc,
     eventContent,
-    avatarSrc,
-    likes,
-    commentsnum,
     eventId,
 }) {
     // const navigate = useNavigate();
@@ -37,6 +33,9 @@ export default function Event({
     const UpdateAttends = () => {
         console.log({ attending });
         console.log({ eventId });
+        console.log({eventObj})
+
+
     };
 
 

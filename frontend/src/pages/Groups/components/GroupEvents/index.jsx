@@ -7,7 +7,7 @@ import { GetCookie } from '../../../../pages/profile/ProfileData';
 import '../../../../features/newpost/NewPost.css';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
-import './GroupEvent.css'
+import './GroupEvent.css';
 
 export default function GroupEvent({ groupId, setOpenModal }) {
     const [startDate, setStartDate] = useState(
@@ -40,7 +40,6 @@ export default function GroupEvent({ groupId, setOpenModal }) {
     function UploadPost(textVal) {
         if (textVal.trim() === '') return;
 
-
         fetch(`http://localhost:5070/post`, {
             credentials: 'include',
             method: 'POST',
@@ -72,74 +71,80 @@ export default function GroupEvent({ groupId, setOpenModal }) {
     }
     return (
         <div id='GroupEvent'>
-        <Card styleName='newPostBoxEvent'>
-            <Card styleName='newPostHeader'>
-                <span className='newPostTitle'>Create a Event </span>
-            </Card>
-
-            <Card styleName='NewPostContent'>
-                <Card styleName='newPostPhotoSection'>
-                    {image ? (
-                        <img
-                            className='newPostImg'
-                            src={URL.createObjectURL(image)}></img>
-                    ) : (
-                        <Card styleName='newPostImgHolder'></Card>
-                    )}
-                    <button
-                        className='newPostImgBtn'
-                        onClick={() => imgUpload.current.click()}>
-                        Select a photo
-                    </button>
-                    <input
-                        type='file'
-                        className='none'
-                        ref={imgUpload}
-                        onChange={handleChangeImage}
-                    />
-
-                    <div>
-                        <h4>Name:</h4>
-                        <input></input>
-                        <br/>
-                        <h4>Location:</h4>
-                        <input></input>
-                        <br/>
-                        <br/>
-                        <span>Start Date</span>
-                        <Datetime
-                            value={startDate}
-                            onChange={(date) => setStartDate(date)}
-                        />
-                        <br />
-
-                        <span>End Date</span>
-                        <Datetime
-                            value={endDate}
-                            onChange={(date) => setEndDate(date)}
-                        />
-                    </div>
+            <Card styleName='newPostBoxEvent'>
+                <Card styleName='newPostHeader'>
+                    <span className='newPostTitle'>Create a Event </span>
                 </Card>
 
-                <Card styleName='NewPostContentInput'>
-                    <textarea
-                        ref={content}
-                        cols='100'
-                        rows='7'
-                        wrap='hard'
-                        className='newPostTextContent'
-                        maxLength='280'
-                        placeholder='What the event about?'
-                    />
-                    <button
-                        className='NewPostSendBtn'
-                        onClick={() => UploadPost(content.current.value)}>
-                        <span className='shareText'>Share</span>
-                        <MessagesIcon />
-                    </button>
+                <Card styleName='NewPostContent'>
+                    <Card styleName='newPostPhotoSection'>
+                        {image ? (
+                            <img
+                                className='newPostImg'
+                                src={URL.createObjectURL(image)}></img>
+                        ) : (
+                            <Card styleName='newPostImgHolder'></Card>
+                        )}
+                        <button
+                            className='newPostImgBtn'
+                            onClick={() => imgUpload.current.click()}>
+                            Select a photo
+                        </button>
+                        <input
+                            type='file'
+                            className='none'
+                            ref={imgUpload}
+                            onChange={handleChangeImage}
+                        />
+
+                        <div>
+                            <h4>Title:</h4>
+                            <input></input>
+                            <br />
+                            <h4>Location:</h4>
+                            <input></input>
+                            <br />
+                            <br />
+                            <span>Start Date</span>
+                            <Datetime
+                                value={startDate}
+                                onChange={(date) => setStartDate(date)}
+                            />
+                            <br />
+
+                            <span>End Date</span>
+                            <Datetime
+                                value={endDate}
+                                onChange={(date) => setEndDate(date)}
+                            />
+                        </div>
+                        <br/>
+                        <label for="attending">Attending? :  </label>
+  <select name="attending" id="attending">
+    <option value={true}>Going</option>
+    <option value={false}>Not going</option>
+  </select>
+                    </Card>
+
+                    <Card styleName='NewPostContentInput'>
+                        <textarea
+                            ref={content}
+                            cols='100'
+                            rows='7'
+                            wrap='hard'
+                            className='newPostTextContent'
+                            maxLength='280'
+                            placeholder='What the event about?'
+                        />
+                        <button
+                            className='NewPostSendBtn'
+                            onClick={() => UploadPost(content.current.value)}>
+                            <span className='shareText'>Share</span>
+                            <MessagesIcon />
+                        </button>
+                    </Card>
                 </Card>
             </Card>
-        </Card>
         </div>
     );
 }

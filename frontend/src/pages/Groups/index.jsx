@@ -10,6 +10,8 @@ import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 import GroupList from './components/GroupList';
 import GroupPost from './components/GroupPost';
 import GroupEvent from './components/GroupEvents';
+import Event from '../../features/Event';
+
 import {
     ChevronRightIcon,
     ChevronLeftIcon,
@@ -254,6 +256,7 @@ function Groups({ isMobile }) {
                                         postId={data.PostID}
                                     />
                                 ))}
+                                <Event/>
                         </div>
                     </div>
 

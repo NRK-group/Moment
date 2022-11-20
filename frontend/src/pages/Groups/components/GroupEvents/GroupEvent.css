@@ -7,3 +7,9 @@
     border-radius: 5px;
     padding: 1%;
 }
+
+@media only screen and (max-width: 700px) {
+.newPostBoxEvent {
+    width: 100%;
+}
+}

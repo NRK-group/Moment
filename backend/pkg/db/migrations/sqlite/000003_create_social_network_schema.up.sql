@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS "Event"(
     "userId" TEXT NOT NULL,
     "groupId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+     "status" INTEGER DEFAULT 0,
+     "imageUpload" TEXT,
     "description" TEXT NOT NULL,
     "location" TEXT NOT NULL,
     "startTime" DATETIME NOT NULL,

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
 )
@@ -65,14 +66,13 @@ func GetMembers(groupId string, database *structs.DB) ([]structs.Member, error) 
 // groupId: the id of the group
 // userId: the id of the user
 // receiverId: the id of the user that will receive the invitation
-// type: the type of the invitation (join, invite)
+// typeNotif: the type of the invitation (join, invite)
 // database: the database
 func AddInvitationNotif(groupId, userId, receiverId, typeNotif string, database *structs.DB) error {
-	createdAt := time.Now().String()
+	createdAt := time.Now()
 	// check if the groupid and ReceiverId exists already
 	rows, err := database.DB.Query("SELECT receiverId FROM InviteNotif WHERE groupId = '" + groupId + "' AND receiverId = '" + receiverId + "'")
 	if err != nil {
-		l.LogMessage("Member.go", "AddMemberNotif", err)
 		return err
 	}
 	var receiverIds string
@@ -86,11 +86,10 @@ func AddInvitationNotif(groupId, userId, receiverId, typeNotif string, database 
 		INSERT INTO InviteNotif values (?, ?, ?, ?, ?, ?, ?)
 	`)
 	if err != nil {
-		l.LogMessage("Member.go", "AddMemberNotif", err)
+		return err
 	}
 	_, err = stmt.Exec(groupId, userId, receiverId, createdAt, typeNotif, "pending", 0)
 	if err != nil {
-		l.LogMessage("Member.go", "AddMemberNotif", err)
 		return err
 	}
 	return nil
@@ -104,13 +103,13 @@ func AddInvitationNotif(groupId, userId, receiverId, typeNotif string, database 
 // userId: the id of the user
 // receiverId: the id of the user that will receive the invitation
 // database: the database
-func AcceptInvitationNotif(groupId, userId, receiverId string, database *structs.DB) error {
+func AcceptInvitationNotif(groupId, userId string, database *structs.DB) error {
 	AddMember(groupId, userId, database)
-	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND userId = ? AND receiverId = ?")
+	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND userId = ?")
 	if err != nil {
-		l.LogMessage("Member.go", "AcceptMemberNotif", err)
+		return err
 	}
-	_, err = stmt.Exec("accepted", groupId, userId, receiverId)
+	_, err = stmt.Exec("accepted", groupId, userId)
 	if err != nil {
 		l.LogMessage("Member.go", "AcceptMemberNotif", err)
 		return err
@@ -126,8 +125,8 @@ func AcceptInvitationNotif(groupId, userId, receiverId string, database *structs
 // userId: the id of the user
 // receiverId: the id of the user that will receive the invitation
 // database: the database
-func DeclineInvitationNotif(groupId, userId, receiverId string, database *structs.DB) error {
-	_, err := database.DB.Exec("DELETE FROM InviteNotif WHERE groupId = ? AND userId = ? AND receiverId = ?", groupId, userId, receiverId)
+func DeclineInvitationNotif(groupId, userId string, database *structs.DB) error {
+	_, err := database.DB.Exec("DELETE FROM InviteNotif WHERE groupId = ? AND receiverId = ?", groupId, userId)
 	if err != nil {
 		l.LogMessage("Member.go", "DeclineMemberNotif", err)
 		return err
@@ -135,23 +134,47 @@ func DeclineInvitationNotif(groupId, userId, receiverId string, database *struct
 	return nil
 }
 
-// GetMemberNotif
+// GetInvitationNotif get all invite notifications
 //
-// Param:
+//	Param:
 //
-// userId: the id of the user
-// database: the database
-func GetInvitationNotif(userId string, database *structs.DB) ([]structs.MemberNotif, error) {
+//	userId: the user id
+//	database: the database
+func GetInvitationNotif(userId string, database *structs.DB) ([]structs.GroupNotifWriter, error) {
+	var notif structs.GroupNotif
+	var notifs []structs.GroupNotifWriter
+	var err error
 	rows, err := database.DB.Query("SELECT * FROM InviteNotif WHERE receiverId = '" + userId + "'")
-	var memberNotif structs.MemberNotif
-	var memberNotifs []structs.MemberNotif
 	if err != nil {
-		l.LogMessage("Member.go", "GetMemberNotif", err)
-		return memberNotifs, err
+		return nil, err
 	}
 	for rows.Next() {
-		rows.Scan(&memberNotif.GroupId, &memberNotif.UserId, &memberNotif.ReceiverId, &memberNotif.CreatedAt, &memberNotif.TypeNotif, &memberNotif.Status, &memberNotif.Read)
-		memberNotifs = append([]structs.MemberNotif{memberNotif}, memberNotifs...)
+		err := rows.Scan(&notif.GroupID, &notif.UserId, &notif.ReceiverId, &notif.CreatedAt, &notif.Type, &notif.Status, &notif.Read)
+		if err != nil {
+			return nil, err
+		}
+		user, err := helper.GetUserInfo(notif.UserId, database)
+		if err != nil {
+			return nil, err
+		}
+		receiver, err := helper.GetUserInfo(notif.ReceiverId, database)
+		if err != nil {
+			return nil, err
+		}
+		group, err := helper.GetGroupInfo(notif.GroupID, database)
+		if err != nil {
+			return nil, err
+		}
+		notifWriter := structs.GroupNotifWriter{
+			GroupId:    group,
+			UserId:     user,
+			ReceiverId: receiver,
+			CreatedAt:  notif.CreatedAt,
+			NotifType:  notif.Type,
+			Status:     notif.Status,
+			Read:       notif.Read,
+		}
+		notifs = append(notifs, notifWriter)
 	}
-	return memberNotifs, nil
+	return notifs, nil
 }

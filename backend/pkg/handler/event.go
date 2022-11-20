@@ -8,7 +8,6 @@ import (
 
 	"backend/pkg/auth"
 	"backend/pkg/event"
-	"backend/pkg/group"
 	"backend/pkg/structs"
 )
 
@@ -34,33 +33,24 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := auth.SliceCookie(c.Value)
 
 	if r.Method == "GET" {
+		groupId := r.URL.Query().Get("groupId")
 
-		var retEvents []structs.Event
-		groups, err := group.AllUserGroups(cookie[0], database.Env)
+		events, err := event.AllEventByGroup(groupId, database.Env)
 		if err != nil {
-			http.Error(w, "500 Internal Server Error. AllUserGroups", http.StatusInternalServerError)
+			http.Error(w, "500 Internal Server Error. AllEventByGroup", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-
-		for _, group := range groups {
-			events, err := event.AllEventByGroup(group.GroupID, database.Env)
-			if err != nil {
-				http.Error(w, "500 Internal Server Error. AllEventByGroup", http.StatusInternalServerError)
-				w.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-			for _, eventl := range events {
-				EventP, _ := event.AllEventParticipant(eventl.EventId, database.Env)
-				for i, user := range EventP {
-					if user.UserId == cookie[0] {
-						events[i].Status = "Going"
-					}
+		for _, eventl := range events {
+			EventP, _ := event.AllEventParticipant(eventl.EventId, database.Env)
+			for i, user := range EventP {
+				if user.UserId == cookie[0] {
+					events[i].Status = "Going"
 				}
 			}
-			retEvents = events
 		}
-		marshallEvents, err := json.Marshal(retEvents)
+
+		marshallEvents, err := json.Marshal(events)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)

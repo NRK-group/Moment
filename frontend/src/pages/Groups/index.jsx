@@ -39,7 +39,7 @@ function Groups({ isMobile }) {
             setGroupS(fetchAllUsergroups);
             setGroupSelect(fetchAllUsergroups[0]);
             GetAllGroupPosts(fetchAllUsergroups[0].GroupID);
-            GetAllGroupEvents();
+            GetAllGroupEvents(fetchAllUsergroups[0].GroupID);
         }
     };
 
@@ -57,8 +57,8 @@ function Groups({ isMobile }) {
         setGroupPosts(fetchAllgroupPosts);
     };
 
-    const GetAllGroupEvents = async () => {
-        let fetchAllgroupEvents = await fetch(`http://localhost:5070/event`, {
+    const GetAllGroupEvents = async (id) => {
+        let fetchAllgroupEvents = await fetch(`http://localhost:5070/event?groupId=${id}`, {
             credentials: 'include',
             method: 'GET',
         })
@@ -119,7 +119,7 @@ function Groups({ isMobile }) {
     const switchGroup = (element) => {
         setGroupSelect(element);
         GetAllGroupPosts(element.GroupID);
-        GetAllGroupEvents();
+        GetAllGroupEvents(element.GroupID);
     };
 
     return (
@@ -278,7 +278,7 @@ function Groups({ isMobile }) {
                             {groupE &&
                                 groupE.map((data) => (
                                     <Event
-                                    key={data.EventId}
+                                        key={data.EventId}
                                         eventContent={data.Description}
                                         location={data.Location}
                                         start={data.StartTime}

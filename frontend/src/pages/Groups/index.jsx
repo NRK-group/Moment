@@ -218,6 +218,17 @@ function Groups({ isMobile }) {
                                         {' '}
                                         Create A Group
                                     </p>
+
+                                    <p
+                                        style={{
+                                            marginTop: '12px',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() => {
+                                            Getgroups();
+                                        }}>
+                                        Join a group
+                                    </p>
                                 </>
                             ) : (
                                 <>

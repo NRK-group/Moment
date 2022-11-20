@@ -8,18 +8,17 @@ import (
 
 	"backend/pkg/event"
 	"backend/pkg/group"
-	"backend/pkg/handler"
 	l "backend/pkg/log"
 	"backend/pkg/member"
 	"backend/pkg/structs"
 )
 
 func TestHealthCheckEventHttpGet(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/event", nil)
-	w := httptest.NewRecorder()
+	w, Env, _ := LoginUser(database, t)
+	reqq := httptest.NewRequest(http.MethodGet, "/event", nil)
+	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 
-	Env := handler.Env{Env: database}
-	Env.Event(w, req)
+	Env.Event(w, reqq)
 	want := 200
 	got := w.Code
 
@@ -29,11 +28,11 @@ func TestHealthCheckEventHttpGet(t *testing.T) {
 }
 
 func TestHealthCheckEventHttpPost(t *testing.T) {
-	req := httptest.NewRequest(http.MethodPost, "/event", nil)
-	w := httptest.NewRecorder()
+	w, Env, _ := LoginUser(database, t)
+	reqq := httptest.NewRequest(http.MethodPost, "/event", nil)
+	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 
-	Env := handler.Env{Env: database}
-	Env.Event(w, req)
+	Env.Event(w, reqq)
 	want := 200
 	got := w.Code
 
@@ -167,7 +166,7 @@ func TestCreateEvent(t *testing.T) {
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
-		newUser3:= CreateUser(database, t)
+		newUser3 := CreateUser(database, t)
 		newUser := CreateUser(database, t)
 		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: newUser3.UserId}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)

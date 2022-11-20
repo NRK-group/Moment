@@ -5,20 +5,39 @@ import (
 	"testing"
 	"time"
 
+	"backend/pkg/group"
 	l "backend/pkg/log"
 	"backend/pkg/member"
+	"backend/pkg/structs"
+)
+
+var (
+	mnewUser  structs.User
+	mnewUser2 structs.User
+	mnewUser3 structs.User
 )
 
 func TestCreateMember(t *testing.T) {
 	//----------- Setup -------------------
-	grouoIdTest := "dhgfhfdj"
-	userIdTest := "esfesfesf"
-	receiverId := "hello"
+	
+	mnewUser = CreateUser(database, t)
+	mnewUser2 = CreateUser(database, t)
+	mnewUser3 = CreateUser(database, t)
+	userIdTest := mnewUser.UserId
+	receiverId := mnewUser2.UserId
+
+	group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: mnewUser2.UserId}
+	groupId, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
+	if err != nil {
+		t.Errorf("Error Creating a Group into the db %v", err)
+	}
+	grouoIdTest := groupId
+
 	createdAt := time.Now().Format("2006 January 02 3:4:5 pm")
 	stmt, _ := database.DB.Prepare(`
 		INSERT INTO GroupMember values (?, ?, ?)
 	`)
-	_, err3 := stmt.Exec(grouoIdTest, "userIdTest", createdAt)
+	_, err3 := stmt.Exec(grouoIdTest, mnewUser3.UserId, createdAt)
 
 	if err3 != nil {
 		fmt.Println("inside AddMember", err3)

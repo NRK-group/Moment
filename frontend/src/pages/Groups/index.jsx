@@ -11,6 +11,7 @@ import GroupList from './components/GroupList';
 import GroupPost from './components/GroupPost';
 import GroupEvent from './components/GroupEvents';
 import Event from '../../features/Event';
+import {GetAllGroupPosts, GetAllGroupEvents} from './hooks/useGroupshook';
 
 import {
     ChevronRightIcon,
@@ -38,40 +39,21 @@ function Groups({ isMobile }) {
             console.log(fetchAllUsergroups[0]);
             setGroupS(fetchAllUsergroups);
             setGroupSelect(fetchAllUsergroups[0]);
-            GetAllGroupPosts(fetchAllUsergroups[0].GroupID);
-            GetAllGroupEvents(fetchAllUsergroups[0].GroupID);
+            let holder = await GetAllGroupPosts(fetchAllUsergroups[0].GroupID)
+            setGroupPosts(holder );
+            holder = await GetAllGroupEvents(fetchAllUsergroups[0].GroupID);
+            setGroupE(holder)
         }
     };
 
-    const GetAllGroupPosts = async (id) => {
-        let fetchAllgroupPosts = await fetch(
-            `http://localhost:5070/getGroupPost?groupId=${id}`,
-            {
-                credentials: 'include',
-                method: 'GET',
-            }
-        )
-            .then(async (resp) => await resp.json())
-            .then((data) => data);
 
-        setGroupPosts(fetchAllgroupPosts);
-    };
-
-    const GetAllGroupEvents = async (id) => {
-        let fetchAllgroupEvents = await fetch(`http://localhost:5070/event?groupId=${id}`, {
-            credentials: 'include',
-            method: 'GET',
-        })
-            .then(async (resp) => await resp.json())
-            .then((data) => data);
-        setGroupE(fetchAllgroupEvents);
-    };
 
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);
     const GroupsPostsArea = useRef(null);
 
     const [groupPosts, setGroupPosts] = useState(null);
+    const [flag, setFlag] = useState(false);
     const [groupS, setGroupS] = useState(null);
     const [groupE, setGroupE] = useState(null);
     const [groupSelect, setGroupSelect] = useState(null);
@@ -80,7 +62,7 @@ function Groups({ isMobile }) {
 
     useEffect(() => {
         GetAllUsergroups();
-    }, []);
+    }, [flag]);
 
     const OpenGroupsLeftMenu = () => {
         GroupsLeftMenu.current.style.width = '670px';
@@ -299,6 +281,8 @@ function Groups({ isMobile }) {
                                         name={data.Name}
                                         eventId={data.EventId}
                                         eventObj={data}
+                                        setFlag={setFlag}
+                                        flag={flag}
                                     />
                                 ))}
                         </div>

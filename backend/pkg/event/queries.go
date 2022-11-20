@@ -3,9 +3,9 @@ package event
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"time"
 
-	"backend/pkg/auth"
 	l "backend/pkg/log"
 	"backend/pkg/member"
 	"backend/pkg/structs"
@@ -45,17 +45,43 @@ func AddEventParticipant(eventId, userId string, database *structs.DB) (string, 
 	return eventId, nil
 }
 
-func UpdateEventParticipant(event structs.Event, database structs.DB) (string, error) {
+func UpdateEventParticipant(event structs.Event, database structs.DB) (structs.Event, error) {
 	var returnE error
+	fmt.Println("event.Status -", event.Status)
 	if event.Status == "Going" {
-		returnE = auth.Delete("EventParticipant", "userId", event.UserId, database)
-		return "Remove", returnE
-	} 
-	str, err := AddEvent(event.GroupId,event, &database)
+		returnE = DeleteEventParticipant(event.EventId, event.UserId, database)
+		if returnE != nil {
+			fmt.Println("Error -", returnE)
+			return event, nil
+		}
+		event.Status = "Not Going"
+		return event, nil
+	}
+	_, err := AddEventParticipant(event.EventId, event.UserId, &database)
 	if err != nil {
 		fmt.Println("Error Inserting the struct into the db %v", err)
+		event.Status = "Not Going"
+		return event, nil
 	}
-	return str, err
+	event.Status = "Going"
+	return event, nil
+}
+
+// Delete is used to delet a row from a specefied table
+func DeleteEventParticipant(eventId, userId string, DB structs.DB) error {
+	res, err := DB.DB.Exec("DELETE FROM EventParticipant WHERE eventId = '" + eventId + "' AND userId = '" + userId + "'")
+	if err != nil {
+		fmt.Println("inside in deleting an Event Participant", err)
+		return err
+	}
+
+	n, err := res.RowsAffected()
+	if err != nil {
+		fmt.Println("inside in deleting an Event Participant", err)
+		return err
+	}
+
+	return errors.New("The statement has affected " + strconv.FormatInt(n, 10) + " rows\n")
 }
 
 func CheckIfUserInEventAndIfNotAddThem(eventId, userId string, database *structs.DB) (bool, error) {

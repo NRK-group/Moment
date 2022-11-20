@@ -46,6 +46,8 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 			for i, user := range EventP {
 				if user.UserId == cookie[0] {
 					events[i].Status = "Going"
+				} else {
+					events[i].Status = "Not Going"
 				}
 			}
 		}

@@ -12,6 +12,8 @@ export default function Event({
     eventBodyImgSrc,
     eventContent,
     eventId,
+    setFlag,
+    flag,
 }) {
     // const navigate = useNavigate();
 
@@ -30,14 +32,25 @@ export default function Event({
     //     });
     // };
 
-    const UpdateAttends = () => {
+    const UpdateAttends = async () => {
         console.log({ attending });
         console.log({ eventId });
-        console.log({eventObj})
-
-
+        console.log({ eventObj });
+        let updateAttends = await fetch(
+            `http://localhost:5070/updateEventParticipant`,
+            {
+                credentials: 'include',
+                method: 'POST',
+                body: JSON.stringify(eventObj),
+            }
+        )
+            .then(async (resp) => await resp.json())
+            .then((data) => data);
+            console.log(updateAttends)
+            setFlag(!flag)
     };
 
+    
 
     return (
         <>
@@ -68,7 +81,7 @@ export default function Event({
                     <br />
                     <br />
                     <label>Attending:</label>{' '}
-                    <button onClick={() => UpdateAttends()}>{attending}</button>
+                    <button onClick={() => UpdateAttends()}>{attending !== "Going"? "Not Going": "Going"}</button>
                 </Card>
             </Card>
             <br />

@@ -11,24 +11,44 @@ import (
 	"backend/pkg/group"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 var database = DatabaseSetup()
 
 func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
+
+	newUser := CreateUser(database, t)
+	loginStruct := structs.User{Email: newUser.Email, Password: "Password123"}
+
+	loginUserBytes, err := json.Marshal(loginStruct)
+	if err != nil {
+		t.Errorf("Error marshalling the sampleUser")
+	}
+	Env := &handler.Env{Env: database}
+
+	// Create the bytes into a reader
+	loginReq := bytes.NewReader(loginUserBytes)
+	req := httptest.NewRequest(http.MethodPost, "/login", loginReq)
+	w := httptest.NewRecorder()
+	Env.Login(w, req)
+
+
 	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll
 	// pass 'nil' as the third parameter.
-	req, err := http.NewRequest("GET", "/group", nil)
+	reqq, err := http.NewRequest("GET", "/group", nil)
+	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 	if err != nil {
 		t.Fatal(err)
 	}
-	Env := &handler.Env{Env: database}
+
 	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(Env.Group)
 	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
 	// directly and pass in our Request and ResponseRecorder.
-	handler.ServeHTTP(rr, req)
+	handler.ServeHTTP(rr, reqq)
 
 	// Check the status code is what we expect.
 	if status := rr.Code; status != http.StatusOK {
@@ -43,10 +63,24 @@ func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
 }
 
 func TestHealthCheckGroupHttpGet(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/group", nil)
-	w := httptest.NewRecorder()
+	newUser := CreateUser(database, t)
+	loginStruct := structs.User{Email: newUser.Email, Password: "Password123"}
 
-	Env := handler.Env{Env: database}
+	loginUserBytes, err := json.Marshal(loginStruct)
+	if err != nil {
+		t.Errorf("Error marshalling the sampleUser")
+	}
+	Env := &handler.Env{Env: database}
+
+	// Create the bytes into a reader
+	loginReq := bytes.NewReader(loginUserBytes)
+	req := httptest.NewRequest(http.MethodPost, "/login", loginReq)
+	w := httptest.NewRecorder()
+	Env.Login(w, req)
+
+	reqq := httptest.NewRequest(http.MethodGet, "/group", nil)
+	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+
 	Env.Group(w, req)
 	want := 200
 	got := w.Code
@@ -58,7 +92,8 @@ func TestHealthCheckGroupHttpGet(t *testing.T) {
 
 func TestCreateGroup(t *testing.T) {
 	t.Run("Creating a group", func(t *testing.T) {
-		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
+		newUser := CreateUser(database, t)
+		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: newUser.UserId}
 		_, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
@@ -74,19 +109,35 @@ func TestCreateGroup(t *testing.T) {
 }
 
 func TestGroupHandlerMakeAGroup(t *testing.T) {
-	group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
+	newUser := CreateUser(database, t)
+	loginStruct := structs.User{Email: newUser.Email, Password: "Password123"}
+
+	loginUserBytes, err := json.Marshal(loginStruct)
+	if err != nil {
+		t.Errorf("Error marshalling the sampleUser")
+	}
+	Env := &handler.Env{Env: database}
+
+	// Create the bytes into a reader
+	loginReq := bytes.NewReader(loginUserBytes)
+	req := httptest.NewRequest(http.MethodPost, "/login", loginReq)
+	w := httptest.NewRecorder()
+	Env.Login(w, req)
+
+	group1 := structs.Group{Name: "Pie" + uuid.NewV4().String(), Description: "Eating Pie", Admin: newUser.UserId}
 	body, _ := json.Marshal(group1)
 
-	req, err := http.NewRequest("POST", "/group", bytes.NewBuffer(body))
+	reqq, err := http.NewRequest("POST", "/group", bytes.NewBuffer(body))
+	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 	if err != nil {
 		t.Fatal(err)
 	}
-	Env := &handler.Env{Env: database}
+
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(Env.Group)
-	handler.ServeHTTP(rr, req)
+	handler.ServeHTTP(rr, reqq)
 	expected := rr.Body.String()
-	expectedStr := "successfully posted"
+	expectedStr := "successfully in creating a group"
 	if expectedStr != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)

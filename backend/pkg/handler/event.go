@@ -1,11 +1,13 @@
 package handler
 
 import (
-	"io"
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
 	"backend/pkg/auth"
+	"backend/pkg/event"
 	"backend/pkg/structs"
 )
 
@@ -43,9 +45,26 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		eventId, err := event.AddEvent(eventS.GroupId, eventS, database.Env)
+		if err != nil {
+			http.Error(w, "500 Internal Server Error with getting the events", http.StatusInternalServerError)
+			return
+		}
+
+		_, errE:= event.AddEventParticipant(eventId, eventS.UserId, database.Env)
+
+		if errE != nil {
+			http.Error(w, "500 Internal Server Error with AddEventParticipant ", http.StatusInternalServerError)
+			return
+		}
+
+		marshallEvent, err := json.Marshal(eventId)
+		if err != nil {
+			fmt.Println("Error marshalling the data: ", err)
+		}
 		w.WriteHeader(http.StatusOK)
-		// w.Header().Set("Content-Type", "application/json")
-		io.WriteString(w, "successfully add event")
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(marshallEvent)
 		return
 	}
 	http.Error(w, "400 Bad Request.", http.StatusBadRequest)

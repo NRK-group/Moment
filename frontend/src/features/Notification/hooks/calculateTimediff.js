@@ -5,8 +5,8 @@ export const CalculateTimeDiff = (date) => {
     const diffDays = Math.floor(diff / (1000 * 3600 * 24));
     const diffHours = Math.floor(diff / (1000 * 3600));
     const diffMinutes = Math.floor(diff / (1000 * 60));
-    if (diffDays > 0) return diffDays + 'd';
-    if (diffHours > 0) return diffHours + 'h';
-    if (diffMinutes > 0) return diffMinutes + 'm';
-    return 'now';
+    if (diffDays > 0) return diffDays + 'd ago';
+    if (diffHours > 0) return diffHours + 'h ago';
+    if (diffMinutes > 0) return diffMinutes + 'm ago';
+    return 'now ago';
 };

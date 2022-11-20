@@ -45,8 +45,9 @@ export default function GroupEvent({ groupId, setOpenModal }) {
         if (textVal.trim() === '') return;
         if (location.trim() === '') return;
         if (eventName.trim() === '') return;
+        console.log()
 
-        fetch(`http://localhost:5070/post`, {
+        fetch(`http://localhost:5070/event`, {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({
@@ -79,7 +80,7 @@ export default function GroupEvent({ groupId, setOpenModal }) {
     return (
         <div id='GroupEvent'>
             <Card styleName='newPostBoxEvent'>
-                <Card styleName='newPostHeader'>
+                <Card styleName='newPostHeaderEvent'>
                     <span className='newPostTitle'>Create a Event </span>
                 </Card>
 
@@ -126,7 +127,7 @@ export default function GroupEvent({ groupId, setOpenModal }) {
                             />
                         </div>
                         <br />
-                        <label for='attending'>Attending? : </label>
+                        <label htmlFor='attending'>Attending? : </label>
                         <select ref={attending} name='attending' id='attending'>
                             <option value={true}>Going</option>
                             <option value={false}>Not going</option>

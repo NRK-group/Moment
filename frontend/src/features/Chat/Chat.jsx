@@ -6,26 +6,16 @@ import { ChatUsersContainer } from './components/chatUsersContainer';
 import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { GetChatList } from './hooks/getChatList';
-import { useEffect, useState } from 'react';
-const Chat = ({ isMobile, socket }) => {
+const Chat = ({
+    isMobile,
+    socket,
+    setMessageNotif,
+    chatList,
+    setNewMessage,
+}) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
     let user = document.cookie.split('=')[1].split('&')[0];
-    let [newMessage, setNewMessage] = useState(0);
-    const [chatList, setClist] = useState([]);
-    GetChatList(setClist, newMessage);
-    if (socket) {
-        socket.onmessage = (e) => {
-            let data = JSON.parse(e.data);
-            if (
-                data.type === 'privateMessage' ||
-                data.type === 'groupMessage'
-            ) {
-                setNewMessage((prev) => prev + 1);
-            }
-        };
-    }
     return (
         <>
             <Body styleName={bodyStyleName}>
@@ -37,6 +27,7 @@ const Chat = ({ isMobile, socket }) => {
                                 currentUserInfo={user}
                                 chatList={chatList ? chatList : []}
                                 socket={socket}
+                                setMessageNotif={setMessageNotif}
                             />
                             <div className='messagesContainer'>
                                 <>

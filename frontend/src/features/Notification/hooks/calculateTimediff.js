@@ -8,5 +8,5 @@ export const CalculateTimeDiff = (date) => {
     if (diffDays > 0) return diffDays + 'd ago';
     if (diffHours > 0) return diffHours + 'h ago';
     if (diffMinutes > 0) return diffMinutes + 'm ago';
-    return 'now ago';
+    return 'now';
 };

@@ -10,7 +10,12 @@ import './NewPost.css';
 export default function NewPost() {
     const navigate = useNavigate('');
     let imgUpload = useRef(),
+<<<<<<< HEAD
         content = useRef();
+=======
+        content = useRef(),
+        privacy = useRef();
+>>>>>>> development
     const [image, setImage] = useState(null);
 
     const handleChangeImage = (e) => {
@@ -27,8 +32,28 @@ export default function NewPost() {
         });
     };
 
+<<<<<<< HEAD
     function UploadPost(textVal) {
         if (textVal.trim() === '') return;
+=======
+    function UploadPost(textVal, privacy) {
+        if (textVal.trim() === '') return;
+        let privacyInt;
+        switch (privacy) {
+            case 'Public':
+                privacyInt = 1;
+                break;
+            case 'Private':
+                privacyInt = 0;
+                break;
+            case 'Close Friends':
+                privacyInt = -1;
+                break;
+            default:
+                privacyInt = 0;
+                break;
+        }
+>>>>>>> development
 
         fetch(`http://localhost:5070/post`, {
             credentials: 'include',
@@ -36,10 +61,13 @@ export default function NewPost() {
             body: JSON.stringify({
                 Content: textVal,
                 UserID: GetCookie('session_token').split('&')[0],
+<<<<<<< HEAD
+=======
+                Privacy: privacyInt,
+>>>>>>> development
             }),
         }).then(async (response) => {
             let resp = await response.json();
-            console.log(resp);
 
             if (image != null) {
                 const formData = new FormData();
@@ -93,6 +121,7 @@ export default function NewPost() {
                         <PrivacySelector
                             styleName='newPostPrivacySelector'
                             closeFriends={true}
+                            refr={privacy}
                         />
 
                         <textarea
@@ -106,7 +135,16 @@ export default function NewPost() {
                         />
                         <button
                             className='NewPostSendBtn'
+<<<<<<< HEAD
                             onClick={() => UploadPost(content.current.value)}>
+=======
+                            onClick={() =>
+                                UploadPost(
+                                    content.current.value,
+                                    privacy.current.value
+                                )
+                            }>
+>>>>>>> development
                             <span className='shareText'>Share</span>
                             <MessagesIcon />
                         </button>

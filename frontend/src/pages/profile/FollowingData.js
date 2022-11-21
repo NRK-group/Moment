@@ -45,8 +45,11 @@ function UpdateRelationshipBtn(relationship, setter) {
         case "unfollow":
             setter("Follow")
             break;
-            case "pending":
+        case "pending":
             setter("Pending")
+            break;
+        case "Close Friend" :
+            setter("Close Friend")
             break;
         default:
             setter("Error")

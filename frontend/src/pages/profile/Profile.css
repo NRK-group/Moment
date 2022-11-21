@@ -91,9 +91,13 @@
     background-color: var(--button-color);
 }
 
+.Friend{
+    background-color: rgb(74, 192, 74);
+}
+
 .Following,
 .Pending {
-    background-color: var(--subheading-color);
+    background-color: var(--terheading-color);
 }
 
 .blurry {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 export const GetChatList = (setClist, newMessage) => {
     const [chatList, setChatList] = useState([]);
     useEffect(() => {
@@ -8,7 +9,6 @@ export const GetChatList = (setClist, newMessage) => {
             let data = await res.json();
             data ? setChatList(data) : setChatList([]);
             data ? setClist(data) : setClist([]);
-            navigate('/messages');
             return;
         });
     }, [newMessage]);

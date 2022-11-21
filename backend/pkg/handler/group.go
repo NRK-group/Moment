@@ -9,6 +9,7 @@ import (
 
 	"backend/pkg/auth"
 	"backend/pkg/group"
+	"backend/pkg/member"
 	"backend/pkg/structs"
 )
 
@@ -44,7 +45,24 @@ func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if len(groups) == 0 {
-			groups = append([]structs.Group{{Name: "Threre are no groups", Description: "", Admin: "none"}}, groups...)
+			groups = append([]structs.Group{{Name: "Threre are no groups", Description: "", Admin: "none", Member: true}}, groups...)
+		}
+
+		for _, group := range groups {
+			members, err := member.GetMembers(group.GroupID, database.Env)
+			if err != nil {
+				fmt.Print(err)
+				http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
+			for i, member := range members {
+				if member.UserId == cookie[0] {
+					groups[i].Member = true
+				}
+			}
+
 		}
 
 		marshallGroups, err := json.Marshal(groups)

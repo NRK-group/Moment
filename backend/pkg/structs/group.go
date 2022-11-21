@@ -8,4 +8,5 @@ type Group struct {
 	Description string   `json:"Description"`
 	Admin       string   `json:"Admin"`
 	Members     []Member `json:"Members"`
+	Member      bool   `json:"member"`
 }

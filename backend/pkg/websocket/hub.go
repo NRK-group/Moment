@@ -130,6 +130,9 @@ func (h *Hub) Run() {
 					l.LogMessage("Hub.go", "Run() - DeclineInvitationNotif", err)
 				}
 			}
+			if msg.MessageType == "deleteNotif" {
+				messages.DeleteNotif(msg.ChatId, msg.ReceiverId, h.Database)
+			}
 			// for userId, client := range h.Clients {
 			// 	select {
 			// 	case client.Send <- message:

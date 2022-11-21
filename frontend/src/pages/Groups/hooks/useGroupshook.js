@@ -24,3 +24,8 @@ export const GetAllGroupEvents = async (id) => {
     console.log({ fetchAllgroupEvents });
     return fetchAllgroupEvents;
 };
+
+
+export const RequestToJoin = async (id, receiverId, socket) => {
+    socket.send(JSON.stringify({type: "groupInvitation", senderId: id, receiverId:receiverId}))
+};

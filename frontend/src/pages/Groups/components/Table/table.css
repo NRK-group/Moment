@@ -5,16 +5,16 @@
     border: var( --border-color);
   }
   
-  .groups-List-Table th, td {
+  .groups-List-tbody th, td {
     text-align: center;
     padding: 16px;
   }
   
-  .groups-List-Table th  {
+  .groups-List-tbody th  {
     background-color: var(--subheading-color);
   }
 
-  .groups-List-Table tbody :hover {
+  .groups-List-tbody :hover {
     cursor: pointer;
     background-color: #e8e8e8;
   }
@@ -25,4 +25,9 @@
 
   .groups-List-header {
     border-bottom: 5px solid black;
+  }
+  
+  .groups-List-Block {
+    cursor: not-allowed;
+    background-color: #e8e8e8;
   }

@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"backend/pkg/post"
@@ -36,11 +35,6 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var postData structs.Post
 		GetBody(&postData, w, r)
-		fmt.Println()
-		fmt.Println()
-		fmt.Println("Post data ==== ", postData)
-		fmt.Println()
-		fmt.Println()
 
 		postID, postErr := post.CreatePost(postData.UserID, postData.GroupID, "", postData.Content, postData.Privacy, database.Env)
 		if postErr != nil {

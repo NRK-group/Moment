@@ -99,8 +99,8 @@ func TestCloseFriendList(t *testing.T) {
 	Env := handler.Env{Env: database}
 	profileUser := CreateUser(database, t)
 	var ids []string
-	for i:=0; i<3; i++ {
-		//Create a user and make them follow profile user
+	for i := 0; i < 3; i++ {
+		// Create a user and make them follow profile user
 		tempUser := CreateUser(database, t)
 		closefriend.AddCloseFriend(profileUser.UserId, tempUser.UserId, *database)
 		ids = append(ids, tempUser.UserId)
@@ -126,4 +126,21 @@ func TestCloseFriendList(t *testing.T) {
 			t.Errorf("got %v. Want %v.", v.Id, ids[i])
 		}
 	}
+}
+
+func TestCheckCloseFriend(t *testing.T) {
+	Env := handler.Env{Env: database}
+
+	userOne := CreateUser(database, t)
+	userTwo := CreateUser(database, t)
+	// Login to userOne
+	loginUser := structs.User{Email: userOne.Email, Password: "Password123"}
+	sampleUserBytes, _ := json.Marshal(loginUser)
+	// Create the bytes into a reader
+	testReq := bytes.NewReader(sampleUserBytes)
+	r := httptest.NewRequest(http.MethodGet, "/login", testReq)
+	w := httptest.NewRecorder()
+	Env.Login(w, r)
+
+	
 }

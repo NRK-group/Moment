@@ -40,15 +40,12 @@ export default function Profile() {
     useEffect(() => {
         if (id) {
             CheckFollowing(id).then((response) => {
+                console.log(response.Message)
                 SetRelBtn(response.Message, setFollowStatus);
             });
-            if (followStatus === Following) {
-                //Check for closeFriends
-                
-            }
         }
         GetProfile(id).then((response) => setValues(response));
-    
+        console.log({followStatus});
     }, [id]);
     const relBtn = (
         <Button
@@ -77,7 +74,8 @@ export default function Profile() {
                         <h3 className='profileDetailText'>{values.NickName}</h3>
                         {!id ||
                         values.IsPublic === 1 ||
-                        followStatus === 'Following' ? (
+                        followStatus === 'Following' ||
+                        followStatus === 'Close Friend' ? (
                             <span>
                                 <p className='profileAboutMe'>
                                     {values.AboutMe}
@@ -109,7 +107,8 @@ export default function Profile() {
                         )}
                         {!id ||
                         values.IsPublic === 1 ||
-                        followStatus === 'Following' ? (
+                        followStatus === 'Following' ||
+                        followStatus === 'Close Friend' ? (
                             <span>
                                 <ProfileStats
                                     styleName={'profileStats'}
@@ -131,7 +130,10 @@ export default function Profile() {
                     </Card>
                 </Card>
             </Card>
-            {!id || values.IsPublic === 1 || followStatus === 'Following' ? (
+            {!id ||
+            values.IsPublic === 1 ||
+            followStatus === 'Following' ||
+            followStatus === 'Close Friend' ? (
                 <ProfilePosts
                     contentSelector='profileContentSelector'
                     postBtn='profilePosts'

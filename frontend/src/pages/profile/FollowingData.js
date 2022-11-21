@@ -18,10 +18,10 @@ export default function CheckFollowing(userId) {
 //FollowRelationshipUpdate will send a request to either follow or unfollow a user.
 function FollowRelationshipUpdate(followingId) {
     //Get the userId from the cookie
-    let cookieVal = GetCookie('session_token')
-    let userId
+    let cookieVal = GetCookie('session_token');
+    let userId;
     if (cookieVal) userId = cookieVal.split('&')[0];
-    else return {Message : "Error"}
+    else return { Message: 'Error' };
     let FOLLOW_DATA = {
         FollowerId: userId,
         FollowingId: followingId,
@@ -38,28 +38,26 @@ function FollowRelationshipUpdate(followingId) {
 
 //UpdateRelationshipBtn updates the style of the rel button
 function UpdateRelationshipBtn(relationship, setter) {
-    switch(relationship) {
-        case "follow":
-            setter("Following")
+    console.log({ relationship });
+    switch (relationship) {
+        case 'follow':
+            setter('Following');
             break;
-        case "unfollow":
-            setter("Follow")
+        case 'unfollow':
+            setter('Follow');
             break;
-        case "pending":
-            setter("Pending")
-            break;
-        case "Close Friend" :
-            setter("Close Friend")
+        case 'pending':
+            setter('Pending');
             break;
         default:
-            setter("Error")
+            setter('Error');
             break;
     }
 }
 
 //SetRelBtn sets the class and value of the relationship button when the page is first loaded
 function SetRelBtn(rel, setter) {
-    switch(rel) {
+    switch (rel) {
         case 'Not Following':
             setter('Follow');
             break;
@@ -68,6 +66,9 @@ function SetRelBtn(rel, setter) {
             break;
         case 'Pending':
             setter('Pending');
+            break;
+        case 'Close Friend':
+            setter('Close Friend');
             break;
         default:
             setter('Error');

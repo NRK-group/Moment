@@ -12,7 +12,11 @@ type Message struct {
 	Content     string    `json:"content"`
 	CreatedAt   time.Time `json:"createAt"`
 }
-
+type MessageNotif struct {
+	ChatId     string `json:"chatId"`
+	ReceiverId string `json:"receiverId"`
+	Notif      int    `json:"notif"`
+}
 type Chat struct {
 	ChatId    string    `json:"chatId"`
 	GroupId   string    `json:"groupId"`
@@ -27,6 +31,7 @@ type ChatWriter struct {
 	Details   Info            `json:"details"`
 	Member    map[string]Info `json:"member"`
 	Content   Message         `json:"content"`
+	Notif     int             `json:"notif"`
 	UpdatedAt time.Time       `json:"updatedAt"`
 }
 

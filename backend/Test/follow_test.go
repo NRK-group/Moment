@@ -183,16 +183,15 @@ func TestFollow(t *testing.T) {
 	})
 	t.Run("Get following notifs", func(t *testing.T) {
 		// Create the users that will be used for testing
-		FollowingTestId := uuid.NewV4().String()
-		follow.InsertFollowNotif("Hello1", FollowingTestId, "pending", database)
-		follow.InsertFollowNotif("Hello2", FollowingTestId, "pending", database)
-		follow.InsertFollowNotif("Hello3", FollowingTestId, "pending", database)
-		fot, err := follow.GetFollowNotifs(FollowingTestId, database)
+		user := CreateUser(database, t)
+		user2 := CreateUser(database, t)
+		follow.InsertFollowNotif(user.UserId, user2.UserId, "pending", database)
+		fot, err := follow.GetFollowNotifs(user2.UserId, database)
 		if err != nil {
 			t.Errorf("got %v, want %v", err, nil)
 		}
 		got := len(fot)
-		want := 3
+		want := 1
 		if got != want {
 			t.Errorf("got %v, want %v", got, want)
 		}

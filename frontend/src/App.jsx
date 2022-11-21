@@ -22,6 +22,7 @@ import CloseFriendsUsers from './features/profile/CloseFriendsUsers';
 import Followers from './features/profile/Followers';
 import Following from './features/profile/Following';
 import { SearchModal } from './features/Search/SearchModal';
+import { CreateWebSocket } from './utils/createWebsocket';
 function App() {
     const [authorised, setAuthorised] = useState(false);
     Validation(setAuthorised);
@@ -30,7 +31,27 @@ function App() {
     const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
     const { width } = useWindowDimensions();
     const [query, setQuery] = useState('');
+    const [messageNotif, setMessageNotif] = useState(false);
     let isMobile = width < 600;
+    useEffect(() => {
+        if (authorised) {
+            setSocket(CreateWebSocket());
+        }
+    }, [authorised]);
+    let [newMessage, setNewMessage] = useState(0);
+    const [chatList, setClist] = useState([]);
+    if (socket) {
+        socket.onmessage = (e) => {
+            let data = JSON.parse(e.data);
+            if (
+                data.type === 'privateMessage' ||
+                data.type === 'groupMessage'
+            ) {
+                console.log('new message');
+                setNewMessage((prev) => prev + 1);
+            }
+        };
+    }
     return (
         <div
             className='App'
@@ -40,9 +61,14 @@ function App() {
             }}>
             {authorised && (
                 <Header
-                    setSocket={setSocket}
+                    socket={socket}
                     setIsMenuOpen={setIsMenuOpen}
                     setIsSearchModalOpen={setIsSearchModalOpen}
+                    messageNotif={messageNotif}
+                    setMessageNotif={setMessageNotif}
+                    setClist={setClist}
+                    newMessage={newMessage}
+                    chatList={chatList}
                     onChange={(e) => {
                         setQuery(e.target.value);
                     }}
@@ -87,7 +113,13 @@ function App() {
                         <Route
                             path='/messages/*'
                             element={
-                                <Chat isMobile={isMobile} socket={socket} />
+                                <Chat
+                                    isMobile={isMobile}
+                                    socket={socket}
+                                    chatList={chatList}
+                                    setMessageNotif={setMessageNotif}
+                                    setNewMessage={setNewMessage}
+                                />
                             }
                         />
                         <Route path='/groups' element={<Groups/>} />
@@ -112,12 +144,14 @@ function App() {
                             element={<ProfileInfoPopUp styleName='popUp' />}
                         />
                         <Route path='/stories' element={<Stories />} />
-                        
                     </Routes>
                 </>
             )}
             {authorised ? (
-                <Footer setIsSearchModalOpen={setIsSearchModalOpen} />
+                <Footer
+                    setIsSearchModalOpen={setIsSearchModalOpen}
+                    messageNotif={messageNotif}
+                />
             ) : null}
         </div>
     );

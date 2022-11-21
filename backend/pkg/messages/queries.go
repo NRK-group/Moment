@@ -162,3 +162,75 @@ func UpdateChat(chatId string, database *structs.DB) error {
 	}
 	return nil
 }
+
+// InsertMessageNotif inserts a new message notification into the database or updates it
+//
+// Param:
+//
+// chatId: the id of the chat
+// receiverId: the id of the receiver
+// database: the database
+func InsertOrUpdateMessageNotif(chatId string, receiverId string, database *structs.DB) error {
+	// Check if the notification already exists in the database
+	row := database.DB.QueryRow("SELECT * FROM MessageNotif WHERE chatId = ? AND receiverId = ?", chatId, receiverId)
+	var notif structs.MessageNotif
+	err := row.Scan(&notif.ChatId, &notif.ReceiverId, &notif.Notif)
+	if err != nil {
+		// Insert the notification into the database
+		stmt, err := database.DB.Prepare("INSERT INTO MessageNotif (chatId, receiverId, notif) VALUES (?, ?, ?)")
+		if err != nil {
+			return err
+		}
+		_, err = stmt.Exec(chatId, receiverId, 1)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	// Update the notification in the database
+	stmt, err := database.DB.Prepare("UPDATE MessageNotif SET notif = ? WHERE chatId = ? AND receiverId = ?")
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(notif.Notif+1, chatId, receiverId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetNotif returns the number of notifications for a user
+//
+// Param:
+//
+// chatId: the id of the chat
+// receiverId: the id of the receiver
+// database: the database
+func GetNotif(chatId string, receiverId string, database *structs.DB) int {
+	row := database.DB.QueryRow("SELECT notif FROM MessageNotif WHERE chatId = ? AND receiverId = ?", chatId, receiverId)
+	var notif int
+	err := row.Scan(&notif)
+	if err != nil {
+		return 0
+	}
+	return notif
+}
+
+// DeleteNotif reset the number of the notification to 0
+//
+// Param:
+//
+// chatId: the id of the chat
+// currentUser: the id of the current user
+// database: the database
+func DeleteNotif(chatId string, currentUser string, database *structs.DB) error {
+	stmt, err := database.DB.Prepare("UPDATE MessageNotif SET notif = ? WHERE chatId = ? AND receiverId = ?")
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(0, chatId, currentUser)
+	if err != nil {
+		return err
+	}
+	return nil
+}

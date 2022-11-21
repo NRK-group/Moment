@@ -7,6 +7,9 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 8070,
     },
+    preview: {
+        port: 8070,
+    },
     plugins: [react()],
     build: {
         rollupOptions: {

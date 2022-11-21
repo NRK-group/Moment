@@ -1,0 +1,12 @@
+.desktopCard {
+    width: 100%;
+    height: 100%;
+    max-width: 935px;
+    min-height: 200px;
+    max-height: 1000px;
+    border-radius: 3px;
+}
+.mobileCard {
+    width: 100%;
+    height: 100%;
+}

@@ -1,0 +1,69 @@
+.miniUserCard {
+    height: 60px;
+    width: 100%;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    font-size: var(--secondary-font-size);
+}
+.miniUserCard:hover {
+    background-color: var(--secondary-background-color);
+}
+.miniUserCardImg {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+.miniUserCardImgContainer {
+    height: 44px;
+    width: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.miniUserCardInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+}
+.miniUserCardName {
+    font-weight: 600;
+    font-size: var(--subheading-font-size);
+}
+.miniUserCardContent {
+    font-size: var(--tertiary-font-size);
+    color: var(--subheading-color);
+}
+.optContent {
+    font-weight: 570;
+
+    font-size: var(--tertiary-font-size);
+    color: var(--subheading-color);
+}
+.contentSep {
+    margin: 0 5px;
+}
+.miniUserCardContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.miniUserCardButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    margin-left: auto;
+    width: 50%;
+}
+@media only screen and (min-width: 601px) {
+    .miniUserCardImg {
+        height: 40px;
+        width: 40px;
+    }
+}

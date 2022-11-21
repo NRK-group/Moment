@@ -1,0 +1,21 @@
+.footerContainer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: var(--mobile-nav-height);
+    border-top: var(--terheading-color) 1px solid;
+    background-color: var(--background-color);
+}
+.footer {
+    max-width: 600px;
+    height: var(--mobile-nav-height);
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+@media only screen and (min-width: 601px) {
+    .footerContainer {
+        display: none;
+    }
+}

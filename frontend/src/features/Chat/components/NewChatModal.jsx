@@ -32,7 +32,7 @@ export const NewChatModal = () => {
                 navigate(`/messages/${data.chatId}`, {
                     state: {
                         type: 'privateMessage',
-                        user: data.user,
+                        user: data.member,
                         details: data.details,
                     },
                 });

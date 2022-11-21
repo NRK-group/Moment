@@ -70,14 +70,13 @@ func AllGroupPosts(groupID string, database *structs.DB) ([]structs.Post, error)
 	}
 
 	for rows.Next() {
-		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt)
+		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt, &post.Privacy)
 		arr, err := commets.GetComments(post.PostID, database)
 		if err != nil {
 			fmt.Print(err)
 			return nil, err
 		}
 		post.NumOfComment = len(arr)
-		fmt.Println("post-", post)
 		posts = append([]structs.Post{post}, posts...)
 	}
 

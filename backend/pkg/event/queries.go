@@ -99,7 +99,7 @@ func CheckIfUserInEventAndIfNotAddThem(eventId, userId string, database *structs
 		fmt.Println(err)
 		return true, holder, err
 	}
-	return false, holder, nil
+	return true, holder, nil
 }
 
 func AllEventParticipant(eventId string, database *structs.DB) ([]structs.EventParticipant, error) {

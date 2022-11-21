@@ -133,7 +133,7 @@ func TestCreateEvent(t *testing.T) {
 			fmt.Println(err)
 		}
 		want := true
-		got := (result == false) && (result2 == true)
+		got := (result == true) && (result2 == true)
 		if got != want {
 			t.Errorf("Expected %v got %v", want, got)
 		}

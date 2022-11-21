@@ -119,11 +119,11 @@ func TestNotification(t *testing.T) {
 		if groupNotif[0].GroupId.Id != group {
 			t.Error("Expected ", group, " got ", groupNotif[0].GroupId.Id)
 		}
-		if groupNotif[0].UserId.Id != result2.UserId {
-			t.Error("Expected ", result1.UserId, " got ", groupNotif[0].UserId.Id)
-		}
 		if groupNotif[0].ReceiverId.Id != result1.UserId {
-			t.Error("Expected ", result2.UserId, " got ", groupNotif[0].ReceiverId.Id)
+			t.Error("Expected ", result1.UserId, " got ", groupNotif[0].ReceiverId.Id)
+		}
+		if groupNotif[0].UserId.Id != result2.UserId {
+			t.Error("Expected ", result2.UserId, " got ", groupNotif[0].UserId.Id)
 		}
 	})
 }

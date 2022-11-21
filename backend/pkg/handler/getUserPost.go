@@ -29,7 +29,6 @@ func (database *Env) GetUserPosts(w http.ResponseWriter, r *http.Request) {
 		}
 		userID := r.URL.Query().Get("userID") // Get the parameter
 
-
 		posts, err := post.AllUserPost(userID, database.Env)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)

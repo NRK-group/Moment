@@ -35,8 +35,8 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var postData structs.Post
 		GetBody(&postData, w, r)
-	
-		postID, postErr := post.CreatePost(postData.UserID, postData.GroupID,"" ,postData.Content, database.Env)
+
+		postID, postErr := post.CreatePost(postData.UserID, postData.GroupID, "", postData.Content, postData.Privacy, database.Env)
 		if postErr != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -49,4 +49,3 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Error(w, "400 Bad Request.", http.StatusBadRequest)
 }
-

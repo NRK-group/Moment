@@ -7,6 +7,7 @@ export const ChatUsersContainer = ({
     styleName,
     chatList,
     socket,
+    setMessageNotif,
 }) => {
     const [newMessage, setNewMessage] = useState([]);
     useEffect(() => {
@@ -28,6 +29,14 @@ export const ChatUsersContainer = ({
                 return msg;
             })
         );
+        let isNotif = false;
+        for (let i = 0; i < newMessage.length; i++) {
+            if (newMessage[i].notif !== 0) {
+                isNotif = true;
+                return;
+            }
+        }
+        setMessageNotif(isNotif);
     };
     return (
         <div className={`chatUsersContainer ${styleName}`}>
@@ -45,6 +54,7 @@ export const ChatUsersContainer = ({
                           }) => {
                               return (
                                   <div
+                                      key={details.id}
                                       onClick={() => {
                                           handleOpenChat(chatId);
                                       }}>

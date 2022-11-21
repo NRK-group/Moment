@@ -77,6 +77,13 @@ export const Messages = ({ socket, currentUserInfo, setNewMessage }) => {
                     data.type === 'privateMessage' ||
                     data.type === 'groupMessage'
                 ) {
+                    socket.send(
+                        JSON.stringify({
+                            type: 'deleteNotif',
+                            chatId: chatId,
+                            receiverId: currentUserInfo,
+                        })
+                    );
                     setNewMessage((prev) => prev + 1);
                 }
                 if (data.chatId === chatId) {

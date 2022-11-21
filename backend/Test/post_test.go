@@ -53,7 +53,7 @@ func CreatePost(GroupId string, database *structs.DB, t *testing.T) string {
 }
 
 func createNewPost(userId string, database *structs.DB) {
-	post1 := structs.Post{UserID: userId, Content: "hey" + uuid.NewV4().String()}
+	post1 := structs.Post{UserID: userId, Content: "hey" + uuid.NewV4().String(), Privacy: 0}
 	_, err := post.CreatePost(post1.UserID, post1.GroupID, post1.Image, post1.Content, post1.Privacy, database)
 	if err != nil {
 		fmt.Println("Error Inserting the struct into the db", err.Error())

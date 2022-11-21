@@ -25,7 +25,7 @@ func AllPost(database *structs.DB) ([]structs.Post, error) {
 	}
 
 	for rows.Next() {
-		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt)
+		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt, &post.Privacy)
 		if post.GroupID == "" {
 		arr, _ := commets.GetComments(post.PostID, database)
 		post.NumOfComment = len(arr)
@@ -50,7 +50,7 @@ func AllUserPost(uID string, database *structs.DB) ([]structs.Post, error) {
 	}
 
 	for rows.Next() {
-		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt)
+		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt, &post.Privacy)
 		if post.UserID == uID {
 		arr, _ := commets.GetComments(post.PostID, database)
 		post.NumOfComment = len(arr)

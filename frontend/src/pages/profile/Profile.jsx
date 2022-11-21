@@ -44,7 +44,8 @@ export default function Profile() {
             });
         }
         GetProfile(id).then((response) => setValues(response));
-    }, []);
+    
+    }, [id]);
     const relBtn = (
         <Button
             content={followStatus}

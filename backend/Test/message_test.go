@@ -50,7 +50,7 @@ func TestMessage(t *testing.T) {
 		Content:    "Hello World",
 	}
 	t.Run("Test Insert Message", func(t *testing.T) {
-		msg, err := messages.InsertMessage(message, *database)
+		msg, err := messages.InsertMessage(message, database)
 		l.LogMessage("message_test.go", "Test Insert Message", msg)
 		if err != nil {
 			t.Errorf("Error inserting message: %v", err)
@@ -141,7 +141,7 @@ func TestMessageHandler(t *testing.T) {
 		ReceiverId:  result2.UserId,
 		Content:     "Hello World",
 	}
-	_, err := messages.InsertMessage(message, *database)
+	_, err := messages.InsertMessage(message, database)
 	t.Run("Test Insert Message", func(t *testing.T) {
 		if err != nil {
 			t.Errorf("Error inserting message: %v", err)

@@ -67,7 +67,7 @@ func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
 }
 
 func TestHealthCheckGroupHttpGet(t *testing.T) {
-	w, Env, _:= LoginUser(database, t)
+	w, Env, _ := LoginUser(database, t)
 
 	reqq := httptest.NewRequest(http.MethodGet, "/group", nil)
 	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
@@ -148,17 +148,17 @@ func TestGettingAllPostFromAGroup(t *testing.T) {
 		newUser := CreateUser(database, t)
 		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: newUser.UserId}
 		Id, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
+		if err != nil {
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
 		groupID = Id
 		var postId string
 
 		for i := 0; i < 10; i++ {
 			if i%2 == 0 {
-				postId = CreatePost("Id", database, t)
+				postId = CreatePost("id2", database, t)
 			} else {
 				postId = CreatePost(groupID, database, t)
-			}
-			if err != nil {
-				t.Errorf("Error Inserting the struct into the db %v", err)
 			}
 			if i%2 != 0 {
 				postIdArr = append([]string{postId}, postIdArr...)

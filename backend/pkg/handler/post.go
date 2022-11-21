@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"backend/pkg/post"
@@ -35,8 +36,13 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var postData structs.Post
 		GetBody(&postData, w, r)
-	
-		postID, postErr := post.CreatePost(postData.UserID, postData.GroupID,"" ,postData.Content, database.Env)
+		fmt.Println()
+		fmt.Println()
+		fmt.Println("Post data ==== ", postData)
+		fmt.Println()
+		fmt.Println()
+
+		postID, postErr := post.CreatePost(postData.UserID, postData.GroupID, "", postData.Content, database.Env)
 		if postErr != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -49,4 +55,3 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Error(w, "400 Bad Request.", http.StatusBadRequest)
 }
-

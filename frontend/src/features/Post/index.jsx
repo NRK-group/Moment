@@ -81,7 +81,7 @@ export default function Post({
                     </div>
                 </Card>
                 <Card styleName={'PostBody'}>
-                    {(postBodyImgSrc && <img src={`http://localhost:5070/${postBodyImgSrc}`} />) ||
+                    {(postBodyImgSrc && <div className='postImg' style={{backgroundImage: `url(http://localhost:5070/${postBodyImgSrc})`}}></div>) ||
                         (postContent && <p>{postContent}</p>)}
                 </Card>
                 <Card styleName={'PostContent'}>

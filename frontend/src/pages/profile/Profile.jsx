@@ -40,12 +40,12 @@ export default function Profile() {
     useEffect(() => {
         if (id) {
             CheckFollowing(id).then((response) => {
-                console.log(response.Message)
+                console.log(response.Message);
                 SetRelBtn(response.Message, setFollowStatus);
             });
         }
         GetProfile(id).then((response) => setValues(response));
-        console.log({followStatus});
+        console.log({ followStatus });
     }, [id]);
     const relBtn = (
         <Button
@@ -141,6 +141,7 @@ export default function Profile() {
                     likeBtn='profileLiked'
                     postContainer='profilePostContainer noContent'
                     id={id}
+                    privacyVal={followStatus}
                 />
             ) : (
                 <Card styleName='restrictedAccount'>

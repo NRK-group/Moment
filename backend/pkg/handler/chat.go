@@ -38,10 +38,10 @@ func (database *Env) Chat(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		result := chat.ArrangeChat(chats, groupChat)
+		chat := append(chats, groupChat...)
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "application/json")
-		err = json.NewEncoder(w).Encode(result)
+		err = json.NewEncoder(w).Encode(chat)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return

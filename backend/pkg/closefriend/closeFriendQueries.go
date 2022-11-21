@@ -48,6 +48,9 @@ func DeleteCloseFriend(userId, closeFriendId string, database structs.DB) bool {
 	return true
 }
 
+//AddCloseFriend adds a user as another users close friend in the database
+//userId: The user who is adding a close friend
+//closeFriendId: The user who is being added as a close friend
 func AddCloseFriend(userId, closeFriendId string, database structs.DB) bool {
 	qry, err := database.DB.Prepare("INSERT INTO CloseFriends VALUES (?, ?, ?)")
 	if err != nil {
@@ -85,4 +88,21 @@ func GetCloseFriends(userId string, database structs.DB) []structs.Info {
 		closeFriends = append(closeFriends, temp)
 	}
 	return closeFriends
+}
+
+// CurrentCloseFriend is a function which checks if a user is a user is a close friend of the profile they are viewing
+// ProfileId: The profile being viewed
+// UserId: The user who is currently logged in
+// db: The db which holds all session data
+func CurrentCloseFriend(profileId, userId string, db structs.DB) bool {
+	rows, err := db.DB.Query(`SELECT 1 FROM CloseFriends WHERE userId = ? AND closeFriendId = ?`, profileId, userId)
+	if err != nil {
+		log.Println("Error checking if current close friend: ", err)
+		return false
+	}
+	defer rows.Close()
+	for rows.Next() { // If there are any rows then userId is a close friend
+		return true
+	}
+	return false
 }

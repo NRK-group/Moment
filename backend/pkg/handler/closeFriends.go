@@ -63,27 +63,27 @@ func (DB *Env) CloseFriendList(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "400 Bad Request", http.StatusBadRequest)
 }
 
-func (DB *Env) CheckCloseFriend(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/checkclosefriend" {
-		http.Error(w, "404 not found.", http.StatusNotFound)
-		return
-	}
-	SetupCorsResponse(w)
-	if r.Method == http.MethodGet {
-		c, err := r.Cookie("session_token")
-		if err != nil || !auth.ValidateCookie(c, DB.Env, w) {
-			response.WriteMessage("Cookie not found", "Unauthorised", w)
-			return
-		}
-		cookieSlc, slcErr := auth.SliceCookie(c.Value)
-		if slcErr != nil {
-			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
-			return
-		}
-		//Check if the current user is a Close friend of the Profile viewing
-		profileID := r.URL.Query().Get("profileID") // Get the parameter
-		
+// func (DB *Env) CheckCloseFriend(w http.ResponseWriter, r *http.Request) {
+// 	if r.URL.Path != "/checkclosefriend" {
+// 		http.Error(w, "404 not found.", http.StatusNotFound)
+// 		return
+// 	}
+// 	SetupCorsResponse(w)
+// 	if r.Method == http.MethodGet {
+// 		c, err := r.Cookie("session_token")
+// 		if err != nil || !auth.ValidateCookie(c, DB.Env, w) {
+// 			response.WriteMessage("Cookie not found", "Unauthorised", w)
+// 			return
+// 		}
+// 		cookieSlc, slcErr := auth.SliceCookie(c.Value)
+// 		if slcErr != nil {
+// 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+// 			return
+// 		}
+// 		//Check if the current user is a Close friend of the Profile viewing
+// 		profileID := r.URL.Query().Get("profileID") // Get the parameter
 
-	}
-}
+
+// 	}
+// }
 

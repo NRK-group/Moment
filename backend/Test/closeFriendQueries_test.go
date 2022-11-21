@@ -32,11 +32,11 @@ func TestUpdateCloseFriend(t *testing.T) {
 	}
 }
 
-func TestGetCloseFriends(t *testing.T){
+func TestGetCloseFriends(t *testing.T) {
 	profileUser := CreateUser(database, t)
 	var ids []string
-	for i:=0; i<3; i++ {
-		//Create a user and make them follow profile user
+	for i := 0; i < 3; i++ {
+		// Create a user and make them follow profile user
 		tempUser := CreateUser(database, t)
 		closefriend.AddCloseFriend(profileUser.UserId, tempUser.UserId, *database)
 		ids = append(ids, tempUser.UserId)
@@ -49,5 +49,24 @@ func TestGetCloseFriends(t *testing.T){
 		if v.Id != ids[i] {
 			t.Errorf("got %v. Want %v.", v.Id, ids[i])
 		}
+	}
+}
+
+func TestCurrentCloseFriend(t *testing.T) {
+	// Create two users
+	userOne := CreateUser(database, t)
+	userTwo := CreateUser(database, t)
+	got := closefriend.CurrentCloseFriend(userOne.UserId, userTwo.UserId, *database)
+	want := false
+	if got != want {
+		t.Errorf("got: %v, want: %v.", got, want)
+		return
+	}
+	closefriend.AddCloseFriend(userOne.UserId, userTwo.UserId, *database)
+	got = closefriend.CurrentCloseFriend(userOne.UserId, userTwo.UserId, *database)
+	want = true
+	if got != want {
+		t.Errorf("got: %v, want: %v.", got, want)
+		return
 	}
 }

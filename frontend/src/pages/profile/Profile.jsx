@@ -42,6 +42,10 @@ export default function Profile() {
             CheckFollowing(id).then((response) => {
                 SetRelBtn(response.Message, setFollowStatus);
             });
+            if (followStatus === Following) {
+                //Check for closeFriends
+                
+            }
         }
         GetProfile(id).then((response) => setValues(response));
     

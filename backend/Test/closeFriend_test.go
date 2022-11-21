@@ -138,9 +138,33 @@ func TestCheckCloseFriend(t *testing.T) {
 	sampleUserBytes, _ := json.Marshal(loginUser)
 	// Create the bytes into a reader
 	testReq := bytes.NewReader(sampleUserBytes)
-	r := httptest.NewRequest(http.MethodGet, "/login", testReq)
+	r := httptest.NewRequest(http.MethodPost, "/login", testReq)
 	w := httptest.NewRecorder()
 	Env.Login(w, r)
+	wr := httptest.NewRecorder()
+	req := httptest.NewRequest(http.MethodGet, "/checkclosefriend", nil)
+	req.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+	values := req.URL.Query()
+	values.Add("profileID", userTwo.UserId)
+	req.URL.RawQuery = values.Encode()
+	Env.CheckCloseFriend(wr, req)
+	got := wr.Body.String()
+	want := `{"Message":"Following"}`
+	if got != want {
+		t.Errorf("Got = %v Want = %v", got, want)
+	}
 
-	
+	closefriend.AddCloseFriend(userTwo.UserId, userOne.UserId, *database)
+	qrys := req.URL.Query()
+	qrys.Add("profileID", userTwo.UserId)
+	wrr := httptest.NewRecorder()
+	reqTwo := httptest.NewRequest(http.MethodGet, "/checkclosefriend", nil)
+	reqTwo.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+	reqTwo.URL.RawQuery = qrys.Encode()
+	Env.CheckCloseFriend(wrr, reqTwo)
+	gotTwo := wrr.Body.String()
+	wantTwo := `{"Message":"Close Friend"}`
+	if gotTwo != wantTwo {
+		t.Errorf("Got = %v Want = %v", gotTwo, wantTwo)
+	}
 }

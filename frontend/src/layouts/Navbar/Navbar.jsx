@@ -10,8 +10,7 @@ import {
 } from '../../components/Icons/Icons';
 import './Navbar.css';
 
-const FooterNav = ({ setIsSearchModalOpen }) => {
-    let notif = '';
+const FooterNav = ({ setIsSearchModalOpen, messageNotif }) => {
     return (
         <div className='navbar'>
             {/* Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc.*/}
@@ -32,7 +31,7 @@ const FooterNav = ({ setIsSearchModalOpen }) => {
                 <NavLink to='/messages'>
                     <div className='notifIcon'>
                         <MessagesIcon />
-                        {notif || <span className='notif'></span>}
+                        {messageNotif && <span className='notif'></span>}
                     </div>
                 </NavLink>
                 <NavLink to='/groups'>
@@ -66,7 +65,7 @@ const MobileHeaderNav = ({ setIsMenuOpen }) => {
         </div>
     );
 };
-const DesktopHeaderNav = ({ setIsMenuOpen }) => {
+const DesktopHeaderNav = ({ setIsMenuOpen, messageNotif }) => {
     let notif = '';
     return (
         <div className='navContainer'>
@@ -78,7 +77,7 @@ const DesktopHeaderNav = ({ setIsMenuOpen }) => {
                     <NavLink to='/messages'>
                         <div className='notifIcon'>
                             <MessagesIcon />
-                            {notif || <span className='notif'></span>}
+                            {messageNotif && <span className='notif'></span>}
                         </div>
                     </NavLink>
                     <NavLink to='/newpost'>

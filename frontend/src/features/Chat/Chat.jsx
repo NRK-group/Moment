@@ -36,6 +36,7 @@ const Chat = ({ isMobile, socket }) => {
                                 styleName='chatUsersContainer'
                                 currentUserInfo={user}
                                 chatList={chatList ? chatList : []}
+                                socket={socket}
                             />
                             <div className='messagesContainer'>
                                 <>

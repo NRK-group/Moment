@@ -42,7 +42,7 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 		fmt.Println()
 		fmt.Println()
 
-		postID, postErr := post.CreatePost(postData.UserID, postData.GroupID, "", postData.Content, database.Env)
+		postID, postErr := post.CreatePost(postData.UserID, postData.GroupID, "", postData.Content, postData.Privacy, database.Env)
 		if postErr != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)

@@ -1,6 +1,6 @@
 import Card from '../../components/card/Card';
 import './Event.css';
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Event({
     eventObj,
@@ -15,39 +15,33 @@ export default function Event({
     setFlag,
     flag,
 }) {
-    // const navigate = useNavigate();
 
-    // const OpenCommets = async (postId) => {
-    //     navigate('/comments', {
-    //         state: {
-    //             PostId: postId,
-    //             PostBodyText: postBodyText,
-    //             PostBodyImgSrc: postBodyImgSrc,
-    //             PostContent: postContent,
-    //             Likes: likes,
-    //             AvatarSrc: avatarSrc,
-    //             Name: name,
-    //             Userid: userID,
-    //         },
-    //     });
-    // };
+    const [eventObject, setEventObject] = useState(null);
+
+    useEffect(() => {
+        setEventObject(eventObj)
+    }, [flag]);
 
     const UpdateAttends = async () => {
         console.log({ attending });
         console.log({ eventId });
         console.log({ eventObj });
+        if (eventObject !== null) {
         let updateAttends = await fetch(
             `http://localhost:5070/updateEventParticipant`,
             {
                 credentials: 'include',
                 method: 'POST',
-                body: JSON.stringify(eventObj),
+                body: JSON.stringify(eventObject),
             }
         )
-            .then(async (resp) => await resp.json())
+            .then(async (resp) => await resp.text())
             .then((data) => data);
+        
             console.log(updateAttends)
+            setEventObject(null)
             setFlag(!flag)
+        }
     };
 
     

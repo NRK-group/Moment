@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -39,22 +38,21 @@ func (database *Env) UpdateEventParticipant(w http.ResponseWriter, r *http.Reque
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		fmt.Println("eventS -", eventS)
-		eventS, err = event.UpdateEventParticipant(eventS, *database.Env)
+
+		restr, err := event.UpdateEventParticipant(eventS, *database.Env)
 		if err != nil {
 			fmt.Println(err)
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
 
-		marshallEvent, err := json.Marshal(eventS)
 		if err != nil {
 			fmt.Println("Error marshalling the data: ", err)
 		}
 
 		w.WriteHeader(http.StatusOK)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(marshallEvent)
+		w.Header().Set("Content-Type", "application/text")
+		w.Write([]byte(restr))
 		return
 	}
 

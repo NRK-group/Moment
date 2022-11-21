@@ -124,11 +124,11 @@ func TestCreateEvent(t *testing.T) {
 		if err != nil {
 			t.Errorf("Add Event Participant")
 		}
-		result, err := event.CheckIfUserInEventAndIfNotAddThem(addStr, newUser2.UserId, database)
+		result,_, err := event.CheckIfUserInEventAndIfNotAddThem(addStr, newUser2.UserId, database)
 		if err != nil {
 			fmt.Println(err)
 		}
-		result2, err := event.CheckIfUserInEventAndIfNotAddThem(eventStr, newUser3.UserId, database)
+		result2,_, err := event.CheckIfUserInEventAndIfNotAddThem(eventStr, newUser3.UserId, database)
 		if err != nil {
 			fmt.Println(err)
 		}

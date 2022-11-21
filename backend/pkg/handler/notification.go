@@ -6,6 +6,7 @@ import (
 
 	"backend/pkg/auth"
 	"backend/pkg/follow"
+	"backend/pkg/member"
 	"backend/pkg/response"
 	"backend/pkg/structs"
 )
@@ -29,17 +30,30 @@ func (DB *Env) Notification(w http.ResponseWriter, r *http.Request) {
 	}
 	cookie, _ := auth.SliceCookie(c.Value)
 	if r.Method == http.MethodGet {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
 		notifType := r.URL.Query().Get("notifType")
 		if notifType == "follow" {
 			var notif []structs.FollowerNotif
 			notif, err = follow.GetFollowNotifs(cookie[0], DB.Env)
 			if err != nil {
-				response.WriteMessage("Error getting notifs", "Error", w)
+				response.WriteMessage("Error getting follow notifs", "Error", w)
 				return
 			}
 			err = json.NewEncoder(w).Encode(notif)
 			if err != nil {
 				response.WriteMessage("Error encoding notif", "Error", w)
+				return
+			}
+		} else if notifType == "group" {
+			var notif []structs.GroupNotifWriter
+			notif, err = member.GetInvitationNotif(cookie[0], DB.Env)
+			if err != nil {
+				response.WriteMessage("Error getting notifs", "Error", w)
+			}
+			err = json.NewEncoder(w).Encode(notif)
+			if err != nil {
+				response.WriteMessage("Error encoding group notif", "Error", w)
 				return
 			}
 		} else {
@@ -49,9 +63,6 @@ func (DB *Env) Notification(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-
 		return
 	}
 	http.Error(w, "Bad request", http.StatusBadRequest)

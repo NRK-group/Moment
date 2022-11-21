@@ -8,6 +8,7 @@ import (
 	"backend/pkg/chat"
 	"backend/pkg/follow"
 	l "backend/pkg/log"
+	"backend/pkg/member"
 	"backend/pkg/messages"
 	"backend/pkg/structs"
 )
@@ -109,6 +110,22 @@ func (h *Hub) Run() {
 				follow.DeclineFollow(msg.ReceiverId, msg.SenderId, h.Database)
 				if _, valid := h.Clients[msg.ReceiverId]; valid {
 					h.Clients[msg.ReceiverId].Send <- message
+				}
+			}
+			if msg.MessageType == "acceptInviteRequest" {
+				fmt.Print("acceptInviteRequest")
+				fmt.Print(msg, msg.ReceiverId, msg.SenderId)
+				err := member.AcceptInvitationNotif(msg.ReceiverId, msg.SenderId, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - AcceptInvitationNotif", err)
+				}
+			}
+			if msg.MessageType == "declineInviteRequest" {
+				fmt.Print("declineInviteRequest")
+				fmt.Print(msg, msg.ReceiverId, msg.SenderId)
+				err := member.DeclineInvitationNotif(msg.ReceiverId, msg.SenderId, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - DeclineInvitationNotif", err)
 				}
 			}
 			// for userId, client := range h.Clients {

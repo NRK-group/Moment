@@ -25,7 +25,7 @@ func AllPost(database *structs.DB) ([]structs.Post, error) {
 	}
 
 	for rows.Next() {
-		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt)
+		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt, &post.Privacy)
 		if post.GroupID == "" {
 		arr, _ := commets.GetComments(post.PostID, database)
 		post.NumOfComment = len(arr)
@@ -50,7 +50,7 @@ func AllUserPost(uID string, database *structs.DB) ([]structs.Post, error) {
 	}
 
 	for rows.Next() {
-		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt)
+		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt, &post.Privacy)
 		if post.UserID == uID {
 		arr, _ := commets.GetComments(post.PostID, database)
 		post.NumOfComment = len(arr)
@@ -64,7 +64,7 @@ func AllUserPost(uID string, database *structs.DB) ([]structs.Post, error) {
 
 // CreatePost
 // is a method of database that add post in it.
-func CreatePost(userID, groupId, imageUpload, content string, database *structs.DB) (string, error) {
+func CreatePost(userID, groupId, imageUpload, content string, privacy int, database *structs.DB) (string, error) {
 	createdAt := time.Now().String()
 	postID := uuid.NewV4()
 	var reUser structs.User
@@ -75,9 +75,9 @@ func CreatePost(userID, groupId, imageUpload, content string, database *structs.
 	}
 
 	stmt, _ := database.DB.Prepare(`
-		INSERT INTO Post (postId, userId, groupId, name, content, image, imageUpload, numLikes, createdAt ) values (?, ?, ?, ?, ?, ?, ?, ?,?)
+		INSERT INTO Post VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, ?)
 	`)
-	_, err := stmt.Exec(postID, userID, groupId, reUser.NickName, content, reUser.Avatar, imageUpload, 0, createdAt)
+	_, err := stmt.Exec(postID, userID, groupId, reUser.NickName, content, reUser.Avatar, imageUpload, 0, createdAt, privacy)
 	if err != nil {
 		fmt.Println("inside Create Post", err)
 		return "", err

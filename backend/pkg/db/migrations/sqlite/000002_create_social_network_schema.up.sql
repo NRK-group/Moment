@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS "Post"(
     "imageUpload" TEXT,
     "numLikes" INTEGER DEFAULT 0,
     "createdAt" DATETIME NOT NULL,
+    "privacy" INTEGER,
         FOREIGN KEY ("userId") 
             REFERENCES "User" ("userId")
         FOREIGN KEY ("groupId")

@@ -11,4 +11,5 @@ type Post struct {
 	Image        string `json:"Image"`
 	NumOfComment int
 	NumLikes     int
+	Privacy      int `json:"Privacy"`
 }

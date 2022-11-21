@@ -10,7 +10,8 @@ import './NewPost.css';
 export default function NewPost() {
     const navigate = useNavigate('');
     let imgUpload = useRef(),
-    content = useRef();
+        content = useRef(),
+        privacy = useRef();
     const [image, setImage] = useState(null);
 
     const handleChangeImage = (e) => {
@@ -18,25 +19,43 @@ export default function NewPost() {
     };
 
     const UploadImage = (data) => {
-      let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
-          credentials: 'include',
-          method: 'POST',
-          body: data,
-      }).then(async (res) => {
-          console.log(res);
-      });
-  };
-
-    function UploadPost(textVal) {
-      if (textVal.trim() === "") return
-
-      fetch(`http://localhost:5070/post`, {
+        let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
             credentials: 'include',
             method: 'POST',
-            body: JSON.stringify({ Content: textVal, UserID: GetCookie("session_token").split("&")[0], }),
+            body: data,
+        }).then(async (res) => {
+            console.log(res);
+        });
+    };
+
+    function UploadPost(textVal, privacy) {
+        if (textVal.trim() === '') return;
+        let privacyInt;
+        switch (privacy) {
+            case 'Public':
+                privacyInt = 1;
+                break;
+            case 'Private':
+                privacyInt = 0;
+                break;
+            case 'Close Friends':
+                privacyInt = -1;
+                break;
+            default:
+                privacyInt = 0;
+                break;
+        }
+
+        fetch(`http://localhost:5070/post`, {
+            credentials: 'include',
+            method: 'POST',
+            body: JSON.stringify({
+                Content: textVal,
+                UserID: GetCookie('session_token').split('&')[0],
+                Privacy: privacyInt,
+            }),
         }).then(async (response) => {
             let resp = await response.json();
-            console.log(resp);
 
             if (image != null) {
                 const formData = new FormData();
@@ -47,8 +66,8 @@ export default function NewPost() {
 
                 UploadImage(formData);
                 setImage(null);
-              }
-              navigate('/home')
+            }
+            navigate('/home');
             return resp;
         });
     }
@@ -90,10 +109,11 @@ export default function NewPost() {
                         <PrivacySelector
                             styleName='newPostPrivacySelector'
                             closeFriends={true}
+                            refr={privacy}
                         />
 
                         <textarea
-                        ref={content}
+                            ref={content}
                             cols='100'
                             rows='7'
                             wrap='hard'
@@ -101,7 +121,14 @@ export default function NewPost() {
                             maxLength='280'
                             placeholder='What happened today ?'
                         />
-                        <button className='NewPostSendBtn' onClick={() => UploadPost(content.current.value)}>
+                        <button
+                            className='NewPostSendBtn'
+                            onClick={() =>
+                                UploadPost(
+                                    content.current.value,
+                                    privacy.current.value
+                                )
+                            }>
                             <span className='shareText'>Share</span>
                             <MessagesIcon />
                         </button>

@@ -15,7 +15,6 @@
     width: 70vw;
     height: 90%;
     align-items: center;
-    /* flex-direction: column; */
     background-color: var(--background-color);
     overflow-x: auto;
 }
@@ -29,105 +28,14 @@
     border-radius: 20px;
 }
 
-/* .homePageStory {
-    margin: auto;
-    height: 14vh;
-    max-width: 400px;
-    width: 100%;
-    border: 1px solid var(--terheading-color);
-    overflow-x: scroll;
-    display: flex;
-    flex-direction: row;
-} */
 
-/* .homePagePostArea {
-    height: 70vh;
-    width: 42vw;
-    flex-direction: column;
-    border-top: 1px solid var(--terheading-color);
-   overflow-y: scroll;
-} */
-
-/* .homePageProfile {
-    width: 35vw;
-    height: 50vh;
-    border: 1px solid var(--terheading-color);
-    justify-content: center;
-    overflow-y: auto; 
-
-}*/
-
- /* .homePageProfile .AvatarUsers{
-    flex-direction: unset;
-justify-content: unset;
- } */
-
-/* .homePageContainer {
-    display: flex;
-} */
-
-/* .AvatarUsers img {
-    height: 65px;
-    width: 65px;
-    border-radius: 50%;
-    border: 3px solid rgb(255, 255, 255);
-} */
-
-/* .AvatarUserProfile img {
-    height: 65px;
-    width: 65px;
-    border-radius: 50%;
-    border: 3px solid rgb(255, 255, 255);
-}
-
-.AvatarUserProfile {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-left: 1vw;
-    cursor: pointer;
-    position: relative;
-} */
-
-/* .AvatarUsers {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-left: 1vw;
-    cursor: pointer;
-    position: relative;
-} */
 
 @media only screen and (max-width: 600px) {
     .homePage {
-        /* flex-direction: column; */
         margin-top: 12%;
         width: 100vw;
     padding-bottom: 17%;
     height: 100vh;
-        /* overflow-y: auto; */
     }
 
-    /* .homePageProfile {
-       display: none;
-    } */
-
-    /* .homePageStory {
-        width: 99vw;
-    } */
-    /* .homePagePostArea {
-        overflow-y: unset;
-        width: 99vw;
-    } */
-
-    /* .AvatarUsers img {
-        height: 45px;
-        width: 45px;
-    } */
-    /* .AvatarUserProfile img {
-        height: 45px;
-        width: 45px;
-    } */
 }

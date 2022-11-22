@@ -27,7 +27,6 @@
 
 .profileAvatar {
     margin: 5%;
-    /* margin-top: 0; */
     height: 200px;
     width: 200px;
     border-radius: 50%;
@@ -74,8 +73,6 @@
     color: white;
     margin: 2vh auto;
     font-size: 1rem;
-    /* margin-top: min(2vh, 25px);
-    margin-bottom: min(2vh, 25px); */
 }
 
 .relationship {
@@ -183,7 +180,6 @@ p {
     display: none;
 }
 .popUp {
-    /* display: none; */
     position: fixed;
     width: 100%;
     height: 100%;
@@ -244,7 +240,6 @@ p {
 
 .followStatUser {
     display: flex;
-    /* justify-content: space-evenly; */
     align-items: center;
     width: 100%;
     margin: 2% auto;
@@ -272,7 +267,6 @@ p {
     width: fit-content;
     font-size: var(--subheading-font-size);
     font-weight: lighter;
-    /* margin-left: 2%; */
     word-wrap: none;
 }
 
@@ -394,7 +388,6 @@ p {
     margin: 12vh auto;
     height: 80%;
     min-height: 325px;
-    /* max-height: 390px; */
     width: 400px;
     border-radius: 10px;
     background-color: var(--background-color);
@@ -491,7 +484,6 @@ p {
     font-weight: bold;
     text-align: center;
     align-items: center;
-    /* justify-content: center; */
 }
 
 .updateCloseFriends{
@@ -528,7 +520,6 @@ p {
     .profileSection {
         min-width: 0;
         width: 100%;
-        /* height: 75%; */
     }
 
     .profileStats {
@@ -596,7 +587,6 @@ p {
 
     .profileDetailText {
         font-size: var(--secondary-font-size);
-        /* font-weight: 300; */
     }
 
     .profileAboutMe {

@@ -371,9 +371,10 @@ p {
     margin: 2% auto;
     width: 75%;
     height: 75%;
-    min-height: 205px;
+    min-height: 500px;
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden;
 }
 
 

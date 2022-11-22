@@ -321,6 +321,33 @@ func GetFollowNotifs(userId string, database *structs.DB) ([]structs.FollowerNot
 	return followerNotifs, nil
 }
 
+// GetFollowNotifStatus will get the status of the follow notification
+//
+// Param:
+//
+//	followerId: the id of the user who is following - other user
+//	followingId: the id of the user who is being followed - current user
+//	database: the database to get the follow notifications from
+func GetFollowNotifStatus(followerId, followingId string, database *structs.DB) (structs.FollowerNotif, error) {
+	var followerNotif structs.FollowerNotif
+	row := database.DB.QueryRow("SELECT * FROM FollowNotif WHERE userId = ? AND followingId = ?", followerId, followingId)
+	err := row.Scan(&followerId, &followingId, &followerNotif.CreatedAt, &followerNotif.Status, &followerNotif.Read)
+	if err != nil {
+		l.LogMessage("follow.go", "GetFollowNotifStatus", err)
+		return followerNotif, err
+	}
+	followerNotif.UserId, err = helper.GetUserInfo(followerId, database)
+	if err != nil {
+		return followerNotif, err
+	}
+	followerNotif.FollowingId, err = helper.GetUserInfo(followingId, database)
+	if err != nil {
+		return followerNotif, err
+	}
+
+	return followerNotif, nil
+}
+
 // CheckIfFollowPending will check the status of a follow notification
 //
 // Params:
@@ -407,4 +434,18 @@ func DeletePendingRequests(userId string, database structs.DB) error {
 		log.Println("Error executing delete statement in database: ", execErr)
 	}
 	return execErr
+}
+// ReadFollowNotif will read the follow notification
+//
+// Params:
+//
+// userId: current user
+// database: the database
+func ReadFollowNotif(userId string, database *structs.DB) error {
+	_, err := database.DB.Exec("UPDATE FollowNotif SET read = ? WHERE followingId = ? AND read = ?", 1, userId, 0)
+	if err != nil {
+		l.LogMessage("follow.go", "ReadFollowNotif", err)
+		return err
+	}
+	return nil
 }

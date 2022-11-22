@@ -41,13 +41,16 @@ const FooterNav = ({ setIsSearchModalOpen, messageNotif }) => {
         </div>
     );
 };
-const MobileHeaderNav = ({ setIsMenuOpen }) => {
+const MobileHeaderNav = ({ setIsMenuOpen, followNotif }) => {
     return (
         <div className='mobileNavContainer'>
             <div className='navbar navbarSize' id='mobileHeaderNav'>
                 <>
                     <NavLink to='/notifications/general'>
-                        <NotificationsIcon />
+                        <div className='notifIcon'>
+                            <NotificationsIcon />
+                            {followNotif && <span className='notif'></span>}
+                        </div>
                     </NavLink>
                     <div
                         onClick={(e) => {
@@ -65,8 +68,7 @@ const MobileHeaderNav = ({ setIsMenuOpen }) => {
         </div>
     );
 };
-const DesktopHeaderNav = ({ setIsMenuOpen, messageNotif }) => {
-    let notif = '';
+const DesktopHeaderNav = ({ setIsMenuOpen, messageNotif, followNotif }) => {
     return (
         <div className='navContainer'>
             <div className='navbar' id='desktopHeaderNav'>
@@ -89,7 +91,7 @@ const DesktopHeaderNav = ({ setIsMenuOpen, messageNotif }) => {
                     <NavLink to='/notifications/general'>
                         <div className='notifIcon'>
                             <NotificationsIcon />
-                            {notif || <span className='notif'></span>}
+                            {followNotif && <span className='notif'></span>}
                         </div>
                     </NavLink>
                     <div

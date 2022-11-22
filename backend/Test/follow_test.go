@@ -237,6 +237,30 @@ func TestFollow(t *testing.T) {
 			t.Errorf("got %v \n want %v", got, want)
 		}
 	})
+	t.Run("Get following notif", func(t *testing.T) {
+		user1 := CreateUser(database, t)
+		user2 := CreateUser(database, t)
+		follow.InsertFollowNotif(user1.UserId, user2.UserId, "pending", database)
+		followNotifData, err := follow.GetFollowNotifStatus(user1.UserId, user2.UserId, database)
+		if err != nil {
+			t.Errorf("got %v, want %v", err, nil)
+		}
+		got := followNotifData.Status
+		want := "pending"
+		if got != want {
+			t.Errorf("got %v, want %v", got, want)
+		}
+		if followNotifData.UserId.Id != user1.UserId {
+			t.Errorf("got %v, want %v", followNotifData.UserId.Id, user1.UserId)
+		}
+		if followNotifData.FollowingId.Id != user2.UserId {
+			t.Errorf("got %v, want %v", followNotifData.FollowingId.Id, user2.UserId)
+		}
+		err = follow.ReadFollowNotif(user2.UserId, database)
+		if err != nil {
+			t.Errorf("got %v, want %v", err, nil)
+		}
+	})
 }
 
 func TestDeletePendingRequests(t *testing.T) {

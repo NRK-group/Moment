@@ -19,7 +19,7 @@ import {
     SetRelBtn,
 } from './FollowingData';
 
-export default function Profile() {
+export default function Profile({ socket }) {
     const navigate = useNavigate();
     const [values, setValues] = useState({
         FirstName: '',
@@ -35,7 +35,8 @@ export default function Profile() {
     let id = urlParams.get('id');
 
     //if user is viewing their own profile
-    if (id === GetCookie('session_token').split('&')[0] || id === '') id = null;
+    let currentUser = GetCookie('session_token').split('&')[0];
+    if (id === currentUser || id === '') id = null;
 
     useEffect(() => {
         if (id) {
@@ -44,16 +45,28 @@ export default function Profile() {
             });
         }
         GetProfile(id).then((response) => setValues(response));
-    
     }, [id]);
     const relBtn = (
         <Button
             content={followStatus}
             styleName={'relationship ' + followStatus}
             action={() => {
-                FollowRelationshipUpdate(id).then((response) =>
-                    UpdateRelationshipBtn(response.Message, setFollowStatus)
-                );
+                FollowRelationshipUpdate(id).then((response) => {
+                    UpdateRelationshipBtn(response.Message, setFollowStatus);
+                    console.log(response.Message);
+                    if (
+                        response.Message === 'follow' ||
+                        response.Message === 'pending'
+                    ) {
+                        socket.send(
+                            JSON.stringify({
+                                type: 'followRequest',
+                                senderId: currentUser,
+                                receiverId: id,
+                            })
+                        );
+                    }
+                });
             }}></Button>
     );
     return (

@@ -10,14 +10,20 @@ export const GetNotif = (type, setNotifications) => {
             }
         )
             .then(async (res) => {
-                const data = await res.json();
-                setNotif(data);
-                setNotifications(data);
+                let data = await res.json();
+                data = data
+                    ? data.sort(
+                          (a, b) =>
+                              new Date(b.updatedAt) - new Date(a.updatedAt)
+                      )
+                    : [];
+                data ? setNotif(data) : setNotif([]);
+                data ? setNotifications(data) : setNotifications([]);
                 return data;
             })
             .catch(() => {
                 setNotif([]);
             });
-    }, [type]);
+    }, []);
     return notif;
 };

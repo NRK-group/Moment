@@ -85,7 +85,7 @@ func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/text")
 		io.WriteString(w, "successfully in creating a group")
 		return
 	}

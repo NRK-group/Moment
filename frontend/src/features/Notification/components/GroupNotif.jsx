@@ -11,7 +11,6 @@ export const GroupNotif = ({ socket }) => {
     let group = {
         invite: 'invited you to join a group •',
         join: 'want to join your group •',
-        event: 'created an event in ',
     };
     let link = {
         group: `/group?id=`,
@@ -65,121 +64,92 @@ export const GroupNotif = ({ socket }) => {
                         userId,
                         status,
                         receiverId,
-                        eventId,
-                    }) => {
-                        if (type !== 'event') {
-                            return (
-                                <MiniUserCard
-                                    key={groupId.id}
-                                    name={groupId.name}
-                                    img={groupId.img}
-                                    link={link.group}
-                                    button={
-                                        <>
-                                            <>
-                                                {type === 'join' &&
-                                                status === 'pending' ? (
-                                                    <>
-                                                        <Button
-                                                            styleName={
-                                                                'acceptBtn'
-                                                            }
-                                                            content={'accept'}
-                                                            action={() => {
-                                                                console.log(
-                                                                    'hello'
-                                                                );
-                                                                handleAction({
-                                                                    type: 'acceptInviteRequest',
-                                                                    receiverId:
-                                                                        groupId.id,
-                                                                    senderId:
-                                                                        receiverId.id,
-                                                                });
-                                                            }}
-                                                        />
-                                                        <Button
-                                                            styleName={
-                                                                'declineBtn'
-                                                            }
-                                                            content={'decline'}
-                                                            action={() => {
-                                                                handleAction({
-                                                                    type: 'declineInviteRequest',
-                                                                    receiverId:
-                                                                        groupId.id,
-                                                                    senderId:
-                                                                        receiverId.id,
-                                                                });
-                                                            }}
-                                                        />
-                                                    </>
-                                                ) : null}
-                                            </>
-                                            <>
-                                                {type === 'invite' &&
-                                                status === 'pending' ? (
-                                                    <>
-                                                        <Button
-                                                            styleName={
-                                                                'acceptBtn'
-                                                            }
-                                                            content={'join'}
-                                                            action={() => {
-                                                                handleAction({
-                                                                    type: 'acceptInviteRequest',
-                                                                    receiverId:
-                                                                        groupId.id,
-                                                                    senderId:
-                                                                        receiverId.id,
-                                                                });
-                                                            }}
-                                                        />
-                                                        <Button
-                                                            styleName={
-                                                                'declineBtn'
-                                                            }
-                                                            content={'decline'}
-                                                            action={() => {
-                                                                handleAction({
-                                                                    type: 'declineInviteRequest',
-                                                                    receiverId:
-                                                                        groupId.id,
-                                                                    senderId:
-                                                                        receiverId.id,
-                                                                });
-                                                            }}
-                                                        />
-                                                    </>
-                                                ) : null}
-                                            </>
-                                        </>
-                                    }>
+                    }) => (
+                        <MiniUserCard
+                            key={groupId.id}
+                            name={groupId.name}
+                            img={groupId.img}
+                            link={link.group}
+                            button={
+                                <>
                                     <>
-                                        <NavLink to={link.profile + userId.id}>
-                                            {userId.name}
-                                        </NavLink>
-                                        {` ${group[type]} `}
-                                        {`${CalculateTimeDiff(createdAt)}`}
+                                        {type === 'join' &&
+                                        status === 'pending' ? (
+                                            <>
+                                                <Button
+                                                    styleName={'acceptBtn'}
+                                                    content={'accept'}
+                                                    action={() => {
+                                                        console.log('hello');
+                                                        handleAction({
+                                                            type: 'acceptInviteRequest',
+                                                            receiverId:
+                                                                groupId.id,
+                                                            senderId:
+                                                                receiverId.id,
+                                                        });
+                                                    }}
+                                                />
+                                                <Button
+                                                    styleName={'declineBtn'}
+                                                    content={'decline'}
+                                                    action={() => {
+                                                        handleAction({
+                                                            type: 'declineInviteRequest',
+                                                            receiverId:
+                                                                groupId.id,
+                                                            senderId:
+                                                                receiverId.id,
+                                                        });
+                                                    }}
+                                                />
+                                            </>
+                                        ) : null}
                                     </>
-                                </MiniUserCard>
-                            );
-                        } else {
-                            return (
-                                <MiniUserCard
-                                    key={groupId.id}
-                                    name={eventId.Name}
-                                    img={groupId.img}
-                                    link={link.group}>
-                                    <NavLink to={link.profile + userId.id}>
-                                        {userId.name}
-                                    </NavLink>
-                                    {` ${group[type]} ${groupId.name} • `}
-                                    {`${CalculateTimeDiff(createdAt)}`}
-                                </MiniUserCard>
-                            );
-                        }
-                    }
+                                    <>
+                                        {type === 'invite' &&
+                                        status === 'pending' ? (
+                                            <>
+                                                <Button
+                                                    styleName={'acceptBtn'}
+                                                    content={'join'}
+                                                    action={() => {
+                                                        handleAction({
+                                                            type: 'acceptInviteRequest',
+                                                            receiverId:
+                                                                groupId.id,
+                                                            senderId:
+                                                                receiverId.id,
+                                                        });
+                                                    }}
+                                                />
+                                                <Button
+                                                    styleName={'declineBtn'}
+                                                    content={'decline'}
+                                                    action={() => {
+                                                        handleAction({
+                                                            type: 'declineInviteRequest',
+                                                            receiverId:
+                                                                groupId.id,
+                                                            senderId:
+                                                                receiverId.id,
+                                                        });
+                                                    }}
+                                                />
+                                            </>
+                                        ) : null}
+                                    </>
+                                </>
+                            }>
+                            <>
+                                <NavLink to={link.profile + userId.id}>
+                                    {userId.name}
+                                </NavLink>
+                                {` ${group[type]} `}
+                                {`${CalculateTimeDiff(createdAt)}`}
+                            </>
+                        </MiniUserCard>
+                    )
                 )
             ) : (
                 <NoNotifications />

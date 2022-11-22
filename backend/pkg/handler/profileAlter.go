@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"backend/pkg/auth"
-	"backend/pkg/structs"
+	"backend/pkg/follow"
 	"backend/pkg/response"
-
+	"backend/pkg/structs"
 )
 
 func (DB *Env) ProfileChange(w http.ResponseWriter, r *http.Request) {
@@ -42,6 +42,12 @@ func (DB *Env) ProfileChange(w http.ResponseWriter, r *http.Request) {
 		if updateErr := auth.UpdateUserProfile(cookieSlc[0], data, *DB.Env); updateErr != nil { // Update the values in the db
 			response.WriteMessage("Error updating the user profile", "Unauthorised", w)
 			return
+		}
+		if data.IsPublic == 1 {
+			if deleteErr := follow.DeletePendingRequests(cookieSlc[0], *DB.Env); deleteErr != nil {
+				response.WriteMessage("Error Deleting all pending follow requests", "Error", w)
+				return
+			}
 		}
 		response.WriteMessage("Update user profile func run", "Updated", w)
 	}

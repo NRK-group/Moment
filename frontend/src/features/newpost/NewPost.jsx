@@ -19,13 +19,11 @@ export default function NewPost() {
     };
 
     const UploadImage = (data) => {
-        let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
+        return fetch(`http://localhost:5070/imageUpload`, {
             credentials: 'include',
             method: 'POST',
             body: data,
-        }).then(async (res) => {
-            console.log(res);
-        });
+        })
     };
 
     function UploadPost(textVal, privacy) {
@@ -65,10 +63,11 @@ export default function NewPost() {
                 formData.append('idType', 'postId');
                 formData.append('id', resp.Message);
 
-                UploadImage(formData);
+                UploadImage(formData).then((resp) => navigate('/home'));
                 setImage(null);
+            } else {
+                navigate('/home');
             }
-            navigate('/home');
             return resp;
         });
     }

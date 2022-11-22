@@ -18,6 +18,6 @@ export const GetNotif = (type, setNotifications) => {
             .catch(() => {
                 setNotif([]);
             });
-    }, [type]);
+    }, []);
     return notif;
 };

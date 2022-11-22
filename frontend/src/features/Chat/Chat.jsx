@@ -6,6 +6,7 @@ import { ChatUsersContainer } from './components/chatUsersContainer';
 import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 const Chat = ({
     isMobile,
     socket,
@@ -16,6 +17,10 @@ const Chat = ({
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
     let user = document.cookie.split('=')[1].split('&')[0];
+    const [arrange, setArrange] = useState([]);
+    useEffect(() => {
+        setArrange(chatList);
+    }, [chatList]);
     return (
         <>
             <Body styleName={bodyStyleName}>
@@ -24,8 +29,9 @@ const Chat = ({
                         <div className='chatBox'>
                             <ChatUsersContainer
                                 styleName='chatUsersContainer'
+                                style={bodyStyleName}
                                 currentUserInfo={user}
-                                chatList={chatList ? chatList : []}
+                                chatList={arrange ? arrange : []}
                                 socket={socket}
                                 setMessageNotif={setMessageNotif}
                             />
@@ -53,6 +59,7 @@ const Chat = ({
                                                     setNewMessage={
                                                         setNewMessage
                                                     }
+                                                    setArrange={setArrange}
                                                 />
                                             }
                                         />

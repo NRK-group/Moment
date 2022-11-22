@@ -139,7 +139,7 @@ func GetPreviousGroupChat(userId string, database *structs.DB) ([]structs.ChatWr
 			info = structs.Info{
 				Id:   group.GroupID,
 				Name: group.Name,
-				Img:  group.Img,
+				Img:  "images/profile/default-user.svg",
 			}
 			prevChatlist = append(prevChatlist, structs.ChatWriter{
 				Type:      "groupMessage",

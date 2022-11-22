@@ -1,6 +1,6 @@
 import ChatContainerHeader from './ChatContainerHeader';
 import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 export const ChatUsersContainer = ({
     currentUserInfo,
@@ -8,6 +8,7 @@ export const ChatUsersContainer = ({
     chatList,
     socket,
     setMessageNotif,
+    style,
 }) => {
     const [newMessage, setNewMessage] = useState([]);
     useEffect(() => {
@@ -40,7 +41,7 @@ export const ChatUsersContainer = ({
     };
     return (
         <div className={`chatUsersContainer ${styleName}`}>
-            <ChatContainerHeader userName={currentUserInfo} />
+            <ChatContainerHeader userName={currentUserInfo} style={style} />
             <div className='chatUsers scrollbar-hidden'>
                 {Array.isArray(newMessage)
                     ? newMessage.map(
@@ -69,17 +70,23 @@ export const ChatUsersContainer = ({
                                           <MiniUserCard
                                               img={details.img}
                                               propsId={`chat` + details.id}
-                                              name={details.name}
+                                              name={
+                                                  style != 'mobile'
+                                                      ? details.name
+                                                      : details.name.slice(0, 1)
+                                              }
                                               button={
                                                   <>
-                                                      {notif && notif != 0 ? (
+                                                      {notif != 0 ? (
                                                           <div className='messageNotifIndicator'>
                                                               {notif}
                                                           </div>
                                                       ) : null}
                                                   </>
                                               }>
-                                              {content.content}
+                                              {style != 'mobile'
+                                                  ? content.content
+                                                  : null}
                                           </MiniUserCard>
                                       </NavLink>
                                   </div>

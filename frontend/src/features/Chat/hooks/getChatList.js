@@ -7,9 +7,11 @@ export const GetChatList = (setClist, newMessage) => {
             credentials: 'include',
         }).then(async (res) => {
             let data = await res.json();
-            data = data.sort(
-                (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
-            );
+            data = data
+                ? data.sort(
+                      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+                  )
+                : [];
             data ? setChatList(data) : setChatList([]);
             data ? setClist(data) : setClist([]);
             return;

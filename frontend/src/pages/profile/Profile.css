@@ -491,7 +491,10 @@ p {
 
 .updateCloseFriends{
     display: block;
-    margin: 1%;
+    margin: 1% auto;
+    width: fit-content;
+    font-size: 85%;
+    font-weight: bolder;
 }
 .crossIcon {
     position: absolute;

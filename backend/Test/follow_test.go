@@ -238,3 +238,32 @@ func TestFollow(t *testing.T) {
 		}
 	})
 }
+
+func TestDeletePendingRequests(t *testing.T) {
+	// Create three users
+	one := CreateUser(database, t)
+	two := CreateUser(database, t)
+	three := CreateUser(database, t)
+	follow.InsertFollowNotif(two.UserId, one.UserId, "pending", database)
+	follow.InsertFollowNotif(three.UserId, one.UserId, "pending", database)
+
+	follow.DeletePendingRequests(one.UserId, *database)
+
+	rows, _ := database.DB.Query("SELECT * FROM FollowNotif WHERE followingId = ?", one.UserId)
+	defer rows.Close()
+	got := 0
+	for rows.Next() {
+		got++
+	}
+	want := 0
+
+	if got != want {
+		t.Errorf("got %v \n want %v", got, want)
+	}
+
+	err := follow.DeletePendingRequests(one.UserId, *database)
+	if err != nil {
+		t.Errorf("got %v \n want %v", err, nil)
+	}
+
+}

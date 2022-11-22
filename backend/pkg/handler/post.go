@@ -38,7 +38,9 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 		}
 
 		for _, post := range posts {
-			if post.Privacy == 0 {
+			if post.UserID == cookie[0] {
+				returnPost = append([]structs.Post{post}, returnPost...)
+			} else if post.Privacy == 0 {
 				returnPost = append([]structs.Post{post}, returnPost...)
 			} else if post.Privacy == 1 && follow.CheckIfFollow(cookie[0], post.UserID, database.Env) {
 				returnPost = append([]structs.Post{post}, returnPost...)

@@ -327,7 +327,7 @@ function Groups({ isMobile }) {
                                         {' '}
                                     </MiniUserCard>
                                 </span>
-                            ))) || <> Group members</>}
+                            ))) || <> </>}
                     </div>
                 </div>
             </Card>

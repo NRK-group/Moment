@@ -10,6 +10,7 @@ runGo:
 	cd backend && go run populate/main.go
 	cd backend && go run server.go
 runJs:
+	cd frontend && npm install
 	cd frontend && npm run dev
 runTest:
 	rm -rf backend/Test/social_network_test.db

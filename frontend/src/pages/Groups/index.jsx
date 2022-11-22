@@ -25,7 +25,7 @@ import {
 } from '../../components/Icons/Icons';
 import { useRef, useState, useEffect } from 'react';
 
-function Groups({ isMobile }) {
+function Groups({ isMobile, socket }) {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
 
@@ -180,6 +180,7 @@ function Groups({ isMobile }) {
                                                         groupSelect.GroupID
                                                     }
                                                     setOpenModal={setOpenModal}
+                                                    socket={socket}
                                                 />
                                             );
                                             setOpenModal(true);
@@ -212,7 +213,9 @@ function Groups({ isMobile }) {
                                             cursor: 'pointer',
                                         }}
                                         onClick={() => {
-                                            setEle(<AddGroup />);
+                                            setEle(<AddGroup
+                                                socket={socket}
+                                                 />);
                                             setOpenModal(true);
                                         }}>
                                         {' '}
@@ -238,7 +241,9 @@ function Groups({ isMobile }) {
                                             cursor: 'pointer',
                                         }}
                                         onClick={() => {
-                                            setEle(<AddGroup />);
+                                            setEle(<AddGroup
+                                                socket={socket}
+                                                 />);
                                             setOpenModal(true);
                                         }}>
                                         {' '}

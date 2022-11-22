@@ -11,7 +11,9 @@ function Home({ isMobile }) {
     const [posts, setPosts] = useState([]);
 
     const GetAllPosts = async () => {
-        let fetchPost = await fetch('http://localhost:5070/post')
+        let fetchPost = await fetch('http://localhost:5070/post', {
+            credentials: 'include',
+        })
             .then(async (resp) => await resp.json())
             .then((data) => data);
             console.log({fetchPost})

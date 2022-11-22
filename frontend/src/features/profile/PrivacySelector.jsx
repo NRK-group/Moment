@@ -8,10 +8,10 @@ export default function PrivacySelector(props) {
     return (
       <select className={props.styleName} ref={props.refr} >;
         
-            <option key='privateSelector' id="privateSelector" selected = {priv} >
+            <option key='privateSelector' id="privateSelector" value = {priv} >
                 Private
             </option>
-            <option key='publicSelector' id="publicSelector"  selected = {pub}  >
+            <option key='publicSelector' id="publicSelector"  value = {pub}  >
                 Public
             </option>
 

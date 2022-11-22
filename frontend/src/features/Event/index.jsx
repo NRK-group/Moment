@@ -23,8 +23,8 @@ export default function Event({
     }, [flag]);
 
     const UpdateAttends = async () => {
-        
-        if (eventObject !== null && new Date(end) > new Date()) {
+        console.log({eventObject})
+        if (eventObject !== null) {
         let updateAttends = await fetch(
             `http://localhost:5070/updateEventParticipant`,
             {

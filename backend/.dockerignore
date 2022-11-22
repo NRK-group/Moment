@@ -1,0 +1,6 @@
+//All files that arenot needed to build
+Dockerfile
+.dockerignore
+.gitignore
+Test/*
+*.db

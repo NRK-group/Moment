@@ -86,5 +86,5 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/getGroupPost", database.GetGroupPost)
 	http.HandleFunc("/getUserGroups", database.GetUserGroups)
 	http.HandleFunc("/updateEventParticipant", database.UpdateEventParticipant)
-	
+	http.HandleFunc("/groupNonMembers", database.GroupNonMembers)
 }

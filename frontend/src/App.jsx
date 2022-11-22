@@ -122,7 +122,10 @@ function App() {
                                 />
                             }
                         />
-                        <Route path='/groups' element={<Groups/>} />
+                        <Route
+                            path='/groups'
+                            element={<Groups socket={socket} />}
+                        />
                         <Route
                             path='/comments'
                             element={<Comments isMobile={isMobile} />}

@@ -8,6 +8,7 @@ type Message struct {
 	ReceiverId  string    `json:"receiverId"`
 	SenderId    string    `json:"senderId"`
 	ChatId      string    `json:"chatId"`
+	GroupId      string    `json:"groupId"`
 	Img         string    `json:"img"`
 	Content     string    `json:"content"`
 	CreatedAt   time.Time `json:"createAt"`

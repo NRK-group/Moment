@@ -344,7 +344,7 @@ func GetFollowNotifStatus(followerId, followingId string, database *structs.DB) 
 	if err != nil {
 		return followerNotif, err
 	}
-	
+
 	return followerNotif, nil
 }
 
@@ -418,4 +418,19 @@ func GetFollowing(userId string, database *structs.DB) ([]structs.Follower, erro
 		followers = append([]structs.Follower{follower}, followers...)
 	}
 	return followers, nil
+}
+
+// ReadFollowNotif will read the follow notification
+//
+// Params:
+//
+// userId: current user
+// database: the database
+func ReadFollowNotif(userId string, database *structs.DB) error {
+	_, err := database.DB.Exec("UPDATE FollowNotif SET read = ? WHERE followingId = ? AND read = ?", 1, userId, 0)
+	if err != nil {
+		l.LogMessage("follow.go", "ReadFollowNotif", err)
+		return err
+	}
+	return nil
 }

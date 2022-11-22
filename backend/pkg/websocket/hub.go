@@ -153,6 +153,10 @@ func (h *Hub) Run() {
 					}
 				}
 			}
+			if msg.MessageType == "readFollowNotif" {
+				follow.ReadFollowNotif(msg.ReceiverId, h.Database)
+				fmt.Print("readFollowNotif")
+			}
 			// for userId, client := range h.Clients {
 			// 	select {
 			// 	case client.Send <- message:

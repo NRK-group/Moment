@@ -256,5 +256,9 @@ func TestFollow(t *testing.T) {
 		if followNotifData.FollowingId.Id != user2.UserId {
 			t.Errorf("got %v, want %v", followNotifData.FollowingId.Id, user2.UserId)
 		}
+		err = follow.ReadFollowNotif(user2.UserId, database)
+		if err != nil {
+			t.Errorf("got %v, want %v", err, nil)
+		}
 	})
 }

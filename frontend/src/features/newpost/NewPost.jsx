@@ -13,6 +13,7 @@ export default function NewPost() {
         content = useRef(),
         privacy = useRef();
     const [image, setImage] = useState(null);
+    const [show, setShow] = useState(false);
 
     const handleChangeImage = (e) => {
         setImage(e.target.files[0]);
@@ -23,7 +24,7 @@ export default function NewPost() {
             credentials: 'include',
             method: 'POST',
             body: data,
-        })
+        });
     };
 
     function UploadPost(textVal, privacy) {
@@ -54,8 +55,6 @@ export default function NewPost() {
             }),
         }).then(async (response) => {
             let resp = await response.json();
-
-            console.log(resp)
             if (image != null) {
                 const formData = new FormData();
                 formData.append('file', image);
@@ -110,7 +109,15 @@ export default function NewPost() {
                             styleName='newPostPrivacySelector'
                             closeFriends={true}
                             refr={privacy}
+                            setShow={setShow}
                         />
+                        {show && (
+                            <a
+                                href={'/closefriends'}
+                                className='updateCloseFriends'>
+                                Update Close Friends
+                            </a>
+                        )}
 
                         <textarea
                             ref={content}

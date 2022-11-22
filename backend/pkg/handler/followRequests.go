@@ -32,7 +32,7 @@ func (DB *Env) FollowReq(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Error running the auth request", "500 internal server error", w)
 			return
 		} else {
-			response.WriteMessage("Error marshalling the body", result, w)
+			response.WriteMessage("Successful Request", result, w)
 			return
 		}
 	}

@@ -8,6 +8,16 @@
     padding: 1% ;
 }
 
+.selectCF {
+    margin: auto;
+    display: table;
+}
+
+.selectCF select {
+    width: 142px;
+    margin-right: 2px;
+}
+
 .NewPostContentInput {
     display: flow-root;
 }

@@ -2,10 +2,20 @@ import './AddGroup.css';
 import Card from '../../../../components/card/Card';
 import { MessagesIcon } from '../../../../components/Icons/Icons';
 import { useState } from 'react';
+import GetCloseFriends from '../../../profile/CloseFriend';
+import { useEffect } from 'react';
 
-export default function AddGroup() {
+export default function AddGroup({setOpenModal,  flag , setFlag, socket}) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [closeF, setCloseF] = useState([]);
+
+
+    useEffect(() => {
+        GetCloseFriends().then((response) => {
+            setCloseF(response);
+        });
+    }, []);
 
     const CreateGroup = async () => {
         let creategroup = await fetch('http://localhost:5070/group', {
@@ -13,8 +23,10 @@ export default function AddGroup() {
             method: 'POST',
             body: JSON.stringify({ Name: name, Description: description }),
         })
-            .then(async (resp) => await resp.json())
+            .then(async (resp) => await resp.text())
             .then((data) => data);
+            setOpenModal(false)
+            setFlag(!flag)
     };
 
     return (
@@ -37,6 +49,17 @@ export default function AddGroup() {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
+                        </div>
+                        <br />
+                        <div className='selectCF'>
+                        <label htmlFor='selectCF'>Close Friends: </label>
+                        <select>
+                            {closeF && closeF.map((ele) => (
+                                <option key={ele.id} value={ele.id}>
+                                    {ele.name}
+                                </option>
+                            ))}
+                        </select>
                         </div>
 
                         <textarea

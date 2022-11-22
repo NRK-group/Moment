@@ -1,5 +1,5 @@
 import './table.css';
-import {RequestToJoin} from '../../hooks/useGroupshook'
+// import {RequestToJoin} from '../../hooks/useGroupshook'
 
 function Table({ data }) {
     

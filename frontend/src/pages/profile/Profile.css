@@ -386,8 +386,8 @@ p {
     left: 0;
     right: 0;
     transition: 150ms ease-in;
-    margin: 7.5vh auto;
-    height: 90%;
+    margin: 12vh auto;
+    height: 80%;
     min-height: 325px;
     /* max-height: 390px; */
     width: 400px;
@@ -487,6 +487,14 @@ p {
     text-align: center;
     align-items: center;
     /* justify-content: center; */
+}
+
+.updateCloseFriends{
+    display: block;
+    margin: 1% auto;
+    width: fit-content;
+    font-size: 85%;
+    font-weight: bolder;
 }
 .crossIcon {
     position: absolute;

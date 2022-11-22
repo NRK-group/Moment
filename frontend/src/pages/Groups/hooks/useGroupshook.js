@@ -21,11 +21,23 @@ export const GetAllGroupEvents = async (id) => {
     )
         .then(async (resp) => await resp.json())
         .then((data) => data);
-    console.log({ fetchAllgroupEvents });
     return fetchAllgroupEvents;
 };
 
+export const GetAllNonMembers = async (id) => {
+    let fetchAllNonMembers = await fetch(
+        `http://localhost:5070/groupNonMembers?groupId=${id}`,
+        {
+            credentials: 'include',
+            method: 'GET',
+        }
+    )
+        .then(async (resp) => await resp.json())
+        .then((data) => data);
+    return fetchAllNonMembers;
+};
 
-export const RequestToJoin = async (id, receiverId, socket) => {
-    socket.send(JSON.stringify({type: "groupInvitation", senderId: id, receiverId:receiverId}))
+
+export const RequestTogroup = async (id, receiverId, socket, type) => {
+    socket.send(JSON.stringify({type: "groupInvitation"+type, senderId: id, receiverId:receiverId}))
 };

@@ -54,6 +54,12 @@ function App() {
             }
             if (data.type === 'followRequest') {
                 setFollowNotifContainer((prev) => {
+                    console.log(prev);
+                    for (let i = 0; i < prev.length; i++) {
+                        if (prev[i].userId.id == data.data.userId.id) {
+                            return prev;
+                        }
+                    }
                     return [data.data, ...prev];
                 });
             }

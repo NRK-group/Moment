@@ -47,7 +47,7 @@ export default function CloseFriendsUsers() {
                     <span className='profileCloseFriendsHeader'>
                         <button
                             className={'crossIcon'}
-                            onClick={() => naviagte('/profile')}>
+                            onClick={() => history.back()}>
                             <i className='fa-solid fa-arrow-left'></i>
                         </button>
                         <span className='closeFriendsHeading'>

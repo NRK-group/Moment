@@ -420,6 +420,21 @@ func GetFollowing(userId string, database *structs.DB) ([]structs.Follower, erro
 	return followers, nil
 }
 
+//DeletePendingRequests removes all pending follow requests in the database
+func DeletePendingRequests(userId string, database structs.DB) error {
+	//Delete from request where user
+	delete, err := database.DB.Prepare(`DELETE FROM FollowNotif WHERE followingId = ? AND status = "pending"`)
+	if err != nil {
+		log.Println("Error Preparing to delete pending requests: ", err)
+		return err
+	}
+
+	_, execErr := delete.Exec(userId)
+	if execErr != nil {
+		log.Println("Error executing delete statement in database: ", execErr)
+	}
+	return execErr
+}
 // ReadFollowNotif will read the follow notification
 //
 // Params:

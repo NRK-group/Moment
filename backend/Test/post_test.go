@@ -61,20 +61,21 @@ func createNewPost(userId string, database *structs.DB) {
 }
 
 func TestHealthCheckPostHandlerHttpGet(t *testing.T) {
+	w, Env, _ := LoginUser(database, t)
 	// database := DatabaseSetup()
 	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll
 	// pass 'nil' as the third parameter.
-	req, err := http.NewRequest("GET", "/post", nil)
+	reqq, err := http.NewRequest("GET", "/post", nil)
+	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 	if err != nil {
 		t.Fatal(err)
 	}
-	Env := &handler.Env{Env: database}
 	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(Env.Post)
 	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
 	// directly and pass in our Request and ResponseRecorder.
-	handler.ServeHTTP(rr, req)
+	handler.ServeHTTP(rr, reqq)
 
 	// Check the status code is what we expect.
 	if status := rr.Code; status != http.StatusOK {
@@ -110,19 +111,23 @@ func TestCreatePost(t *testing.T) {
 
 func TestPostHandlerMakeAPost(t *testing.T) {
 	// database := DatabaseSetup()
+	w, Env, _ := LoginUser(database, t)
+	reqq := httptest.NewRequest(http.MethodGet, "/event", nil)
+	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+
 	newUser := CreateUser(database, t)
 	post1 := structs.Post{UserID: newUser.UserId, Content: "hey", Image: "wasfdfgfd"}
 	body, _ := json.Marshal(post1)
 
-	req, err := http.NewRequest("POST", "/post", bytes.NewBuffer(body))
+	reqq, err := http.NewRequest("POST", "/post", bytes.NewBuffer(body))
+	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	Env := &handler.Env{Env: database}
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(Env.Post)
-	handler.ServeHTTP(rr, req)
+	handler.ServeHTTP(rr, reqq)
 	expected := rr.Code
 	expectedStr := 200
 	if expectedStr != expected {

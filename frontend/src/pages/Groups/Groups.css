@@ -5,7 +5,9 @@
 }
 
 .Groups .dropdown-content {
-    top: 100%;
+    top: 130px;
+    width: 200px;
+    right: auto;
 }
 .GroupsList {
     height: 50%;

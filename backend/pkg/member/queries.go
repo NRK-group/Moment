@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"backend/pkg/helper"
+	"backend/pkg/auth"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
 )
@@ -48,10 +49,17 @@ func GetMembers(groupId string, database *structs.DB) ([]structs.Member, error) 
 	var groupIds, userId, CreatedAt string
 	for rows.Next() {
 		rows.Scan(&groupIds, &userId, &CreatedAt)
+		var reUser structs.User
+		err := auth.GetUser("userId", userId, &reUser, *database)
+		if err != nil {
+			fmt.Print("Get Members",err)
+			return members, err
+		}
 		member = structs.Member{
 			CreatedAt: CreatedAt,
 			UserId:    userId,
 			GroupId:   groupIds,
+			UserName:  reUser.NickName,
 		}
 
 		members = append([]structs.Member{member}, members...)

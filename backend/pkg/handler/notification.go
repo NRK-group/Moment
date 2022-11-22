@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"backend/pkg/auth"
+	"backend/pkg/event"
 	"backend/pkg/follow"
 	"backend/pkg/member"
 	"backend/pkg/response"
@@ -51,6 +52,11 @@ func (DB *Env) Notification(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				response.WriteMessage("Error getting notifs", "Error", w)
 			}
+			event, err := event.GetEventNotifications(cookie[0], DB.Env)
+			if err != nil {
+				response.WriteMessage("Error getting event notifs", "Error", w)
+			}
+			notif = append(notif, event...)
 			err = json.NewEncoder(w).Encode(notif)
 			if err != nil {
 				response.WriteMessage("Error encoding group notif", "Error", w)

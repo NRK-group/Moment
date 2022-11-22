@@ -79,9 +79,7 @@ export default function Post({
                     </div>
                 </Card>
                 <Card styleName={'PostBody'}>
-                    {(postBodyImgSrc && (
-                        <img src={`http://localhost:5070/${postBodyImgSrc}`} />
-                    )) ||
+                    {(postBodyImgSrc && <img src= {`http://localhost:5070/${postBodyImgSrc}`} />) ||
                         (postContent && <p>{postContent}</p>)}
                 </Card>
                 <Card styleName={'PostContent'}>
@@ -106,10 +104,6 @@ export default function Post({
                             View all {commentsnum} comments
                         </a>
                     </p>
-
-                    <div className='PostContentIconsfooter'>
-                        <ChatInput />
-                    </div>
                 </Card>
             </Card>
             <br />

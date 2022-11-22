@@ -40,6 +40,7 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 			m := make(map[string]structs.Info)
 			if prevChat.User1 == userId {
 				userInfo, _ := helper.GetUserInfo(prevChat.User2, database)
+
 				m[prevChat.User2] = userInfo
 				chatList = append(chatList, structs.ChatWriter{
 					Type:      "privateMessage",
@@ -48,6 +49,7 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 					Member:    m,
 					Content:   lastMessage,
 					UpdatedAt: prevChat.UpdatedAt,
+					Notif:     messages.GetNotif(prevChat.ChatId, userId, database),
 				})
 			} else {
 				userInfo, _ := helper.GetUserInfo(prevChat.User1, database)
@@ -59,6 +61,7 @@ func GetPreviousPrivateChat(userId string, database *structs.DB) ([]structs.Chat
 					Member:    m,
 					Content:   lastMessage,
 					UpdatedAt: prevChat.UpdatedAt,
+					Notif:     messages.GetNotif(prevChat.ChatId, userId, database),
 				})
 			}
 		}
@@ -136,7 +139,7 @@ func GetPreviousGroupChat(userId string, database *structs.DB) ([]structs.ChatWr
 			info = structs.Info{
 				Id:   group.GroupID,
 				Name: group.Name,
-				Img:  group.Img,
+				Img:  "images/profile/default-user.svg",
 			}
 			prevChatlist = append(prevChatlist, structs.ChatWriter{
 				Type:      "groupMessage",
@@ -145,6 +148,7 @@ func GetPreviousGroupChat(userId string, database *structs.DB) ([]structs.ChatWr
 				Member:    m,
 				Content:   messages.GetLastGroupMessage(prevChat.ChatId, database),
 				UpdatedAt: prevChat.UpdatedAt,
+				Notif:     messages.GetNotif(prevChat.ChatId, userId, database),
 			})
 		}
 	}

@@ -3,15 +3,31 @@ import { DesktopHeaderNav, MobileHeaderNav } from '../Navbar/Navbar';
 import Input from '../../Components/Input/Input';
 import { CreateWebSocket } from '../../Utils/CreateWebsocket';
 import { useEffect } from 'react';
+import { GetChatList } from '../../features/Chat/hooks/getChatList';
 const Header = ({
-    setSocket,
+    socket,
     setIsMenuOpen,
     setIsSearchModalOpen,
+    messageNotif,
     onChange,
+    setMessageNotif,
+    setClist,
+    newMessage,
+    chatList,
+    setNewMessage,
 }) => {
+    GetChatList(setClist, newMessage);
+
     useEffect(() => {
-        setSocket(CreateWebSocket());
-    }, []);
+        setMessageNotif(() => {
+            for (let i = 0; i < chatList.length; i++) {
+                if (chatList[i].notif > 0) {
+                    return true;
+                }
+            }
+            return false;
+        });
+    }, [chatList, newMessage]);
     return (
         <div className='headerContainer'>
             <div className='header'>
@@ -46,7 +62,10 @@ const Header = ({
                         onChange={onChange}
                     />
                 </div>
-                <DesktopHeaderNav setIsMenuOpen={setIsMenuOpen} />
+                <DesktopHeaderNav
+                    setIsMenuOpen={setIsMenuOpen}
+                    messageNotif={messageNotif}
+                />
                 <MobileHeaderNav setIsMenuOpen={setIsMenuOpen} />
             </div>
         </div>

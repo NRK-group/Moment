@@ -18,8 +18,8 @@ export default function NewPost() {
         setImage(e.target.files[0]);
     };
 
-   async function UploadImage (data) {
-        return await fetch(`http://localhost:5070/imageUpload`, {
+    const UploadImage = (data) => {
+        return fetch(`http://localhost:5070/imageUpload`, {
             credentials: 'include',
             method: 'POST',
             body: data,
@@ -62,11 +62,10 @@ export default function NewPost() {
                 formData.append('idType', 'postId');
                 formData.append('id', resp.Message);
 
-                UploadImage(formData).then(resp => navigate('/home') );
+                UploadImage(formData).then((resp) => navigate('/home'));
                 setImage(null);
             } else {
                 navigate('/home');
-
             }
             return resp;
         });

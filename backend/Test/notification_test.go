@@ -7,42 +7,38 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"backend/pkg/auth"
+	"backend/pkg/event"
 	"backend/pkg/follow"
 	"backend/pkg/group"
 	"backend/pkg/handler"
 	l "backend/pkg/log"
 	"backend/pkg/member"
 	"backend/pkg/structs"
-
-	uuid "github.com/satori/go.uuid"
 )
 
 func TestNotification(t *testing.T) {
 	Env := handler.Env{Env: database}
-	email := "hello" + uuid.NewV4().String() + "@test.com"
-	user1 := &structs.User{
-		FirstName: "Adriell", LastName: "LastTest", NickName: "NickTest", Email: email, Password: "Password123",
-		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
-		IsLoggedIn: 0, IsPublic: 1, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	user1 := CreateUser(database, t)
+	user2 := CreateUser(database, t)
+	follow.FollowUser(user2.UserId, user1.UserId, database)
+	group1, err := group.CreateGroup("TestGroup", "TestGroup", user1.UserId, database)
+	if err != nil {
+		t.Errorf("Error creating group1: %v", err)
 	}
-	auth.InsertUser(*user1, *database)
-	var result1 structs.User
-	auth.GetUser("email", user1.Email, &result1, *database)
-	email2 := "hello" + uuid.NewV4().String() + "@test.com"
-	user2 := &structs.User{
-		FirstName: "Adriell", LastName: "LastTest", NickName: "NickTest", Email: email2, Password: "Password123",
-		DateOfBirth: "0001-01-01T00:00:00Z", AboutMe: "Test about me section", Avatar: "testPath", CreatedAt: "", UserId: "", SessionId: "-",
-		IsLoggedIn: 0, IsPublic: 1, NumFollowers: 0, NumFollowing: 0, NumPosts: 0,
+	member.AddInvitationNotif(group1, user2.UserId, user1.UserId, "join", database)
+	group2, err := group.CreateGroup("Second Group", "Coding", user2.UserId, database)
+	if err != nil {
+		t.Errorf("Error creating group2: %v", err)
 	}
-	auth.InsertUser(*user2, *database)
-	var result2 structs.User
-	auth.GetUser("email", user2.Email, &result2, *database)
-	follow.FollowUser(result2.UserId, result1.UserId, database)
-	group, _ := group.CreateGroup("TestGroup", "TestGroup", result1.UserId, database)
-	member.AddInvitationNotif(group, result2.UserId, result1.UserId, "join", database)
+	member.AddMember(group2, user1.UserId, database)
+	event1 := structs.Event{UserId: user2.UserId, GroupId: group2, Name: "Nate's Event", Description: "Coding", Location: "London", StartTime: "StartTime", EndTime: " EndTime"}
+	_, err = event.AddEvent(group2, event1, database)
+	if err != nil {
+		t.Errorf("Error creating event %v", err)
+	}
+	// event.AddEvent()
 	sampleUser := &structs.User{
-		Email: email, Password: "Password123",
+		Email: user1.Email, Password: "Password123",
 	}
 	sampleUserBytes, err := json.Marshal(sampleUser)
 	t.Run("Test Marshal data", func(t *testing.T) {
@@ -78,8 +74,8 @@ func TestNotification(t *testing.T) {
 		if len(followNotif) != 1 {
 			t.Errorf("Expected body %s, got %d", "1", len(followNotif))
 		}
-		if followNotif[0].UserId.Id != result2.UserId {
-			t.Errorf("Expected body %s, got %q", result2.UserId, followNotif[0].FollowingId.Id)
+		if followNotif[0].UserId.Id != user2.UserId {
+			t.Errorf("Expected body %s, got %q", user2.UserId, followNotif[0].FollowingId.Id)
 		}
 	})
 	req3 := httptest.NewRequest(http.MethodGet, "/notification", nil)
@@ -113,17 +109,23 @@ func TestNotification(t *testing.T) {
 		var groupNotif []structs.GroupNotifWriter
 		err = json.NewDecoder(w4.Body).Decode(&groupNotif)
 		l.LogMessage("Tes", "decode", groupNotif)
-		if len(groupNotif) != 1 {
-			t.Errorf("Expected body %s, got %d", "1", len(groupNotif))
+		if len(groupNotif) != 2 {
+			t.Errorf("Expected body %s, got %d", "2", len(groupNotif))
 		}
-		if groupNotif[0].GroupId.Id != group {
-			t.Error("Expected ", group, " got ", groupNotif[0].GroupId.Id)
+		if groupNotif[0].GroupId.Id != group1 {
+			t.Error("Expected ", group1, " got ", groupNotif[0].GroupId.Id)
 		}
-		if groupNotif[0].ReceiverId.Id != result1.UserId {
-			t.Error("Expected ", result1.UserId, " got ", groupNotif[0].ReceiverId.Id)
+		if groupNotif[0].ReceiverId.Id != user1.UserId {
+			t.Error("Expected ", user1.UserId, " got ", groupNotif[0].ReceiverId.Id)
 		}
-		if groupNotif[0].UserId.Id != result2.UserId {
-			t.Error("Expected ", result2.UserId, " got ", groupNotif[0].UserId.Id)
+		if groupNotif[0].UserId.Id != user2.UserId {
+			t.Error("Expected ", user2.UserId, " got ", groupNotif[0].UserId.Id)
+		}
+		if groupNotif[1].NotifType != "event" {
+			t.Errorf("Expected body %s, got %s", "event", groupNotif[1].NotifType)
+		}
+		if groupNotif[1].GroupId.Id != group2 {
+			t.Errorf("Expected body %s, got %s", group2, groupNotif[1].GroupId.Id)
 		}
 	})
 }

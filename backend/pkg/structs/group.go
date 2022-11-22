@@ -10,6 +10,7 @@ type Group struct {
 	Description string   `json:"Description"`
 	Admin       string   `json:"Admin"`
 	Members     []Member `json:"Members"`
+	Member      bool   `json:"member"`
 }
 type GroupNotif struct {
 	GroupID    string    `json:"groupId"`
@@ -23,6 +24,7 @@ type GroupNotif struct {
 type GroupNotifWriter struct {
 	GroupId    Info      `json:"groupId"`
 	UserId     Info      `json:"userId"`
+	EventId    Event     `json:"eventId"`
 	ReceiverId Info      `json:"receiverId"`
 	CreatedAt  time.Time `json:"createdAt"`
 	NotifType  string    `json:"type"`

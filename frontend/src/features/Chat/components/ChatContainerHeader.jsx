@@ -1,14 +1,16 @@
 import { NavLink } from 'react-router-dom';
 import { WriteIcon } from '../../../Components/Icons/Icons';
 import { useNavigate } from 'react-router-dom';
-const ChatContainerHeader = ({ userName }) => {
+const ChatContainerHeader = ({ userName, style }) => {
     const navigate = useNavigate();
     return (
         <div className='chatContainerHeader'>
             <div>
-                <div className='userName'>
-                    <NavLink to={`/profile/`}>{userName} </NavLink>
-                </div>
+                {style != 'mobile' ? (
+                    <div className='userName'>
+                        <NavLink to={`/profile/`}>{userName} </NavLink>
+                    </div>
+                ) : null}
             </div>
             <div
                 onClick={(e) => {

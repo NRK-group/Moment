@@ -3,12 +3,13 @@ import Footer from './Layouts/Footer/Footer';
 import Header from './Layouts/Header/Header';
 import Home from './Pages/Home/Index';
 import { Route, Routes } from 'react-router-dom';
-import Login from './Pages/LoginPage/Login';
-import Registration from './Pages/RegPage/Registration';
-import Chat from './Features/Chat/Chat';
-import Profile from './Pages/Profile/Profile';
-import ProfileInfoPopUp from './Features/Profile/ProfileInfoPopUp';
-import Comments from './Features/Comments/Index';
+import Login from './pages/loginPage/Login';
+import Registration from './pages/regPage/Registration';
+import Chat from './features/Chat/Chat';
+import Profile from './pages/profile/Profile';
+import ProfileInfoPopUp from './features/profile/ProfileInfoPopUp';
+import Comments from './features/Comments';
+import Groups from './pages/Groups';
 import { useEffect, useState } from 'react';
 import NewPost from './Features/Newpost/NewPost';
 import { Notification } from './Features/Notification/Notification';
@@ -20,6 +21,7 @@ import CloseFriendsUsers from './Features/Profile/CloseFriendsUsers';
 import Followers from './Features/Profile/Followers';
 import Following from './Features/Profile/Following';
 import { SearchModal } from './Features/Search/SearchModal';
+import { CreateWebSocket } from './utils/createWebsocket';
 function App() {
     const [authorised, setAuthorised] = useState(false);
     Validation(setAuthorised);
@@ -28,7 +30,27 @@ function App() {
     const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
     const { width } = useWindowDimensions();
     const [query, setQuery] = useState('');
+    const [messageNotif, setMessageNotif] = useState(false);
     let isMobile = width < 600;
+    useEffect(() => {
+        if (authorised) {
+            setSocket(CreateWebSocket());
+        }
+    }, [authorised]);
+    let [newMessage, setNewMessage] = useState(0);
+    const [chatList, setClist] = useState([]);
+    if (socket) {
+        socket.onmessage = (e) => {
+            let data = JSON.parse(e.data);
+            if (
+                data.type === 'privateMessage' ||
+                data.type === 'groupMessage'
+            ) {
+                console.log('new message');
+                setNewMessage((prev) => prev + 1);
+            }
+        };
+    }
     return (
         <div
             className='App'
@@ -38,9 +60,14 @@ function App() {
             }}>
             {authorised && (
                 <Header
-                    setSocket={setSocket}
+                    socket={socket}
                     setIsMenuOpen={setIsMenuOpen}
                     setIsSearchModalOpen={setIsSearchModalOpen}
+                    messageNotif={messageNotif}
+                    setMessageNotif={setMessageNotif}
+                    setClist={setClist}
+                    newMessage={newMessage}
+                    chatList={chatList}
                     onChange={(e) => {
                         setQuery(e.target.value);
                     }}
@@ -85,10 +112,16 @@ function App() {
                         <Route
                             path='/messages/*'
                             element={
-                                <Chat isMobile={isMobile} socket={socket} />
+                                <Chat
+                                    isMobile={isMobile}
+                                    socket={socket}
+                                    chatList={chatList}
+                                    setMessageNotif={setMessageNotif}
+                                    setNewMessage={setNewMessage}
+                                />
                             }
                         />
-                        <Route path='/groups' element={<h1>Groups</h1>} />
+                        <Route path='/groups' element={<Groups/>} />
                         <Route
                             path='/comments'
                             element={<Comments isMobile={isMobile} />}
@@ -109,11 +142,15 @@ function App() {
                             path='/update'
                             element={<ProfileInfoPopUp styleName='popUp' />}
                         />
+                        
                     </Routes>
                 </>
             )}
             {authorised ? (
-                <Footer setIsSearchModalOpen={setIsSearchModalOpen} />
+                <Footer
+                    setIsSearchModalOpen={setIsSearchModalOpen}
+                    messageNotif={messageNotif}
+                />
             ) : null}
         </div>
     );

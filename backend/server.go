@@ -1,14 +1,26 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"backend/pkg/db/sqlite"
+	"backend/pkg/group"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
 	wSocket "backend/pkg/websocket"
 )
+
+func CreateingTengroups(database *structs.DB) {
+	for i := 0; i < 15; i++ {
+		group1 := structs.Group{Name: "Pie" + fmt.Sprint(i), Description: "Eating Pie" + fmt.Sprint(i), Admin: "wasfdfgfd"}
+		_, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
+		if err != nil {
+			fmt.Println("Error Inserting the struct into the db %v", err)
+		}
+	}
+}
 
 func main() {
 	// this open or create the database
@@ -20,7 +32,7 @@ func main() {
 	// initialize the database struct
 	data := &structs.DB{DB: networkDb}
 	database := &handler.Env{Env: data}
-
+	//CreateingTengroups(data)
 	// close the database
 	defer networkDb.Close()
 
@@ -71,4 +83,8 @@ func SetUpRoutes(database *handler.Env) {
 	http.HandleFunc("/imageUpload", database.ImageUpload)
 	http.HandleFunc("/search", database.Search)
 	http.HandleFunc("/getUserPosts", database.GetUserPosts)
+	http.HandleFunc("/getGroupPost", database.GetGroupPost)
+	http.HandleFunc("/getUserGroups", database.GetUserGroups)
+	http.HandleFunc("/updateEventParticipant", database.UpdateEventParticipant)
+	
 }

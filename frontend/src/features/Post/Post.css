@@ -12,7 +12,7 @@
 }
 
 .PostBody img {
-    object-fit: fill;
+    object-fit: contain;
     height: inherit;
 }
 

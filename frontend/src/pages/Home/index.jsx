@@ -26,12 +26,12 @@ function Home({ isMobile }) {
     //  GetAllPosts();
 
     return (
-        <Body styleName={bodyStyleName}>
-            <Card styleName={cardStyleName}>
+        // <Body styleName={bodyStyleName}>
+            <Card styleName={"homeHolder"}>
                 <div className='homePage'>
-                    <div className='homePageContainer'>
-                        <div>
-                            <div className='homePageStory'>
+                    {/* <div className='homePageContainer'> */}
+                        {/* <div> */}
+                            {/* <div className='homePageStory'>
                                 <Avatar
                                     avatarSrc={
                                         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
@@ -50,9 +50,9 @@ function Home({ isMobile }) {
                                         key={ele}
                                     />
                                 ))}
-                            </div>
-                            <br />
-                            <div className='homePagePostArea'>
+                            </div> */}
+                            {/* <br /> */}
+                            {/* <div className='homePagePostArea'> */}
                                 { posts && posts.map((data) => (
                                     <Post
                                     key={data.PostID}
@@ -70,9 +70,9 @@ function Home({ isMobile }) {
                                         postId={data.PostID}
                                     />
                                 ))}
-                            </div>
-                        </div>
-                        <div className='homePageProfile'>
+                            {/* </div> */}
+                        {/* </div>C */}
+                        {/* <div className='homePageProfile'>
                             {' '}
                             <Avatar
                                 avatarSrc={
@@ -81,11 +81,11 @@ function Home({ isMobile }) {
                                 styleName={'AvatarUsers'}
                                 name={'ele'}
                             />
-                        </div>
-                    </div>
+                        </div> */}
+                    {/* </div> */}
                 </div>
             </Card>
-        </Body>
+        // </Body>
     );
 }
 

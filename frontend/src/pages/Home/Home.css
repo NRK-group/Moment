@@ -1,13 +1,24 @@
-.homePage {
+.homeHolder {
     display: flex;
-    overflow-y: scroll;
     margin: auto;
-    width: 70vw;
-    flex-direction: column;
-    background-color: var(--background-color);
+    width: inherit;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
 }
 
-.homePageStory {
+.homePage {
+    display: flex;
+    margin: calc(var(--desktop-nav-height) + 0.5%) auto;
+    width: 70vw;
+    height: 90vh;
+    flex-direction: column;
+    background-color: var(--background-color);
+    overflow-y: scroll;
+    padding-bottom: 2%;
+}
+
+/* .homePageStory {
     margin: auto;
     height: 14vh;
     max-width: 400px;
@@ -16,40 +27,42 @@
     overflow-x: scroll;
     display: flex;
     flex-direction: row;
-}
+} */
 
-.homePagePostArea {
+/* .homePagePostArea {
     height: 70vh;
     width: 42vw;
     flex-direction: column;
     border-top: 1px solid var(--terheading-color);
    overflow-y: scroll;
-}
+} */
 
-.homePageProfile {
+/* .homePageProfile {
     width: 35vw;
     height: 50vh;
     border: 1px solid var(--terheading-color);
     justify-content: center;
-}
+    overflow-y: auto; 
 
- .homePageProfile .AvatarUsers{
+}*/
+
+ /* .homePageProfile .AvatarUsers{
     flex-direction: unset;
 justify-content: unset;
- }
+ } */
 
-.homePageContainer {
+/* .homePageContainer {
     display: flex;
-}
+} */
 
-.AvatarUsers img {
+/* .AvatarUsers img {
     height: 65px;
     width: 65px;
     border-radius: 50%;
     border: 3px solid rgb(255, 255, 255);
-}
+} */
 
-.AvatarUserProfile img {
+/* .AvatarUserProfile img {
     height: 65px;
     width: 65px;
     border-radius: 50%;
@@ -64,9 +77,9 @@ justify-content: unset;
     margin-left: 1vw;
     cursor: pointer;
     position: relative;
-}
+} */
 
-.AvatarUsers {
+/* .AvatarUsers {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -74,35 +87,36 @@ justify-content: unset;
     margin-left: 1vw;
     cursor: pointer;
     position: relative;
-}
+} */
 
 @media only screen and (max-width: 600px) {
     .homePage {
-        flex-direction: column;
-        margin: 0%;
+        /* flex-direction: column; */
+        margin-top: 12%;
         width: 100vw;
-        height: 100%;
-        overflow-y: scroll;
+    padding-bottom: 17%;
+    height: 100vh;
+        /* overflow-y: auto; */
     }
 
-    .homePageProfile {
+    /* .homePageProfile {
        display: none;
-    }
+    } */
 
-    .homePageStory {
+    /* .homePageStory {
         width: 99vw;
-    }
-    .homePagePostArea {
+    } */
+    /* .homePagePostArea {
         overflow-y: unset;
         width: 99vw;
-    }
+    } */
 
-    .AvatarUsers img {
+    /* .AvatarUsers img {
         height: 45px;
         width: 45px;
-    }
-    .AvatarUserProfile img {
+    } */
+    /* .AvatarUserProfile img {
         height: 45px;
         width: 45px;
-    }
+    } */
 }

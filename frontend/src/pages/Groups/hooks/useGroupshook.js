@@ -8,6 +8,7 @@ export const GetAllGroupPosts = async (id) => {
     )
         .then(async (resp) => await resp.json())
         .then((data) => data);
+        console.log({fetchAllgroupPosts})
     return fetchAllgroupPosts;
 };
 
@@ -35,6 +36,7 @@ export const GetAllNonMembers = async (id) => {
     )
         .then(async (resp) => await resp.json())
         .then((data) => data);
+        console.log({fetchAllNonMembers})
     return fetchAllNonMembers;
 };
 

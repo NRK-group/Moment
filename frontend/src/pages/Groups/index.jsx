@@ -101,10 +101,12 @@ function Groups({ isMobile, socket }) {
         setOpenModal(true);
     };
 
-    const switchGroup = (element) => {
+    const switchGroup = async (element) => {
         setGroupSelect(element);
-        GetAllGroupPosts(element.GroupID);
-        GetAllGroupEvents(element.GroupID);
+        let holder = await GetAllGroupPosts(element.GroupID);
+        setGroupPosts(holder);
+        holder = await  GetAllGroupEvents(element.GroupID);
+        setGroupE(holder);
     };
 
     const dropdown = useRef(null);

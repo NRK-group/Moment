@@ -321,6 +321,33 @@ func GetFollowNotifs(userId string, database *structs.DB) ([]structs.FollowerNot
 	return followerNotifs, nil
 }
 
+// GetFollowNotifStatus will get the status of the follow notification
+//
+// Param:
+//
+//	followerId: the id of the user who is following - other user
+//	followingId: the id of the user who is being followed - current user
+//	database: the database to get the follow notifications from
+func GetFollowNotifStatus(followerId, followingId string, database *structs.DB) (structs.FollowerNotif, error) {
+	var followerNotif structs.FollowerNotif
+	row := database.DB.QueryRow("SELECT * FROM FollowNotif WHERE userId = ? AND followingId = ?", followerId, followingId)
+	err := row.Scan(&followerId, &followingId, &followerNotif.CreatedAt, &followerNotif.Status, &followerNotif.Read)
+	if err != nil {
+		l.LogMessage("follow.go", "GetFollowNotifStatus", err)
+		return followerNotif, err
+	}
+	followerNotif.UserId, err = helper.GetUserInfo(followerId, database)
+	if err != nil {
+		return followerNotif, err
+	}
+	followerNotif.FollowingId, err = helper.GetUserInfo(followingId, database)
+	if err != nil {
+		return followerNotif, err
+	}
+	
+	return followerNotif, nil
+}
+
 // CheckIfFollowPending will check the status of a follow notification
 //
 // Params:

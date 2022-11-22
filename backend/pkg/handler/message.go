@@ -10,7 +10,6 @@ import (
 	"backend/pkg/structs"
 )
 
-// Profile handles all requests for a users own profile information.
 func (DB *Env) Message(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/message" {
 		http.Error(w, "404 not found", http.StatusNotFound)

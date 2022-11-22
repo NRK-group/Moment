@@ -1,5 +1,7 @@
 package structs
 
+import "time"
+
 type Event struct {
 	EventId     string
 	UserId      string
@@ -9,7 +11,7 @@ type Event struct {
 	Location    string
 	StartTime   string
 	EndTime     string
-	CreatedAt   string
+	CreatedAt   time.Time
 }
 
 type EventNotification struct {

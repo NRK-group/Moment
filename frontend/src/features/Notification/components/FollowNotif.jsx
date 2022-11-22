@@ -46,10 +46,11 @@ export const FollowNotif = ({ socket }) => {
             {notifications && notifications.length != 0 ? (
                 notifications.map(
                     ({ userId, followingId, status, createdAt }) => {
+                        console.log(userId, 'userId');
                         return (
                             <MiniUserCard
                                 key={userId.id}
-                                img={userId.Img}
+                                img={userId.img}
                                 propsId={`notif` + userId.id}
                                 name={userId.name}
                                 button={

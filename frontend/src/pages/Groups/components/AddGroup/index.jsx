@@ -3,13 +3,15 @@ import Card from '../../../../components/card/Card';
 import { MessagesIcon } from '../../../../components/Icons/Icons';
 import { useState } from 'react';
 import GetCloseFriends from '../../../profile/CloseFriend';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { GetCookie } from '../../../profile/ProfileData';
+import { RequestToS } from '../../hooks/useGroupshook';
 
-export default function AddGroup({setOpenModal,  flag , setFlag, socket}) {
+export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [closeF, setCloseF] = useState([]);
-
+   let selectR = useRef(null);
 
     useEffect(() => {
         GetCloseFriends().then((response) => {
@@ -25,8 +27,17 @@ export default function AddGroup({setOpenModal,  flag , setFlag, socket}) {
         })
             .then(async (resp) => await resp.text())
             .then((data) => data);
-            setOpenModal(false)
-            setFlag(!flag)
+        if (selectR.current.value !== "" && creategroup !== "") {
+            RequestToS(
+                GetCookie('session_token').split('&')[0],
+                selectR.current.value,
+                socket,
+                'groupInvitationJoin',
+                creategroup
+            );
+        }
+        setOpenModal(false);
+        setFlag(!flag);
     };
 
     return (
@@ -52,14 +63,15 @@ export default function AddGroup({setOpenModal,  flag , setFlag, socket}) {
                         </div>
                         <br />
                         <div className='selectCF'>
-                        <label htmlFor='selectCF'>Close Friends: </label>
-                        <select>
-                            {closeF && closeF.map((ele) => (
-                                <option key={ele.id} value={ele.id}>
-                                    {ele.name}
-                                </option>
-                            ))}
-                        </select>
+                            <label htmlFor='selectCF'>Close Friends: </label>
+                            <select ref={selectR}>
+                                {closeF &&
+                                    closeF.map((ele) => (
+                                        <option key={ele.id} value={ele.id}>
+                                            {ele.name}
+                                        </option>
+                                    ))}
+                            </select>
                         </div>
 
                         <textarea

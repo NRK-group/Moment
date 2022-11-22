@@ -9,7 +9,12 @@ import { useLocation, useParams } from 'react-router-dom';
 import { useScrollDown } from './hooks/scrollDown';
 import { debounce } from './hooks/debounce';
 import InputEmoji from 'react-input-emoji';
-export const Messages = ({ socket, currentUserInfo, setNewMessage }) => {
+export const Messages = ({
+    socket,
+    currentUserInfo,
+    setNewMessage,
+    setArrange,
+}) => {
     const { chatId } = useParams();
     const location = useLocation();
     const { type, user, details } = location.state;
@@ -77,6 +82,25 @@ export const Messages = ({ socket, currentUserInfo, setNewMessage }) => {
                     data.type === 'privateMessage' ||
                     data.type === 'groupMessage'
                 ) {
+                    if (data.chatId !== chatId) {
+                        setNewMessage((prev) => prev + 1);
+                    }
+                    setArrange((msg) => {
+                        console.log(msg, data);
+                        let msg2 = msg.map((message) => {
+                            if (message.chatId === data.chatId) {
+                                message.content.content = data.content;
+                                message.updatedAt = data.createAt;
+                            }
+                            return message;
+                        });
+                        let sortMsg = msg2.sort((a, b) => {
+                            return (
+                                new Date(b.updatedAt) - new Date(a.updatedAt)
+                            );
+                        });
+                        return sortMsg;
+                    });
                     socket.send(
                         JSON.stringify({
                             type: 'deleteNotif',
@@ -84,7 +108,6 @@ export const Messages = ({ socket, currentUserInfo, setNewMessage }) => {
                             receiverId: currentUserInfo,
                         })
                     );
-                    setNewMessage((prev) => prev + 1);
                 }
                 if (data.chatId === chatId) {
                     if (data.type === type) {

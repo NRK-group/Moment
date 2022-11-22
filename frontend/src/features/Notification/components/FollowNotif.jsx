@@ -1,13 +1,18 @@
+import { set } from 'date-fns';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button } from '../../../components/Button/Button';
 import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
 import { CalculateTimeDiff } from '../hooks/calculateTimediff';
 import { GetNotif } from '../hooks/getNotif';
 import { NoNotifications } from './NoNotifications';
-export const FollowNotif = ({ socket }) => {
-    const [notifications, setNotifications] = useState();
+export const FollowNotif = ({
+    socket,
+    notifications,
+    setFollowNotifContainer,
+    setFollowNotif,
+}) => {
     let type = 'follow';
-    GetNotif(type, setNotifications);
     let follow = {
         follow: 'started following you •',
         pending: 'wants to follow you •',
@@ -15,6 +20,9 @@ export const FollowNotif = ({ socket }) => {
     let link = {
         follow: `/profile?id=`,
     };
+    useEffect(() => {
+        setFollowNotif(false);
+    }, []);
     const handleAction = ({ type, receiverId, senderId }) => {
         if (socket) {
             socket.send(
@@ -31,13 +39,13 @@ export const FollowNotif = ({ socket }) => {
                     }
                     return notif;
                 });
-                setNotifications(newNotif);
+                setFollowNotifContainer(newNotif);
             }
             if (type === 'declineFollowRequest') {
                 let newNotif = notifications.filter(
                     (notif) => notif.userId.id !== receiverId
                 );
-                setNotifications(newNotif);
+                setFollowNotifContainer(newNotif);
             }
         }
     };
@@ -49,7 +57,7 @@ export const FollowNotif = ({ socket }) => {
                         return (
                             <MiniUserCard
                                 key={userId.id}
-                                img={userId.Img}
+                                img={userId.img}
                                 propsId={`notif` + userId.id}
                                 name={userId.name}
                                 button={

@@ -1,6 +1,12 @@
 import { NavLink, Outlet } from 'react-router-dom';
-export const NotificationsHeaderNav = () => {
-    let notif = '';
+export const NotificationsHeaderNav = ({
+    followNotif,
+    setFollowNotif,
+    setFollowNotifContainer,
+    socket,
+}) => {
+    let notif;
+    let user = document.cookie.split('=')[1].split('&')[0];
     return (
         <div className='notificationsHeader'>
             <NavLink
@@ -10,7 +16,7 @@ export const NotificationsHeaderNav = () => {
                 to='/notifications/general'>
                 <div className='notifIcon'>
                     <div className='notificationHeader'>General</div>
-                    {notif || <span className='notif'></span>}
+                    {notif && <span className='notif'></span>}
                 </div>
             </NavLink>
             <NavLink
@@ -18,9 +24,25 @@ export const NotificationsHeaderNav = () => {
                     isActive ? 'notifActive' : 'inactive'
                 }
                 to='/notifications/follow'>
-                <div className='notifIcon'>
+                <div
+                    className='notifIcon'
+                    onClick={() => {
+                        setFollowNotif(false);
+                        socket.send(
+                            JSON.stringify({
+                                type: 'readFollowNotif',
+                                receiverId: user,
+                            })
+                        );
+                        setFollowNotifContainer((prev) => {
+                            return prev.map((item) => {
+                                item.read = 1;
+                                return item;
+                            });
+                        });
+                    }}>
                     <div className='notificationHeader'>Follow</div>
-                    {notif || <span className='notif'></span>}
+                    {followNotif && <span className='notif'></span>}
                 </div>
             </NavLink>
             <NavLink

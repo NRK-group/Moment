@@ -18,6 +18,7 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
         new Date(new Date().setFullYear(new Date().getFullYear()))
     );
 
+    const [err, setErr] = useState(null)
 
     let imgUpload = useRef(),
         content = useRef(),
@@ -46,6 +47,11 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
         if (textVal.trim() === '') return;
         if (location.trim() === '') return;
         if (eventName.trim() === '') return;
+
+        if( startDate > endDate || startDate < new Date() || endDate  < new Date()){
+            setErr("check you dates")
+            return
+        }
 
 
         fetch(`http://localhost:5070/event`, {
@@ -84,7 +90,7 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
         <div id='GroupEvent'>
             <Card styleName='newPostBoxEvent'>
                 <Card styleName='newPostHeaderEvent'>
-                    <span className='newPostTitle' onClick={()=> RequestToS(userIDR.current, groupId, socket, "eventNotif", groupId)}>Create a Event </span>
+                    <span className='newPostTitle' >Create a Event </span>
                 </Card>
 
                 <Card styleName='NewPostContent'>
@@ -159,6 +165,8 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
                             <span className='shareText'>Share</span>
                             <MessagesIcon />
                         </button>
+
+                       {err && <p className='err' >{err}</p>}
                     </Card>
                 </Card>
             </Card>

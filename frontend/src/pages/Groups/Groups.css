@@ -9,6 +9,10 @@
     width: 200px;
     right: auto;
 }
+
+.err {
+    color: red;
+}
 .GroupsList {
     height: 50%;
     overflow-y: scroll;

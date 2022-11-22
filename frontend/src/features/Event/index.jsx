@@ -23,9 +23,7 @@ export default function Event({
     }, [flag]);
 
     const UpdateAttends = async () => {
-        console.log({ attending });
-        console.log({ eventId });
-        console.log({ eventObj });
+        
         if (eventObject !== null) {
         let updateAttends = await fetch(
             `http://localhost:5070/updateEventParticipant`,
@@ -38,7 +36,6 @@ export default function Event({
             .then(async (resp) => await resp.text())
             .then((data) => data);
         
-            console.log(updateAttends)
             setEventObject(null)
             setFlag(!flag)
         }

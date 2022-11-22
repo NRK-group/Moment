@@ -143,7 +143,14 @@ func (h *Hub) Run() {
 			// }
 
 			if msg.MessageType == "eventNotif" {
-				//messages.DeleteNotif(msg.ChatId, msg.ReceiverId, h.Database)
+				fmt.Println(msg)
+			}
+
+			if msg.MessageType == "groupInvitationJoin" {
+				fmt.Println(msg)
+			}
+
+			if msg.MessageType == "groupInvitationRequest" {
 				fmt.Println(msg)
 			}
 		}

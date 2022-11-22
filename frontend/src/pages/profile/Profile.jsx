@@ -46,7 +46,7 @@ export default function Profile() {
         }
         GetProfile(id).then((response) => setValues(response));
         console.log({ followStatus });
-    }, [id]);
+    }, [id, followStatus, values]);
     const relBtn = (
         <Button
             content={followStatus}
@@ -143,6 +143,7 @@ export default function Profile() {
                     id={id}
                     privacyVal={followStatus}
                 />
+
             ) : (
                 <Card styleName='restrictedAccount'>
                     <span>

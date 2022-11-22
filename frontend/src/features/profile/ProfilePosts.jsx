@@ -7,7 +7,7 @@ export default function ProfilePosts(props) {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         GetPosts(props.id).then((resp) => setPosts(resp));
-    }, []);
+    }, [props.id]);
     let privacyNum
     if (props.privacyVal === "Follow") privacyNum = 1
     if (props.privacyVal === "Following") privacyNum = 0

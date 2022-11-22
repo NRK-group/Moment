@@ -1,7 +1,10 @@
 import './table.css';
-// import {RequestToJoin} from '../../hooks/useGroupshook'
+import {RequestToS} from '../../hooks/useGroupshook'
+import { GetCookie } from '../../../profile/ProfileData'; 
 
-function Table({ data }) {
+function Table({ socket, data }) {
+
+   
     
     return (
         <>
@@ -13,7 +16,10 @@ function Table({ data }) {
                 <table>
                     {data.map((ele) => (
                         <tbody className={ele.member?'groups-List-Block': 'groups-List-tbody'} key={ele.GroupID}>
-                            <tr onClick={() => console.log(ele)}>
+                            <tr onClick={() =>{
+                                 RequestToS(GetCookie('session_token').split('&')[0], ele.Admin, socket, "groupInvitationJoin", ele.GroupID)
+                                console.log(ele)
+                            }}>
                                 <td>{ele.Name}</td>
                             </tr>
                         </tbody>

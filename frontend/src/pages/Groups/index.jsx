@@ -1,5 +1,5 @@
 import './Groups.css';
-
+import { GetCookie } from '../profile/ProfileData';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
 import Post from '../../features/Post';
@@ -12,10 +12,11 @@ import GroupPost from './components/GroupPost';
 import GroupEvent from './components/GroupEvents';
 import Event from '../../features/Event';
 import {
-     GetAllGroupPosts,
+    RequestToS,
+    GetAllGroupPosts,
     GetAllGroupEvents,
     GetAllNonMembers,
- } from './hooks/useGroupshook';
+} from './hooks/useGroupshook';
 
 import {
     ChevronRightIcon,
@@ -97,7 +98,7 @@ function Groups({ isMobile, socket }) {
             .then(async (resp) => await resp.json())
             .then((data) => data);
 
-        setEle(<GroupList data={fetchGroups} />);
+        setEle(<GroupList socket={socket} data={fetchGroups} />);
         setOpenModal(true);
     };
 
@@ -105,7 +106,7 @@ function Groups({ isMobile, socket }) {
         setGroupSelect(element);
         let holder = await GetAllGroupPosts(element.GroupID);
         setGroupPosts(holder);
-        holder = await  GetAllGroupEvents(element.GroupID);
+        holder = await GetAllGroupEvents(element.GroupID);
         setGroupE(holder);
     };
 
@@ -224,9 +225,8 @@ function Groups({ isMobile, socket }) {
                                                     setOpenModal={setOpenModal}
                                                     flag={flag}
                                                     setFlag={setFlag}
-                                               
-                                                socket={socket}
-                                                 />
+                                                    socket={socket}
+                                                />
                                             );
                                             setOpenModal(true);
                                         }}>
@@ -258,9 +258,8 @@ function Groups({ isMobile, socket }) {
                                                     setOpenModal={setOpenModal}
                                                     flag={flag}
                                                     setFlag={setFlag}
-                                               
-                                                socket={socket}
-                                                 />
+                                                    socket={socket}
+                                                />
                                             );
                                             setOpenModal(true);
                                         }}>
@@ -344,7 +343,14 @@ function Groups({ isMobile, socket }) {
                             <div ref={dropdown} className='dropdown-content'>
                                 {getallNonMembers &&
                                     getallNonMembers.map((ele) => (
-                                        <a key={ele.id} onClick={()=>console.log(ele.id)}>{ele.firstName}</a>
+                                        <a
+                                            key={ele.id}
+                                            onClick={() => {
+                                                RequestToS(GetCookie('session_token').split('&')[0], ele.id, socket, "groupInvitationRequest", ele.GroupID)
+                                                console.log(ele.id);
+                                            }}>
+                                            {ele.firstName}
+                                        </a>
                                     ))}
                             </div>
                             <Input

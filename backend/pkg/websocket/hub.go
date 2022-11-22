@@ -165,6 +165,18 @@ func (h *Hub) Run() {
 			// 		delete(h.Clients, userId)
 			// 	}
 			// }
+
+			if msg.MessageType == "eventNotif" {
+				fmt.Println(msg)
+			}
+
+			if msg.MessageType == "groupInvitationJoin" {
+				fmt.Println(msg)
+			}
+
+			if msg.MessageType == "groupInvitationRequest" {
+				fmt.Println(msg)
+			}
 		}
 	}
 }

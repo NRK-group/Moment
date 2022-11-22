@@ -51,6 +51,9 @@ func UpdateEventParticipant(event structs.Event, database structs.DB) (string, e
 		fmt.Println(err)
 		return "Error in UpdateEventParticipant", err
 	}
+
+
+fmt.Println(res)
 	if res {
 		return "Going", nil
 	} else if eventS.Status == 1 {
@@ -100,7 +103,7 @@ func CheckIfUserInEventAndIfNotAddThem(eventId, userId string, database *structs
 		fmt.Println(err)
 		return true, holder, err
 	}
-	return true, holder, nil
+	return false, holder, nil
 }
 
 func AllEventParticipant(eventId string, database *structs.DB) ([]structs.EventParticipant, error) {

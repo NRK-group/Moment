@@ -86,15 +86,12 @@ const Comments = ({ isMobile }) => {
         }).then(async (response) => {
             let resp = await response.json();
             setCommentS(resp);
-            console.log(resp);
             return resp;
         });
 
         window.document
             .querySelectorAll('.CommentsSectionUsers .miniUserCard .contentSep')
             .forEach((ele) => ele.remove());
-
-        console.log(flag)
     }, [flag]);
 
     const formatDate = (data) => {

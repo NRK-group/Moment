@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Card from '../../../../components/card/Card';
 import { MessagesIcon } from '../../../../components/Icons/Icons';
 import { GetCookie } from '../../../../pages/profile/ProfileData';
@@ -8,8 +7,9 @@ import '../../../../features/newpost/NewPost.css';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import './GroupEvent.css';
+import {RequestToS} from '../../hooks/useGroupshook'
 
-export default function GroupEvent({ groupId, setOpenModal, flag , setFlag}) {
+export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, socket}) {
     const [startDate, setStartDate] = useState(
         new Date(new Date().setFullYear(new Date().getFullYear()))
     );
@@ -18,11 +18,13 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag}) {
         new Date(new Date().setFullYear(new Date().getFullYear()))
     );
 
+    const [err, setErr] = useState(null)
 
     let imgUpload = useRef(),
         content = useRef(),
         eventName = useRef(),
         attending = useRef(),
+        userIDR = useRef(GetCookie('session_token').split('&')[0]),
         location = useRef();
 
     const [image, setImage] = useState(null);
@@ -45,7 +47,12 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag}) {
         if (textVal.trim() === '') return;
         if (location.trim() === '') return;
         if (eventName.trim() === '') return;
-        console.log()
+
+        if( startDate > endDate || startDate < new Date() || endDate  < new Date()){
+            setErr("check you dates")
+            return
+        }
+
 
         fetch(`http://localhost:5070/event`, {
             credentials: 'include',
@@ -75,6 +82,7 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag}) {
             }
             setOpenModal(false);
             setFlag(!flag)
+            RequestToS(userIDR, groupId, socket, "eventNotif", groupId)
             return resp;
         });
     }
@@ -82,7 +90,7 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag}) {
         <div id='GroupEvent'>
             <Card styleName='newPostBoxEvent'>
                 <Card styleName='newPostHeaderEvent'>
-                    <span className='newPostTitle'>Create a Event </span>
+                    <span className='newPostTitle' >Create a Event </span>
                 </Card>
 
                 <Card styleName='NewPostContent'>
@@ -157,6 +165,8 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag}) {
                             <span className='shareText'>Share</span>
                             <MessagesIcon />
                         </button>
+
+                       {err && <p className='err' >{err}</p>}
                     </Card>
                 </Card>
             </Card>

@@ -79,7 +79,7 @@ func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var groupData structs.Group
 		GetBody(&groupData, w, r)
-		_, groupErr := group.CreateGroup(groupData.Name, groupData.Description, cookie[0], database.Env)
+		groupId , groupErr := group.CreateGroup(groupData.Name, groupData.Description, cookie[0], database.Env)
 		if groupErr != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -87,7 +87,7 @@ func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
 		}
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "application/text")
-		io.WriteString(w, "successfully in creating a group")
+		io.WriteString(w, groupId)
 		return
 	}
 	http.Error(w, "400 Bad Request.", http.StatusBadRequest)

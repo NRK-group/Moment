@@ -18,15 +18,13 @@ export default function Event({
 
     const [eventObject, setEventObject] = useState(null);
 
-    console.log(new Date(end))
-
     useEffect(() => {
         setEventObject(eventObj)
     }, [flag]);
 
     const UpdateAttends = async () => {
         
-        if (eventObject !== null) {
+        if (eventObject !== null && new Date(end) > new Date()) {
         let updateAttends = await fetch(
             `http://localhost:5070/updateEventParticipant`,
             {

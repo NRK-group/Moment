@@ -12,10 +12,10 @@ import GroupPost from './components/GroupPost';
 import GroupEvent from './components/GroupEvents';
 import Event from '../../features/Event';
 import {
-    GetAllGroupPosts,
+     GetAllGroupPosts,
     GetAllGroupEvents,
     GetAllNonMembers,
-} from './hooks/useGroupshook';
+ } from './hooks/useGroupshook';
 
 import {
     ChevronRightIcon,
@@ -181,6 +181,8 @@ function Groups({ isMobile, socket }) {
                                                     }
                                                     setOpenModal={setOpenModal}
                                                     socket={socket}
+                                                    flag={flag}
+                                                    setFlag={setFlag}
                                                 />
                                             );
                                             setOpenModal(true);
@@ -200,6 +202,8 @@ function Groups({ isMobile, socket }) {
                                                         groupSelect.GroupID
                                                     }
                                                     setOpenModal={setOpenModal}
+                                                    flag={flag}
+                                                    setFlag={setFlag}
                                                 />
                                             );
                                             setOpenModal(true);
@@ -213,9 +217,15 @@ function Groups({ isMobile, socket }) {
                                             cursor: 'pointer',
                                         }}
                                         onClick={() => {
-                                            setEle(<AddGroup
+                                            setEle(
+                                                <AddGroup
+                                                    setOpenModal={setOpenModal}
+                                                    flag={flag}
+                                                    setFlag={setFlag}
+                                               
                                                 socket={socket}
-                                                 />);
+                                                 />
+                                            );
                                             setOpenModal(true);
                                         }}>
                                         {' '}
@@ -241,9 +251,15 @@ function Groups({ isMobile, socket }) {
                                             cursor: 'pointer',
                                         }}
                                         onClick={() => {
-                                            setEle(<AddGroup
+                                            setEle(
+                                                <AddGroup
+                                                    setOpenModal={setOpenModal}
+                                                    flag={flag}
+                                                    setFlag={setFlag}
+                                               
                                                 socket={socket}
-                                                 />);
+                                                 />
+                                            );
                                             setOpenModal(true);
                                         }}>
                                         {' '}
@@ -344,7 +360,7 @@ function Groups({ isMobile, socket }) {
                                         {' '}
                                     </MiniUserCard>
                                 </span>
-                            ))) || <> Group members</>}
+                            ))) || <> </>}
                     </div>
                 </div>
             </Card>

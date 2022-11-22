@@ -9,7 +9,7 @@ import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import './GroupEvent.css';
 
-export default function GroupEvent({ groupId, setOpenModal }) {
+export default function GroupEvent({ groupId, setOpenModal, flag , setFlag}) {
     const [startDate, setStartDate] = useState(
         new Date(new Date().setFullYear(new Date().getFullYear()))
     );
@@ -74,6 +74,7 @@ export default function GroupEvent({ groupId, setOpenModal }) {
                 setImage(null);
             }
             setOpenModal(false);
+            setFlag(!flag)
             return resp;
         });
     }

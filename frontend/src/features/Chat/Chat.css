@@ -20,7 +20,10 @@
     padding: 0 20px;
 }
 .chatContainerHeader > :nth-child(1) {
-    width: 0;
+    max-width: 250px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 .userName {
     cursor: pointer;
@@ -31,7 +34,7 @@
 .chatUsersContainer {
     height: 100%;
     border-right: 1px solid var(--terheading-color);
-    max-width: 150px;
+    max-width: 850px;
     width: 100%;
 }
 .chatUsers {
@@ -156,14 +159,5 @@
     }
     .chatUsersContainer {
         max-width: 300px;
-    }
-    .chatContainerHeader > :nth-child(1) {
-        max-width: 250px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-    .chatUsersContainer {
-        max-width: 250px;
     }
 }

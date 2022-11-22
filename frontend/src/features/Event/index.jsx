@@ -23,9 +23,7 @@ export default function Event({
     }, [flag]);
 
     const UpdateAttends = async () => {
-        console.log({ attending });
-        console.log({ eventId });
-        console.log({ eventObj });
+        console.log({eventObject})
         if (eventObject !== null) {
         let updateAttends = await fetch(
             `http://localhost:5070/updateEventParticipant`,
@@ -38,12 +36,16 @@ export default function Event({
             .then(async (resp) => await resp.text())
             .then((data) => data);
         
-            console.log(updateAttends)
             setEventObject(null)
             setFlag(!flag)
         }
     };
 
+    const formatDate = (data) => {
+        let myDate = new Date(data);
+        let result = myDate.toString().slice(0, 24);
+        return result;
+    };
     
 
     return (
@@ -67,11 +69,11 @@ export default function Event({
                     <br />
                     <br />
                     <label>Start:</label>
-                    <span>{start}</span>
+                    <span>{formatDate(start)}</span>
                     <br />
                     <br />
                     <label>End:</label>
-                    <span>{end}</span>
+                    <span>{formatDate(end)}</span>
                     <br />
                     <br />
                     <label>Attending:</label>{' '}

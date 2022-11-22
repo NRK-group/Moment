@@ -55,8 +55,6 @@ export default function NewPost() {
             }),
         }).then(async (response) => {
             let resp = await response.json();
-
-            console.log(resp);
             if (image != null) {
                 const formData = new FormData();
                 formData.append('file', image);

@@ -11,7 +11,7 @@ import GroupList from './components/GroupList';
 import GroupPost from './components/GroupPost';
 import GroupEvent from './components/GroupEvents';
 import Event from '../../features/Event';
-import {GetAllGroupPosts, GetAllGroupEvents} from './hooks/useGroupshook';
+import { GetAllGroupPosts, GetAllGroupEvents } from './hooks/useGroupshook';
 
 import {
     ChevronRightIcon,
@@ -39,14 +39,12 @@ function Groups({ isMobile }) {
             console.log(fetchAllUsergroups[0]);
             setGroupS(fetchAllUsergroups);
             setGroupSelect(fetchAllUsergroups[0]);
-            let holder = await GetAllGroupPosts(fetchAllUsergroups[0].GroupID)
-            setGroupPosts(holder );
+            let holder = await GetAllGroupPosts(fetchAllUsergroups[0].GroupID);
+            setGroupPosts(holder);
             holder = await GetAllGroupEvents(fetchAllUsergroups[0].GroupID);
-            setGroupE(holder)
+            setGroupE(holder);
         }
     };
-
-
 
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);
@@ -162,6 +160,8 @@ function Groups({ isMobile }) {
                                                         groupSelect.GroupID
                                                     }
                                                     setOpenModal={setOpenModal}
+                                                    flag={flag}
+                                                    setFlag={setFlag}
                                                 />
                                             );
                                             setOpenModal(true);
@@ -181,6 +181,8 @@ function Groups({ isMobile }) {
                                                         groupSelect.GroupID
                                                     }
                                                     setOpenModal={setOpenModal}
+                                                    flag={flag}
+                                                    setFlag={setFlag}
                                                 />
                                             );
                                             setOpenModal(true);
@@ -194,7 +196,13 @@ function Groups({ isMobile }) {
                                             cursor: 'pointer',
                                         }}
                                         onClick={() => {
-                                            setEle(<AddGroup />);
+                                            setEle(
+                                                <AddGroup
+                                                    setOpenModal={setOpenModal}
+                                                    flag={flag}
+                                                    setFlag={setFlag}
+                                                />
+                                            );
                                             setOpenModal(true);
                                         }}>
                                         {' '}
@@ -220,7 +228,13 @@ function Groups({ isMobile }) {
                                             cursor: 'pointer',
                                         }}
                                         onClick={() => {
-                                            setEle(<AddGroup />);
+                                            setEle(
+                                                <AddGroup
+                                                    setOpenModal={setOpenModal}
+                                                    flag={flag}
+                                                    setFlag={setFlag}
+                                                />
+                                            );
                                             setOpenModal(true);
                                         }}>
                                         {' '}

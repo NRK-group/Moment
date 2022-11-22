@@ -133,6 +133,26 @@ func (h *Hub) Run() {
 			if msg.MessageType == "deleteNotif" {
 				messages.DeleteNotif(msg.ChatId, msg.ReceiverId, h.Database)
 			}
+			if msg.MessageType == "followRequest" {
+				followNotif, err := follow.GetFollowNotifStatus(msg.SenderId, msg.ReceiverId, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - GetFollowNotifStatus", err)
+				} else {
+					type FollowWriter struct {
+						Type string                `json:"type"`
+						Data structs.FollowerNotif `json:"data"`
+					}
+					followWriter := FollowWriter{
+						Type: "followRequest",
+						Data: followNotif,
+					}
+					if _, valid := h.Clients[msg.ReceiverId]; valid {
+						resp, _ := json.Marshal(followWriter)
+						fmt.Print(string(resp))
+						h.Clients[msg.ReceiverId].Send <- resp
+					}
+				}
+			}
 			// for userId, client := range h.Clients {
 			// 	select {
 			// 	case client.Send <- message:

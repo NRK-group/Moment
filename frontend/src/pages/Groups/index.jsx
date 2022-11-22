@@ -11,7 +11,11 @@ import GroupList from './components/GroupList';
 import GroupPost from './components/GroupPost';
 import GroupEvent from './components/GroupEvents';
 import Event from '../../features/Event';
-import { GetAllGroupPosts, GetAllGroupEvents } from './hooks/useGroupshook';
+import {
+     GetAllGroupPosts,
+    GetAllGroupEvents,
+    GetAllNonMembers,
+ } from './hooks/useGroupshook';
 
 import {
     ChevronRightIcon,
@@ -21,7 +25,7 @@ import {
 } from '../../components/Icons/Icons';
 import { useRef, useState, useEffect } from 'react';
 
-function Groups({ isMobile }) {
+function Groups({ isMobile, socket }) {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
 
@@ -53,6 +57,7 @@ function Groups({ isMobile }) {
     const [groupPosts, setGroupPosts] = useState(null);
     const [flag, setFlag] = useState(false);
     const [groupS, setGroupS] = useState(null);
+    const [getallNonMembers, setGetallNonMembers] = useState(null);
     const [groupE, setGroupE] = useState(null);
     const [groupSelect, setGroupSelect] = useState(null);
     const [openModal, setOpenModal] = useState(false);
@@ -96,10 +101,27 @@ function Groups({ isMobile }) {
         setOpenModal(true);
     };
 
-    const switchGroup = (element) => {
+    const switchGroup = async (element) => {
         setGroupSelect(element);
-        GetAllGroupPosts(element.GroupID);
-        GetAllGroupEvents(element.GroupID);
+        let holder = await GetAllGroupPosts(element.GroupID);
+        setGroupPosts(holder);
+        holder = await  GetAllGroupEvents(element.GroupID);
+        setGroupE(holder);
+    };
+
+    const dropdown = useRef(null);
+    const [toggle, setToggle] = useState(true);
+
+    const OpenDropdownMenu = async () => {
+        setToggle(!toggle);
+        if (toggle) {
+            let resp = await GetAllNonMembers(groupSelect.GroupID);
+            setGetallNonMembers(resp);
+
+            dropdown.current.style.display = 'block';
+        } else {
+            dropdown.current.style.display = 'none';
+        }
     };
 
     return (
@@ -160,6 +182,7 @@ function Groups({ isMobile }) {
                                                         groupSelect.GroupID
                                                     }
                                                     setOpenModal={setOpenModal}
+                                                    socket={socket}
                                                     flag={flag}
                                                     setFlag={setFlag}
                                                 />
@@ -201,7 +224,9 @@ function Groups({ isMobile }) {
                                                     setOpenModal={setOpenModal}
                                                     flag={flag}
                                                     setFlag={setFlag}
-                                                />
+                                               
+                                                socket={socket}
+                                                 />
                                             );
                                             setOpenModal(true);
                                         }}>
@@ -233,7 +258,9 @@ function Groups({ isMobile }) {
                                                     setOpenModal={setOpenModal}
                                                     flag={flag}
                                                     setFlag={setFlag}
-                                                />
+                                               
+                                                socket={socket}
+                                                 />
                                             );
                                             setOpenModal(true);
                                         }}>
@@ -311,7 +338,15 @@ function Groups({ isMobile }) {
                             {' '}
                             <ChevronRightIcon />{' '}
                         </span>
-                        <div className='GroupsMenuHeader'>
+                        <div
+                            className='GroupsMenuHeader'
+                            onClick={() => OpenDropdownMenu()}>
+                            <div ref={dropdown} className='dropdown-content'>
+                                {getallNonMembers &&
+                                    getallNonMembers.map((ele) => (
+                                        <a key={ele.id} onClick={()=>console.log(ele.id)}>{ele.firstName}</a>
+                                    ))}
+                            </div>
                             <Input
                                 styleName={'search'}
                                 type={'search'}

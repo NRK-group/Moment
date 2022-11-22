@@ -3,7 +3,7 @@ import { DesktopHeaderNav, MobileHeaderNav } from '../Navbar/Navbar';
 import Input from '../../Components/Input/Input';
 import { CreateWebSocket } from '../../Utils/CreateWebsocket';
 import { useEffect } from 'react';
-import { GetChatList } from '../../features/Chat/hooks/getChatList';
+import { GetChatList } from '../../Features/Chat/hooks/getChatList';
 const Header = ({
     socket,
     setIsMenuOpen,

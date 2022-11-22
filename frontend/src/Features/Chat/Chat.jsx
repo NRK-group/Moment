@@ -6,32 +6,21 @@ import { ChatUsersContainer } from './Components/ChatUsersContainer';
 import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './Components/NewChatModal';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { GetChatList } from './Hooks/GetChatList';
 import { useEffect, useState } from 'react';
-const Chat = ({ isMobile, socket }) => {
+const Chat = ({
+    isMobile,
+    socket,
+    setMessageNotif,
+    chatList,
+    setNewMessage,
+}) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
     let user = document.cookie.split('=')[1].split('&')[0];
-    let [newMessage, setNewMessage] = useState(0);
-    const [chatList, setClist] = useState([]);
-    GetChatList(setClist, newMessage);
-    const [addToChatList, setAddToChatList] = useState();
+    const [arrange, setArrange] = useState([]);
     useEffect(() => {
-        if (addToChatList) {
-            setClist((prev) => [addToChatList, ...prev]);
-        }
-    }, [addToChatList]);
-    if (socket) {
-        socket.onmessage = (e) => {
-            let data = JSON.parse(e.data);
-            if (
-                data.type === 'privateMessage' ||
-                data.type === 'groupMessage'
-            ) {
-                setNewMessage((prev) => prev + 1);
-            }
-        };
-    }
+        setArrange(chatList);
+    }, [chatList]);
     return (
         <>
             <Body styleName={bodyStyleName}>
@@ -40,8 +29,11 @@ const Chat = ({ isMobile, socket }) => {
                         <div className='chatBox'>
                             <ChatUsersContainer
                                 styleName='chatUsersContainer'
+                                style={bodyStyleName}
                                 currentUserInfo={user}
-                                chatList={chatList ? chatList : []}
+                                chatList={arrange ? arrange : []}
+                                socket={socket}
+                                setMessageNotif={setMessageNotif}
                             />
                             <div className='messagesContainer'>
                                 <>
@@ -56,13 +48,7 @@ const Chat = ({ isMobile, socket }) => {
                                         />
                                         <Route
                                             path='new'
-                                            element={
-                                                <NewChatModal
-                                                    setAddToChatList={
-                                                        setAddToChatList
-                                                    }
-                                                />
-                                            }
+                                            element={<NewChatModal />}
                                         />
                                         <Route
                                             path=':chatId'
@@ -73,6 +59,7 @@ const Chat = ({ isMobile, socket }) => {
                                                     setNewMessage={
                                                         setNewMessage
                                                     }
+                                                    setArrange={setArrange}
                                                 />
                                             }
                                         />

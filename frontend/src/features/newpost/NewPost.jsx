@@ -112,6 +112,8 @@ export default function NewPost() {
                             refr={privacy}
                         />
 
+                        <a href={'/closefriends'} className="updateCloseFriends">Update Close Friends</a>
+
                         <textarea
                             ref={content}
                             cols='100'

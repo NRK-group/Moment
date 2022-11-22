@@ -101,7 +101,6 @@ func (database *Env) GroupNonMembers(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 not found.", http.StatusNotFound)
 		return
 	}
-
 	SetupCorsResponse(w)
 	c, err := r.Cookie("session_token")
 	if err != nil {
@@ -123,12 +122,15 @@ func (database *Env) GroupNonMembers(w http.ResponseWriter, r *http.Request) {
 		var returnUsers []structs.Info
 		flag := false
 		users, err := search.GetAllUsers(cookie[0], database.Env)
+
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
 
 		members, err := member.GetMembers(groupId, database.Env)
+
+
 		if err != nil {
 			fmt.Print(err)
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
@@ -139,7 +141,7 @@ func (database *Env) GroupNonMembers(w http.ResponseWriter, r *http.Request) {
 		for _, user := range users {
 
 			for _, member := range members {
-				if member.UserId == user.Id {
+				if member.UserId != user.Id {
 					flag = true
 				}
 			}

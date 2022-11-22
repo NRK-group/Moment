@@ -11,7 +11,11 @@ import GroupList from './components/GroupList';
 import GroupPost from './components/GroupPost';
 import GroupEvent from './components/GroupEvents';
 import Event from '../../features/Event';
-import {GetAllGroupPosts, GetAllGroupEvents} from './hooks/useGroupshook';
+import {
+    GetAllGroupPosts,
+    GetAllGroupEvents,
+    GetAllNonMembers,
+} from './hooks/useGroupshook';
 
 import {
     ChevronRightIcon,
@@ -39,14 +43,12 @@ function Groups({ isMobile }) {
             console.log(fetchAllUsergroups[0]);
             setGroupS(fetchAllUsergroups);
             setGroupSelect(fetchAllUsergroups[0]);
-            let holder = await GetAllGroupPosts(fetchAllUsergroups[0].GroupID)
-            setGroupPosts(holder );
+            let holder = await GetAllGroupPosts(fetchAllUsergroups[0].GroupID);
+            setGroupPosts(holder);
             holder = await GetAllGroupEvents(fetchAllUsergroups[0].GroupID);
-            setGroupE(holder)
+            setGroupE(holder);
         }
     };
-
-
 
     const GroupsLeftMenu = useRef(null);
     const GroupsRightMenu = useRef(null);
@@ -55,6 +57,7 @@ function Groups({ isMobile }) {
     const [groupPosts, setGroupPosts] = useState(null);
     const [flag, setFlag] = useState(false);
     const [groupS, setGroupS] = useState(null);
+    const [getallNonMembers, setGetallNonMembers] = useState(null);
     const [groupE, setGroupE] = useState(null);
     const [groupSelect, setGroupSelect] = useState(null);
     const [openModal, setOpenModal] = useState(false);
@@ -107,11 +110,12 @@ function Groups({ isMobile }) {
     const dropdown = useRef(null);
     const [toggle, setToggle] = useState(true);
 
-
-    const OpenDropdownMenu = () => {
+    const OpenDropdownMenu = async () => {
         setToggle(!toggle);
         if (toggle) {
-           
+            let resp = await GetAllNonMembers(groupSelect.GroupID);
+            setGetallNonMembers(resp);
+
             dropdown.current.style.display = 'block';
         } else {
             dropdown.current.style.display = 'none';
@@ -311,12 +315,15 @@ function Groups({ isMobile }) {
                             {' '}
                             <ChevronRightIcon />{' '}
                         </span>
-                        <div className='GroupsMenuHeader' onClick={()=>OpenDropdownMenu()}>
-                        <div ref={dropdown} className='dropdown-content'>
-                            <a href='#'>option 1</a>
-                            <a href='#'>option 2</a>
-                            <a href='#'>option 3</a>
-                        </div>
+                        <div
+                            className='GroupsMenuHeader'
+                            onClick={() => OpenDropdownMenu()}>
+                            <div ref={dropdown} className='dropdown-content'>
+                                {getallNonMembers &&
+                                    getallNonMembers.map((ele) => (
+                                        <a key={ele.id} onClick={()=>console.log(ele.id)}>{ele.firstName}</a>
+                                    ))}
+                            </div>
                             <Input
                                 styleName={'search'}
                                 type={'search'}

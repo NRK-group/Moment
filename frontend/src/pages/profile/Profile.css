@@ -488,6 +488,14 @@ p {
     align-items: center;
     /* justify-content: center; */
 }
+
+.updateCloseFriends{
+    display: block;
+    margin: 1% auto;
+    width: fit-content;
+    font-size: 85%;
+    font-weight: bolder;
+}
 .crossIcon {
     position: absolute;
     background-color: #fff0;

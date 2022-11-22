@@ -141,6 +141,11 @@ func (h *Hub) Run() {
 			// 		delete(h.Clients, userId)
 			// 	}
 			// }
+
+			if msg.MessageType == "eventNotif" {
+				//messages.DeleteNotif(msg.ChatId, msg.ReceiverId, h.Database)
+				fmt.Println(msg)
+			}
 		}
 	}
 }

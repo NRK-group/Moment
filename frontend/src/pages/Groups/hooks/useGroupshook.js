@@ -37,7 +37,10 @@ export const GetAllNonMembers = async (id) => {
     return fetchAllNonMembers;
 };
 
+//groupInvitation
 
-export const RequestTogroup = async (id, receiverId, socket, type) => {
-    socket.send(JSON.stringify({type: "groupInvitation"+type, senderId: id, receiverId:receiverId}))
+export const RequestToS =  (id, receiverId, socket, type, groupId) => {
+    socket.send(
+        JSON.stringify({ type: type, senderId: id, receiverId: receiverId, groupId: groupId })
+    );
 };

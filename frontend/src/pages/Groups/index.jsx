@@ -104,6 +104,20 @@ function Groups({ isMobile }) {
         GetAllGroupEvents(element.GroupID);
     };
 
+    const dropdown = useRef(null);
+    const [toggle, setToggle] = useState(true);
+
+
+    const OpenDropdownMenu = () => {
+        setToggle(!toggle);
+        if (toggle) {
+           
+            dropdown.current.style.display = 'block';
+        } else {
+            dropdown.current.style.display = 'none';
+        }
+    };
+
     return (
         <Body styleName={bodyStyleName}>
             <Card styleName={cardStyleName}>
@@ -297,7 +311,12 @@ function Groups({ isMobile }) {
                             {' '}
                             <ChevronRightIcon />{' '}
                         </span>
-                        <div className='GroupsMenuHeader'>
+                        <div className='GroupsMenuHeader' onClick={()=>OpenDropdownMenu()}>
+                        <div ref={dropdown} className='dropdown-content'>
+                            <a href='#'>option 1</a>
+                            <a href='#'>option 2</a>
+                            <a href='#'>option 3</a>
+                        </div>
                             <Input
                                 styleName={'search'}
                                 type={'search'}

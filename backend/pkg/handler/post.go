@@ -2,8 +2,12 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
+	"backend/pkg/auth"
+	"backend/pkg/closefriend"
+	"backend/pkg/follow"
 	"backend/pkg/post"
 	"backend/pkg/response"
 	"backend/pkg/structs"
@@ -14,15 +18,41 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 not found.", http.StatusNotFound)
 		return
 	}
+	c, err := r.Cookie("session_token")
+	if err != nil || !auth.ValidateCookie(c, database.Env, w) {
+		log.Println("No cookie found in validate")
+		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		return
+	}
 	SetupCorsResponse(w)
+	w.Header().Add("Content-Type", "application/json")
+	cookie, _ := auth.SliceCookie(c.Value)
+
 	if r.Method == "GET" {
+		var returnPost []structs.Post
 		posts, err := post.AllPost(database.Env)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		marshallPosts, err := json.Marshal(posts)
+
+		for _, post := range posts {
+			if post.Privacy == 0 {
+				returnPost = append([]structs.Post{post}, returnPost...)
+			} else if post.Privacy == 1 && follow.CheckIfFollow(cookie[0], post.UserID, database.Env) {
+				returnPost = append([]structs.Post{post}, returnPost...)
+			} else if post.Privacy == -1 {
+				closeFriendsList := closefriend.GetCloseFriends(cookie[0], *database.Env)
+				for _, closeF := range closeFriendsList {
+					if closeF.Id == cookie[0] {
+						returnPost = append([]structs.Post{post}, returnPost...)
+					}
+				}
+			}
+		}
+
+		marshallPosts, err := json.Marshal(returnPost)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)

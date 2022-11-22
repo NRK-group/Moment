@@ -37,9 +37,9 @@
 }
 
 .CommentsImg img {
-    object-fit: fill;
-    height: inherit;
-    width: fit-content;
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
 }
 
 .CommentsSection {

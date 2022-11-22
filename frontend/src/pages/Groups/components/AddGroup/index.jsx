@@ -5,7 +5,7 @@ import { useState } from 'react';
 import GetCloseFriends from '../../../profile/CloseFriend';
 import { useEffect } from 'react';
 
-export default function AddGroup({setOpenModal,  flag , setFlag}) {
+export default function AddGroup({setOpenModal,  flag , setFlag, socket}) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [closeF, setCloseF] = useState([]);

@@ -8,7 +8,6 @@ export const GetAllGroupPosts = async (id) => {
     )
         .then(async (resp) => await resp.json())
         .then((data) => data);
-        console.log({fetchAllgroupPosts})
     return fetchAllgroupPosts;
 };
 
@@ -22,7 +21,6 @@ export const GetAllGroupEvents = async (id) => {
     )
         .then(async (resp) => await resp.json())
         .then((data) => data);
-    console.log({ fetchAllgroupEvents });
     return fetchAllgroupEvents;
 };
 
@@ -36,11 +34,10 @@ export const GetAllNonMembers = async (id) => {
     )
         .then(async (resp) => await resp.json())
         .then((data) => data);
-        console.log({fetchAllNonMembers})
     return fetchAllNonMembers;
 };
 
 
-export const RequestToJoin = async (id, receiverId, socket) => {
-    socket.send(JSON.stringify({type: "groupInvitation", senderId: id, receiverId:receiverId}))
+export const RequestTogroup = async (id, receiverId, socket, type) => {
+    socket.send(JSON.stringify({type: "groupInvitation"+type, senderId: id, receiverId:receiverId}))
 };

@@ -18,6 +18,8 @@ export default function Event({
 
     const [eventObject, setEventObject] = useState(null);
 
+    console.log(new Date(end))
+
     useEffect(() => {
         setEventObject(eventObj)
     }, [flag]);
@@ -41,6 +43,11 @@ export default function Event({
         }
     };
 
+    const formatDate = (data) => {
+        let myDate = new Date(data);
+        let result = myDate.toString().slice(0, 24);
+        return result;
+    };
     
 
     return (
@@ -64,11 +71,11 @@ export default function Event({
                     <br />
                     <br />
                     <label>Start:</label>
-                    <span>{start}</span>
+                    <span>{formatDate(start)}</span>
                     <br />
                     <br />
                     <label>End:</label>
-                    <span>{end}</span>
+                    <span>{formatDate(end)}</span>
                     <br />
                     <br />
                     <label>Attending:</label>{' '}

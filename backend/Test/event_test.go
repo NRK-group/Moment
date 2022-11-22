@@ -177,12 +177,24 @@ func TestCreateEvent(t *testing.T) {
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
-		// get all event notif
-		notif, err := event.GetEventNotifications("Ken", database)
-		l.LogMessage("Test", "Get all event notif", notif)
-		l.LogMessage("Test", "Get all event notif", len(notif))
+		user := CreateUser(database, t)
+		groupId, err := group.CreateGroup("Pie3", "Eating Pie3", user.UserId, database)
+		if err != nil {
+			t.Errorf("Error creating group %v", err)
+		}
+		user2 := CreateUser(database, t)
+		member.AddMember(groupId, user2.UserId, database)
+		event2 := structs.Event{UserId: user.UserId, GroupId: groupId, Name: "Test5", Description: "Eating Pie", Location: " Location ", StartTime: "StartTime", EndTime: " EndTime"}
+		eventId, err := event.AddEvent(groupId, event2, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+		notif, err := event.GetEventNotifications(user2.UserId, database)
+		if err != nil {
+			t.Errorf("Error Inserting the struct into the db %v", err)
+		}
+		if eventId != notif[0].EventId.EventId {
+			t.Errorf("Expected %s got %s", eventId, notif[0].EventId.EventId)
 		}
 		want := 1
 		got := len(notif)

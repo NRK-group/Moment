@@ -27,7 +27,7 @@ const Input = ({ styleName, placeholder, type, onChange }) => {
                         className='input'
                         type='text'
                         onChange={onChange}
-                        placeholder={'Search'}
+                        placeholder={placeholder}
                     />
                 </span>
             ) : (

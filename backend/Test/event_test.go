@@ -8,18 +8,17 @@ import (
 
 	"backend/pkg/event"
 	"backend/pkg/group"
-	"backend/pkg/handler"
 	l "backend/pkg/log"
 	"backend/pkg/member"
 	"backend/pkg/structs"
 )
 
 func TestHealthCheckEventHttpGet(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/event", nil)
-	w := httptest.NewRecorder()
+	w, Env, _ := LoginUser(database, t)
+	reqq := httptest.NewRequest(http.MethodGet, "/event", nil)
+	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 
-	Env := handler.Env{Env: database}
-	Env.Event(w, req)
+	Env.Event(w, reqq)
 	want := 200
 	got := w.Code
 
@@ -29,11 +28,11 @@ func TestHealthCheckEventHttpGet(t *testing.T) {
 }
 
 func TestHealthCheckEventHttpPost(t *testing.T) {
-	req := httptest.NewRequest(http.MethodPost, "/event", nil)
-	w := httptest.NewRecorder()
+	w, Env, _ := LoginUser(database, t)
+	reqq := httptest.NewRequest(http.MethodPost, "/event", nil)
+	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
 
-	Env := handler.Env{Env: database}
-	Env.Event(w, req)
+	Env.Event(w, reqq)
 	want := 200
 	got := w.Code
 
@@ -45,7 +44,8 @@ func TestHealthCheckEventHttpPost(t *testing.T) {
 func TestCreateEvent(t *testing.T) {
 	database := DatabaseSetup()
 	t.Run("Creating a Event", func(t *testing.T) {
-		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: "wasfdfgfd"}
+		newUser := CreateUser(database, t)
+		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: newUser.UserId}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if errg != nil {
 			t.Errorf("Error creating group")
@@ -58,7 +58,8 @@ func TestCreateEvent(t *testing.T) {
 		}
 	})
 	t.Run("Get all Events of a group", func(t *testing.T) {
-		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: "wasfdfgfd2"}
+		newUser := CreateUser(database, t)
+		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: newUser.UserId}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if errg != nil {
 			t.Errorf("Error creating group")
@@ -82,7 +83,8 @@ func TestCreateEvent(t *testing.T) {
 	})
 
 	t.Run("Add user to Events", func(t *testing.T) {
-		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: "wasfdfgfd2"}
+		newUser := CreateUser(database, t)
+		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: newUser.UserId}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if errg != nil {
 			t.Errorf("Error creating group")
@@ -105,7 +107,10 @@ func TestCreateEvent(t *testing.T) {
 	})
 
 	t.Run("Add user that already in a Events", func(t *testing.T) {
-		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: "wasfdfgfd2"}
+		newUser := CreateUser(database, t)
+		newUser2 := CreateUser(database, t)
+		newUser3 := CreateUser(database, t)
+		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: newUser.UserId}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if errg != nil {
 			t.Errorf("Error creating group")
@@ -115,33 +120,34 @@ func TestCreateEvent(t *testing.T) {
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
-		addStr, err := event.AddEventParticipant(eventStr, "Ken", database)
+		addStr, err := event.AddEventParticipant(eventStr, newUser2.UserId, database)
 		if err != nil {
 			t.Errorf("Add Event Participant")
 		}
-		result, err := event.CheckIfUserInEventAndIfNotAddThem(addStr, "Ken", database)
+		result,_, err := event.CheckIfUserInEventAndIfNotAddThem(addStr, newUser2.UserId, database)
 		if err != nil {
 			fmt.Println(err)
 		}
-		result2, err := event.CheckIfUserInEventAndIfNotAddThem(eventStr, "Ken2", database)
+		result2,_, err := event.CheckIfUserInEventAndIfNotAddThem(eventStr, newUser3.UserId, database)
 		if err != nil {
 			fmt.Println(err)
 		}
 		want := true
-		got := (result == false) && (result2 == true)
+		got := (result == true) && (result2 == true)
 		if got != want {
 			t.Errorf("Expected %v got %v", want, got)
 		}
 	})
 	t.Run("Create more event in the group and notif each user", func(t *testing.T) {
 		// create a group
-		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: "wasfdfgfd2"}
+		newUser := CreateUser(database, t)
+		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: newUser.UserId}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if errg != nil {
 			t.Errorf("Error creating group %v", errg)
 		}
 		// add member to the group
-		_, err := member.AddMember(groupIdStr, "Ken", database)
+		_, err := member.AddMember(groupIdStr, newUser.UserId, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
@@ -160,13 +166,15 @@ func TestCreateEvent(t *testing.T) {
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
-		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: "wasfdfgfd2"}
+		newUser3 := CreateUser(database, t)
+		newUser := CreateUser(database, t)
+		group1 := structs.Group{Name: "Pie2", Description: "Eating Pie2", Admin: newUser3.UserId}
 		groupIdStr, errg := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if errg != nil {
 			t.Errorf("Error creating group %v", errg)
 		}
 		// add member to the group
-		_, err = member.AddMember(groupIdStr, "Ken", database)
+		_, err = member.AddMember(groupIdStr, newUser.UserId, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}

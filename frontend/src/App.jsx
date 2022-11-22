@@ -10,6 +10,7 @@ import Profile from './pages/profile/Profile';
 import ProfileInfoPopUp from './features/profile/ProfileInfoPopUp';
 import Stories from './pages/stories/stories';
 import Comments from './features/Comments';
+import Groups from './pages/Groups';
 import { useEffect, useState } from 'react';
 import NewPost from './features/newpost/NewPost';
 import { Notification } from './features/Notification/Notification';
@@ -121,7 +122,7 @@ function App() {
                                 />
                             }
                         />
-                        <Route path='/groups' element={<h1>Groups</h1>} />
+                        <Route path='/groups' element={<Groups/>} />
                         <Route
                             path='/comments'
                             element={<Comments isMobile={isMobile} />}

@@ -4,6 +4,7 @@ type Member struct {
 	CreatedAt string
 	UserId    string
 	GroupId   string
+	UserName  string
 }
 
 type MemberNotif struct {

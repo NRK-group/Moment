@@ -1,0 +1,15 @@
+.GroupListContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.GroupListDiv {
+    text-align: center;
+    height: 80vh;
+    width: 20vw;
+    background-color: var(--background-color);
+}
+
+.GroupListDivHeader {
+    background-color: var( --secondary-background-color) ;
+}

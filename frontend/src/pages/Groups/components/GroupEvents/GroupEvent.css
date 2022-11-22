@@ -1,0 +1,23 @@
+.newPostBoxEvent  {
+    height: 655px;
+    width: 600px;
+    background-color: var(--background-color);
+    margin: auto;
+    border-radius: 5px;
+    padding: 1%;
+}
+
+.newPostHeaderEvent{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 5%;
+    padding: 0.5%;
+    border-bottom: 2px solid var(--terheading-color);
+}
+
+@media only screen and (max-width: 700px) {
+.newPostBoxEvent {
+    width: 100%;
+}
+}

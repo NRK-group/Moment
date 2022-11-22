@@ -1,0 +1,33 @@
+.groups-List-Table table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: var( --border-color);
+  }
+  
+  .groups-List-tbody th, td {
+    text-align: center;
+    padding: 16px;
+  }
+  
+  .groups-List-tbody th  {
+    background-color: var(--subheading-color);
+  }
+
+  .groups-List-tbody :hover {
+    cursor: pointer;
+    background-color: #e8e8e8;
+  }
+  .groups-List-Table {
+    height: 75vh;
+    overflow-y: scroll;
+  }
+
+  .groups-List-header {
+    border-bottom: 5px solid black;
+  }
+  
+  .groups-List-Block {
+    cursor: not-allowed;
+    background-color: #e8e8e8;
+  }

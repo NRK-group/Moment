@@ -70,11 +70,58 @@ func AllGroupPosts(groupID string, database *structs.DB) ([]structs.Post, error)
 	}
 
 	for rows.Next() {
-		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt)
-		arr, _ := commets.GetComments(post.PostID, database)
+		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt, &post.Privacy)
+		arr, err := commets.GetComments(post.PostID, database)
+		if err != nil {
+			fmt.Print(err)
+			return nil, err
+		}
 		post.NumOfComment = len(arr)
 		posts = append([]structs.Post{post}, posts...)
 	}
 
 	return posts, nil
+}
+
+// AllGroups
+// return all groups
+func AllUserGroups(uID string, database *structs.DB) ([]structs.Group, error) {
+	var group structs.Group
+	var groups []structs.Group
+	var err error
+	var flag bool
+	rows, err := database.DB.Query("SELECT * FROM Groups ")
+	if err != nil {
+		fmt.Print(err)
+		return nil, err
+	}
+	var groupId, admin, name, description, createdAt string
+	for rows.Next() {
+		rows.Scan(&groupId, &admin, &name, &description, &createdAt)
+		group = structs.Group{
+			CreatedAt:   createdAt,
+			Name:        name,
+			GroupID:     groupId,
+			Description: description,
+			Admin:       admin,
+		}
+		members, err := member.GetMembers(groupId, database)
+		if err != nil {
+			fmt.Print(err)
+			return nil, err
+		}
+
+		for _, m := range members {
+			if m.UserId == uID {
+				flag = true
+			}
+		}
+
+		if flag {
+			group.Members = members
+			groups = append([]structs.Group{group}, groups...)
+			flag = false
+		}
+	}
+	return groups, nil
 }

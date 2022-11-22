@@ -319,7 +319,7 @@ p {
 
 
 .profilePostSection {
-    height: fit-content;
+    height: 100vh;
 }
 
 .profileContentSelector {
@@ -370,15 +370,19 @@ p {
 .profilePostContainer {
     margin: 2% auto;
     width: 75%;
-    height: 50vh;
+    height: 75%;
     min-height: 205px;
+    display: flex;
+    overflow-x: auto;
 }
+
+
 
 .noContent {
     background-image: url('./assets/NothingToSee.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 30%;
+    background-size: 25%;
 }
 
 .profileUpdate {

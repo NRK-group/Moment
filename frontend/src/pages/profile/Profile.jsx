@@ -133,7 +133,7 @@ export default function Profile() {
                     postBtn='profilePosts'
                     favBtn='profileFavourites'
                     likeBtn='profileLiked'
-                    postContainer='profilePostContainer noContent'
+                    postContainer='profilePostContainer'
                     id={id}
                 />
             ) : (

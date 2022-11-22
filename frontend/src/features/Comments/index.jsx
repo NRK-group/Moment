@@ -206,7 +206,7 @@ const Comments = ({ isMobile }) => {
                                                     <ReadMoreReact
                                                         text={ele.content}
                                                         readMoreText={
-                                                            '...read More'
+                                                            '...Read More'
                                                         }
                                                         min={40}
                                                         ideal={80}

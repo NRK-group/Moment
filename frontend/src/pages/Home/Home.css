@@ -1,21 +1,32 @@
 .homeHolder {
     display: flex;
+    flex-direction: column;
     margin: auto;
     width: inherit;
-    height: fit-content;
+    height:100vh;
     justify-content: center;
     align-items: center;
 }
 
 .homePage {
     display: flex;
-    margin: calc(var(--desktop-nav-height) + 0.5%) auto;
+    margin: auto;
+    margin-top: calc(var(--desktop-nav-height) + 10px) ;
     width: 70vw;
-    height: 90vh;
-    flex-direction: column;
+    height: 90%;
+    align-items: center;
+    /* flex-direction: column; */
     background-color: var(--background-color);
-    overflow-y: scroll;
-    padding-bottom: 2%;
+    overflow-x: auto;
+}
+
+.homePage::-webkit-scrollbar {
+    height: 5px;
+}
+.homePage:hover::-webkit-scrollbar-thumb {
+    transition: 0.5s;
+    background-color: var(--subheading-color);
+    border-radius: 20px;
 }
 
 /* .homePageStory {

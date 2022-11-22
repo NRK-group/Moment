@@ -32,6 +32,8 @@ function App() {
     const { width } = useWindowDimensions();
     const [query, setQuery] = useState('');
     const [messageNotif, setMessageNotif] = useState(false);
+    const [followNotif, setFollowNotif] = useState(false);
+    const [followNotifContainer, setFollowNotifContainer] = useState();
     let isMobile = width < 600;
     useEffect(() => {
         if (authorised) {
@@ -50,8 +52,24 @@ function App() {
                 console.log('new message');
                 setNewMessage((prev) => prev + 1);
             }
+            if (data.type === 'followRequest') {
+                setFollowNotifContainer((prev) => {
+                    return [data.data, ...prev];
+                });
+            }
         };
     }
+    useEffect(() => {
+        console.log(followNotifContainer);
+        if (Array.isArray(followNotifContainer)) {
+            for (let i = 0; i < followNotifContainer.length; i++) {
+                if (followNotifContainer[i].read === 0) {
+                    setFollowNotif(true);
+                    return;
+                }
+            }
+        }
+    }, [followNotifContainer]);
     return (
         <div
             className='App'
@@ -69,6 +87,10 @@ function App() {
                     setClist={setClist}
                     newMessage={newMessage}
                     chatList={chatList}
+                    followNotif={followNotif}
+                    setFollowNotifContainer={setFollowNotifContainer}
+                    setFollowNotif={setFollowNotif}
+                    followNotifContainer={followNotifContainer}
                     onChange={(e) => {
                         setQuery(e.target.value);
                     }}
@@ -122,7 +144,7 @@ function App() {
                                 />
                             }
                         />
-                        <Route path='/groups' element={<Groups/>} />
+                        <Route path='/groups' element={<Groups />} />
                         <Route
                             path='/comments'
                             element={<Comments isMobile={isMobile} />}
@@ -130,9 +152,22 @@ function App() {
                         <Route path='notifications' element={<></>} />
                         <Route
                             path='notifications/:type'
-                            element={<Notification socket={socket} />}
+                            element={
+                                <Notification
+                                    socket={socket}
+                                    followNotif={followNotif}
+                                    setFollowNotif={setFollowNotif}
+                                    followNotifContainer={followNotifContainer}
+                                    setFollowNotifContainer={
+                                        setFollowNotifContainer
+                                    }
+                                />
+                            }
                         />
-                        <Route path='/profile' element={<Profile />} />
+                        <Route
+                            path='/profile'
+                            element={<Profile socket={socket} />}
+                        />
                         <Route
                             path='/closefriends'
                             element={<CloseFriendsUsers />}

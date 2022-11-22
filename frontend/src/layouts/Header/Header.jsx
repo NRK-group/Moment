@@ -1,11 +1,10 @@
 import './Header.css';
 import { DesktopHeaderNav, MobileHeaderNav } from '../Navbar/Navbar';
 import Input from '../../components/Input/Input';
-import { CreateWebSocket } from '../../utils/createWebsocket';
 import { useEffect } from 'react';
 import { GetChatList } from '../../features/Chat/hooks/getChatList';
+import { GetNotif } from '../../features/Notification/hooks/getNotif';
 const Header = ({
-    socket,
     setIsMenuOpen,
     setIsSearchModalOpen,
     messageNotif,
@@ -14,10 +13,13 @@ const Header = ({
     setClist,
     newMessage,
     chatList,
-    setNewMessage,
+    followNotif,
+    setFollowNotifContainer,
+    followNotifContainer,
+    setFollowNotif,
 }) => {
+    GetNotif('follow', setFollowNotifContainer);
     GetChatList(setClist, newMessage);
-
     useEffect(() => {
         setMessageNotif(() => {
             for (let i = 0; i < chatList.length; i++) {
@@ -28,6 +30,16 @@ const Header = ({
             return false;
         });
     }, [chatList, newMessage]);
+    useEffect(() => {
+        if (Array.isArray(followNotifContainer)) {
+            for (let i = 0; i < followNotifContainer.length; i++) {
+                if (followNotifContainer[i].Read === 0) {
+                    setFollowNotif(true);
+                    return;
+                }
+            }
+        }
+    }, [followNotif]);
     return (
         <div className='headerContainer'>
             <div className='header'>
@@ -65,8 +77,12 @@ const Header = ({
                 <DesktopHeaderNav
                     setIsMenuOpen={setIsMenuOpen}
                     messageNotif={messageNotif}
+                    followNotif={followNotif}
                 />
-                <MobileHeaderNav setIsMenuOpen={setIsMenuOpen} />
+                <MobileHeaderNav
+                    setIsMenuOpen={setIsMenuOpen}
+                    followNotif={followNotif}
+                />
             </div>
         </div>
     );

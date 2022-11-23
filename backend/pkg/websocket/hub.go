@@ -168,14 +168,35 @@ func (h *Hub) Run() {
 
 			if msg.MessageType == "eventNotif" {
 				fmt.Println(msg)
+				members, err := member.GetMembers(msg.ReceiverId, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - GetMembers", err)
+				}
+				for _, member := range members {
+					if member.UserId != msg.SenderId {
+						if _, valid := h.Clients[member.UserId]; valid {
+							resp, _ := json.Marshal(msg)
+							h.Clients[member.UserId].Send <- resp
+						}
+					}
+				}
 			}
 
 			if msg.MessageType == "groupInvitationJoin" {
-				fmt.Println(msg)
+				member.AddInvitationNotif(msg.GroupId, msg.SenderId, msg.ReceiverId, "join", h.Database)
+				if _, valid := h.Clients[msg.ReceiverId]; valid {
+					fmt.Print("groupInvitationJoin")
+					h.Clients[msg.ReceiverId].Send <- message
+				}
 			}
 
 			if msg.MessageType == "groupInvitationRequest" {
 				fmt.Println(msg)
+				member.AddInvitationNotif(msg.GroupId, msg.SenderId, msg.ReceiverId, "invite", h.Database)
+				fmt.Print("groupInvitationRequest")
+				if _, valid := h.Clients[msg.ReceiverId]; valid {
+					h.Clients[msg.ReceiverId].Send <- message
+				}
 			}
 		}
 	}

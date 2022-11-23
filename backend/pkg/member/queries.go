@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"backend/pkg/helper"
 	"backend/pkg/auth"
+	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
 )
@@ -52,7 +52,7 @@ func GetMembers(groupId string, database *structs.DB) ([]structs.Member, error) 
 		var reUser structs.User
 		err := auth.GetUser("userId", userId, &reUser, *database)
 		if err != nil {
-			fmt.Print("Get Members",err)
+			fmt.Print("Get Members", err)
 			return members, err
 		}
 		member = structs.Member{
@@ -113,7 +113,7 @@ func AddInvitationNotif(groupId, userId, receiverId, typeNotif string, database 
 // database: the database
 func AcceptInvitationNotif(groupId, userId string, database *structs.DB) error {
 	AddMember(groupId, userId, database)
-	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND receiverId = ?")
+	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND userId = ?")
 	if err != nil {
 		return err
 	}

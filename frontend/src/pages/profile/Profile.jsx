@@ -46,7 +46,6 @@ export default function Profile({ socket }) {
         }
         GetProfile(id).then((response) => setValues(response));
     }, [id]);
-    console.log({followStatus})
     const relBtn = (
         <Button
             content={followStatus}
@@ -54,7 +53,6 @@ export default function Profile({ socket }) {
             action={() => {
                 FollowRelationshipUpdate(id).then((response) => {
                     UpdateRelationshipBtn(response.Message, setFollowStatus);
-                    console.log(response.Message);
                     if (
                         response.Message === 'follow' ||
                         response.Message === 'pending'

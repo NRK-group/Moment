@@ -62,13 +62,8 @@ export default function CloseFriendsUsers() {
                                 <FollowStatUsers
                                     key={i}
                                     imgSrc={`http://localhost:5070/${obj.img}`}
-                                    username={
-                                        obj.firstName +
-                                        ' (' +
-                                        obj.name +
-                                        ') ' +
-                                        obj.lastName
-                                    }
+                                    username={obj.name}
+
                                     profileId={obj.id}
                                     typeVal={'Remove'}
                                     btnAction={UpdateCloseFriends}
@@ -91,13 +86,8 @@ export default function CloseFriendsUsers() {
                                     key={i}
                                     profileImg='followStatAvatarImg'
                                     imgSrc={`http://localhost:5070/${obj.img}`}
-                                    username={
-                                        obj.firstName +
-                                        ' (' +
-                                        obj.name +
-                                        ') ' +
-                                        obj.lastName
-                                    }
+                                    username={obj.name}
+
                                     crossIcon='none'
                                     profileId={obj.id}
                                     typeVal={'Add'}

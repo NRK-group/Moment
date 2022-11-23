@@ -4,10 +4,9 @@ function AddCloseFriends(close) {
 }
 
 export default function PrivacySelector(props) {
-    let pub, priv;
-    if (!props.closeFriends) props.value === 1 ? (pub = true) : (priv = true);
+    let first, second
+    props.value === 1 ? [first = "Public", second ="Private"] : [first = "Private", second ="Public"];
 
-    function setShowState(value, setter) {}
 
     return (
         <select
@@ -19,11 +18,11 @@ export default function PrivacySelector(props) {
                 if (e.target.value === 'Close Friends') props.setShow(true);
                 else props.setShow(false);
             }}>
-            <option key='privateSelector' id='privateSelector' value={priv}>
-                Private
+            <option key='privateSelector' id='privateSelector' >
+                {first}
             </option>
-            <option key='publicSelector' id='publicSelector' value={pub}>
-                Public
+            <option key='publicSelector' id='publicSelector' >
+                {second}
             </option>
             {AddCloseFriends(props.closeFriends)}
         </select>

@@ -9,6 +9,7 @@ export const ChatUsersContainer = ({
     socket,
     setMessageNotif,
     style,
+    username,
 }) => {
     const [newMessage, setNewMessage] = useState([]);
     useEffect(() => {
@@ -41,7 +42,7 @@ export const ChatUsersContainer = ({
     };
     return (
         <div className={`chatUsersContainer ${styleName}`}>
-            <ChatContainerHeader userName={currentUserInfo} style={style} />
+            <ChatContainerHeader userName={username} style={style} />
             <div className='chatUsers scrollbar-hidden'>
                 {Array.isArray(newMessage)
                     ? newMessage.map(

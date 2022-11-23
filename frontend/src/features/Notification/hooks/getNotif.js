@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-export const GetNotif = (type, setNotifications) => {
+export const GetNotif = (type, setNotifications, newNotif) => {
     const [notif, setNotif] = useState([]);
     useEffect(() => {
         fetch(
@@ -11,10 +11,11 @@ export const GetNotif = (type, setNotifications) => {
         )
             .then(async (res) => {
                 let data = await res.json();
+                console.log(data);
                 data = data
                     ? data.sort(
                           (a, b) =>
-                              new Date(b.updatedAt) - new Date(a.updatedAt)
+                              new Date(b.createdAt) - new Date(a.createdAt)
                       )
                     : [];
                 data ? setNotif(data) : setNotif([]);
@@ -24,6 +25,6 @@ export const GetNotif = (type, setNotifications) => {
             .catch(() => {
                 setNotif([]);
             });
-    }, []);
+    }, [newNotif]);
     return notif;
 };

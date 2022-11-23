@@ -22,3 +22,7 @@ runTest:
 backendDocker:
 	docker build -t golang-server ./backend
 	docker run --rm -p 5070:5070 golang-server
+
+frontendDocker:
+	docker build -t react-frontend-app ./frontend
+	docker run --rm -p 8070:8070 react-frontend-app

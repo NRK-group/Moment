@@ -70,7 +70,6 @@ function SetRelBtn(rel, setter) {
         case 'Close Friend':
             setter('Close Friend');
             break;
-            /* COPY OVER */
         default:
             setter('Error');
             break;

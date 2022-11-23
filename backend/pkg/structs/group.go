@@ -24,7 +24,6 @@ type GroupNotif struct {
 type GroupNotifWriter struct {
 	GroupId    Info      `json:"groupId"`
 	UserId     Info      `json:"userId"`
-	EventId    Event     `json:"eventId"`
 	ReceiverId Info      `json:"receiverId"`
 	CreatedAt  time.Time `json:"createdAt"`
 	NotifType  string    `json:"type"`

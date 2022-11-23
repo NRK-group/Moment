@@ -6,7 +6,7 @@ import { MessagesIcon } from '../../../../components/Icons/Icons';
 import { GetCookie } from '../../../../pages/profile/ProfileData';
 import '../../../../features/newpost/NewPost.css';
 
-export default function GroupPost({groupId, setOpenModal}) {
+export default function GroupPost({groupId, setOpenModal, flag , setFlag}) {
     const navigate = useNavigate('');
     let imgUpload = useRef(),
         content = useRef();
@@ -51,6 +51,7 @@ export default function GroupPost({groupId, setOpenModal}) {
                 setImage(null);
             }
             setOpenModal(false)
+            setFlag(!flag)
             return resp;
         });
 

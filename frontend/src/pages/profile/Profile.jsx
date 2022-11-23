@@ -86,7 +86,8 @@ export default function Profile({ socket }) {
                         <h3 className='profileDetailText'>{values.NickName}</h3>
                         {!id ||
                         values.IsPublic === 1 ||
-                        followStatus === 'Following' ? (
+                        followStatus === 'Following' ||
+                        followStatus === 'Close Friend' ? (
                             <span>
                                 <p className='profileAboutMe'>
                                     {values.AboutMe}
@@ -118,7 +119,8 @@ export default function Profile({ socket }) {
                         )}
                         {!id ||
                         values.IsPublic === 1 ||
-                        followStatus === 'Following' ? (
+                        followStatus === 'Following' ||
+                        followStatus === 'Close Friend' ? (
                             <span>
                                 <ProfileStats
                                     styleName={'profileStats'}
@@ -140,7 +142,10 @@ export default function Profile({ socket }) {
                     </Card>
                 </Card>
             </Card>
-            {!id || values.IsPublic === 1 || followStatus === 'Following' ? (
+            {!id ||
+            values.IsPublic === 1 ||
+            followStatus === 'Following' ||
+            followStatus === 'Close Friend' ? (
                 <ProfilePosts
                     contentSelector='profileContentSelector'
                     postBtn='profilePosts'

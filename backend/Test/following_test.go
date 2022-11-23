@@ -221,7 +221,6 @@ func TestFollowing(t *testing.T) {
 	})
 	t.Run("Close Friends rel", func(t *testing.T) {
 		Env := handler.Env{Env: database}
-
 		userOne := CreateUser(database, t)
 		userTwo := CreateUser(database, t)
 		// Login to userOne

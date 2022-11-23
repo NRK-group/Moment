@@ -2,7 +2,7 @@ import './App.css';
 import Footer from './layouts/Footer/Footer';
 import Header from './layouts/Header/Header';
 import Home from './pages/Home';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
@@ -34,6 +34,9 @@ function App() {
     const [messageNotif, setMessageNotif] = useState(false);
     const [followNotif, setFollowNotif] = useState(false);
     const [followNotifContainer, setFollowNotifContainer] = useState();
+    const [groupNotif, setGroupNotif] = useState(false);
+    const [groupNotifContainer, setGroupNotifContainer] = useState();
+    const { pathname } = useLocation();
     let isMobile = width < 600;
     useEffect(() => {
         if (authorised) {
@@ -63,19 +66,45 @@ function App() {
                     return [data.data, ...prev];
                 });
             }
+            if (pathname !== '/notifications/group') {
+                socket.onmessage = (e) => {
+                    let data = JSON.parse(e.data);
+                    if (
+                        data.type === 'eventNotif' ||
+                        data.type === 'groupInvitationJoin' ||
+                        data.type === 'groupInvitationRequest'
+                    ) {
+                        console.log('new group notif');
+                        setGroupNotif(true);
+                    }
+                };
+            }
         };
     }
     useEffect(() => {
-        console.log(followNotifContainer);
-        if (Array.isArray(followNotifContainer)) {
-            for (let i = 0; i < followNotifContainer.length; i++) {
-                if (followNotifContainer[i].read === 0) {
-                    setFollowNotif(true);
-                    return;
+        if (pathname !== '/notifications/follow') {
+            if (Array.isArray(followNotifContainer)) {
+                for (let i = 0; i < followNotifContainer.length; i++) {
+                    if (followNotifContainer[i].read === 0) {
+                        setFollowNotif(true);
+                        return;
+                    }
                 }
             }
         }
     }, [followNotifContainer]);
+    useEffect(() => {
+        if (pathname !== '/notifications/group') {
+            if (Array.isArray(groupNotifContainer)) {
+                for (let i = 0; i < groupNotifContainer.length; i++) {
+                    if (groupNotifContainer[i].read === 0) {
+                        setGroupNotif(true);
+                        return;
+                    }
+                }
+            }
+        }
+    }, [groupNotif]);
     return (
         <div
             className='App'
@@ -97,6 +126,10 @@ function App() {
                     setFollowNotifContainer={setFollowNotifContainer}
                     setFollowNotif={setFollowNotif}
                     followNotifContainer={followNotifContainer}
+                    groupNotif={groupNotif}
+                    setGroupNotifContainer={setGroupNotifContainer}
+                    groupNotifContainer={groupNotifContainer}
+                    setGroupNotif={setGroupNotif}
                     onChange={(e) => {
                         setQuery(e.target.value);
                     }}
@@ -150,7 +183,10 @@ function App() {
                                 />
                             }
                         />
-                        <Route path='/groups' element={<Groups  socket={socket} />} />
+                        <Route
+                            path='/groups'
+                            element={<Groups socket={socket} />}
+                        />
                         <Route
                             path='/comments'
                             element={<Comments isMobile={isMobile} />}
@@ -167,6 +203,8 @@ function App() {
                                     setFollowNotifContainer={
                                         setFollowNotifContainer
                                     }
+                                    setGroupNotif={setGroupNotif}
+                                    groupNotif={groupNotif}
                                 />
                             }
                         />

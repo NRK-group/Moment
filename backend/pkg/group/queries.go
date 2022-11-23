@@ -125,3 +125,21 @@ func AllUserGroups(uID string, database *structs.DB) ([]structs.Group, error) {
 	}
 	return groups, nil
 }
+
+// ReadGroupNotif is a function that read a group notification.
+//
+// Param:
+//
+// userId: the id of the user that read the notification.
+// database: the database that the function will use.
+func ReadGroupNotif(userId string, database *structs.DB) error {
+	_, err := database.DB.Exec("UPDATE InviteNotif SET read = ? WHERE receiverId = ? AND read = ?", 1, userId, 0)
+	if err != nil {
+		return err
+	}
+	_, err = database.DB.Exec("UPDATE EventNotif SET read = ? WHERE userId = ? AND read = ?", 1, userId, 0)
+	if err != nil {
+		return err
+	}
+	return nil
+}

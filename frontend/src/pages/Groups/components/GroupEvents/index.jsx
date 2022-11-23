@@ -82,7 +82,7 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
             }
             setOpenModal(false);
             setFlag(!flag)
-            RequestToS(userIDR.current, groucpId, socket, "eventNotif", groupId)
+            RequestToS(userIDR.current, groupId, socket, "eventNotif", groupId)
             return resp;
         });
     }

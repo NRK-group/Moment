@@ -51,3 +51,22 @@ func TestGetCloseFriends(t *testing.T){
 		}
 	}
 }
+
+func TestCurrentCloseFriend(t *testing.T) {
+	// Create two users
+	userOne := CreateUser(database, t)
+	userTwo := CreateUser(database, t)
+	got := closefriend.CurrentCloseFriend(userOne.UserId, userTwo.UserId, *database)
+	want := false
+	if got != want {
+		t.Errorf("got: %v, want: %v.", got, want)
+		return
+	}
+	closefriend.AddCloseFriend(userOne.UserId, userTwo.UserId, *database)
+	got = closefriend.CurrentCloseFriend(userOne.UserId, userTwo.UserId, *database)
+	want = true
+	if got != want {
+		t.Errorf("got: %v, want: %v.", got, want)
+		return
+	}
+}

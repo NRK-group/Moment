@@ -110,6 +110,7 @@ export default function NewPost() {
                             closeFriends={true}
                             refr={privacy}
                             setShow={setShow}
+                            value={0}
                         />
                         {show && (
                             <a

@@ -2,7 +2,7 @@ import './App.css';
 import Footer from './layouts/Footer/Footer';
 import Header from './layouts/Header/Header';
 import Home from './pages/Home';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Login from './pages/loginPage/Login';
 import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
@@ -34,6 +34,7 @@ function App() {
     const [messageNotif, setMessageNotif] = useState(false);
     const [followNotif, setFollowNotif] = useState(false);
     const [followNotifContainer, setFollowNotifContainer] = useState();
+    const { pathname } = useLocation();
     let isMobile = width < 600;
     useEffect(() => {
         if (authorised) {
@@ -66,12 +67,13 @@ function App() {
         };
     }
     useEffect(() => {
-        console.log(followNotifContainer);
-        if (Array.isArray(followNotifContainer)) {
-            for (let i = 0; i < followNotifContainer.length; i++) {
-                if (followNotifContainer[i].read === 0) {
-                    setFollowNotif(true);
-                    return;
+        if (pathname !== '/notifications/follow') {
+            if (Array.isArray(followNotifContainer)) {
+                for (let i = 0; i < followNotifContainer.length; i++) {
+                    if (followNotifContainer[i].read === 0) {
+                        setFollowNotif(true);
+                        return;
+                    }
                 }
             }
         }
@@ -150,7 +152,10 @@ function App() {
                                 />
                             }
                         />
-                        <Route path='/groups' element={<Groups />} />
+                        <Route
+                            path='/groups'
+                            element={<Groups socket={socket} />}
+                        />
                         <Route
                             path='/comments'
                             element={<Comments isMobile={isMobile} />}

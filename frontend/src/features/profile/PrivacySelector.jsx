@@ -5,7 +5,7 @@ function AddCloseFriends(close) {
 
 export default function PrivacySelector(props) {
     let first, second
-    if (!props.closeFriends) props.value === 1 ? [first = "Public", second ="Private"] : [first = "Private", second ="Public"];
+    props.value === 1 ? [first = "Public", second ="Private"] : [first = "Private", second ="Public"];
 
 
     return (

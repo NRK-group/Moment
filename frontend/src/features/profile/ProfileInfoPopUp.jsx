@@ -45,6 +45,7 @@ export default function ProfileStatsPopUp(props) {
                     styleName='profileInfoPrivacy'
                     value={data.IsPublic}
                     refr={accPriv}
+                    closefriends = {false}
                 />
                 <AuthInput
                     type='text'

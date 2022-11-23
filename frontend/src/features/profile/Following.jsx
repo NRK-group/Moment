@@ -31,13 +31,7 @@ export default function Following() {
                                 <FollowerHolder
                                     key={i}
                                     imgSrc={`http://localhost:5070/${obj.img}`}
-                                    username={
-                                        obj.firstName +
-                                        ' (' +
-                                        obj.name +
-                                        ') ' +
-                                        obj.lastName
-                                    }
+                                    username={obj.name}
                                     profileId={obj.id}
                                     crossIcon='none'
                                 />

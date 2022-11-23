@@ -53,7 +53,6 @@ export default function Profile({ socket }) {
             action={() => {
                 FollowRelationshipUpdate(id).then((response) => {
                     UpdateRelationshipBtn(response.Message, setFollowStatus);
-                    console.log(response.Message);
                     if (
                         response.Message === 'follow' ||
                         response.Message === 'pending'
@@ -86,7 +85,8 @@ export default function Profile({ socket }) {
                         <h3 className='profileDetailText'>{values.NickName}</h3>
                         {!id ||
                         values.IsPublic === 1 ||
-                        followStatus === 'Following' ? (
+                        followStatus === 'Following' ||
+                        followStatus === 'Close Friend' ? (
                             <span>
                                 <p className='profileAboutMe'>
                                     {values.AboutMe}
@@ -118,7 +118,8 @@ export default function Profile({ socket }) {
                         )}
                         {!id ||
                         values.IsPublic === 1 ||
-                        followStatus === 'Following' ? (
+                        followStatus === 'Following' ||
+                        followStatus === 'Close Friend' ? (
                             <span>
                                 <ProfileStats
                                     styleName={'profileStats'}
@@ -140,7 +141,10 @@ export default function Profile({ socket }) {
                     </Card>
                 </Card>
             </Card>
-            {!id || values.IsPublic === 1 || followStatus === 'Following' ? (
+            {!id ||
+            values.IsPublic === 1 ||
+            followStatus === 'Following' ||
+            followStatus === 'Close Friend' ? (
                 <ProfilePosts
                     contentSelector='profileContentSelector'
                     postBtn='profilePosts'
@@ -148,6 +152,8 @@ export default function Profile({ socket }) {
                     likeBtn='profileLiked'
                     postContainer='profilePostContainer'
                     id={id}
+                    privacyVal={followStatus}
+
                 />
             ) : (
                 <Card styleName='restrictedAccount'>

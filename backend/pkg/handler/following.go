@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"backend/pkg/auth"
+	"backend/pkg/closefriend"
 	"backend/pkg/follow"
 	"backend/pkg/response"
-	"backend/pkg/closefriend"
 )
 
 // Following checks if the user sending the request is following the user in the request parameter.

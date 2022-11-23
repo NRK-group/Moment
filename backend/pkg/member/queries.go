@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"backend/pkg/helper"
 	"backend/pkg/auth"
+	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
 )
@@ -52,7 +52,7 @@ func GetMembers(groupId string, database *structs.DB) ([]structs.Member, error) 
 		var reUser structs.User
 		err := auth.GetUser("userId", userId, &reUser, *database)
 		if err != nil {
-			fmt.Print("Get Members",err)
+			fmt.Print("Get Members", err)
 			return members, err
 		}
 		member = structs.Member{
@@ -183,6 +183,24 @@ func GetInvitationNotif(userId string, database *structs.DB) ([]structs.GroupNot
 			Read:       notif.Read,
 		}
 		notifs = append(notifs, notifWriter)
+	}
+	return notifs, nil
+}
+
+func GetAllInvitationNotif(database *structs.DB) ([]structs.GroupNotif, error) {
+	var notif structs.GroupNotif
+	var notifs []structs.GroupNotif
+	var err error
+	rows, err := database.DB.Query("SELECT * FROM InviteNotif")
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		err := rows.Scan(&notif.GroupID, &notif.UserId, &notif.ReceiverId, &notif.CreatedAt, &notif.Type, &notif.Status, &notif.Read)
+		if err != nil {
+			return nil, err
+		}
+		notifs = append([]structs.GroupNotif{notif}, notifs...)
 	}
 	return notifs, nil
 }

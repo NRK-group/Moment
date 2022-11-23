@@ -17,8 +17,9 @@ function Table({ socket, data }) {
                     {data.map((ele) => (
                         <tbody className={ele.member?'groups-List-Block': 'groups-List-tbody'} key={ele.GroupID}>
                             <tr onClick={() =>{
-                                 RequestToS(GetCookie('session_token').split('&')[0], ele.Admin, socket, "groupInvitationJoin", ele.GroupID)
-                                console.log(ele)
+                               if ( !ele.member ) {
+                                socket && RequestToS(GetCookie('session_token').split('&')[0], ele.Admin, socket, "groupInvitationJoin", ele.GroupID)
+                                }
                             }}>
                                 <td>{ele.Name}</td>
                             </tr>

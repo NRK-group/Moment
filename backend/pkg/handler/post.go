@@ -73,6 +73,14 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
+		
+		
+		err := post.IncreasePostNumber(postData.UserID, *database.Env)
+		if err != nil{
+			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+			log.Println("Error updating the post number: ", err)
+			return
+		} 
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "application/json")
 		response.WriteMessage("Successfully Posted", postID, w)

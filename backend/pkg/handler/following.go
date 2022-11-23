@@ -6,6 +6,7 @@ import (
 	"backend/pkg/auth"
 	"backend/pkg/follow"
 	"backend/pkg/response"
+	"backend/pkg/closefriend"
 )
 
 // Following checks if the user sending the request is following the user in the request parameter.
@@ -27,8 +28,12 @@ func (DB *Env) Following(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Error slicing cookie", "Unauthorised", w)
 			return
 		}
-		followingId := r.URL.Query().Get("followingID") // Get the query for the profile being checked
+		followingId := r.URL.Query().Get("followingID")              // Get the query for the profile being checked
 		if follow.CheckIfFollow(cookieSlc[0], followingId, DB.Env) { // User is following the profile
+			if closefriend.CurrentCloseFriend(followingId, cookieSlc[0], *DB.Env) {
+				response.WriteMessage(cookieSlc[0]+" is a closefriend of "+followingId, "Close Friend", w)
+				return
+			}
 			response.WriteMessage(cookieSlc[0]+" follows "+followingId, "Following", w)
 			return
 		}

@@ -17,42 +17,18 @@ function Home({ isMobile }) {
             .then(async (resp) => await resp.json())
             .then((data) => data);
             console.log({fetchPost})
-        setPosts(fetchPost);
+        setPosts(fetchPost.reverse());
     };
     useEffect(() => {
         GetAllPosts();
     }, []);
 
-    //  GetAllPosts();
 
     return (
-        <Body styleName={bodyStyleName}>
-            <Card styleName={cardStyleName}>
+            <Card styleName="homeHolder">
+                
                 <div className='homePage'>
-                    <div className='homePageContainer'>
-                        <div>
-                            <div className='homePageStory'>
-                                <Avatar
-                                    avatarSrc={
-                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
-                                    }
-                                    styleName={'AvatarUserProfile'}
-                                    name={'Profile'}
-                                    avatarIcon={'AvatarUserProfile'}
-                                />
-                                {[1, 2, 3, 4, 5, 6, 7].map((ele) => (
-                                    <Avatar
-                                        avatarSrc={
-                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
-                                        }
-                                        styleName={'AvatarUsers'}
-                                        name={'ele'}
-                                        key={ele}
-                                    />
-                                ))}
-                            </div>
-                            <br />
-                            <div className='homePagePostArea'>
+                   
                                 { posts && posts.map((data) => (
                                     <Post
                                     key={data.PostID}
@@ -70,22 +46,9 @@ function Home({ isMobile }) {
                                         postId={data.PostID}
                                     />
                                 ))}
-                            </div>
-                        </div>
-                        <div className='homePageProfile'>
-                            {' '}
-                            <Avatar
-                                avatarSrc={
-                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLtb_3tNc2GjjuNWX29vbxcdvMGOyGEIKaQ&usqp=CAU'
-                                }
-                                styleName={'AvatarUsers'}
-                                name={'ele'}
-                            />
-                        </div>
-                    </div>
+                         
                 </div>
             </Card>
-        </Body>
     );
 }
 

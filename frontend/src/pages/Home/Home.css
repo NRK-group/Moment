@@ -1,108 +1,41 @@
+.homeHolder {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: inherit;
+    height:100vh;
+    justify-content: center;
+    align-items: center;
+}
+
 .homePage {
     display: flex;
-    overflow-y: scroll;
     margin: auto;
+    margin-top: calc(var(--desktop-nav-height) + 10px) ;
     width: 70vw;
-    flex-direction: column;
+    height: 90%;
+    align-items: center;
     background-color: var(--background-color);
+    overflow-x: auto;
 }
 
-.homePageStory {
-    margin: auto;
-    height: 14vh;
-    max-width: 400px;
-    width: 100%;
-    border: 1px solid var(--terheading-color);
-    overflow-x: scroll;
-    display: flex;
-    flex-direction: row;
+.homePage::-webkit-scrollbar {
+    height: 5px;
+}
+.homePage:hover::-webkit-scrollbar-thumb {
+    transition: 0.5s;
+    background-color: var(--subheading-color);
+    border-radius: 20px;
 }
 
-.homePagePostArea {
-    height: 70vh;
-    width: 42vw;
-    flex-direction: column;
-    border-top: 1px solid var(--terheading-color);
-   overflow-y: scroll;
-}
 
-.homePageProfile {
-    width: 35vw;
-    height: 50vh;
-    border: 1px solid var(--terheading-color);
-    justify-content: center;
-}
-
- .homePageProfile .AvatarUsers{
-    flex-direction: unset;
-justify-content: unset;
- }
-
-.homePageContainer {
-    display: flex;
-}
-
-.AvatarUsers img {
-    height: 65px;
-    width: 65px;
-    border-radius: 50%;
-    border: 3px solid rgb(255, 255, 255);
-}
-
-.AvatarUserProfile img {
-    height: 65px;
-    width: 65px;
-    border-radius: 50%;
-    border: 3px solid rgb(255, 255, 255);
-}
-
-.AvatarUserProfile {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-left: 1vw;
-    cursor: pointer;
-    position: relative;
-}
-
-.AvatarUsers {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-left: 1vw;
-    cursor: pointer;
-    position: relative;
-}
 
 @media only screen and (max-width: 600px) {
     .homePage {
-        flex-direction: column;
-        margin: 0%;
+        margin-top: 12%;
         width: 100vw;
-        height: 100%;
-        overflow-y: scroll;
+    padding-bottom: 17%;
+    height: 100vh;
     }
 
-    .homePageProfile {
-       display: none;
-    }
-
-    .homePageStory {
-        width: 99vw;
-    }
-    .homePagePostArea {
-        overflow-y: unset;
-        width: 99vw;
-    }
-
-    .AvatarUsers img {
-        height: 45px;
-        width: 45px;
-    }
-    .AvatarUserProfile img {
-        height: 45px;
-        width: 45px;
-    }
 }

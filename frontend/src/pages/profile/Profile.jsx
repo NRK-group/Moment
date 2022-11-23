@@ -146,7 +146,7 @@ export default function Profile({ socket }) {
                     postBtn='profilePosts'
                     favBtn='profileFavourites'
                     likeBtn='profileLiked'
-                    postContainer='profilePostContainer noContent'
+                    postContainer='profilePostContainer'
                     id={id}
                 />
             ) : (

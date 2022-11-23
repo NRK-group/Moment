@@ -174,7 +174,7 @@ const Comments = ({ isMobile }) => {
                                 </p>
                             </div>
 
-                            <div className='PostHeaderMenu'>
+                            {/* <div className='PostHeaderMenu'>
                                 <button
                                     className='dropbtn'
                                     onClick={() => OpenDropdownMenu()}>
@@ -187,7 +187,7 @@ const Comments = ({ isMobile }) => {
                                     <a href='#'>option 2</a>
                                     <a href='#'>option 3</a>
                                 </div>
-                            </div>
+                            </div> */}
                         </Card>
                         <div className='CommentsSectionUsers'>
                             {commentS &&
@@ -203,7 +203,7 @@ const Comments = ({ isMobile }) => {
                                                     <ReadMoreReact
                                                         text={ele.content}
                                                         readMoreText={
-                                                            '...read More'
+                                                            '...Read More'
                                                         }
                                                         min={40}
                                                         ideal={80}

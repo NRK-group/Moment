@@ -10,7 +10,11 @@ export default function ProfilePosts(props) {
     useEffect(() => {
         GetPosts(props.id).then((resp) => setPosts(resp));
         if (posts.length != 0) setEmpty('noContent');
-    }, []);
+    }, [props.id]);
+    let privacyNum
+    if (props.privacyVal === "Follow") privacyNum = 1
+    if (props.privacyVal === "Following") privacyNum = 0
+    if (props.privacyVal === "Close Friend")privacyNum = -1
     return (
         <Card styleName='profilePostSection'>
             <Card styleName={props.contentSelector}>

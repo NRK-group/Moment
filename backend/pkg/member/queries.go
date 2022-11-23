@@ -111,7 +111,6 @@ func AddInvitationNotif(groupId, userId, receiverId, typeNotif string, database 
 // receiverId: the id of the user that will receive the invitation
 // database: the database
 func AcceptInvitationNotif(groupId, senderId, receiverId string, database *structs.DB) error {
-	AddMember(groupId, senderId, database)
 	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND receiverId = ? AND userId = ?")
 	if err != nil {
 		return err

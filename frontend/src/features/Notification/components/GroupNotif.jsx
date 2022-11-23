@@ -7,7 +7,8 @@ import { GetNotif } from '../hooks/getNotif';
 import { NoNotifications } from './NoNotifications';
 export const GroupNotif = ({ socket }) => {
     const [notifications, setNotifications] = useState();
-    GetNotif('group', setNotifications);
+    const [newNotif, setNewNotif] = useState(0);
+    GetNotif('group', setNotifications, newNotif);
     let group = {
         invite: 'invited you to join a group •',
         join: 'want to join your group •',
@@ -17,6 +18,24 @@ export const GroupNotif = ({ socket }) => {
         group: `/group?id=`,
         profile: `/profile?id=`,
     };
+    if (socket) {
+        socket.onmessage = (e) => {
+            let data = JSON.parse(e.data);
+            if (
+                data.type === 'eventNotif' ||
+                data.type === 'groupInvitationJoin' ||
+                data.type === 'groupInvitationRequest'
+            ) {
+                setNewNotif(newNotif + 1);
+                socket.send(
+                    JSON.stringify({
+                        type: 'readGroupNotif',
+                        receiverId: user,
+                    })
+                );
+            }
+        };
+    }
     console.log(notifications, socket);
     const handleAction = ({ type, receiverId, senderId }) => {
         if (socket) {
@@ -58,19 +77,11 @@ export const GroupNotif = ({ socket }) => {
         <>
             {notifications && notifications.length != 0 ? (
                 notifications.map(
-                    ({
-                        groupId,
-                        type,
-                        createdAt,
-                        userId,
-                        status,
-                        receiverId,
-                        eventId,
-                    }) => {
+                    ({ groupId, type, createdAt, userId, status, eventId }) => {
                         if (type !== 'event') {
                             return (
                                 <MiniUserCard
-                                    key={groupId.id}
+                                    key={'group' + groupId.id + userId.id}
                                     name={groupId.name}
                                     img={groupId.img}
                                     link={link.group}
@@ -167,7 +178,7 @@ export const GroupNotif = ({ socket }) => {
                         } else {
                             return (
                                 <MiniUserCard
-                                    key={groupId.id}
+                                    key={'event' + groupId.id + eventId.EventId}
                                     name={eventId.Name}
                                     img={groupId.img}
                                     link={link.group}>

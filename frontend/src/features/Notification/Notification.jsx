@@ -9,6 +9,8 @@ export const Notification = ({
     setFollowNotif,
     followNotifContainer,
     setFollowNotifContainer,
+    groupNotif,
+    setGroupNotif
 }) => {
     return (
         <Body styleName='mobile'>
@@ -18,6 +20,8 @@ export const Notification = ({
                     <NotificationsHeaderNav
                         socket={socket}
                         followNotif={followNotif}
+                        groupNotif={groupNotif}
+                        setGroupNotif={setGroupNotif}
                         setFollowNotif={setFollowNotif}
                         setFollowNotifContainer={setFollowNotifContainer}
                     />

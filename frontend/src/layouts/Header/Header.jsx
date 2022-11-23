@@ -4,6 +4,7 @@ import Input from '../../components/Input/Input';
 import { useEffect } from 'react';
 import { GetChatList } from '../../features/Chat/hooks/getChatList';
 import { GetNotif } from '../../features/Notification/hooks/getNotif';
+import { useLocation } from 'react-router-dom';
 const Header = ({
     setIsMenuOpen,
     setIsSearchModalOpen,
@@ -17,8 +18,14 @@ const Header = ({
     setFollowNotifContainer,
     followNotifContainer,
     setFollowNotif,
+    groupNotif,
+    setGroupNotifContainer,
+    groupNotifContainer,
+    setGroupNotif,
 }) => {
+    const { pathname } = useLocation();
     GetNotif('follow', setFollowNotifContainer);
+    GetNotif('group', setGroupNotifContainer);
     GetChatList(setClist, newMessage);
     useEffect(() => {
         setMessageNotif(() => {
@@ -40,6 +47,18 @@ const Header = ({
             }
         }
     }, [followNotif]);
+    useEffect(() => {
+        if (pathname !== '/notifications/group') {
+            if (Array.isArray(groupNotifContainer)) {
+                for (let i = 0; i < groupNotifContainer.length; i++) {
+                    if (groupNotifContainer[i].read === 0) {
+                        setGroupNotif(true);
+                        return;
+                    }
+                }
+            }
+        }
+    }, [groupNotifContainer]);
     return (
         <div className='headerContainer'>
             <div className='header'>
@@ -78,10 +97,12 @@ const Header = ({
                     setIsMenuOpen={setIsMenuOpen}
                     messageNotif={messageNotif}
                     followNotif={followNotif}
+                    groupNotif={groupNotif}
                 />
                 <MobileHeaderNav
                     setIsMenuOpen={setIsMenuOpen}
                     followNotif={followNotif}
+                    groupNotif={groupNotif}
                 />
             </div>
         </div>

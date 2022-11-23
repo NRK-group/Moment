@@ -41,7 +41,7 @@ const FooterNav = ({ setIsSearchModalOpen, messageNotif }) => {
         </div>
     );
 };
-const MobileHeaderNav = ({ setIsMenuOpen, followNotif }) => {
+const MobileHeaderNav = ({ setIsMenuOpen, followNotif, groupNotif }) => {
     return (
         <div className='mobileNavContainer'>
             <div className='navbar navbarSize' id='mobileHeaderNav'>
@@ -49,7 +49,9 @@ const MobileHeaderNav = ({ setIsMenuOpen, followNotif }) => {
                     <NavLink to='/notifications/general'>
                         <div className='notifIcon'>
                             <NotificationsIcon />
-                            {followNotif && <span className='notif'></span>}
+                            {(followNotif || groupNotif) && (
+                                <span className='notif'></span>
+                            )}
                         </div>
                     </NavLink>
                     <div
@@ -68,7 +70,12 @@ const MobileHeaderNav = ({ setIsMenuOpen, followNotif }) => {
         </div>
     );
 };
-const DesktopHeaderNav = ({ setIsMenuOpen, messageNotif, followNotif }) => {
+const DesktopHeaderNav = ({
+    setIsMenuOpen,
+    messageNotif,
+    followNotif,
+    groupNotif,
+}) => {
     return (
         <div className='navContainer'>
             <div className='navbar' id='desktopHeaderNav'>
@@ -91,7 +98,9 @@ const DesktopHeaderNav = ({ setIsMenuOpen, messageNotif, followNotif }) => {
                     <NavLink to='/notifications/general'>
                         <div className='notifIcon'>
                             <NotificationsIcon />
-                            {followNotif && <span className='notif'></span>}
+                            {(followNotif || groupNotif) && (
+                                <span className='notif'></span>
+                            )}
                         </div>
                     </NavLink>
                     <div

@@ -34,6 +34,8 @@ function App() {
     const [messageNotif, setMessageNotif] = useState(false);
     const [followNotif, setFollowNotif] = useState(false);
     const [followNotifContainer, setFollowNotifContainer] = useState();
+    const [groupNotif, setGroupNotif] = useState(false);
+    const [groupNotifContainer, setGroupNotifContainer] = useState();
     const { pathname } = useLocation();
     let isMobile = width < 600;
     useEffect(() => {
@@ -78,6 +80,18 @@ function App() {
             }
         }
     }, [followNotifContainer]);
+    useEffect(() => {
+        if (pathname !== '/notifications/group') {
+            if (Array.isArray(groupNotifContainer)) {
+                for (let i = 0; i < groupNotifContainer.length; i++) {
+                    if (groupNotifContainer[i].read === 0) {
+                        setGroupNotif(true);
+                        return;
+                    }
+                }
+            }
+        }
+    }, [groupNotifContainer]);
     return (
         <div
             className='App'
@@ -99,6 +113,10 @@ function App() {
                     setFollowNotifContainer={setFollowNotifContainer}
                     setFollowNotif={setFollowNotif}
                     followNotifContainer={followNotifContainer}
+                    groupNotif={groupNotif}
+                    setGroupNotifContainer={setGroupNotifContainer}
+                    groupNotifContainer={groupNotifContainer}
+                    setGroupNotif={setGroupNotif}
                     onChange={(e) => {
                         setQuery(e.target.value);
                     }}
@@ -172,6 +190,8 @@ function App() {
                                     setFollowNotifContainer={
                                         setFollowNotifContainer
                                     }
+                                    setGroupNotif={setGroupNotif}
+                                    groupNotif={groupNotif}
                                 />
                             }
                         />

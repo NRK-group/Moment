@@ -4,6 +4,7 @@ import (
 	"log"
 	"time"
 
+	"backend/pkg/closefriend"
 	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
@@ -231,6 +232,8 @@ func UpdateFollowNotifStatus(followerId, followingId, status string, database *s
 func FollowUser(followerId, followingId string, database *structs.DB) (string, error) {
 	if CheckIfFollow(followerId, followingId, database) {
 		DeleteFollow(followerId, followingId, database)
+		//Remove the close friend aswell
+		closefriend.DeleteCloseFriend(followingId, followerId, *database)
 		currentUserNumOfFollowing, _ := GetNumOfFollowing(followerId, database)
 		UpdateNumOfFollowing(followerId, currentUserNumOfFollowing-1, database)
 		otherUserNumOfFollowers, _ := GetNumOfFollowers(followingId, database)

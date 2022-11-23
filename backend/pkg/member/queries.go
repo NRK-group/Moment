@@ -113,7 +113,7 @@ func AddInvitationNotif(groupId, userId, receiverId, typeNotif string, database 
 // database: the database
 func AcceptInvitationNotif(groupId, userId string, database *structs.DB) error {
 	AddMember(groupId, userId, database)
-	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND userId = ?")
+	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND receiverId = ?")
 	if err != nil {
 		return err
 	}

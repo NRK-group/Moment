@@ -346,8 +346,8 @@ function Groups({ isMobile, socket }) {
                                         <a
                                             key={ele.id}
                                             onClick={() => {
-                                                RequestToS(GetCookie('session_token').split('&')[0], ele.id, socket, "groupInvitationRequest", ele.GroupID)
-                                                console.log(ele.id);
+                                                RequestToS(GetCookie('session_token').split('&')[0], ele.id, socket, "groupInvitationRequest", groupSelect.GroupID)
+                                        
                                             }}>
                                             {ele.firstName}
                                         </a>

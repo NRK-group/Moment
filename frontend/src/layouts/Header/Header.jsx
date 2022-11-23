@@ -22,11 +22,25 @@ const Header = ({
     setGroupNotifContainer,
     groupNotifContainer,
     setGroupNotif,
+    socket,
 }) => {
     const { pathname } = useLocation();
     GetNotif('follow', setFollowNotifContainer);
     GetNotif('group', setGroupNotifContainer);
     GetChatList(setClist, newMessage);
+    if (socket) {
+        socket.onmessage = (e) => {
+            let data = JSON.parse(e.data);
+            if (
+                data.type === 'eventNotif' ||
+                data.type === 'groupInvitationJoin' ||
+                data.type === 'groupInvitationRequest'
+            ) {
+                console.log('new group notif');
+                setGroupNotif(true);
+            }
+        };
+    }
     useEffect(() => {
         setMessageNotif(() => {
             for (let i = 0; i < chatList.length; i++) {
@@ -48,17 +62,15 @@ const Header = ({
         }
     }, [followNotif]);
     useEffect(() => {
-        if (pathname !== '/notifications/group') {
-            if (Array.isArray(groupNotifContainer)) {
-                for (let i = 0; i < groupNotifContainer.length; i++) {
-                    if (groupNotifContainer[i].read === 0) {
-                        setGroupNotif(true);
-                        return;
-                    }
+        if (Array.isArray(groupNotifContainer)) {
+            for (let i = 0; i < groupNotifContainer.length; i++) {
+                if (groupNotifContainer[i].read === 0) {
+                    setGroupNotif(true);
+                    return;
                 }
             }
         }
-    }, [groupNotifContainer]);
+    }, []);
     return (
         <div className='headerContainer'>
             <div className='header'>

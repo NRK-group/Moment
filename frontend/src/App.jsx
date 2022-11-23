@@ -66,6 +66,19 @@ function App() {
                     return [data.data, ...prev];
                 });
             }
+            if (pathname !== '/notifications/group') {
+                socket.onmessage = (e) => {
+                    let data = JSON.parse(e.data);
+                    if (
+                        data.type === 'eventNotif' ||
+                        data.type === 'groupInvitationJoin' ||
+                        data.type === 'groupInvitationRequest'
+                    ) {
+                        console.log('new group notif');
+                        setGroupNotif(true);
+                    }
+                };
+            }
         };
     }
     useEffect(() => {
@@ -91,7 +104,7 @@ function App() {
                 }
             }
         }
-    }, [groupNotifContainer]);
+    }, [groupNotif]);
     return (
         <div
             className='App'

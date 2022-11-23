@@ -46,8 +46,6 @@ export default function Profile({ socket }) {
         }
         GetProfile(id).then((response) => setValues(response));
     }, [id]);
-    console.log({followStatus}, {id}, values.IsPublic)
-    console.log(values)
     const relBtn = (
         <Button
             content={followStatus}

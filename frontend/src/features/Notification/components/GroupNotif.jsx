@@ -31,7 +31,7 @@ export const GroupNotif = ({ socket }) => {
             if (type === 'acceptInviteRequest') {
                 let newNotif = notifications.map((notif) => {
                     if (
-                        notif.receiverId.id === senderId &&
+                        notif.userId.id === senderId &&
                         notif.groupId.id === receiverId
                     ) {
                         console.log('accept');
@@ -46,7 +46,7 @@ export const GroupNotif = ({ socket }) => {
                 let newNotif = notifications.filter(
                     (notif) =>
                         !(
-                            notif.receiverId.id === senderId &&
+                            notif.userId.id === senderId &&
                             notif.groupId.id === receiverId
                         )
                 );
@@ -94,7 +94,7 @@ export const GroupNotif = ({ socket }) => {
                                                                     receiverId:
                                                                         groupId.id,
                                                                     senderId:
-                                                                        receiverId.id,
+                                                                        userId.id,
                                                                 });
                                                             }}
                                                         />
@@ -109,7 +109,7 @@ export const GroupNotif = ({ socket }) => {
                                                                     receiverId:
                                                                         groupId.id,
                                                                     senderId:
-                                                                        receiverId.id,
+                                                                        userId.id,
                                                                 });
                                                             }}
                                                         />
@@ -131,7 +131,7 @@ export const GroupNotif = ({ socket }) => {
                                                                     receiverId:
                                                                         groupId.id,
                                                                     senderId:
-                                                                        receiverId.id,
+                                                                        userId.id,
                                                                 });
                                                             }}
                                                         />
@@ -146,7 +146,7 @@ export const GroupNotif = ({ socket }) => {
                                                                     receiverId:
                                                                         groupId.id,
                                                                     senderId:
-                                                                        receiverId.id,
+                                                                        userId.id,
                                                                 });
                                                             }}
                                                         />

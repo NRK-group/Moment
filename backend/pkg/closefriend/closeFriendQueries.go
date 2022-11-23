@@ -106,3 +106,4 @@ func CurrentCloseFriend(profileId, userId string, db structs.DB) bool {
 	}
 	return false
 }
+/* COPY OVER */

@@ -34,6 +34,7 @@ func (DB *Env) Following(w http.ResponseWriter, r *http.Request) {
 				response.WriteMessage(cookieSlc[0]+" is a closefriend of "+followingId, "Close Friend", w)
 				return
 			}
+			/* COPY OVER */
 			response.WriteMessage(cookieSlc[0]+" follows "+followingId, "Following", w)
 			return
 		}

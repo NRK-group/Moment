@@ -8,10 +8,12 @@ export default function ProfilePosts(props) {
     useEffect(() => {
         GetPosts(props.id).then((resp) => setPosts(resp));
     }, [props.id]);
+    /* COPY OVER */
     let privacyNum
     if (props.privacyVal === "Follow") privacyNum = 1
     if (props.privacyVal === "Following") privacyNum = 0
     if (props.privacyVal === "Close Friend")privacyNum = -1
+    /* COPY OVER */
 
     return (
         <section className='profilePostSection'>
@@ -30,6 +32,7 @@ export default function ProfilePosts(props) {
                 {posts &&
                     posts.map((data) => (
                         (data.Privacy >= privacyNum || !props.id) ? (
+                            /* COPY OVER */
                             <Post
                                 key={data.PostID}
                                 avatarSrc={`http://localhost:5070/${data.Image}`}

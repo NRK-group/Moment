@@ -91,9 +91,10 @@
     background-color: var(--button-color);
 }
 
-.Friend{
+.Friend {
     background-color: rgb(74, 192, 74);
 }
+/* COPY OVER */
 
 .Following,
 .Pending {
@@ -118,11 +119,10 @@
     cursor: pointer;
 }
 
-.smallProfileDetail{
+.smallProfileDetail {
     font-size: 75%;
     margin: 1% auto;
     font-weight: normal;
-
 }
 
 .profileBestFriends > * {
@@ -321,7 +321,6 @@ p {
 
     font-weight: bold;
 }
-
 
 .profilePostSection {
     height: fit-content;
@@ -647,7 +646,7 @@ p {
         font-size: 0.9rem;
     }
 
-    .restrictedAccount{
+    .restrictedAccount {
         margin: 15% auto;
     }
 }

@@ -76,6 +76,7 @@ export default function Profile() {
                         values.IsPublic === 1 ||
                         followStatus === 'Following' ||
                         followStatus === 'Close Friend' ? (
+                            /* COPY OVER */
                             <span>
                                 <p className='profileAboutMe'>
                                     {values.AboutMe}
@@ -109,6 +110,7 @@ export default function Profile() {
                         values.IsPublic === 1 ||
                         followStatus === 'Following' ||
                         followStatus === 'Close Friend' ? (
+                            /* COPY OVER */
                             <span>
                                 <ProfileStats
                                     styleName={'profileStats'}
@@ -134,6 +136,7 @@ export default function Profile() {
             values.IsPublic === 1 ||
             followStatus === 'Following' ||
             followStatus === 'Close Friend' ? (
+                /* COPY OVER */
                 <ProfilePosts
                     contentSelector='profileContentSelector'
                     postBtn='profilePosts'

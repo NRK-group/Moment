@@ -154,6 +154,8 @@ export default function Profile({ socket }) {
                     likeBtn='profileLiked'
                     postContainer='profilePostContainer'
                     id={id}
+                    privacyVal={followStatus}
+
                 />
             ) : (
                 <Card styleName='restrictedAccount'>

@@ -11,7 +11,7 @@ export const GroupNotif = ({ socket }) => {
     GetNotif('group', setNotifications, newNotif);
     let group = {
         invite: 'invited you to join a group •',
-        join: 'want to join your group •',
+        join: 'wants to join your group •',
         event: 'created an event in ',
     };
     let link = {
@@ -31,11 +31,12 @@ export const GroupNotif = ({ socket }) => {
         };
     }
     console.log(notifications);
-    const handleAction = ({ type, receiverId, senderId }) => {
+    const handleAction = ({ type, groupId, receiverId, senderId }) => {
         if (socket) {
             socket.send(
                 JSON.stringify({
                     type: type,
+                    groupId: groupId,
                     receiverId: receiverId,
                     senderId: senderId,
                 })
@@ -45,7 +46,7 @@ export const GroupNotif = ({ socket }) => {
                 let newNotif = notifications.map((notif) => {
                     if (
                         notif.receiverId.id === senderId &&
-                        notif.groupId.id === receiverId
+                        notif.userId.id === receiverId
                     ) {
                         console.log('accept');
                         notif.status = 'accepted';
@@ -66,7 +67,7 @@ export const GroupNotif = ({ socket }) => {
                     (notif) =>
                         !(
                             notif.receiverId.id === senderId &&
-                            notif.groupId.id === receiverId
+                            notif.userId.id === receiverId
                         )
                 );
                 setNotifications(newNotif);
@@ -116,10 +117,12 @@ export const GroupNotif = ({ socket }) => {
                                                                 );
                                                                 handleAction({
                                                                     type: 'acceptInviteRequest',
-                                                                    receiverId:
+                                                                    groupId:
                                                                         groupId.id,
-                                                                    senderId:
+                                                                    receiverId:
                                                                         receiverId.id,
+                                                                    senderId:
+                                                                        userId.id,
                                                                 });
                                                             }}
                                                         />
@@ -131,10 +134,12 @@ export const GroupNotif = ({ socket }) => {
                                                             action={() => {
                                                                 handleAction({
                                                                     type: 'declineInviteRequest',
-                                                                    receiverId:
+                                                                    groupId:
                                                                         groupId.id,
-                                                                    senderId:
+                                                                    receiverId:
                                                                         receiverId.id,
+                                                                    senderId:
+                                                                        userId.id,
                                                                 });
                                                             }}
                                                         />
@@ -153,8 +158,10 @@ export const GroupNotif = ({ socket }) => {
                                                             action={() => {
                                                                 handleAction({
                                                                     type: 'acceptInviteRequest',
-                                                                    receiverId:
+                                                                    groupId:
                                                                         groupId.id,
+                                                                    receiverId:
+                                                                        userId.id,
                                                                     senderId:
                                                                         receiverId.id,
                                                                 });
@@ -168,8 +175,10 @@ export const GroupNotif = ({ socket }) => {
                                                             action={() => {
                                                                 handleAction({
                                                                     type: 'declineInviteRequest',
-                                                                    receiverId:
+                                                                    groupId:
                                                                         groupId.id,
+                                                                    receiverId:
+                                                                        userId.id,
                                                                     senderId:
                                                                         receiverId.id,
                                                                 });

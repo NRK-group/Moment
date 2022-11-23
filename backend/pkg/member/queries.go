@@ -78,8 +78,7 @@ func GetMembers(groupId string, database *structs.DB) ([]structs.Member, error) 
 // database: the database
 func AddInvitationNotif(groupId, userId, receiverId, typeNotif string, database *structs.DB) error {
 	createdAt := time.Now()
-	// check if the groupid and ReceiverId exists already
-	rows, err := database.DB.Query("SELECT receiverId FROM InviteNotif WHERE groupId = '" + groupId + "' AND receiverId = '" + receiverId + "'")
+	rows, err := database.DB.Query("SELECT receiverId FROM InviteNotif WHERE groupId = '" + groupId + "' AND receiverId = '" + receiverId + "' AND userId = '" + userId + "'")
 	if err != nil {
 		return err
 	}
@@ -111,13 +110,13 @@ func AddInvitationNotif(groupId, userId, receiverId, typeNotif string, database 
 // userId: the id of the user
 // receiverId: the id of the user that will receive the invitation
 // database: the database
-func AcceptInvitationNotif(groupId, userId string, database *structs.DB) error {
-	AddMember(groupId, userId, database)
-	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND receiverId = ?")
+func AcceptInvitationNotif(groupId, senderId, receiverId string, database *structs.DB) error {
+	AddMember(groupId, senderId, database)
+	stmt, err := database.DB.Prepare("UPDATE InviteNotif SET status = ? WHERE groupId = ? AND receiverId = ? AND userId = ?")
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec("accepted", groupId, userId)
+	_, err = stmt.Exec("accepted", groupId, senderId, receiverId)
 	if err != nil {
 		l.LogMessage("Member.go", "AcceptMemberNotif", err)
 		return err
@@ -133,8 +132,8 @@ func AcceptInvitationNotif(groupId, userId string, database *structs.DB) error {
 // userId: the id of the user
 // receiverId: the id of the user that will receive the invitation
 // database: the database
-func DeclineInvitationNotif(groupId, userId string, database *structs.DB) error {
-	_, err := database.DB.Exec("DELETE FROM InviteNotif WHERE groupId = ? AND receiverId = ?", groupId, userId)
+func DeclineInvitationNotif(groupId, senderId, reciverId string, database *structs.DB) error {
+	_, err := database.DB.Exec("DELETE FROM InviteNotif WHERE groupId = ? AND receiverId = ? AND userId = ?", groupId, senderId, reciverId)
 	if err != nil {
 		l.LogMessage("Member.go", "DeclineMemberNotif", err)
 		return err

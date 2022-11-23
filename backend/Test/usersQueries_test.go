@@ -19,7 +19,7 @@ func TestGetAllPublicUsersNotFollowed(t *testing.T) {
 		}
 	}
 
-	got, _ := users.GetAllPublicUsersNotFollowed(one.UserId, *database)
+	got, _ := users.GetAllPublicUsersNotFollowed(one.UserId, database)
 
 	if len(got) != 2 {
 		t.Errorf("Len should be 2 but is %v", len(got))

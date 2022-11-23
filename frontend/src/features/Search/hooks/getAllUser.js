@@ -6,7 +6,7 @@ export const GetAllUser = () => {
         fetch('http://localhost:5070/search', { credentials: 'include' }).then(
             async (resp) => {
                 const data = await resp.json();
-                setSearchResult(data);
+                data ? setSearchResult(data) : setSearchResult([]);
             }
         );
     }, []);

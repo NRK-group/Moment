@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"backend/pkg/helper"
 	"backend/pkg/auth"
+	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
 )
@@ -52,7 +52,7 @@ func GetMembers(groupId string, database *structs.DB) ([]structs.Member, error) 
 		var reUser structs.User
 		err := auth.GetUser("userId", userId, &reUser, *database)
 		if err != nil {
-			fmt.Print("Get Members",err)
+			fmt.Print("Get Members", err)
 			return members, err
 		}
 		member = structs.Member{

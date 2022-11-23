@@ -6,6 +6,7 @@ import (
 
 	"backend/pkg/auth"
 	"backend/pkg/chat"
+	"backend/pkg/users"
 )
 
 func (database *Env) NewMessage(w http.ResponseWriter, r *http.Request) {
@@ -26,6 +27,12 @@ func (database *Env) NewMessage(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
+		pUsers, err := users.GetAllPublicUsersNotFollowed(cookie[0], database.Env)
+		if err != nil {
+			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		following = append(following, pUsers...)
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "application/json")
 		err = json.NewEncoder(w).Encode(following)

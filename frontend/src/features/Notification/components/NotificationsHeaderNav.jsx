@@ -4,6 +4,8 @@ export const NotificationsHeaderNav = ({
     setFollowNotif,
     setFollowNotifContainer,
     socket,
+    groupNotif,
+    setGroupNotif,
 }) => {
     let notif;
     let user = document.cookie.split('=')[1].split('&')[0];
@@ -34,12 +36,12 @@ export const NotificationsHeaderNav = ({
                                 receiverId: user,
                             })
                         );
-                        setFollowNotifContainer((prev) => {
-                            return prev.map((item) => {
-                                item.read = 1;
-                                return item;
-                            });
-                        });
+                        // setFollowNotifContainer((prev) => {
+                        //     return prev.map((item) => {
+                        //         item.read = 1;
+                        //         return item;
+                        //     });
+                        // });
                     }}>
                     <div className='notificationHeader'>Follow</div>
                     {followNotif && <span className='notif'></span>}
@@ -50,9 +52,19 @@ export const NotificationsHeaderNav = ({
                     isActive ? 'notifActive' : 'inactive'
                 }
                 to='/notifications/group'>
-                <div className='notifIcon'>
+                <div
+                    className='notifIcon'
+                    onClick={() => {
+                        setGroupNotif(false);
+                        socket.send(
+                            JSON.stringify({
+                                type: 'readGroupNotif',
+                                receiverId: user,
+                            })
+                        );
+                    }}>
                     <div className='notificationHeader'>Group</div>
-                    {notif || <span className='notif'></span>}
+                    {groupNotif && <span className='notif'></span>}
                 </div>
             </NavLink>
             <Outlet />

@@ -9,11 +9,13 @@ import { useLocation, useParams } from 'react-router-dom';
 import { useScrollDown } from './hooks/scrollDown';
 import { debounce } from './hooks/debounce';
 import InputEmoji from 'react-input-emoji';
+import GetProfile from '../../pages/profile/ProfileData';
 export const Messages = ({
     socket,
     currentUserInfo,
     setNewMessage,
     setArrange,
+    username,
 }) => {
     const { chatId } = useParams();
     const location = useLocation();
@@ -49,7 +51,7 @@ export const Messages = ({
                 senderId: currentUserInfo, //chnage to current userid
                 chatId: chatId,
                 content: text, // content of the message
-                createAt: Date().toLocaleString(),
+                createAt: Date(),
             };
             socket.send(JSON.stringify(data));
             setMessages((msg) => [...msg, data]);
@@ -69,7 +71,7 @@ export const Messages = ({
             JSON.stringify({
                 type: type + 'typing', // message, notification, followrequest // "privateMessage", "groupMessage", or "typing"
                 chatId: chatId,
-                senderId: currentUserInfo, // senderid
+                senderId: username, // senderid
                 receiverId: details.id, //change to the id of the receiver
             })
         );
@@ -154,6 +156,9 @@ export const Messages = ({
                 ref={chatBox}>
                 {Array.isArray(messages) &&
                     messages.map((message, i) => {
+                        let newDate = new Date(message.createAt);
+                        let date = newDate.toLocaleDateString();
+                        let time = newDate.toLocaleTimeString();
                         if (message.senderId === currentUserInfo) {
                             return (
                                 <MessageContent
@@ -161,7 +166,7 @@ export const Messages = ({
                                     key={message + i}
                                     type='sender'
                                     content={message.content}
-                                    date={'date'}
+                                    date={date + ' • ' + time}
                                 />
                             );
                         }
@@ -178,7 +183,7 @@ export const Messages = ({
                                     user[message.senderId].img
                                 }>
                                 <MessageContent
-                                    date={'date'}
+                                    date={date + ' • ' + time}
                                     content={message.content}
                                 />
                             </MessageContainer>

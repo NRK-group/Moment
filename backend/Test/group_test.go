@@ -8,8 +8,10 @@ import (
 	"strings"
 	"testing"
 
+	"backend/pkg/event"
 	"backend/pkg/group"
 	"backend/pkg/handler"
+	"backend/pkg/member"
 	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -185,6 +187,37 @@ func TestGettingAllPostFromAGroup(t *testing.T) {
 
 		if num != expected {
 			t.Errorf("Error posts doesn't match %d ", num)
+		}
+	})
+}
+
+func TestReadGroupNotif(t *testing.T) {
+	t.Run("Read group notif", func(t *testing.T) {
+		newUser := CreateUser(database, t)
+		newUser2 := CreateUser(database, t)
+		newUser3 := CreateUser(database, t)
+		group1 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: newUser.UserId}
+		Id, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
+		if err != nil {
+			t.Errorf("Error creating group%v", err)
+		}
+		member.AddMember(Id, newUser2.UserId, database)
+		member.AddMember(Id, newUser3.UserId, database)
+		event1 := structs.Event{Name: "Test4", Description: "Eating Pie", Location: " Location ", StartTime: "StartTime", EndTime: " EndTime", UserId: newUser.UserId, GroupId: Id}
+		_, err = event.AddEvent(Id, event1, database)
+		if err != nil {
+			t.Errorf("Error Inserting event %v", err)
+		}
+		group2 := structs.Group{Name: "Pie", Description: "Eating Pie", Admin: newUser.UserId}
+		Id2, err := group.CreateGroup(group2.Name, group2.Description, group2.Admin, database)
+		if err != nil {
+			t.Errorf("Error creating group%v", err)
+		}
+
+		member.AddInvitationNotif(Id2, newUser.UserId, newUser2.UserId, "invite", database)
+		err = group.ReadGroupNotif(newUser2.UserId, database)
+		if err != nil {
+			t.Errorf("Error reading group notif %v", err)
 		}
 	})
 }

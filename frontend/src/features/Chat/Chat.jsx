@@ -7,6 +7,7 @@ import { Messages } from '../Messages/Messages';
 import { NewChatModal } from './components/NewChatModal';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import GetProfile from '../../pages/profile/ProfileData';
 const Chat = ({
     isMobile,
     socket,
@@ -21,6 +22,17 @@ const Chat = ({
     useEffect(() => {
         setArrange(chatList);
     }, [chatList]);
+    const [username, setUsername] = useState('');
+    useEffect(() => {
+        GetProfile().then((res) => {
+            let { FirstName, LastName, Nickname } = res;
+            if (Nickname) {
+                setUsername(Nickname);
+            } else {
+                setUsername(FirstName + ' ' + LastName);
+            }
+        });
+    }, []);
     return (
         <>
             <Body styleName={bodyStyleName}>
@@ -30,6 +42,7 @@ const Chat = ({
                             <ChatUsersContainer
                                 styleName='chatUsersContainer'
                                 style={bodyStyleName}
+                                username={username}
                                 currentUserInfo={user}
                                 chatList={arrange ? arrange : []}
                                 socket={socket}
@@ -59,6 +72,7 @@ const Chat = ({
                                                     setNewMessage={
                                                         setNewMessage
                                                     }
+                                                    username={username}
                                                     setArrange={setArrange}
                                                 />
                                             }

@@ -15,7 +15,7 @@ export const GroupNotif = ({ socket }) => {
         event: 'created an event in ',
     };
     let link = {
-        group: `/group?id=`,
+        group: `/groups`,
         profile: `/profile?id=`,
     };
     if (socket) {
@@ -27,12 +27,6 @@ export const GroupNotif = ({ socket }) => {
                 data.type === 'groupInvitationRequest'
             ) {
                 setNewNotif(newNotif + 1);
-                socket.send(
-                    JSON.stringify({
-                        type: 'readGroupNotif',
-                        receiverId: user,
-                    })
-                );
             }
         };
     }
@@ -59,6 +53,12 @@ export const GroupNotif = ({ socket }) => {
                     return notif;
                 });
                 setNotifications(newNotif);
+                socket.send(
+                    JSON.stringify({
+                        type: 'readGroupNotif',
+                        receiverId: user,
+                    })
+                );
             }
             if (type === 'declineInviteRequest') {
                 console.log('decline');
@@ -70,6 +70,12 @@ export const GroupNotif = ({ socket }) => {
                         )
                 );
                 setNotifications(newNotif);
+                socket.send(
+                    JSON.stringify({
+                        type: 'readGroupNotif',
+                        receiverId: user,
+                    })
+                );
             }
         }
     };

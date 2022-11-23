@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"backend/pkg/auth"
@@ -40,11 +39,6 @@ func (DB *Env) ProfileChange(w http.ResponseWriter, r *http.Request) {
 			response.WriteMessage("Error updating the user profile", "Email already in use", w)
 			return
 		}
-		fmt.Println()
-		fmt.Println()
-		fmt.Println("isPublic PRINTED === ", data.IsPublic)
-		fmt.Println()
-		fmt.Println()
 		if updateErr := auth.UpdateUserProfile(cookieSlc[0], data, *DB.Env); updateErr != nil { // Update the values in the db
 			response.WriteMessage("Error updating the user profile", "Unauthorised", w)
 			return

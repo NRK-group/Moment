@@ -4,9 +4,7 @@ function AddCloseFriends(close) {
 }
 
 export default function PrivacySelector(props) {
-    // let pub , priv ;
     let first, second
-    console.log("Props.Value === ",props.value);
     if (!props.closeFriends) props.value === 1 ? [first = "Public", second ="Private"] : [first = "Private", second ="Public"];
 
 

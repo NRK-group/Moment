@@ -1,6 +1,7 @@
 import Card from '../../components/card/Card';
 import './Event.css';
 import { useEffect, useState } from 'react';
+import GroupEventsParticipants from '../../pages/Groups/components/GroupEventsParticipants';
 
 export default function Event({
     eventObj,
@@ -14,6 +15,8 @@ export default function Event({
     eventId,
     setFlag,
     flag,
+    setEle,
+    setOpenModal,
 }) {
 
     const [eventObject, setEventObject] = useState(null);
@@ -75,9 +78,17 @@ export default function Event({
                     <label>End:</label>
                     <span>{formatDate(end)}</span>
                     <br />
-                    <br />
+                    <br /> 
                     <label>Attending:</label>{' '}
                     <button onClick={() => UpdateAttends()}>{attending !== "Going"? "Not Going": "Going"}</button>
+        
+                    <div onClick={()=>{
+                        console.log("rerrrs")
+                        if(eventObj.NumOfParticipants > 0){
+                        setEle(<GroupEventsParticipants data={eventObj.Participants
+                        }/>)
+                        setOpenModal(true)
+                    }}}>Numner of members going : {eventObj.NumOfParticipants}</div>
                 </Card>
             </Card>
             <br />

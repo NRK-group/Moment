@@ -43,9 +43,13 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 		}
 		for _, eventl := range events {
 			EventP, _ := event.AllEventParticipant(eventl.EventId, database.Env)
+			
 			for i, user := range EventP {
 				if user.UserId == cookie[0] {
 					events[i].Status = "Going"
+					events[i].UserName = user.Name
+					events[i].NumOfParticipants = events[i].NumOfParticipants + 1
+					events[i].Participants = EventP
 				} else {
 					events[i].Status = "Not Going"
 				}

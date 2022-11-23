@@ -12,6 +12,7 @@ import GroupList from './components/GroupList';
 import GroupPost from './components/GroupPost';
 import GroupEvent from './components/GroupEvents';
 import Event from '../../features/Event';
+
 import {
     RequestToS,
     GetAllGroupPosts,
@@ -50,6 +51,7 @@ function Groups({ isMobile, socket }) {
             let holder = await GetAllGroupPosts(fetchAllUsergroups[0].GroupID);
             setGroupPosts(holder);
             holder = await GetAllGroupEvents(fetchAllUsergroups[0].GroupID);
+            console.log(holder)
             setGroupE(holder);
         }
     };
@@ -332,6 +334,8 @@ function Groups({ isMobile, socket }) {
                                         eventObj={data}
                                         setFlag={setFlag}
                                         flag={flag}
+                                        setEle={setEle}
+                                        setOpenModal={setOpenModal}
                                     />
                                 ))}
                         </div>

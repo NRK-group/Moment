@@ -77,7 +77,7 @@ func CreatePost(userID, groupId, imageUpload, content string, privacy int, datab
 	stmt, _ := database.DB.Prepare(`
 		INSERT INTO Post VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, ?)
 	`)
-	_, err := stmt.Exec(postID, userID, groupId, reUser.NickName, content, reUser.Avatar, imageUpload, 0, createdAt, privacy)
+	_, err := stmt.Exec(postID, userID, groupId, reUser.FirstName, content, reUser.Avatar, imageUpload, 0, createdAt, privacy)
 	if err != nil {
 		fmt.Println("inside Create Post", err)
 		return "", err

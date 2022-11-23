@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"backend/pkg/auth"
 	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/member"
@@ -52,8 +53,7 @@ func UpdateEventParticipant(event structs.Event, database structs.DB) (string, e
 		return "Error in UpdateEventParticipant", err
 	}
 
-
-fmt.Println(res)
+	fmt.Println(res)
 	if res {
 		return "Going", nil
 	} else if eventS.Status == 1 {
@@ -110,6 +110,7 @@ func AllEventParticipant(eventId string, database *structs.DB) ([]structs.EventP
 	var eventParticipant structs.EventParticipant
 	var eventParticipants []structs.EventParticipant
 	var err error
+	var reUser structs.User
 	rows, err := database.DB.Query("SELECT * FROM EventParticipant WHERE eventId = '" + eventId + "'")
 	if err != nil {
 		fmt.Print(err)
@@ -119,10 +120,17 @@ func AllEventParticipant(eventId string, database *structs.DB) ([]structs.EventP
 	var eventId2, userId, createdAt string
 	for rows.Next() {
 		rows.Scan(&eventId2, &userId, &status, &createdAt)
+
+		err2 := auth.GetUser("userId", userId, &reUser, *database)
+		if err2 != nil {
+			fmt.Print("AllEventParticipant -", err2)
+			return eventParticipants, err2
+		}
 		eventParticipant = structs.EventParticipant{
 			EventId:   eventId2,
 			UserId:    userId,
 			Status:    status,
+			Name:      reUser.FirstName,
 			CreatedAt: createdAt,
 		}
 		if status == 1 {

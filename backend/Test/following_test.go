@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"backend/pkg/auth"
+	"backend/pkg/closefriend"
 	"backend/pkg/follow"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
@@ -216,6 +217,34 @@ func TestFollowing(t *testing.T) {
 		want := `{"Message":"Pending"}`
 		if got != want {
 			t.Errorf("got %v \n want %v", got, want)
+		}
+	})
+	t.Run("Close Friends rel", func(t *testing.T) {
+		Env := handler.Env{Env: database}
+
+		userOne := CreateUser(database, t)
+		userTwo := CreateUser(database, t)
+		// Login to userOne
+		loginUser := structs.User{Email: userOne.Email, Password: "Password123"}
+		sampleUserBytes, _ := json.Marshal(loginUser)
+		// Create the bytes into a reader
+		testReq := bytes.NewReader(sampleUserBytes)
+		r := httptest.NewRequest(http.MethodPost, "/login", testReq)
+		w := httptest.NewRecorder()
+		Env.Login(w, r)
+		wr := httptest.NewRecorder()
+		req := httptest.NewRequest(http.MethodGet, "/following", nil)
+		req.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
+		values := req.URL.Query()
+		values.Add("followingID", userTwo.UserId)
+		req.URL.RawQuery = values.Encode()
+		follow.InsertFollow(userOne.UserId, userTwo.UserId, Env.Env)
+		closefriend.AddCloseFriend(userTwo.UserId, userOne.UserId, *Env.Env)
+		Env.Following(wr, req)
+		got := wr.Body.String()
+		want := `{"Message":"Close Friend"}`
+		if got != want {
+			t.Errorf("Got = %v Want = %v", got, want)
 		}
 	})
 }

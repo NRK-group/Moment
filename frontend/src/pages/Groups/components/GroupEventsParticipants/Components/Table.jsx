@@ -1,7 +1,7 @@
 import './tableParticipants.css';
 
 function TabletableParticipants({ data }) {
-    console.log(data)
+   
     return (
         <>
             <div className='groups-List-header'>
@@ -10,7 +10,7 @@ function TabletableParticipants({ data }) {
 
             <div id='table' className='groups-List-Table'>
                 <table>
-                    {data.map((ele) => (
+                    {data && data.map((ele) => (
                         <tbody key={ele.UserId}>
                             <tr>
                                 <td>{ele.Name}</td>

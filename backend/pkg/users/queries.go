@@ -6,7 +6,7 @@ import (
 	"backend/pkg/structs"
 )
 
-func GetAllPublicUsersNotFollowed(userId string, db structs.DB) ([]structs.Info, error) {
+func GetAllPublicUsersNotFollowed(userId string, db *structs.DB) ([]structs.Info, error) {
 	following, qryErr := db.DB.Query(`SELECT followingId FROM Follower WHERE followerId = ?`, userId)
 	if qryErr != nil {
 		log.Println("Error getting following users: ", qryErr)
@@ -35,6 +35,9 @@ func GetAllPublicUsersNotFollowed(userId string, db structs.DB) ([]structs.Info,
 				contains = true
 				break
 			}
+		}
+		if temp.Name == "" {
+			temp.Name = temp.FirstName + " " + temp.LastName
 		}
 		if !contains {
 			result = append(result, temp)

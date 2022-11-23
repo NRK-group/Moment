@@ -7,6 +7,7 @@ import (
 
 	"backend/pkg/chat"
 	"backend/pkg/follow"
+	"backend/pkg/group"
 	l "backend/pkg/log"
 	"backend/pkg/member"
 	"backend/pkg/messages"
@@ -157,15 +158,10 @@ func (h *Hub) Run() {
 				follow.ReadFollowNotif(msg.ReceiverId, h.Database)
 				fmt.Print("readFollowNotif")
 			}
-			// for userId, client := range h.Clients {
-			// 	select {
-			// 	case client.Send <- message:
-			// 	default:
-			// 		close(client.Send)
-			// 		delete(h.Clients, userId)
-			// 	}
-			// }
-
+			if msg.MessageType == "readGroupNotif" {
+				group.ReadGroupNotif(msg.ReceiverId, h.Database)
+				fmt.Print("readGroupNotif")
+			}
 			if msg.MessageType == "eventNotif" {
 				fmt.Println(msg)
 				members, err := member.GetMembers(msg.ReceiverId, h.Database)
@@ -175,8 +171,7 @@ func (h *Hub) Run() {
 				for _, member := range members {
 					if member.UserId != msg.SenderId {
 						if _, valid := h.Clients[member.UserId]; valid {
-							resp, _ := json.Marshal(msg)
-							h.Clients[member.UserId].Send <- resp
+							h.Clients[member.UserId].Send <- message
 						}
 					}
 				}

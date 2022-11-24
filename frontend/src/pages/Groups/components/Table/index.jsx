@@ -18,7 +18,6 @@ function Table({ socket, data }) {
                         <tbody className={ele.member?'groups-List-Block': 'groups-List-tbody'} key={ele.GroupID}>
                             <tr onClick={() =>{
                                  RequestToS(GetCookie('session_token').split('&')[0], ele.Admin, socket, "groupInvitationJoin", ele.GroupID)
-                                console.log(ele)
                             }}>
                                 <td>{ele.Name}</td>
                             </tr>

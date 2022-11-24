@@ -346,8 +346,15 @@ function Groups({ isMobile, socket }) {
                                         <a
                                             key={ele.id}
                                             onClick={() => {
-                                                RequestToS(GetCookie('session_token').split('&')[0], ele.id, socket, "groupInvitationRequest", groupSelect.GroupID)
-                                        
+                                                RequestToS(
+                                                    GetCookie(
+                                                        'session_token'
+                                                    ).split('&')[0],
+                                                    ele.id,
+                                                    socket,
+                                                    'groupInvitationRequest',
+                                                    groupSelect.GroupID
+                                                );
                                             }}>
                                             {ele.firstName}
                                         </a>
@@ -360,12 +367,22 @@ function Groups({ isMobile, socket }) {
                             />
                         </div>
                         {(groupSelect &&
-                            groupSelect.Members.map((ele) => (
+                            groupSelect.Members.reverse().map((ele, i) => (
                                 <span key={ele.UserId}>
                                     <MiniUserCard
-                                        imgStyleName={'miniUserCardImg'}
-                                        optContent={ele.UserName}>
-                                        {' '}
+                                        imgStyleName={'miniUserCardImg'}>
+                                        <h4 style={{ color: 'black' }}>
+                                            {ele.UserName}
+                                        </h4>
+                                        {i === 0 ? (
+                                            <h4 style={{ color: 'black' }}>
+                                                Admin
+                                            </h4>
+                                        ) : (
+                                            <h4 style={{ color: 'black' }}>
+                                                Member
+                                            </h4>
+                                        )}
                                     </MiniUserCard>
                                 </span>
                             ))) || <> </>}

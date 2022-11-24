@@ -6,13 +6,20 @@ import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
 import { CalculateTimeDiff } from '../hooks/calculateTimediff';
 import { GetNotif } from '../hooks/getNotif';
 import { NoNotifications } from './NoNotifications';
-export const FollowNotif = ({
-    socket,
-    notifications,
-    setFollowNotifContainer,
-    setFollowNotif,
-}) => {
+export const FollowNotif = ({ socket }) => {
     let type = 'follow';
+    const [notifications, setNotifications] = useState();
+    const [newNotif, setNewNotif] = useState(0);
+    GetNotif('follow', setNotifications, newNotif);
+    if (socket) {
+        socket.onmessage = (e) => {
+            let data = JSON.parse(e.data);
+            if (data.type === 'followRequest') {
+                setNewNotif(newNotif + 1);
+                console.log('follow notif');
+            }
+        };
+    }
     let follow = {
         follow: 'started following you •',
         pending: 'wants to follow you •',
@@ -20,9 +27,6 @@ export const FollowNotif = ({
     let link = {
         follow: `/profile?id=`,
     };
-    useEffect(() => {
-        setFollowNotif(false);
-    }, []);
     const handleAction = ({ type, receiverId, senderId }) => {
         if (socket) {
             socket.send(

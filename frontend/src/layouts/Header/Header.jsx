@@ -24,7 +24,6 @@ const Header = ({
     setGroupNotif,
     socket,
 }) => {
-    const { pathname } = useLocation();
     GetNotif('follow', setFollowNotifContainer);
     GetNotif('group', setGroupNotifContainer);
     GetChatList(setClist, newMessage);
@@ -39,18 +38,27 @@ const Header = ({
                 console.log('new group notif');
                 setGroupNotif(true);
             }
+            if (data.type === 'followRequest') {
+                setFollowNotif(true);
+            }
+            if (
+                data.type === 'privateMessage' ||
+                data.type === 'groupMessage'
+            ) {
+                console.log('new message');
+                setMessageNotif(true);
+            }
         };
     }
     useEffect(() => {
-        setMessageNotif(() => {
+        if (Array.isArray(chatList)) {
             for (let i = 0; i < chatList.length; i++) {
                 if (chatList[i].notif > 0) {
-                    return true;
+                    setMessageNotif(true);
                 }
             }
-            return false;
-        });
-    }, [chatList, newMessage]);
+        }
+    }, [chatList]);
     useEffect(() => {
         if (Array.isArray(followNotifContainer)) {
             for (let i = 0; i < followNotifContainer.length; i++) {
@@ -60,7 +68,7 @@ const Header = ({
                 }
             }
         }
-    }, [followNotif]);
+    }, [followNotifContainer]);
     useEffect(() => {
         if (Array.isArray(groupNotifContainer)) {
             for (let i = 0; i < groupNotifContainer.length; i++) {
@@ -70,7 +78,7 @@ const Header = ({
                 }
             }
         }
-    }, []);
+    }, [groupNotifContainer]);
     return (
         <div className='headerContainer'>
             <div className='header'>

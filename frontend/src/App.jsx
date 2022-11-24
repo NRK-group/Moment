@@ -66,19 +66,6 @@ function App() {
                     return [data.data, ...prev];
                 });
             }
-            if (pathname !== '/notifications/group') {
-                socket.onmessage = (e) => {
-                    let data = JSON.parse(e.data);
-                    if (
-                        data.type === 'eventNotif' ||
-                        data.type === 'groupInvitationJoin' ||
-                        data.type === 'groupInvitationRequest'
-                    ) {
-                        console.log('new group notif');
-                        setGroupNotif(true);
-                    }
-                };
-            }
         };
     }
     useEffect(() => {
@@ -92,7 +79,7 @@ function App() {
                 }
             }
         }
-    }, [followNotifContainer]);
+    }, [followNotif]);
     useEffect(() => {
         if (pathname !== '/notifications/group') {
             if (Array.isArray(groupNotifContainer)) {
@@ -199,10 +186,6 @@ function App() {
                                     socket={socket}
                                     followNotif={followNotif}
                                     setFollowNotif={setFollowNotif}
-                                    followNotifContainer={followNotifContainer}
-                                    setFollowNotifContainer={
-                                        setFollowNotifContainer
-                                    }
                                     setGroupNotif={setGroupNotif}
                                     groupNotif={groupNotif}
                                 />

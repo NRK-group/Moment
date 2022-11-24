@@ -219,7 +219,7 @@ func GetAllMembersOfGroup(id string, database *structs.DB) ([]structs.Member, er
 func InsertNewGroupChat(groupId string, database *structs.DB) error {
 	stmt, err := database.DB.Prepare("INSERT INTO Chat (chatId, groupId, user1, user2, updatedAt) VALUES (?, ?, ?, ?, ?)")
 	chatId := uuid.NewV4().String()
-	updateAt := time.Now().String()
+	updateAt := time.Now()
 	if err != nil {
 		l.LogMessage("Chat", "InsertNewGroupChat - Insert Error", err)
 		return err

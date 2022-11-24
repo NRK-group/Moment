@@ -9,7 +9,14 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import GetProfile from '../../pages/profile/ProfileData';
 import { GetChatList } from './hooks/getChatList';
-const Chat = ({ isMobile, socket, newMessageNotif, setNewMessageNotif }) => {
+const Chat = ({
+    isMobile,
+    socket,
+    newMessageNotif,
+    setNewMessageNotif,
+    setGroupNotif,
+    setFollowNotif,
+}) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
     let user = document.cookie.split('=')[1].split('&')[0];
@@ -39,6 +46,17 @@ const Chat = ({ isMobile, socket, newMessageNotif, setNewMessageNotif }) => {
                     data.type === 'groupMessage'
                 ) {
                     setNewMessageNotif((prev) => prev + 1);
+                }
+                if (
+                    data.type === 'eventNotif' ||
+                    data.type === 'groupInvitationJoin' ||
+                    data.type === 'groupInvitationRequest'
+                ) {
+                    console.log('new group notif');
+                    setGroupNotif(true);
+                }
+                if (data.type === 'followRequest') {
+                    setFollowNotif(true);
                 }
             }
         };
@@ -81,6 +99,12 @@ const Chat = ({ isMobile, socket, newMessageNotif, setNewMessageNotif }) => {
                                                     socket={socket}
                                                     setNewMessage={
                                                         setNewMessageNotif
+                                                    }
+                                                    setGroupNotif={
+                                                        setGroupNotif
+                                                    }
+                                                    setFollowNotif={
+                                                        setFollowNotif
                                                     }
                                                     username={username}
                                                     setArrange={setArrange}

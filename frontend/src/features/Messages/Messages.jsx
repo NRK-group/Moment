@@ -60,7 +60,6 @@ export const Messages = ({
     };
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            console.log('enter');
             sendMessage(e);
             return;
         }
@@ -71,7 +70,7 @@ export const Messages = ({
             JSON.stringify({
                 type: type + 'typing', // message, notification, followrequest // "privateMessage", "groupMessage", or "typing"
                 chatId: chatId,
-                senderId: username, // senderid
+                senderId: currentUserInfo, // senderid
                 receiverId: details.id, //change to the id of the receiver
             })
         );
@@ -88,7 +87,6 @@ export const Messages = ({
                         setNewMessage((prev) => prev + 1);
                     }
                     setArrange((msg) => {
-                        console.log(msg, data);
                         let msg2 = msg.map((message) => {
                             if (message.chatId === data.chatId) {
                                 message.content.content = data.content;
@@ -117,7 +115,10 @@ export const Messages = ({
                         isTyping.current.style.display = 'none';
                     }
                     if (data.type === type + 'typing') {
-                        isTyping.current.innerText = `${data.senderId} is typing...`;
+                        console.log(user[data.senderId].name);
+                        isTyping.current.innerText = `${
+                            user[data.senderId].name
+                        } is typing...`;
                         //change the typing status
                         isTyping.current.style.display = 'block';
                         debounce(() => {

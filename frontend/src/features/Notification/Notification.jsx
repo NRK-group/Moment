@@ -7,10 +7,8 @@ export const Notification = ({
     socket,
     followNotif,
     setFollowNotif,
-    followNotifContainer,
-    setFollowNotifContainer,
     groupNotif,
-    setGroupNotif
+    setGroupNotif,
 }) => {
     return (
         <Body styleName='mobile'>
@@ -23,14 +21,8 @@ export const Notification = ({
                         groupNotif={groupNotif}
                         setGroupNotif={setGroupNotif}
                         setFollowNotif={setFollowNotif}
-                        setFollowNotifContainer={setFollowNotifContainer}
                     />
-                    <NotificationContentContainer
-                        socket={socket}
-                        followNotifContainer={followNotifContainer}
-                        setFollowNotif={setFollowNotif}
-                        setFollowNotifContainer={setFollowNotifContainer}
-                    />
+                    <NotificationContentContainer socket={socket} />
                 </div>
             </Card>
         </Body>

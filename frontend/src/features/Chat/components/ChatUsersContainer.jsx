@@ -7,7 +7,7 @@ export const ChatUsersContainer = ({
     styleName,
     chatList,
     socket,
-    setMessageNotif,
+    setNewMessageNotif,
     style,
     username,
 }) => {
@@ -38,7 +38,7 @@ export const ChatUsersContainer = ({
                 return;
             }
         }
-        setMessageNotif(isNotif);
+        setNewMessageNotif(isNotif);
     };
     return (
         <div className={`chatUsersContainer ${styleName}`}>

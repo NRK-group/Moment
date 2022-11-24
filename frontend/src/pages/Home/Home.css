@@ -17,6 +17,7 @@
     align-items: center;
     background-color: var(--background-color);
     overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .homePage::-webkit-scrollbar {

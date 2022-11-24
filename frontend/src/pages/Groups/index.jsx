@@ -51,7 +51,6 @@ function Groups({ isMobile, socket }) {
             let holder = await GetAllGroupPosts(fetchAllUsergroups[0].GroupID);
             setGroupPosts(holder);
             holder = await GetAllGroupEvents(fetchAllUsergroups[0].GroupID);
-            console.log(holder)
             setGroupE(holder);
         }
     };
@@ -321,6 +320,7 @@ function Groups({ isMobile, socket }) {
                                 ))}
                             {groupE &&
                                 groupE.map((data) => (
+                                    // console.log(data)
                                     <Event
                                         key={data.EventId}
                                         eventContent={data.Description}

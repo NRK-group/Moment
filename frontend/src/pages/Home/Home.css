@@ -15,7 +15,7 @@
     width: 70vw;
     height: 90%;
     align-items: center;
-    background-color: var(--background-color);
+    /* background-color: var(--background-color); */
     overflow-x: auto;
 }
 

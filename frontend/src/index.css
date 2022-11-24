@@ -36,3 +36,8 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+*::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+}

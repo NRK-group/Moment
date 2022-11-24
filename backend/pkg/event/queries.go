@@ -15,7 +15,6 @@ import (
 )
 
 func AllEventByGroup(groupId, userId string, database *structs.DB) ([]structs.Event, error) {
-	var event structs.Event
 	var events []structs.Event
 	var err error
 	rows, err := database.DB.Query("SELECT * FROM Event WHERE groupId = '" + groupId + "'")
@@ -23,8 +22,10 @@ func AllEventByGroup(groupId, userId string, database *structs.DB) ([]structs.Ev
 		fmt.Print(err)
 		return nil, err
 	}
-
+	
 	for rows.Next() {
+		var event structs.Event
+
 		rows.Scan(&event.EventId, &event.UserId, &event.GroupId, &event.Name, &event.ImageUpload, &event.Description, &event.Location, &event.StartTime, &event.EndTime, &event.CreatedAt)
 
 		EventP, _ := AllEventParticipant(event.EventId, database)
@@ -32,7 +33,7 @@ func AllEventByGroup(groupId, userId string, database *structs.DB) ([]structs.Ev
 		for _, user := range EventP {
 			fmt.Println("user ", user)
 			if user.Status == 1 {
-				event.NumOfParticipants = event.NumOfParticipants + 1
+				event.NumOfParticipants++
 				event.Participants = append([]structs.EventParticipant{user}, event.Participants...)
 			}
 		}

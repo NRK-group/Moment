@@ -92,7 +92,7 @@ export default function Event({
                         setEle(<GroupEventsParticipants data={eventObj.Participants
                         }/>)
                         setOpenModal(true)
-                    }}}>Numner of members going : {eventObj.NumOfParticipants}</div>
+                    }}}>Number of members going : {eventObj.NumOfParticipants}</div>
                 </Card>
             </Card>
             <br />

@@ -1,6 +1,7 @@
 import Card from '../../components/card/Card';
 import './Event.css';
 import { useEffect, useState } from 'react';
+import GroupEventsParticipants from '../../pages/Groups/components/GroupEventsParticipants';
 
 export default function Event({
     eventObj,
@@ -14,6 +15,8 @@ export default function Event({
     eventId,
     setFlag,
     flag,
+    setEle,
+    setOpenModal,
 }) {
 
     const [eventObject, setEventObject] = useState(null);

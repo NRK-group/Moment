@@ -184,3 +184,21 @@ func GetInvitationNotif(userId string, database *structs.DB) ([]structs.GroupNot
 	}
 	return notifs, nil
 }
+
+func GetAllInvitationNotif(database *structs.DB) ([]structs.GroupNotif, error) {
+	var notif structs.GroupNotif
+	var notifs []structs.GroupNotif
+	var err error
+	rows, err := database.DB.Query("SELECT * FROM InviteNotif")
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		err := rows.Scan(&notif.GroupID, &notif.UserId, &notif.ReceiverId, &notif.CreatedAt, &notif.Type, &notif.Status, &notif.Read)
+		if err != nil {
+			return nil, err
+		}
+		notifs = append([]structs.GroupNotif{notif}, notifs...)
+	}
+	return notifs, nil
+}

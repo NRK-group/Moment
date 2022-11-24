@@ -1,5 +1,6 @@
 import './Groups.css';
 import { GetCookie } from '../profile/ProfileData';
+import { useNavigate } from 'react-router-dom';
 import Body from '../../components/Body/Body';
 import Card from '../../components/card/Card';
 import Post from '../../features/Post';
@@ -29,6 +30,8 @@ import { useRef, useState, useEffect } from 'react';
 function Groups({ isMobile, socket }) {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
+
+    const navigate = useNavigate();
 
     const GetAllUsergroups = async () => {
         let fetchAllUsergroups = await fetch(
@@ -111,7 +114,7 @@ function Groups({ isMobile, socket }) {
     };
 
     const dropdown = useRef(null);
-    const [toggle, setToggle] = useState(true);
+    const [toggle, setToggle] = useState(false);
 
     const OpenDropdownMenu = async () => {
         setToggle(!toggle);
@@ -124,6 +127,13 @@ function Groups({ isMobile, socket }) {
             dropdown.current.style.display = 'none';
         }
     };
+
+    window.onclick = function () {
+       if(dropdown.current.style.display === 'block' && !toggle){
+        dropdown.current.style.display = 'none';
+        setToggle(!toggle);
+       }
+    }
 
     return (
         <Body styleName={bodyStyleName}>
@@ -231,7 +241,7 @@ function Groups({ isMobile, socket }) {
                                             setOpenModal(true);
                                         }}>
                                         {' '}
-                                        Create A Group
+                                        Create a group
                                     </p>
 
                                     <p
@@ -264,7 +274,7 @@ function Groups({ isMobile, socket }) {
                                             setOpenModal(true);
                                         }}>
                                         {' '}
-                                        Create A Group
+                                        Create a group
                                     </p>
                                 </>
                             )}
@@ -323,6 +333,8 @@ function Groups({ isMobile, socket }) {
                                         eventObj={data}
                                         setFlag={setFlag}
                                         flag={flag}
+                                        setEle={setEle}
+                                        setOpenModal={setOpenModal}
                                     />
                                 ))}
                         </div>
@@ -361,7 +373,8 @@ function Groups({ isMobile, socket }) {
                         </div>
                         {(groupSelect &&
                             groupSelect.Members.map((ele) => (
-                                <span key={ele.UserId}>
+                                
+                                <span key={ele.UserId} onClick={()=>  navigate(`/profile?id=${ele.UserId}`)}>
                                     <MiniUserCard
                                         imgStyleName={'miniUserCardImg'}
                                         optContent={ele.UserName}>

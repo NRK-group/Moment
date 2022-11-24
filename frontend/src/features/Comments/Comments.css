@@ -37,7 +37,7 @@
 }
 
 .CommentsImg img {
-    object-fit: fill;
+    object-fit: contain;
     height: inherit;
     width: fit-content;
 }

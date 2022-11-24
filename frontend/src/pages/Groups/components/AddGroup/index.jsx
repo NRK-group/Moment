@@ -32,7 +32,7 @@ export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
                 GetCookie('session_token').split('&')[0],
                 selectR.current.value,
                 socket,
-                'groupInvitationJoin',
+                'groupInvitationInvite',
                 creategroup
             );
         }

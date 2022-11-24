@@ -20,13 +20,16 @@ export default function Event({
 }) {
 
     const [eventObject, setEventObject] = useState(null);
+    const [staus, setStaus] = useState(attending);
 
     useEffect(() => {
         setEventObject(eventObj)
     }, [flag]);
 
     const UpdateAttends = async () => {
+
         console.log({eventObject})
+     
         if (eventObject !== null) {
         let updateAttends = await fetch(
             `http://localhost:5070/updateEventParticipant`,
@@ -40,6 +43,7 @@ export default function Event({
             .then((data) => data);
         
             setEventObject(null)
+            setStaus(updateAttends)
             setFlag(!flag)
         }
     };
@@ -80,10 +84,10 @@ export default function Event({
                     <br />
                     <br /> 
                     <label>Attending:</label>{' '}
-                    <button onClick={() => UpdateAttends()}>{attending !== "Going"? "Not Going": "Going"}</button>
+                    <button onClick={() => UpdateAttends()}>{staus !== "Going"? "Not Going": "Going"}</button>
         
                     <div onClick={()=>{
-                        console.log("rerrrs")
+                        
                         if(eventObj.NumOfParticipants > 0){
                         setEle(<GroupEventsParticipants data={eventObj.Participants
                         }/>)

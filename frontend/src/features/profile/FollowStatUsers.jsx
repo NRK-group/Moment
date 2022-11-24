@@ -9,6 +9,7 @@ export default function FollowStatUsers({
     btnAction,
     profileId,
     crossIcon,
+    typeVal,
 }) {
 const [type, setType] = useState(typeVal)
 const navigate = useNavigate("/")

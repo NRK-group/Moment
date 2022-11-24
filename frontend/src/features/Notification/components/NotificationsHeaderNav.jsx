@@ -2,7 +2,6 @@ import { NavLink, Outlet } from 'react-router-dom';
 export const NotificationsHeaderNav = ({
     followNotif,
     setFollowNotif,
-    setFollowNotifContainer,
     socket,
     groupNotif,
     setGroupNotif,

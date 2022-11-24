@@ -8,13 +8,15 @@ export default function ProfilePosts(props) {
     const [empty, setEmpty] = useState('');
 
     useEffect(() => {
-        GetPosts(props.id).then((resp) => setPosts(resp));
+        GetPosts(props.id).then((resp) =>
+            resp ? setPosts(resp) : setPosts([])
+        );
         if (posts.length != 0) setEmpty('noContent');
     }, [props.id]);
-    let privacyNum
-    if (props.privacyVal === "Follow") privacyNum = 1
-    if (props.privacyVal === "Following") privacyNum = 0
-    if (props.privacyVal === "Close Friend")privacyNum = -1
+    let privacyNum;
+    if (props.privacyVal === 'Follow') privacyNum = 1;
+    if (props.privacyVal === 'Following') privacyNum = 0;
+    if (props.privacyVal === 'Close Friend') privacyNum = -1;
     return (
         <Card styleName='profilePostSection'>
             <Card styleName={props.contentSelector}>
@@ -30,8 +32,8 @@ export default function ProfilePosts(props) {
             </Card>
             <Card styleName={props.postContainer + ' ' + empty}>
                 {posts &&
-                    posts.map((data) => (
-                        (data.Privacy >= privacyNum || !props.id) ? (
+                    posts.map((data) =>
+                        data.Privacy >= privacyNum || !props.id ? (
                             <Post
                                 key={data.PostID}
                                 avatarSrc={`http://localhost:5070/${data.Image}`}
@@ -44,7 +46,7 @@ export default function ProfilePosts(props) {
                                 postId={data.PostID}
                             />
                         ) : null
-                    ))}
+                    )}
             </Card>
         </Card>
     );

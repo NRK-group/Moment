@@ -43,13 +43,13 @@ export const FollowNotif = ({ socket }) => {
                     }
                     return notif;
                 });
-                setFollowNotifContainer(newNotif);
+                setNotifications(newNotif);
             }
             if (type === 'declineFollowRequest') {
                 let newNotif = notifications.filter(
                     (notif) => notif.userId.id !== receiverId
                 );
-                setFollowNotifContainer(newNotif);
+                setNotifications(newNotif);
             }
         }
     };

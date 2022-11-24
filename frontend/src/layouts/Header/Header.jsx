@@ -62,7 +62,7 @@ const Header = ({
     useEffect(() => {
         if (Array.isArray(followNotifContainer)) {
             for (let i = 0; i < followNotifContainer.length; i++) {
-                if (followNotifContainer[i].Read === 0) {
+                if (followNotifContainer[i].read === 0) {
                     setFollowNotif(true);
                     return;
                 }

@@ -195,6 +195,7 @@ word-break: break-word;
     height: 80%;
     min-height: 450px;
     min-width: 350px;
+    max-width: 375px;
     border-radius: 5px;
 }
 

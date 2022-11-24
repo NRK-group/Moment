@@ -36,6 +36,7 @@ function App() {
     const [followNotifContainer, setFollowNotifContainer] = useState();
     const [groupNotif, setGroupNotif] = useState(false);
     const [groupNotifContainer, setGroupNotifContainer] = useState();
+    const [newMessageNotif, setNewMessageNotif] = useState(0);
     const { pathname } = useLocation();
     let isMobile = width < 600;
     useEffect(() => {
@@ -117,6 +118,7 @@ function App() {
                     setGroupNotifContainer={setGroupNotifContainer}
                     groupNotifContainer={groupNotifContainer}
                     setGroupNotif={setGroupNotif}
+                    newMessageNotif={newMessageNotif}
                     onChange={(e) => {
                         setQuery(e.target.value);
                     }}
@@ -164,9 +166,8 @@ function App() {
                                 <Chat
                                     isMobile={isMobile}
                                     socket={socket}
-                                    chatList={chatList}
-                                    setMessageNotif={setMessageNotif}
-                                    setNewMessage={setNewMessage}
+                                    newMessageNotif={newMessageNotif}
+                                    setNewMessageNotif={setNewMessageNotif}
                                 />
                             }
                         />

@@ -8,20 +8,12 @@ import { NewChatModal } from './components/NewChatModal';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import GetProfile from '../../pages/profile/ProfileData';
-const Chat = ({
-    isMobile,
-    socket,
-    setMessageNotif,
-    chatList,
-    setNewMessage,
-}) => {
+import { GetChatList } from './hooks/getChatList';
+const Chat = ({ isMobile, socket, newMessageNotif, setNewMessageNotif }) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
     let cardStyleName = isMobile ? 'mobileCard' : 'desktopCard';
     let user = document.cookie.split('=')[1].split('&')[0];
     const [arrange, setArrange] = useState([]);
-    useEffect(() => {
-        setArrange(chatList);
-    }, [chatList]);
     const [username, setUsername] = useState('');
     useEffect(() => {
         GetProfile().then((res) => {
@@ -33,6 +25,24 @@ const Chat = ({
             }
         });
     }, []);
+    const [renderChatList, setRenderChatList] = useState([]);
+    GetChatList(setRenderChatList, newMessageNotif);
+    useEffect(() => {
+        setArrange(renderChatList);
+    }, [renderChatList]);
+    if (socket) {
+        socket.onmessage = (event) => {
+            if (event.data) {
+                let data = JSON.parse(event.data);
+                if (
+                    data.type === 'privateMessage' ||
+                    data.type === 'groupMessage'
+                ) {
+                    setNewMessageNotif((prev) => prev + 1);
+                }
+            }
+        };
+    }
     return (
         <>
             <Body styleName={bodyStyleName}>
@@ -46,7 +56,7 @@ const Chat = ({
                                 currentUserInfo={user}
                                 chatList={arrange ? arrange : []}
                                 socket={socket}
-                                setMessageNotif={setMessageNotif}
+                                setNewMessageNotif={setNewMessageNotif}
                             />
                             <div className='messagesContainer'>
                                 <>
@@ -70,7 +80,7 @@ const Chat = ({
                                                     currentUserInfo={user} // change to user info
                                                     socket={socket}
                                                     setNewMessage={
-                                                        setNewMessage
+                                                        setNewMessageNotif
                                                     }
                                                     username={username}
                                                     setArrange={setArrange}

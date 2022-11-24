@@ -12,7 +12,6 @@ const Header = ({
     onChange,
     setMessageNotif,
     setClist,
-    newMessage,
     chatList,
     followNotif,
     setFollowNotifContainer,
@@ -23,10 +22,11 @@ const Header = ({
     groupNotifContainer,
     setGroupNotif,
     socket,
+    newMessageNotif,
 }) => {
     GetNotif('follow', setFollowNotifContainer);
     GetNotif('group', setGroupNotifContainer);
-    GetChatList(setClist, newMessage);
+    GetChatList(setClist, newMessageNotif);
     if (socket) {
         socket.onmessage = (e) => {
             let data = JSON.parse(e.data);
@@ -55,8 +55,10 @@ const Header = ({
             for (let i = 0; i < chatList.length; i++) {
                 if (chatList[i].notif > 0) {
                     setMessageNotif(true);
+                    return;
                 }
             }
+            setMessageNotif(false);
         }
     }, [chatList]);
     useEffect(() => {

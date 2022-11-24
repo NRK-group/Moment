@@ -54,7 +54,7 @@ function App() {
                 data.type === 'groupMessage'
             ) {
                 console.log('new message');
-                setNewMessage((prev) => prev + 1);
+                setNewMessageNotif((prev) => prev + 1);
             }
             if (data.type === 'followRequest') {
                 setFollowNotifContainer((prev) => {
@@ -189,6 +189,7 @@ function App() {
                                     setFollowNotif={setFollowNotif}
                                     setGroupNotif={setGroupNotif}
                                     groupNotif={groupNotif}
+                                    setNewMessageNotif={setNewMessageNotif}
                                 />
                             }
                         />

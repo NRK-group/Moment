@@ -44,7 +44,6 @@ function App() {
             setSocket(CreateWebSocket());
         }
     }, [authorised]);
-    let [newMessage, setNewMessage] = useState(0);
     const [chatList, setClist] = useState([]);
     if (socket) {
         socket.onmessage = (e) => {
@@ -108,7 +107,6 @@ function App() {
                     messageNotif={messageNotif}
                     setMessageNotif={setMessageNotif}
                     setClist={setClist}
-                    newMessage={newMessage}
                     chatList={chatList}
                     followNotif={followNotif}
                     setFollowNotifContainer={setFollowNotifContainer}
@@ -167,6 +165,8 @@ function App() {
                                     isMobile={isMobile}
                                     socket={socket}
                                     newMessageNotif={newMessageNotif}
+                                    setGroupNotif={setGroupNotif}
+                                    setFollowNotif={setFollowNotif}
                                     setNewMessageNotif={setNewMessageNotif}
                                 />
                             }

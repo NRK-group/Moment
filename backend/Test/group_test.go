@@ -13,8 +13,6 @@ import (
 	"backend/pkg/handler"
 	"backend/pkg/member"
 	"backend/pkg/structs"
-
-	uuid "github.com/satori/go.uuid"
 )
 
 var database = DatabaseSetup()
@@ -62,7 +60,7 @@ func TestHealthCheckGroupHandlerHttpGet(t *testing.T) {
 			status, http.StatusOK)
 	}
 	expected2 := http.StatusOK
-	if status := rr.Code; status != expected2 {
+	if rr.Code != expected2 {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected2)
 	}
@@ -99,29 +97,6 @@ func TestCreateGroup(t *testing.T) {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 	})
-}
-
-func TestGroupHandlerMakeAGroup(t *testing.T) {
-	w, Env, newUser := LoginUser(database, t)
-
-	group1 := structs.Group{Name: "Pie" + uuid.NewV4().String(), Description: "Eating Pie", Admin: newUser.UserId}
-	body, _ := json.Marshal(group1)
-
-	reqq, err := http.NewRequest("POST", "/group", bytes.NewBuffer(body))
-	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(Env.Group)
-	handler.ServeHTTP(rr, reqq)
-	expected := rr.Body.String()
-	expectedStr := "successfully in creating a group"
-	if expectedStr != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
-	}
 }
 
 func TestGroupHandlerGettingAllGroups(t *testing.T) {

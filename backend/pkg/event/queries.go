@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"backend/pkg/auth"
 	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/member"
@@ -13,7 +14,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-func AllEventByGroup(groupId string, database *structs.DB) ([]structs.Event, error) {
+func AllEventByGroup(groupId, userId string, database *structs.DB) ([]structs.Event, error) {
 	var event structs.Event
 	var events []structs.Event
 	var err error
@@ -26,6 +27,16 @@ func AllEventByGroup(groupId string, database *structs.DB) ([]structs.Event, err
 	for rows.Next() {
 		rows.Scan(&event.EventId, &event.UserId, &event.GroupId, &event.Name, &event.ImageUpload, &event.Description, &event.Location, &event.StartTime, &event.EndTime, &event.CreatedAt)
 
+		EventP, _ := AllEventParticipant(event.EventId, database)
+
+		for _, user := range EventP {
+			fmt.Println("user ", user)
+			if user.Status == 1 {
+				event.NumOfParticipants = event.NumOfParticipants + 1
+				event.Participants = append([]structs.EventParticipant{user}, event.Participants...)
+			}
+		}
+
 		events = append([]structs.Event{event}, events...)
 	}
 	return events, nil
@@ -37,7 +48,7 @@ func AddEventParticipant(eventId, userId string, database *structs.DB) (string, 
 	INSERT INTO EventParticipant values (?, ?, ?, ?)
 `)
 
-	_, err := stmt.Exec(eventId, userId, 1, createdAt)
+	_, err := stmt.Exec(eventId, userId, 0, createdAt)
 	if err != nil {
 		fmt.Println("inside Create Add Event Participant", err)
 		return "", err
@@ -45,71 +56,64 @@ func AddEventParticipant(eventId, userId string, database *structs.DB) (string, 
 	return eventId, nil
 }
 
-func UpdateEventParticipant(event structs.Event, database structs.DB) (string, error) {
-	res, eventS, err := CheckIfUserInEventAndIfNotAddThem(event.EventId, event.UserId, &database)
+func GetEventParticipant(eventId, userId string, database *structs.DB) (structs.EventParticipant, error) {
+	var eventParticipant structs.EventParticipant
+	var err error
+	rows, err := database.DB.Query("SELECT * FROM EventParticipant WHERE eventId = '" + eventId + "' AND userId = '" + userId + "'")
 	if err != nil {
-		fmt.Println(err)
-		return "Error in UpdateEventParticipant", err
+		fmt.Print(err)
+		return eventParticipant, err
 	}
 
+	for rows.Next() {
+		rows.Scan(&eventParticipant.EventId, &eventParticipant.UserId, &eventParticipant.Status, &eventParticipant.CreatedAt)
+	}
+	return eventParticipant, nil
+}
 
-fmt.Println(res)
-	if res {
-		return "Going", nil
-	} else if eventS.Status == 1 {
-		fmt.Println("eventS.Status -", eventS.Status)
-		update := "UPDATE EventParticipant SET status = ? WHERE eventId = '" + event.EventId + "' AND userId = '" + event.UserId + "'"
+func UpdateEventParticipant(event structs.Event, userId string, database structs.DB) (string, error) {
+	participant, _ := GetEventParticipant(event.EventId, userId, &database)
+
+	if participant.Status == 1 {
+		update := "UPDATE EventParticipant SET status = ? WHERE eventId = '" + event.EventId + "' AND userId = '" + userId + "'"
 		stmt, prepErr := database.DB.Prepare(update)
 		if prepErr != nil {
 			log.Println("Error updating field: ", prepErr)
 			return "Error updating", prepErr
 		}
-		fmt.Println("prepErr -", prepErr)
 		_, err := stmt.Exec(0)
 		if err != nil {
 			fmt.Println("Error updating ", err)
 			return "Error updating", err
 		}
-		fmt.Println("err -", err)
 		return "Not Going", nil
+	} else if participant.Status == 0 {
+
+		update := "UPDATE EventParticipant SET status = ? WHERE eventId = '" + event.EventId + "' AND userId = '" + userId + "'"
+		stmt, prepErr := database.DB.Prepare(update)
+		if prepErr != nil {
+			log.Println("Error updating field: ", prepErr)
+			return "Error updating", prepErr
+		}
+		_, err := stmt.Exec(1)
+		if err != nil {
+			return "Error updating", err
+		}
+		return "Going", nil
 	}
 
-	update := "UPDATE EventParticipant SET status = ? WHERE eventId = '" + event.EventId + "' AND userId = '" + event.UserId + "'"
-	stmt, prepErr := database.DB.Prepare(update)
-	if prepErr != nil {
-		log.Println("Error updating field: ", prepErr)
-		return "Error updating", prepErr
-	}
-	_, err = stmt.Exec(1)
+	_, err := AddEventParticipant(event.EventId, userId, &database)
 	if err != nil {
 		return "Error updating", err
 	}
-	return "Going", nil
-}
-
-func CheckIfUserInEventAndIfNotAddThem(eventId, userId string, database *structs.DB) (bool, structs.EventParticipant, error) {
-	var holder structs.EventParticipant
-
-	rows, err := database.DB.Query("SELECT * FROM EventParticipant WHERE eventId = '" + eventId + "' AND userId = '" + userId + "'")
-	if err != nil {
-		fmt.Println(err)
-		return false, holder, err
-	}
-	for rows.Next() {
-		rows.Scan(&holder.EventId, &holder.UserId, &holder.Status, &holder.CreatedAt)
-	}
-	if holder.Status != 0 && holder.Status != 1 {
-		_, err := AddEventParticipant(eventId, userId, database)
-		fmt.Println(err)
-		return true, holder, err
-	}
-	return false, holder, nil
+	return "Not Going", nil
 }
 
 func AllEventParticipant(eventId string, database *structs.DB) ([]structs.EventParticipant, error) {
 	var eventParticipant structs.EventParticipant
 	var eventParticipants []structs.EventParticipant
 	var err error
+	var reUser structs.User
 	rows, err := database.DB.Query("SELECT * FROM EventParticipant WHERE eventId = '" + eventId + "'")
 	if err != nil {
 		fmt.Print(err)
@@ -119,15 +123,22 @@ func AllEventParticipant(eventId string, database *structs.DB) ([]structs.EventP
 	var eventId2, userId, createdAt string
 	for rows.Next() {
 		rows.Scan(&eventId2, &userId, &status, &createdAt)
+
+		err2 := auth.GetUser("userId", userId, &reUser, *database)
+		if err2 != nil {
+			fmt.Print("AllEventParticipant -", err2)
+			return eventParticipants, err2
+		}
 		eventParticipant = structs.EventParticipant{
 			EventId:   eventId2,
 			UserId:    userId,
 			Status:    status,
+			Name:      reUser.FirstName,
 			CreatedAt: createdAt,
 		}
-		if status == 1 {
-			eventParticipants = append([]structs.EventParticipant{eventParticipant}, eventParticipants...)
-		}
+
+		eventParticipants = append([]structs.EventParticipant{eventParticipant}, eventParticipants...)
+
 	}
 	return eventParticipants, nil
 }
@@ -210,6 +221,7 @@ func AddEvent(groupId string, event structs.Event, database *structs.DB) (string
 		l.LogMessage("Event.go", "AddEvent", err)
 		return "", err
 	}
+
 	return eventId, nil
 }
 

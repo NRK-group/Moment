@@ -29,6 +29,8 @@ func (database *Env) UpdateEventParticipant(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	cookie, _ := auth.SliceCookie(c.Value)
+
 	if r.Method == "POST" {
 
 		var eventS structs.Event
@@ -39,7 +41,7 @@ func (database *Env) UpdateEventParticipant(w http.ResponseWriter, r *http.Reque
 			return
 		}
 
-		restr, err := event.UpdateEventParticipant(eventS, *database.Env)
+		restr, err := event.UpdateEventParticipant(eventS, cookie[0], *database.Env)
 		if err != nil {
 			fmt.Println(err)
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)

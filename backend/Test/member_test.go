@@ -118,6 +118,19 @@ func TestCreateMember(t *testing.T) {
 			t.Errorf("GetInvitationNotif Error %v", err)
 		}
 	})
+
+	t.Run("Get all group invite notif", func(t *testing.T) {
+		notif, err := member.GetAllInvitationNotif(database)
+		l.LogMessage("TestGetMemberNotif", "GetMemberNotif", notif)
+		if err != nil {
+			t.Errorf("GetInvitationNotif Error %v", err)
+		}
+		if len(notif) == 0 {
+			t.Errorf("Error - Declince %v", err)
+		}
+
+	})
+
 	t.Run("Decline member notif", func(t *testing.T) {
 		err := member.DeclineInvitationNotif(groupId, result2.UserId, result1.UserId, database)
 		if err != nil {

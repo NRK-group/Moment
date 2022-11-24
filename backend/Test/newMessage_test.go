@@ -72,6 +72,8 @@ func TestNewMessage(t *testing.T) {
 
 func TestNewMessageHandler(t *testing.T) {
 	Env := &handler.Env{Env: database}
+	delete, _ := database.DB.Prepare(`DELETE FROM User`)
+	delete.Exec()
 	email1 := "test" + uuid.NewV4().String() + "@test.com"
 	user1 := &structs.User{
 		FirstName: "Ricky", LastName: "Founder", NickName: "adriell", Email: email1, Password: "Hello123",

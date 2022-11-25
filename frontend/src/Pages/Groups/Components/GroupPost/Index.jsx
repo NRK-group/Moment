@@ -1,60 +1,45 @@
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../../components/card/Card';
-import { MessagesIcon } from '../../components/Icons/Icons';
-import { GetCookie } from '../../Pages/profile/ProfileData';
-import PrivacySelector from '../Profile/PrivacySelector';
-import './NewPost.css';
+import Card from '../../../../components/card/Card';
+import { MessagesIcon } from '../../../../components/Icons/Icons';
+import { GetCookie } from '../../../Profile/ProfileData';
+import '../../../../features/newpost/NewPost.css';
 
-export default function NewPost() {
+export default function GroupPost({ groupId, setOpenModal, flag, setFlag }) {
     const navigate = useNavigate('');
     let imgUpload = useRef(),
-        content = useRef(),
-        privacy = useRef();
+        content = useRef();
     const [image, setImage] = useState(null);
-    const [show, setShow] = useState(false);
 
     const handleChangeImage = (e) => {
         setImage(e.target.files[0]);
     };
 
     const UploadImage = (data) => {
-        return fetch(`http://localhost:5070/imageUpload`, {
+        let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
             credentials: 'include',
             method: 'POST',
             body: data,
+        }).then(async (res) => {
+            console.log(res);
         });
     };
 
-    function UploadPost(textVal, privacy) {
+    function UploadPost(textVal) {
         if (textVal.trim() === '') return;
-        let privacyInt;
-        switch (privacy) {
-            case 'Public':
-                privacyInt = 1;
-                break;
-            case 'Private':
-                privacyInt = 0;
-                break;
-            case 'Close Friends':
-                privacyInt = -1;
-                break;
-            default:
-                privacyInt = 0;
-                break;
-        }
 
         fetch(`http://localhost:5070/post`, {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({
                 Content: textVal,
+                GroupID: groupId,
                 UserID: GetCookie('session_token').split('&')[0],
-                Privacy: privacyInt,
             }),
         }).then(async (response) => {
             let resp = await response.json();
+
             if (image != null) {
                 const formData = new FormData();
                 formData.append('file', image);
@@ -62,24 +47,19 @@ export default function NewPost() {
                 formData.append('idType', 'postId');
                 formData.append('id', resp.Message);
 
-                UploadImage(formData).then((resp) => navigate('/home'));
+                UploadImage(formData);
                 setImage(null);
-            } else {
-                navigate('/home');
             }
+            setOpenModal(false);
+            setFlag(!flag);
             return resp;
         });
     }
     return (
-        <Card styleName='popUp'>
+        <div id='GroupPost'>
             <Card styleName='newPostBox'>
                 <Card styleName='newPostHeader'>
-                    <span className='newPostTitle'>Create a post</span>
-                    <span
-                        className='newPostHeaderCross'
-                        onClick={() => navigate('/home')}>
-                        &#10005;
-                    </span>
+                    <span className='newPostTitle'>Create a post </span>
                 </Card>
 
                 <Card styleName='NewPostContent'>
@@ -105,21 +85,6 @@ export default function NewPost() {
                     </Card>
 
                     <Card styleName='NewPostContentInput'>
-                        <PrivacySelector
-                            styleName='newPostPrivacySelector'
-                            closeFriends={true}
-                            refr={privacy}
-                            setShow={setShow}
-                            value={0}
-                        />
-                        {show && (
-                            <a
-                                href={'/closefriends'}
-                                className='updateCloseFriends'>
-                                Update Close Friends
-                            </a>
-                        )}
-
                         <textarea
                             ref={content}
                             cols='100'
@@ -131,18 +96,13 @@ export default function NewPost() {
                         />
                         <button
                             className='NewPostSendBtn'
-                            onClick={() =>
-                                UploadPost(
-                                    content.current.value,
-                                    privacy.current.value
-                                )
-                            }>
+                            onClick={() => UploadPost(content.current.value)}>
                             <span className='shareText'>Share</span>
                             <MessagesIcon />
                         </button>
                     </Card>
                 </Card>
             </Card>
-        </Card>
+        </div>
     );
 }

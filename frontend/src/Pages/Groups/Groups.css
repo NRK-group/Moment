@@ -1,0 +1,149 @@
+.Groups {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.Groups .dropdown-content {
+    top: 130px;
+    width: 200px;
+    right: auto;
+    max-height: 350px;
+    overflow-y: scroll;
+}
+
+.err {
+    color: red;
+}
+.GroupsList {
+    height: 50%;
+    overflow-y: scroll;
+    border-bottom: 1px solid var(--terheading-color);
+}
+
+.Groups .PostHeaderMenu {
+    display: flex;
+}
+
+.GroupsPostsArea {
+    width: 50%;
+}
+
+.Groups .PostHeader {
+    height: 50px;
+}
+
+.Group-Post {
+    height: 85vh;
+    overflow-y: scroll;
+}
+
+.GroupsMenuHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px;
+    height: 50px;
+    border-bottom: 1px solid var(--terheading-color);
+}
+
+.GroupsMenuHeader .searchContainer {
+    background-color: var(--background-color);
+}
+
+.GroupsLeftMenu {
+    width: 25%;
+    border: 1px solid var(--terheading-color);
+    overflow-y: scroll;
+}
+
+.GroupsRightMenu {
+    width: 25%;
+    border: 1px solid var(--terheading-color);
+    overflow-y: scroll;
+}
+
+.GroupsRightMenuIcon {
+    display: none;
+}
+
+.GroupsLeftMenuIcon {
+    display: none;
+}
+
+.GroupHeaderIcons {
+    display: none;
+}
+
+ .toggle {
+   
+    margin-top: '12px';
+    cursor: 'pointer';
+}
+
+.GroupPageMenu p {
+    margin-top: '12px';
+     cursor: 'pointer';
+}  
+
+.Join-Group {
+    text-align: center;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+    .GroupsRightMenu {
+        width: 0%;
+    }
+    .GroupsLeftMenu {
+        width: 0%;
+    }
+    .GroupsMenuHeader {
+        padding: unset;
+        height: 28px;
+    }
+    .GroupsPostsArea {
+        width: 100%;
+    }
+    .GroupsMenuHeader .search {
+        position: relative;
+        bottom: 20px;
+        left: 12px;
+        display: flex;
+    }
+
+    .GroupsLeftMenu .EventBtn p {
+        margin-top: 12px;
+    }
+
+    .Group-Post {
+        height: calc(79vh);
+    }
+
+    .GroupHeaderIcons {
+        display: flex;
+        padding: 4px;
+        cursor: pointer;
+    }
+
+    .GroupsRightMenuIcon {
+        display: flex;
+        padding: 3px;
+        position: relative;
+        top: 40vh;
+        width: fit-content;
+        right: 18px;
+        fill: black;
+        cursor: pointer;
+    }
+
+    .GroupsLeftMenuIcon {
+        display: flex;
+        padding: 3px;
+        position: relative;
+        left: 90%;
+        top: 300px;
+        fill: black;
+        cursor: pointer;
+    }
+}

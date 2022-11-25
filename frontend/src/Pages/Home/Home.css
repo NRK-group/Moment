@@ -1,0 +1,42 @@
+.homeHolder {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: inherit;
+    height:100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.homePage {
+    display: flex;
+    margin: auto;
+    margin-top: calc(var(--desktop-nav-height) + 10px) ;
+    width: 70vw;
+    height: 90%;
+    align-items: center;
+    /* background-color: var(--background-color); */
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.homePage::-webkit-scrollbar {
+    height: 5px;
+}
+.homePage:hover::-webkit-scrollbar-thumb {
+    transition: 0.5s;
+    background-color: var(--subheading-color);
+    border-radius: 20px;
+}
+
+
+
+@media only screen and (max-width: 600px) {
+    .homePage {
+        margin-top: 12%;
+        width: 100vw;
+    padding-bottom: 17%;
+    height: 100vh;
+    }
+
+}

@@ -1,0 +1,209 @@
+.newPostBox{
+    height: 425px;
+    width: 600px;
+    background-color: var(--background-color);
+    margin: auto;
+    margin-top: 7%;
+    border-radius: 5px;
+    padding: 1% ;
+}
+
+.selectCF {
+    margin: auto;
+    display: table;
+}
+
+.selectCF select {
+    width: 142px;
+    margin-right: 2px;
+}
+
+.NewPostContentInput {
+    display: flow-root;
+}
+
+.newPostHeader{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 11%;
+    padding: 0.5%;
+    border-bottom: 2px solid var(--terheading-color);
+}
+
+.newPostTitle{
+    width: fit-content;
+    font-size: var(--heding-font-size);
+    margin: auto;
+}
+
+.newPostHeaderCross{
+    width: fit-content;
+    position: absolute;
+    font-size: 1.4rem;
+    /* float: right; */
+    margin-left: 95%;
+}
+
+.newPostHeaderCross:hover {
+    cursor: pointer;
+}
+
+.NewPostContent{
+    height: 88%;
+    width: 100%;
+    margin: auto;
+}
+
+.newPostPhotoSection{
+    width: 42%;
+    height: fit-content;
+    text-align: center;
+    margin: auto;
+}
+
+.newPostImgHolder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 110px;
+    width: 225px;
+    margin: 0% auto;
+    background-image: url('./assets/landscape_img.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative
+    
+
+}
+
+.newPostImgBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* position: absolute; */
+    /* bottom: 0; */
+    height: 25px;
+    width: fit-content;
+    padding: 5%;
+    margin: 0 auto 5%;
+    /* margin-bottom: 0; */
+    color: white;
+    letter-spacing: 0.5px;
+    background-color: var(--button-color);
+    border: none;
+    border-radius: 4px;
+}
+
+.newPostPrivacySelector{
+    border-radius: 4px;
+    width: 120px;
+    margin: auto;
+}
+
+.shareText{
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 10%;
+}
+
+.NewPostContentInput{
+    margin: auto;
+    text-align: center;
+    /* width: 58%; */
+    height: fit-content;
+}
+
+.newPostTextContent{
+    display: flex;
+    padding: 2%;
+    margin: 4% auto 0;
+    width: 90%;
+    height: 40%;
+    width: 305px;
+    height: 130px;
+    border-radius: 5px;
+    border: 2px solid var(--subheading-color) ;
+    resize: none;
+}
+
+.newPostTextContent:focus {
+   border: none;
+   outline: 2px solid var(--button-color);
+   border-radius: 1px;
+}
+
+.NewPostSendBtn{
+    display: flex;
+    justify-content: center;
+    margin: 1.5% auto;
+    background: none;
+    border: none;
+}
+
+@media all and (max-width: 780px) {
+    .newPostBox{
+        height: 400px;
+        width: 450px;
+        padding: 0.61%;
+
+    }
+
+    .newPostImgHolder{
+        width: 90%;
+    }
+
+    .newPostHeaderCross{
+       margin-left: 93%; 
+       /* margin-: 2.5%; */
+    }
+    
+    
+}
+
+@media all and (max-width: 480px) {
+    .newPostBox{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+    }
+
+    .newPostPhotoSection{
+        align-items: center;
+        height: fit-content;
+        width: 100%;
+        padding: 0 1.5%;
+    }
+
+    .newPostImgHolder{
+        width: 300px;
+        height: 125px;
+        /* height: 80%; */
+        margin: 1% auto;
+        background-size: 45%;
+    }
+    
+    .newPostImgBtn{
+        height: 30px;
+        padding: 2%;
+        margin-bottom: 0;
+    }
+
+    .newPostPrivacySelector{
+        margin-bottom: 2%;
+    }
+
+    .NewPostContentInput{
+        width: 100%;
+        height: 62%;
+        margin: 4% auto;
+    }
+
+    .NewPostSendBtn{
+        margin-top: 4%;
+    }
+    .newPostTextContent{
+        margin-top: 1%;
+        min-height: 140px;
+    }
+}

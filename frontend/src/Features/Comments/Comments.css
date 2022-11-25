@@ -1,0 +1,196 @@
+.Comments {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    background-color: var(--background-color);
+    justify-content: center;
+}
+
+.CommentsImg {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--terheading-color);
+}
+
+.CommentsText {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+    border: 1px solid var(--terheading-color);
+    display: table;
+}
+
+.CommentsText p {
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+    width: 100%;
+    word-break: break-all;
+}
+
+.Comments-Img {
+    width: 120px;
+    overflow-x: scroll;
+    display: flex;
+}
+
+.CommentsImg img {
+    object-fit: contain;
+    height: inherit;
+    width: fit-content;
+}
+
+.CommentsSection {
+    width: 70%;
+    height: 100%;
+    border-right: 1px solid var(--terheading-color);
+}
+
+.CommentsLeft {
+    background-color: black;
+    height: 100%;
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+}
+
+.CommentsChat {
+    display: flex;
+    background-color: var(--background-color);
+    width: 100%;
+    height: 10%;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--terheading-color);
+}
+
+.CommentsChatIcons {
+    display: flex;
+}
+
+.CommentsChatIcons input {
+    width: 400px;
+    margin-left: 4px;
+}
+
+.CommentsChat p {
+    position: relative;
+    width: 15%;
+    margin-left: 16px;
+    cursor: pointer;
+}
+
+.CommentsSection .dropdown-content {
+    top: 100%;
+}
+
+.CommentsSection .PostHeaderMenu {
+    display: flex;
+}
+
+.CommentsSection .PostHeader img {
+    height: 35px;
+    width: 35px;
+}
+
+.CommentsSectionUsers img {
+    border-radius: 23px;
+}
+
+.CommentsSectionUsers {
+    height: 92%;
+    overflow-y: scroll;
+}
+
+.Commet-Content {
+    font: bold;
+}
+
+.CommentsSectionUsers .optContent {
+    color: black;
+}
+
+.CommentsSectionUsers .optContent .displayed-text {
+    width: 200px;
+    overflow-wrap: anywhere;
+}
+
+.CommentsSectionUsers .optContent P {
+    justify-content: left;
+    align-items: left;
+}
+
+.CommentsSectionUsers .miniUserCard {
+    height: fit-content;
+}
+
+.Comments-Emoji {
+    display: block;
+    position: absolute;
+    top: 34%;
+    left: 1vw;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.CommentsChat .react-emoji {
+    flex-direction: row-reverse;
+}
+
+.CommentsIcon {
+    display: flex;
+    width: 100px;
+    justify-content: space-around;
+}
+
+.CommentsLeft .react-input-emoji--input {
+    width: 530px;
+}
+
+@media only screen and (max-width: 700px) {
+    .Comments {
+        flex-direction: column;
+        overflow-y: scroll;
+    }
+
+    .CommentText {
+        display: flex;
+    }
+
+    .CommentsImg img {
+        height: 100%;
+        width: 97.8%;
+    }
+
+    .CommentsChatIcons input {
+        width: 70vw;
+        margin-left: 4px;
+    }
+
+    .CommentsChat {
+        height: auto;
+    }
+
+    .CommentsSection {
+        width: 100%;
+        height: 60%;
+    }
+
+    .CommentsSection .PostHeader {
+        height: 12%;
+    }
+
+    .CommentsSectionUsers {
+        height: 100%;
+    }
+
+    .CommentsLeft .react-input-emoji--input {
+        width: 220px;
+        height: inherit;
+    }
+}

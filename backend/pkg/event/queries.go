@@ -22,7 +22,7 @@ func AllEventByGroup(groupId, userId string, database *structs.DB) ([]structs.Ev
 		fmt.Print(err)
 		return nil, err
 	}
-	
+
 	for rows.Next() {
 		var event structs.Event
 
@@ -31,7 +31,6 @@ func AllEventByGroup(groupId, userId string, database *structs.DB) ([]structs.Ev
 		EventP, _ := AllEventParticipant(event.EventId, database)
 
 		for _, user := range EventP {
-			fmt.Println("user ", user)
 			if user.Status == 1 {
 				event.NumOfParticipants++
 				event.Participants = append([]structs.EventParticipant{user}, event.Participants...)
@@ -72,7 +71,7 @@ func GetEventParticipant(eventId, userId string, database *structs.DB) (structs.
 	return eventParticipant, nil
 }
 
-func UpdateEventParticipant(event structs.Event, userId string, database structs.DB) (string, error) {
+func UpdateEventParticipant(event structs.Event, userId string, database structs.DB) (structs.Event, error) {
 	participant, _ := GetEventParticipant(event.EventId, userId, &database)
 
 	if participant.Status == 1 {
@@ -80,34 +79,64 @@ func UpdateEventParticipant(event structs.Event, userId string, database structs
 		stmt, prepErr := database.DB.Prepare(update)
 		if prepErr != nil {
 			log.Println("Error updating field: ", prepErr)
-			return "Error updating", prepErr
+			return event, prepErr
 		}
 		_, err := stmt.Exec(0)
 		if err != nil {
 			fmt.Println("Error updating ", err)
-			return "Error updating", err
+			return event, err
 		}
-		return "Not Going", nil
+		event.Status = "Not Going"
+
+		var holder []structs.EventParticipant
+
+		for _, user := range event.Participants {
+			if user.UserId == userId {
+				event.NumOfParticipants--
+			} else {
+				holder = append([]structs.EventParticipant{user}, holder...)
+			}
+		}
+		event.Participants = holder
+		return event, nil
 	} else if participant.Status == 0 {
 
 		update := "UPDATE EventParticipant SET status = ? WHERE eventId = '" + event.EventId + "' AND userId = '" + userId + "'"
 		stmt, prepErr := database.DB.Prepare(update)
 		if prepErr != nil {
 			log.Println("Error updating field: ", prepErr)
-			return "Error updating", prepErr
+			return event, prepErr
 		}
 		_, err := stmt.Exec(1)
 		if err != nil {
-			return "Error updating", err
+			return event, err
 		}
-		return "Going", nil
+		event.Status = "Going"
+
+		var holder structs.EventParticipant
+
+		user, err := helper.GetUserInfo(userId, &database)
+		if err != nil {
+			return event, err
+		}
+
+		holder.Name = user.FirstName
+		holder.UserId = userId
+		holder.EventId = event.EventId
+		holder.Status = 1
+
+		event.NumOfParticipants++
+		event.Participants = append([]structs.EventParticipant{holder}, event.Participants...)
+
+		return event, nil
 	}
 
 	_, err := AddEventParticipant(event.EventId, userId, &database)
 	if err != nil {
-		return "Error updating", err
+		return event, err
 	}
-	return "Not Going", nil
+	event.Status = "Not Going"
+	return event, nil
 }
 
 func AllEventParticipant(eventId string, database *structs.DB) ([]structs.EventParticipant, error) {

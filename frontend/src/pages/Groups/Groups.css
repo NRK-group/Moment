@@ -8,6 +8,8 @@
     top: 130px;
     width: 200px;
     right: auto;
+    max-height: 350px;
+    overflow-y: scroll;
 }
 
 .err {

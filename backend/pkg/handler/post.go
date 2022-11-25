@@ -38,15 +38,15 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 		}
 
 		for _, post := range posts {
-			if post.UserID == cookie[0] {
-				returnPost = append([]structs.Post{post}, returnPost...)
+			if post.UserID == cookie[0]  {
+				returnPost = append(returnPost, post )
 			} else if post.Privacy == 0 {
-				returnPost = append([]structs.Post{post}, returnPost...)
+				returnPost = append(returnPost, post )
 			} else if post.Privacy == 1 && follow.CheckIfFollow(cookie[0], post.UserID, database.Env) {
-				returnPost = append([]structs.Post{post}, returnPost...)
+				returnPost = append(returnPost, post )
 			} else if post.Privacy == -1 {
 				if closefriend.CurrentCloseFriend(post.UserID, cookie[0], *database.Env) { // Check if cookie slc is a closefriend of post.userID
-					returnPost = append([]structs.Post{post}, returnPost...)
+				returnPost = append(returnPost, post )
 				}
 			}
 		}

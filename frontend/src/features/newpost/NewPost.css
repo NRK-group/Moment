@@ -53,6 +53,7 @@
     height: 75px;
     width: 50%;
     max-width: 150px;
+    object-fit: contain;
 }
 .newPostImgHolder{
     display: flex;

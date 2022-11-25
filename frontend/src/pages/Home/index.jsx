@@ -28,21 +28,19 @@ function Home({ isMobile }) {
         <Card styleName='homeHolder'>
             <div className='homePage'>
                 {posts &&
-                    posts
-                        .reverse()
-                        .map((data) => (
-                            <Post
-                                key={data.PostID}
-                                avatarSrc={`${config.api}/${data.Image}`}
-                                name={data.NickName}
-                                postContent={data.Content}
-                                userID={data.UserID}
-                                likes={data.NumLikes}
-                                commentsnum={data.NumOfComment}
-                                postBodyImgSrc={data.ImageUpload}
-                                postId={data.PostID}
-                            />
-                        ))}
+                    posts.map((data) => (
+                        <Post
+                            key={data.PostID}
+                            avatarSrc={`${config.api}/${data.Image}`}
+                            name={data.NickName}
+                            postContent={data.Content}
+                            userID={data.UserID}
+                            likes={data.NumLikes}
+                            commentsnum={data.NumOfComment}
+                            postBodyImgSrc={data.ImageUpload}
+                            postId={data.PostID}
+                        />
+                    ))}
             </div>
         </Card>
     );

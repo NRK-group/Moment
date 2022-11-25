@@ -49,6 +49,14 @@ func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
 			groups = append([]structs.Group{{Name: "Threre are no groups", Description: "", Admin: "none", Member: true}}, groups...)
 		}
 
+		pendingMembers, err := member.GetAllInvitationNotif(database.Env)
+		if err != nil {
+			fmt.Print(err)
+			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 		for _, group := range groups {
 			members, err := member.GetMembers(group.GroupID, database.Env)
 			if err != nil {
@@ -61,6 +69,13 @@ func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
 			for i, member := range members {
 				if member.UserId == cookie[0] {
 					groups[i].Member = true
+				} else {
+					for _, pMember := range pendingMembers {
+						if pMember.ReceiverId == cookie[0] && pMember.Status == "pending" {
+							groups[i].Member = true
+							break
+						}
+					}
 				}
 			}
 
@@ -79,7 +94,7 @@ func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var groupData structs.Group
 		GetBody(&groupData, w, r)
-		groupId , groupErr := group.CreateGroup(groupData.Name, groupData.Description, cookie[0], database.Env)
+		groupId, groupErr := group.CreateGroup(groupData.Name, groupData.Description, cookie[0], database.Env)
 		if groupErr != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -92,9 +107,6 @@ func (database *Env) Group(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Error(w, "400 Bad Request.", http.StatusBadRequest)
 }
-
-
-
 
 func (database *Env) GroupNonMembers(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/groupNonMembers" {
@@ -122,15 +134,20 @@ func (database *Env) GroupNonMembers(w http.ResponseWriter, r *http.Request) {
 		var returnUsers []structs.Info
 		flag := false
 		users, err := search.GetAllUsers(cookie[0], database.Env)
-
 		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			return
 		}
 
 		members, err := member.GetMembers(groupId, database.Env)
+		if err != nil {
+			fmt.Print(err)
+			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
-
+		pendingMembers, err := member.GetAllInvitationNotif(database.Env)
 		if err != nil {
 			fmt.Print(err)
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)
@@ -143,8 +160,17 @@ func (database *Env) GroupNonMembers(w http.ResponseWriter, r *http.Request) {
 			for _, member := range members {
 				if member.UserId != user.Id {
 					flag = true
+					break
 				}
 			}
+
+			for _, pMember := range pendingMembers {
+				if pMember.ReceiverId == user.Id && pMember.Status == "pending" {
+					flag = false
+					break
+				}
+			}
+
 			if flag {
 				returnUsers = append([]structs.Info{user}, returnUsers...)
 				flag = false

@@ -4,11 +4,59 @@ import (
 	"fmt"
 	"time"
 
-	"backend/pkg/auth"
 	"backend/pkg/helper"
 	l "backend/pkg/log"
 	"backend/pkg/structs"
 )
+
+func AllEventByGroup(groupId string, database *structs.DB) ([]structs.Event, error) {
+	var event structs.Event
+	var events []structs.Event
+	var err error
+	rows, err := database.DB.Query("SELECT * FROM Event WHERE groupId = '" + groupId + "'")
+	if err != nil {
+		fmt.Print(err)
+		return nil, err
+	}
+
+	for rows.Next() {
+		rows.Scan(&event.EventId, &event.UserId, &event.GroupId, &event.Name, &event.ImageUpload, &event.Description, &event.Location, &event.StartTime, &event.EndTime, &event.CreatedAt)
+
+		events = append([]structs.Event{event}, events...)
+	}
+	return events, nil
+}
+
+func AddEventParticipant(eventId, userId string, database *structs.DB) (string, error) {
+	createdAt := time.Now().String()
+	stmt, _ := database.DB.Prepare(`
+	INSERT INTO EventParticipant values (?, ?, ?, ?)
+`)
+
+	_, err := stmt.Exec(eventId, userId, 1, createdAt)
+	if err != nil {
+		fmt.Println("inside Create Add Event Participant", err)
+		return "", err
+	}
+	return eventId, nil
+}
+
+func CheckIfUserInEvent(eventId, userId string, database *structs.DB) (bool, structs.EventParticipant, error) {
+	var holder structs.EventParticipant
+
+	rows, err := database.DB.Query("SELECT * FROM EventParticipant WHERE eventId = '" + eventId + "' AND userId = '" + userId + "'")
+	if err != nil {
+		fmt.Println(err)
+		return false, holder, err
+	}
+	for rows.Next() {
+		rows.Scan(&holder.EventId, &holder.UserId, &holder.Status, &holder.CreatedAt)
+	}
+	if holder.CreatedAt != "" {
+		return true, holder, err
+	}
+	return false, holder, nil
+}
 
 // Add member to a group.
 func AddMember(groupId, userId string, database *structs.DB) (string, error) {
@@ -30,6 +78,17 @@ func AddMember(groupId, userId string, database *structs.DB) (string, error) {
 		l.LogMessage("Member.go", "AddMember", err)
 		return "", err
 	}
+
+	events, erre := AllEventByGroup(groupId, database)
+	if erre != nil {
+		fmt.Println("inside member - AllEventByGroup", err)
+		return "", err
+	}
+
+	for _, eventg := range events {
+		AddEventParticipant(eventg.EventId, userId, database)
+	}
+
 	return groupId, nil
 }
 
@@ -49,8 +108,7 @@ func GetMembers(groupId string, database *structs.DB) ([]structs.Member, error) 
 	var groupIds, userId, CreatedAt string
 	for rows.Next() {
 		rows.Scan(&groupIds, &userId, &CreatedAt)
-		var reUser structs.User
-		err := auth.GetUser("userId", userId, &reUser, *database)
+		user, err := helper.GetUserInfo(userId, database)
 		if err != nil {
 			fmt.Print("Get Members", err)
 			return members, err
@@ -59,7 +117,7 @@ func GetMembers(groupId string, database *structs.DB) ([]structs.Member, error) 
 			CreatedAt: CreatedAt,
 			UserId:    userId,
 			GroupId:   groupIds,
-			UserName:  reUser.NickName,
+			UserName:  user.Name,
 		}
 
 		members = append([]structs.Member{member}, members...)
@@ -181,6 +239,24 @@ func GetInvitationNotif(userId string, database *structs.DB) ([]structs.GroupNot
 			Read:       notif.Read,
 		}
 		notifs = append(notifs, notifWriter)
+	}
+	return notifs, nil
+}
+
+func GetAllInvitationNotif(database *structs.DB) ([]structs.GroupNotif, error) {
+	var notif structs.GroupNotif
+	var notifs []structs.GroupNotif
+	var err error
+	rows, err := database.DB.Query("SELECT * FROM InviteNotif")
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		err := rows.Scan(&notif.GroupID, &notif.UserId, &notif.ReceiverId, &notif.CreatedAt, &notif.Type, &notif.Status, &notif.Read)
+		if err != nil {
+			return nil, err
+		}
+		notifs = append([]structs.GroupNotif{notif}, notifs...)
 	}
 	return notifs, nil
 }

@@ -17,7 +17,6 @@ func TestHealthCheckEventHttpGet(t *testing.T) {
 	w, Env, _ := LoginUser(database, t)
 	reqq := httptest.NewRequest(http.MethodGet, "/event", nil)
 	reqq.Header = http.Header{"Cookie": w.Header()["Set-Cookie"]}
-
 	Env.Event(w, reqq)
 	want := 200
 	got := w.Code
@@ -71,7 +70,7 @@ func TestCreateEvent(t *testing.T) {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
 
-		events, err := event.AllEventByGroup(groupIdStr, database)
+		events, err := event.AllEventByGroup(groupIdStr, newUser.UserId, database)
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
@@ -120,20 +119,20 @@ func TestCreateEvent(t *testing.T) {
 		if err != nil {
 			t.Errorf("Error Inserting the struct into the db %v", err)
 		}
-		addStr, err := event.AddEventParticipant(eventStr, newUser2.UserId, database)
+		eventId, err := event.AddEventParticipant(eventStr, newUser2.UserId, database)
 		if err != nil {
 			t.Errorf("Add Event Participant")
 		}
-		result,_, err := event.CheckIfUserInEventAndIfNotAddThem(addStr, newUser2.UserId, database)
+		result, err := event.GetEventParticipant(eventStr, newUser2.UserId, database)
 		if err != nil {
 			fmt.Println(err)
 		}
-		result2,_, err := event.CheckIfUserInEventAndIfNotAddThem(eventStr, newUser3.UserId, database)
+		result2, err := event.GetEventParticipant(eventStr, newUser3.UserId, database)
 		if err != nil {
 			fmt.Println(err)
 		}
 		want := true
-		got := (result == true) && (result2 == true)
+		got := (result.EventId == eventId) && (result2.EventId == "")
 		if got != want {
 			t.Errorf("Expected %v got %v", want, got)
 		}

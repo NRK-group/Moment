@@ -6,7 +6,7 @@ import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
 import { CalculateTimeDiff } from '../hooks/calculateTimediff';
 import { GetNotif } from '../hooks/getNotif';
 import { NoNotifications } from './NoNotifications';
-export const FollowNotif = ({ socket }) => {
+export const FollowNotif = ({ socket, setNewMessageNotif }) => {
     let type = 'follow';
     const [notifications, setNotifications] = useState();
     const [newNotif, setNewNotif] = useState(0);
@@ -17,6 +17,13 @@ export const FollowNotif = ({ socket }) => {
             if (data.type === 'followRequest') {
                 setNewNotif(newNotif + 1);
                 console.log('follow notif');
+            }
+            if (
+                data.type === 'privateMessage' ||
+                data.type === 'groupMessage'
+            ) {
+                console.log('new message');
+                setNewMessageNotif((prev) => prev + 1);
             }
         };
     }

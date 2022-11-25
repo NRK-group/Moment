@@ -16,6 +16,8 @@ export const Messages = ({
     setNewMessage,
     setArrange,
     username,
+    setGroupNotif,
+    setFollowNotif,
 }) => {
     const { chatId } = useParams();
     const location = useLocation();
@@ -79,6 +81,17 @@ export const Messages = ({
         socket.onmessage = (event) => {
             if (event.data) {
                 let data = JSON.parse(event.data);
+                if (
+                    data.type === 'eventNotif' ||
+                    data.type === 'groupInvitationJoin' ||
+                    data.type === 'groupInvitationRequest'
+                ) {
+                    console.log('new group notif');
+                    setGroupNotif(true);
+                }
+                if (data.type === 'followRequest') {
+                    setFollowNotif(true);
+                }
                 if (
                     data.type === 'privateMessage' ||
                     data.type === 'groupMessage'

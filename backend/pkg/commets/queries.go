@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"backend/pkg/auth"
+	"backend/pkg/helper"
 	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -38,9 +39,12 @@ func CreateComment(userID, postID, content string, database *structs.DB) (string
 		fmt.Print(err)
 		return "comments", err
 	}
-
-	image := reUser.Avatar 
-
+	user, err := helper.GetUserInfo(userID, database)
+	if err != nil {
+		return "", err
+	}
+	reUser.NickName = user.Name
+	image := reUser.Avatar
 	stmt, _ := database.DB.Prepare(`
 		INSERT INTO Comment values (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`)

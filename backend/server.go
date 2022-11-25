@@ -1,27 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"backend/pkg/db/sqlite"
-	"backend/pkg/group"
 	"backend/pkg/handler"
 	"backend/pkg/structs"
 	wSocket "backend/pkg/websocket"
 )
-
-func CreateingTengroups(database *structs.DB) {
-	for i := 0; i < 15; i++ {
-		group1 := structs.Group{Name: "Pie" + fmt.Sprint(i), Description: "Eating Pie" + fmt.Sprint(i), Admin: "wasfdfgfd"}
-		_, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
-		if err != nil {
-			fmt.Println("Error Inserting the struct into the db %v", err)
-		}
-	}
-}
 
 func main() {
 	// this open or create the database

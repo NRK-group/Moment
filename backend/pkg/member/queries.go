@@ -33,7 +33,7 @@ func AddEventParticipant(eventId, userId string, database *structs.DB) (string, 
 	INSERT INTO EventParticipant values (?, ?, ?, ?)
 `)
 
-	_, err := stmt.Exec(eventId, userId, 1, createdAt)
+	_, err := stmt.Exec(eventId, userId, 0, createdAt)
 	if err != nil {
 		fmt.Println("inside Create Add Event Participant", err)
 		return "", err

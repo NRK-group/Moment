@@ -6,7 +6,6 @@ import Card from '../../components/card/Card';
 import Post from '../../features/Post';
 import AddGroup from './components/AddGroup';
 import Modal from '../../features/Modal';
-import Input from '../../components/Input/Input';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 import GroupList from './components/GroupList';
 import GroupPost from './components/GroupPost';
@@ -61,6 +60,7 @@ function Groups({ isMobile, socket }) {
     const [flag, setFlag] = useState(false);
     const [groupS, setGroupS] = useState(null);
     const [getallNonMembers, setGetallNonMembers] = useState(null);
+    const [displayAllNonMembers, setDisplayAllNonMembers] = useState(null);
     const [groupE, setGroupE] = useState(null);
     const [groupSelect, setGroupSelect] = useState(null);
     const [openModal, setOpenModal] = useState(false);
@@ -113,6 +113,7 @@ function Groups({ isMobile, socket }) {
     };
 
     const dropdown = useRef(null);
+    const InputRef = useRef(null);
     const [toggle, setToggle] = useState(false);
 
     const OpenDropdownMenu = async () => {
@@ -120,16 +121,35 @@ function Groups({ isMobile, socket }) {
         if (toggle) {
             let resp = await GetAllNonMembers(groupSelect.GroupID);
             setGetallNonMembers(resp);
+            setDisplayAllNonMembers(resp);
             dropdown.current.style.display = 'block';
         } else {
             dropdown.current.style.display = 'none';
         }
     };
 
-    window.onclick = function () {
-        if (dropdown.current.style.display === 'block' && !toggle) {
+    window.onclick = function (e) {
+        if (
+            !toggle &&
+            dropdown.current.style.display === 'block' &&
+            e.target !== InputRef.current
+        ) {
             dropdown.current.style.display = 'none';
             setToggle(!toggle);
+        }
+    };
+
+    const SearchUsers = (searchText) => {
+        if (searchText !== '') {
+            setDisplayAllNonMembers(
+                getallNonMembers.filter((ele) =>
+                    ele.firstName
+                        .toLowerCase()
+                        .includes(searchText.toLowerCase())
+                )
+            );
+        } else {
+            setDisplayAllNonMembers(getallNonMembers);
         }
     };
 
@@ -239,7 +259,7 @@ function Groups({ isMobile, socket }) {
                                             setOpenModal(true);
                                         }}>
                                         {' '}
-                                        Create A Group
+                                        Create a group
                                     </p>
 
                                     <p
@@ -272,7 +292,7 @@ function Groups({ isMobile, socket }) {
                                             setOpenModal(true);
                                         }}>
                                         {' '}
-                                        Create A Group
+                                        Create a group
                                     </p>
                                 </>
                             )}
@@ -348,12 +368,26 @@ function Groups({ isMobile, socket }) {
                             {' '}
                             <ChevronRightIcon />{' '}
                         </span>
-                        <div
-                            className='GroupsMenuHeader'
-                            onClick={() => OpenDropdownMenu()}>
+                        <div className='GroupsMenuHeader'>
+                            <button
+                                className='profileDetailBtn grey'
+                                onClick={() => OpenDropdownMenu()}>
+                                Add a user
+                            </button>
                             <div ref={dropdown} className='dropdown-content'>
-                                {getallNonMembers &&
-                                    getallNonMembers.map((ele) => (
+                                <div className='UserSearch'>
+                                    <input
+                                        ref={InputRef}
+                                        className='search'
+                                        type='text'
+                                        onChange={({ target }) => {
+                                            SearchUsers(target.value);
+                                        }}
+                                        placeholder='Search User'
+                                    />
+                                </div>
+                                {displayAllNonMembers &&
+                                    displayAllNonMembers.map((ele) => (
                                         <a
                                             key={ele.id}
                                             onClick={() => {
@@ -371,23 +405,28 @@ function Groups({ isMobile, socket }) {
                                         </a>
                                     ))}
                             </div>
-                            <Input
-                                styleName={'search'}
-                                type={'search'}
-                                placeholder={'Search User'}
-                            />
                         </div>
                         {(groupSelect &&
-                            groupSelect.Members.map((ele) => (
+                            groupSelect.Members.map((ele, i) => (
                                 <span
                                     key={ele.UserId}
                                     onClick={() =>
                                         navigate(`/profile?id=${ele.UserId}`)
                                     }>
                                     <MiniUserCard
-                                        imgStyleName={'miniUserCardImg'}
-                                        optContent={ele.UserName}>
-                                        {' '}
+                                        imgStyleName={'miniUserCardImg'}>
+                                        <h4 style={{ color: 'black' }}>
+                                            {ele.UserName}
+                                        </h4>
+                                        {i === 0 ? (
+                                            <h4 style={{ color: 'black' }}>
+                                                Admin
+                                            </h4>
+                                        ) : (
+                                            <h4 style={{ color: 'black' }}>
+                                                Member
+                                            </h4>
+                                        )}
                                     </MiniUserCard>
                                 </span>
                             ))) || <> </>}

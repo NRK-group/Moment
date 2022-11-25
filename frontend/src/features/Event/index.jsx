@@ -14,36 +14,32 @@ export default function Event({
     eventBodyImgSrc,
     eventContent,
     eventId,
-    setFlag,
-    flag,
+
     setEle,
     setOpenModal,
 }) {
-    const [eventObject, setEventObject] = useState(null);
+    const [eventObject, setEventObject] = useState(eventObj);
     const [staus, setStaus] = useState(attending);
-
-    useEffect(() => {
-        setEventObject(eventObj);
-    }, [flag]);
+    const [numOfParticipants, setNumOfParticipants] = useState(
+        eventObj.NumOfParticipants
+    );
 
     const UpdateAttends = async () => {
-        console.log({ eventObject });
-
-        if (eventObject !== null) {
+        if (eventObject !== null || new Date() < end) {
             let updateAttends = await fetch(
-                `${config.api}/updateEventParticipant`,
+                `http://localhost:5070/updateEventParticipant`,
                 {
                     credentials: 'include',
                     method: 'POST',
                     body: JSON.stringify(eventObject),
                 }
             )
-                .then(async (resp) => await resp.text())
+                .then(async (resp) => await resp.json())
                 .then((data) => data);
-
-            setEventObject(null);
-            setStaus(updateAttends);
-            setFlag(!flag);
+            console.log({ updateAttends });
+            setEventObject(updateAttends);
+            setStaus(updateAttends.Status);
+            setNumOfParticipants(updateAttends.NumOfParticipants);
         }
     };
 
@@ -81,22 +77,22 @@ export default function Event({
                     <span>{formatDate(end)}</span>
                     <br />
                     <br />
-                    <label>Attending:</label>
+                    <label>Attending:</label>{' '}
                     <button onClick={() => UpdateAttends()}>
                         {staus !== 'Going' ? 'Not Going' : 'Going'}
                     </button>
                     <div
                         onClick={() => {
-                            if (eventObj.NumOfParticipants > 0) {
+                            if (numOfParticipants > 0) {
                                 setEle(
                                     <GroupEventsParticipants
-                                        data={eventObj.Participants}
+                                        data={eventObject.Participants}
                                     />
                                 );
                                 setOpenModal(true);
                             }
                         }}>
-                        Number of members going : {eventObj.NumOfParticipants}
+                        Number of members going : {numOfParticipants}
                     </div>
                 </Card>
             </Card>

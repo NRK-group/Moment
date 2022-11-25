@@ -64,8 +64,11 @@ export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
                         </div>
                         <br />
                         <div className='selectCF'>
-                            <label htmlFor='selectCF'>Close Friends: </label>
+                            <label htmlFor='selectCF'>Followers: </label>
                             <select ref={selectR}>
+                                <option key={'1'} value={''}>
+                                    {'Pick a followers'}
+                                </option>
                                 {closeF &&
                                     closeF.map((ele) => (
                                         <option key={ele.id} value={ele.id}>

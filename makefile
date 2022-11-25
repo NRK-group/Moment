@@ -14,3 +14,15 @@ runJs:
 runTest:
 	rm -rf backend/Test/social_network_test.db
 	cd backend/Test && go test -v .
+
+	frontendDocker:
+	docker build -t react-frontend-app ./frontend
+	docker run --rm -p 8070:8070 react-frontend-app
+
+backendDocker:
+	docker build -t golang-server ./backend
+	docker run --rm -p 5070:5070 golang-server
+
+frontendDocker:
+	docker build -t react-frontend-app ./frontend
+	docker run --rm -p 8070:8070 react-frontend-app

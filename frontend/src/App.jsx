@@ -8,7 +8,6 @@ import Registration from './pages/regPage/Registration';
 import Chat from './features/Chat/Chat';
 import Profile from './pages/profile/Profile';
 import ProfileInfoPopUp from './features/profile/ProfileInfoPopUp';
-import Stories from './pages/stories/stories';
 import Comments from './features/Comments';
 import Groups from './pages/Groups';
 import { useEffect, useState } from 'react';
@@ -207,7 +206,6 @@ function App() {
                             path='/update'
                             element={<ProfileInfoPopUp styleName='popUp' />}
                         />
-                        <Route path='/stories' element={<Stories />} />
                     </Routes>
                 </>
             )}

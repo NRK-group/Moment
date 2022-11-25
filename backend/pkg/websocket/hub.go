@@ -117,16 +117,40 @@ func (h *Hub) Run() {
 			}
 			if msg.MessageType == "acceptInviteRequest" {
 				fmt.Print("acceptInviteRequest")
-				fmt.Print(msg, msg.ReceiverId, msg.SenderId)
-				err := member.AcceptInvitationNotif(msg.ReceiverId, msg.SenderId, h.Database)
+				fmt.Print(msg.GroupId, msg.ReceiverId, msg.SenderId)
+				err := member.AcceptInvitationNotif(msg.GroupId, msg.SenderId, msg.ReceiverId, h.Database)
 				if err != nil {
 					l.LogMessage("Hub.go", "Run() - AcceptInvitationNotif", err)
+				}
+				member.AddMember(msg.GroupId, msg.SenderId, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - Adding member", err)
 				}
 			}
 			if msg.MessageType == "declineInviteRequest" {
 				fmt.Print("declineInviteRequest")
-				fmt.Print(msg, msg.ReceiverId, msg.SenderId)
-				err := member.DeclineInvitationNotif(msg.ReceiverId, msg.SenderId, h.Database)
+				fmt.Print(msg.GroupId, msg.ReceiverId, msg.SenderId)
+				err := member.DeclineInvitationNotif(msg.GroupId, msg.SenderId, msg.ReceiverId, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - DeclineInvitationNotif", err)
+				}
+			}
+			if msg.MessageType == "acceptJoinRequest" {
+				fmt.Print("acceptInviteRequest")
+				fmt.Print(msg.GroupId, msg.ReceiverId, msg.SenderId)
+				err := member.AcceptInvitationNotif(msg.GroupId, msg.SenderId, msg.ReceiverId, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - AcceptInvitationNotif", err)
+				}
+				member.AddMember(msg.GroupId, msg.ReceiverId, h.Database)
+				if err != nil {
+					l.LogMessage("Hub.go", "Run() - Adding member", err)
+				}
+			}
+			if msg.MessageType == "declineJoinRequest" {
+				fmt.Print("declineInviteRequest")
+				fmt.Print(msg.GroupId, msg.ReceiverId, msg.SenderId)
+				err := member.DeclineInvitationNotif(msg.GroupId, msg.SenderId, msg.ReceiverId, h.Database)
 				if err != nil {
 					l.LogMessage("Hub.go", "Run() - DeclineInvitationNotif", err)
 				}

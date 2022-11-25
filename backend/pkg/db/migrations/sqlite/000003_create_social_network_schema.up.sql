@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS "GroupMember"(
 CREATE TABLE IF NOT EXISTS "EventParticipant"(
     "eventId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-     "status"  INTEGER DEFAULT 0,
+     "status"  INTEGER DEFAULT 2,
     "createdAt" DATETIME NOT NULL,
     FOREIGN KEY ("eventId") 
         REFERENCES "Event" ("eventId"),

@@ -35,6 +35,7 @@ function App() {
     const [followNotifContainer, setFollowNotifContainer] = useState();
     const [groupNotif, setGroupNotif] = useState(false);
     const [groupNotifContainer, setGroupNotifContainer] = useState();
+    const [newMessageNotif, setNewMessageNotif] = useState(0);
     const { pathname } = useLocation();
     let isMobile = width < 600;
     useEffect(() => {
@@ -42,7 +43,6 @@ function App() {
             setSocket(CreateWebSocket());
         }
     }, [authorised]);
-    let [newMessage, setNewMessage] = useState(0);
     const [chatList, setClist] = useState([]);
     if (socket) {
         socket.onmessage = (e) => {
@@ -52,31 +52,18 @@ function App() {
                 data.type === 'groupMessage'
             ) {
                 console.log('new message');
-                setNewMessage((prev) => prev + 1);
+                setNewMessageNotif((prev) => prev + 1);
             }
             if (data.type === 'followRequest') {
-                setFollowNotifContainer((prev) => {
-                    console.log(prev);
-                    for (let i = 0; i < prev.length; i++) {
-                        if (prev[i].userId.id == data.data.userId.id) {
-                            return prev;
-                        }
-                    }
-                    return [data.data, ...prev];
-                });
+                setFollowNotif(true);
             }
-            if (pathname !== '/notifications/group') {
-                socket.onmessage = (e) => {
-                    let data = JSON.parse(e.data);
-                    if (
-                        data.type === 'eventNotif' ||
-                        data.type === 'groupInvitationJoin' ||
-                        data.type === 'groupInvitationRequest'
-                    ) {
-                        console.log('new group notif');
-                        setGroupNotif(true);
-                    }
-                };
+            if (
+                data.type === 'eventNotif' ||
+                data.type === 'groupInvitationJoin' ||
+                data.type === 'groupInvitationRequest'
+            ) {
+                console.log('new group notif');
+                setGroupNotif(true);
             }
         };
     }
@@ -91,7 +78,7 @@ function App() {
                 }
             }
         }
-    }, [followNotifContainer]);
+    }, [followNotif]);
     useEffect(() => {
         if (pathname !== '/notifications/group') {
             if (Array.isArray(groupNotifContainer)) {
@@ -119,7 +106,6 @@ function App() {
                     messageNotif={messageNotif}
                     setMessageNotif={setMessageNotif}
                     setClist={setClist}
-                    newMessage={newMessage}
                     chatList={chatList}
                     followNotif={followNotif}
                     setFollowNotifContainer={setFollowNotifContainer}
@@ -129,6 +115,7 @@ function App() {
                     setGroupNotifContainer={setGroupNotifContainer}
                     groupNotifContainer={groupNotifContainer}
                     setGroupNotif={setGroupNotif}
+                    newMessageNotif={newMessageNotif}
                     onChange={(e) => {
                         setQuery(e.target.value);
                     }}
@@ -176,9 +163,10 @@ function App() {
                                 <Chat
                                     isMobile={isMobile}
                                     socket={socket}
-                                    chatList={chatList}
-                                    setMessageNotif={setMessageNotif}
-                                    setNewMessage={setNewMessage}
+                                    newMessageNotif={newMessageNotif}
+                                    setGroupNotif={setGroupNotif}
+                                    setFollowNotif={setFollowNotif}
+                                    setNewMessageNotif={setNewMessageNotif}
                                 />
                             }
                         />
@@ -198,12 +186,9 @@ function App() {
                                     socket={socket}
                                     followNotif={followNotif}
                                     setFollowNotif={setFollowNotif}
-                                    followNotifContainer={followNotifContainer}
-                                    setFollowNotifContainer={
-                                        setFollowNotifContainer
-                                    }
                                     setGroupNotif={setGroupNotif}
                                     groupNotif={groupNotif}
+                                    setNewMessageNotif={setNewMessageNotif}
                                 />
                             }
                         />

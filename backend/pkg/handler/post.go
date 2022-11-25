@@ -27,7 +27,7 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 	SetupCorsResponse(w)
 	w.Header().Add("Content-Type", "application/json")
 	cookie, _ := auth.SliceCookie(c.Value)
-	
+
 	if r.Method == "GET" {
 		var returnPost []structs.Post
 		posts, err := post.AllPost(database.Env)
@@ -38,18 +38,15 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 		}
 
 		for _, post := range posts {
-			if post.UserID == cookie[0] {
-				returnPost = append([]structs.Post{post}, returnPost...)
+			if post.UserID == cookie[0]  {
+				returnPost = append(returnPost, post )
 			} else if post.Privacy == 0 {
-				returnPost = append([]structs.Post{post}, returnPost...)
+				returnPost = append(returnPost, post )
 			} else if post.Privacy == 1 && follow.CheckIfFollow(cookie[0], post.UserID, database.Env) {
-				returnPost = append([]structs.Post{post}, returnPost...)
+				returnPost = append(returnPost, post )
 			} else if post.Privacy == -1 {
-				closeFriendsList := closefriend.GetCloseFriends(cookie[0], *database.Env)
-				for _, closeF := range closeFriendsList {
-					if closeF.Id == cookie[0] {
-						returnPost = append([]structs.Post{post}, returnPost...)
-					}
+				if closefriend.CurrentCloseFriend(post.UserID, cookie[0], *database.Env) { // Check if cookie slc is a closefriend of post.userID
+				returnPost = append(returnPost, post )
 				}
 			}
 		}
@@ -73,14 +70,13 @@ func (database *Env) Post(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		
-		
+
 		err := post.IncreasePostNumber(postData.UserID, *database.Env)
-		if err != nil{
+		if err != nil {
 			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
 			log.Println("Error updating the post number: ", err)
 			return
-		} 
+		}
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "application/json")
 		response.WriteMessage("Successfully Posted", postID, w)

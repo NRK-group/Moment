@@ -12,7 +12,6 @@ const Header = ({
     onChange,
     setMessageNotif,
     setClist,
-    newMessage,
     chatList,
     followNotif,
     setFollowNotifContainer,
@@ -23,11 +22,11 @@ const Header = ({
     groupNotifContainer,
     setGroupNotif,
     socket,
+    newMessageNotif,
 }) => {
-    const { pathname } = useLocation();
     GetNotif('follow', setFollowNotifContainer);
     GetNotif('group', setGroupNotifContainer);
-    GetChatList(setClist, newMessage);
+    GetChatList(setClist, newMessageNotif);
     if (socket) {
         socket.onmessage = (e) => {
             let data = JSON.parse(e.data);
@@ -39,28 +38,39 @@ const Header = ({
                 console.log('new group notif');
                 setGroupNotif(true);
             }
+            if (data.type === 'followRequest') {
+                setFollowNotif(true);
+            }
+            if (
+                data.type === 'privateMessage' ||
+                data.type === 'groupMessage'
+            ) {
+                console.log('new message');
+                setMessageNotif(true);
+            }
         };
     }
     useEffect(() => {
-        setMessageNotif(() => {
+        if (Array.isArray(chatList)) {
             for (let i = 0; i < chatList.length; i++) {
                 if (chatList[i].notif > 0) {
-                    return true;
+                    setMessageNotif(true);
+                    return;
                 }
             }
-            return false;
-        });
-    }, [chatList, newMessage]);
+            setMessageNotif(false);
+        }
+    }, [chatList]);
     useEffect(() => {
         if (Array.isArray(followNotifContainer)) {
             for (let i = 0; i < followNotifContainer.length; i++) {
-                if (followNotifContainer[i].Read === 0) {
+                if (followNotifContainer[i].read === 0) {
                     setFollowNotif(true);
                     return;
                 }
             }
         }
-    }, [followNotif]);
+    }, [followNotifContainer]);
     useEffect(() => {
         if (Array.isArray(groupNotifContainer)) {
             for (let i = 0; i < groupNotifContainer.length; i++) {
@@ -70,7 +80,7 @@ const Header = ({
                 }
             }
         }
-    }, []);
+    }, [groupNotifContainer]);
     return (
         <div className='headerContainer'>
             <div className='header'>

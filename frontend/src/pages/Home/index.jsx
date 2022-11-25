@@ -17,7 +17,7 @@ function Home({ isMobile }) {
             .then(async (resp) => await resp.json())
             .then((data) => data);
             console.log({fetchPost})
-        setPosts(fetchPost.reverse());
+        setPosts(fetchPost);
     };
     useEffect(() => {
         GetAllPosts();

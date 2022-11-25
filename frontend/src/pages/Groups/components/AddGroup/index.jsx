@@ -2,10 +2,11 @@ import './AddGroup.css';
 import Card from '../../../../components/card/Card';
 import { MessagesIcon } from '../../../../components/Icons/Icons';
 import { useState } from 'react';
-import GetCloseFriends from '../../../profile/CloseFriend';
+import GetFollowers from '../../../profile/Followers';
 import { useEffect, useRef } from 'react';
 import { GetCookie } from '../../../profile/ProfileData';
 import { RequestToS } from '../../hooks/useGroupshook';
+
 
 export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
     const [name, setName] = useState('');
@@ -14,7 +15,7 @@ export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
    let selectR = useRef(null);
 
     useEffect(() => {
-        GetCloseFriends().then((response) => {
+        GetFollowers().then((response) => {
             setCloseF(response);
         });
     }, []);
@@ -28,11 +29,12 @@ export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
             .then(async (resp) => await resp.text())
             .then((data) => data);
         if (selectR.current.value !== "" && creategroup !== "") {
+            console.log("khgiuh")
             RequestToS(
                 GetCookie('session_token').split('&')[0],
                 selectR.current.value,
                 socket,
-                'groupInvitationJoin',
+                'groupInvitationRequest',
                 creategroup
             );
         }
@@ -63,8 +65,11 @@ export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
                         </div>
                         <br />
                         <div className='selectCF'>
-                            <label htmlFor='selectCF'>Close Friends: </label>
+                            <label htmlFor='selectCF'>Followers: </label>
                             <select ref={selectR}>
+                            <option key={"1"} value={""}>
+                                            {"Pick a followers"}
+                                        </option>
                                 {closeF &&
                                     closeF.map((ele) => (
                                         <option key={ele.id} value={ele.id}>

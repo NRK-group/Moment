@@ -1,6 +1,7 @@
 import Card from '../../components/card/Card';
 import './Event.css';
 import { useEffect, useState } from 'react';
+import GroupEventsParticipants from '../../pages/Groups/components/GroupEventsParticipants';
 
 export default function Event({
     eventObj,
@@ -12,19 +13,22 @@ export default function Event({
     eventBodyImgSrc,
     eventContent,
     eventId,
-    setFlag,
-    flag,
+   
+    
+    setEle,
+    setOpenModal,
 }) {
 
-    const [eventObject, setEventObject] = useState(null);
+    const [eventObject, setEventObject] = useState(eventObj);
+    const [staus, setStaus] = useState(attending);
+    const [numOfParticipants, setNumOfParticipants] = useState(eventObj.NumOfParticipants);
 
-    useEffect(() => {
-        setEventObject(eventObj)
-    }, [flag]);
 
     const UpdateAttends = async () => {
-        console.log({eventObject})
-        if (eventObject !== null) {
+
+       
+     
+        if (eventObject !== null || new Date < end) {
         let updateAttends = await fetch(
             `http://localhost:5070/updateEventParticipant`,
             {
@@ -33,11 +37,12 @@ export default function Event({
                 body: JSON.stringify(eventObject),
             }
         )
-            .then(async (resp) => await resp.text())
+            .then(async (resp) => await resp.json())
             .then((data) => data);
-        
-            setEventObject(null)
-            setFlag(!flag)
+            console.log({updateAttends})
+            setEventObject(updateAttends)
+            setStaus(updateAttends.Status)
+            setNumOfParticipants(updateAttends.NumOfParticipants)
         }
     };
 
@@ -75,9 +80,17 @@ export default function Event({
                     <label>End:</label>
                     <span>{formatDate(end)}</span>
                     <br />
-                    <br />
+                    <br /> 
                     <label>Attending:</label>{' '}
-                    <button onClick={() => UpdateAttends()}>{attending !== "Going"? "Not Going": "Going"}</button>
+                    <button onClick={() => UpdateAttends()}>{staus !== "Going"? "Not Going": "Going"}</button>
+        
+                    <div onClick={()=>{
+                        
+                        if(numOfParticipants > 0){
+                        setEle(<GroupEventsParticipants data={eventObject.Participants
+                        }/>)
+                        setOpenModal(true)
+                    }}}>Number of members going : {numOfParticipants}</div>
                 </Card>
             </Card>
             <br />

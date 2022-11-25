@@ -1,3 +1,5 @@
+import config from '../../config';
+
 export const CreateWebSocket = () => {
-    return new WebSocket('ws://' + config.api + '/ws');
+    return new WebSocket(config.socket);
 };

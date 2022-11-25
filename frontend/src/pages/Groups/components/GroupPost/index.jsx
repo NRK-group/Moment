@@ -5,6 +5,7 @@ import Card from '../../../../components/card/Card';
 import { MessagesIcon } from '../../../../components/Icons/Icons';
 import { GetCookie } from '../../../../pages/profile/ProfileData';
 import '../../../../features/newpost/NewPost.css';
+import config from '../../../../../config';
 
 export default function GroupPost({ groupId, setOpenModal, flag, setFlag }) {
     const navigate = useNavigate('');

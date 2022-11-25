@@ -8,6 +8,7 @@ import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import './GroupEvent.css';
 import { RequestToS } from '../../hooks/useGroupshook';
+import config from '../../../../../config';
 
 export default function GroupEvent({
     groupId,

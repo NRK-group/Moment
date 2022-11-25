@@ -29,7 +29,7 @@ async function SendRegistration(values, div) {
 
     div.innerHTML = `<div class="dot-flashing"></div>`;
 
-    let registered = await fetch(config.api + '/registration', {
+    let registered = await fetch(`${config.api}/registration`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -105,7 +105,7 @@ function UpdateProfleImg(fileInput, profileImg, errMsg) {
                 errMsg.innerHTML = resp;
                 return;
             }
-            profileImg.style.backgroundImage = `url("${config.api}/${resp}")`;
+            profileImg.style.backgroundImage = `url(${config.api}/${resp})`;
             errMsg.innerHTML = '';
         });
 }

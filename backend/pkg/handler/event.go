@@ -44,7 +44,12 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 		}
 
 		for i, eventS := range events {
-			userp, _ :=event.GetEventParticipant(eventS.EventId, cookie[0], database.Env)
+			fmt.Println()
+			fmt.Println()
+			fmt.Println("Events === ", eventS)
+			fmt.Println()
+			fmt.Println()
+			userp, _ := event.GetEventParticipant(eventS.EventId, cookie[0], database.Env)
 			if userp.Status == 1 {
 				events[i].Status = "Going"
 			} else {
@@ -52,7 +57,6 @@ func (database *Env) Event(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-	
 		marshallEvents, err := json.Marshal(events)
 		if err != nil {
 			http.Error(w, "500 Internal Server Error.", http.StatusInternalServerError)

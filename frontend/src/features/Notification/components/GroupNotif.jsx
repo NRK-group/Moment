@@ -6,6 +6,7 @@ import { CalculateTimeDiff } from '../hooks/calculateTimediff';
 import { GetNotif } from '../hooks/getNotif';
 import { NoNotifications } from './NoNotifications';
 export const GroupNotif = ({ socket, setNewMessageNotif }) => {
+    let user = document.cookie.split('=')[1].split('&')[0];
     const [notifications, setNotifications] = useState();
     const [newNotif, setNewNotif] = useState(0);
     GetNotif('group', setNotifications, newNotif);

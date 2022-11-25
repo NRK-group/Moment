@@ -7,6 +7,7 @@ import (
 
 	"backend/pkg/auth"
 	"backend/pkg/commets"
+	"backend/pkg/helper"
 	"backend/pkg/structs"
 
 	uuid "github.com/satori/go.uuid"
@@ -26,17 +27,22 @@ func AllPost(database *structs.DB) ([]structs.Post, error) {
 	}
 
 	for rows.Next() {
+
 		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt, &post.Privacy)
+		user, err := helper.GetUserInfo(post.UserID, database)
+		if err != nil {
+			return nil, err
+		}
+		post.NickName = user.Name
 		if post.GroupID == "" {
-		arr, _ := commets.GetComments(post.PostID, database)
-		post.NumOfComment = len(arr)
-		posts = append([]structs.Post{post}, posts...)
+			arr, _ := commets.GetComments(post.PostID, database)
+			post.NumOfComment = len(arr)
+			posts = append([]structs.Post{post}, posts...)
 		}
 	}
 
 	return posts, nil
 }
-
 
 // return all user posts
 func AllUserPost(uID string, database *structs.DB) ([]structs.Post, error) {
@@ -53,15 +59,14 @@ func AllUserPost(uID string, database *structs.DB) ([]structs.Post, error) {
 	for rows.Next() {
 		rows.Scan(&post.PostID, &post.UserID, &post.GroupID, &post.NickName, &post.Content, &post.Image, &post.ImageUpload, &post.NumLikes, &post.CreatedAt, &post.Privacy)
 		if post.UserID == uID {
-		arr, _ := commets.GetComments(post.PostID, database)
-		post.NumOfComment = len(arr)
-		posts = append([]structs.Post{post}, posts...)
+			arr, _ := commets.GetComments(post.PostID, database)
+			post.NumOfComment = len(arr)
+			posts = append([]structs.Post{post}, posts...)
 		}
 	}
 
 	return posts, nil
 }
-
 
 // CreatePost
 // is a method of database that add post in it.
@@ -94,7 +99,7 @@ func IncreasePostNumber(userID string, database structs.DB) error {
 		log.Println("Error preparing update the post number: ", err)
 		return err
 	}
-	_, execErr := update.Exec(currentUser.NumPosts + 1, userID)
+	_, execErr := update.Exec(currentUser.NumPosts+1, userID)
 	if execErr != nil {
 		log.Println("Error Executing update the post number: ", execErr)
 		return execErr

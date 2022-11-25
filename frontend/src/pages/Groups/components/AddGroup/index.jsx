@@ -7,6 +7,7 @@ import { useEffect, useRef } from 'react';
 import { GetCookie } from '../../../profile/ProfileData';
 import { RequestToS } from '../../hooks/useGroupshook';
 
+
 export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -28,6 +29,7 @@ export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
             .then(async (resp) => await resp.text())
             .then((data) => data);
         if (selectR.current.value !== "" && creategroup !== "") {
+            console.log("khgiuh")
             RequestToS(
                 GetCookie('session_token').split('&')[0],
                 selectR.current.value,
@@ -63,8 +65,11 @@ export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
                         </div>
                         <br />
                         <div className='selectCF'>
-                            <label htmlFor='selectCF'>Close Friends: </label>
+                            <label htmlFor='selectCF'>Followers: </label>
                             <select ref={selectR}>
+                            <option key={"1"} value={""}>
+                                            {"Pick a followers"}
+                                        </option>
                                 {closeF &&
                                     closeF.map((ele) => (
                                         <option key={ele.id} value={ele.id}>

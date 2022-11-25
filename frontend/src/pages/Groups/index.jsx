@@ -115,6 +115,7 @@ function Groups({ isMobile, socket }) {
     };
 
     const dropdown = useRef(null);
+    const InputRef = useRef(null);
     const [toggle, setToggle] = useState(false);
 
     const OpenDropdownMenu = async () => {
@@ -128,12 +129,14 @@ function Groups({ isMobile, socket }) {
         }
     };
 
-    window.onclick = function () {
-       if(dropdown.current.style.display === 'block' && !toggle){
-        dropdown.current.style.display = 'none';
-        setToggle(!toggle);
-       }
-    }
+    window.onclick = function (e) {
+        console.log(e.target)
+        console.log(InputRef.current)
+        if (dropdown.current.style.display === 'block' && !toggle && e.target !== InputRef.current) {
+            dropdown.current.style.display = 'none';
+            setToggle(!toggle);
+        }
+    };
 
     return (
         <Body styleName={bodyStyleName}>
@@ -241,7 +244,7 @@ function Groups({ isMobile, socket }) {
                                             setOpenModal(true);
                                         }}>
                                         {' '}
-                                        Create A Group
+                                        Create a group
                                     </p>
 
                                     <p
@@ -274,7 +277,7 @@ function Groups({ isMobile, socket }) {
                                             setOpenModal(true);
                                         }}>
                                         {' '}
-                                        Create A Group
+                                        Create a group
                                     </p>
                                 </>
                             )}
@@ -350,10 +353,21 @@ function Groups({ isMobile, socket }) {
                             {' '}
                             <ChevronRightIcon />{' '}
                         </span>
-                        <div
-                            className='GroupsMenuHeader'
-                            onClick={() => OpenDropdownMenu()}>
+                        <div className='GroupsMenuHeader'>
+                            <button
+                                className='profileDetailBtn grey'
+                                onClick={() => OpenDropdownMenu()}>
+                                Add User
+                            </button>
                             <div ref={dropdown} className='dropdown-content'>
+                                <div className='UserSearch' >
+                                <input
+                                ref={InputRef}
+                                className='search'
+                                type= 'search'
+                                placeholder='Search User'
+                            />
+                                </div>
                                 {getallNonMembers &&
                                     getallNonMembers.map((ele) => (
                                         <a
@@ -373,16 +387,14 @@ function Groups({ isMobile, socket }) {
                                         </a>
                                     ))}
                             </div>
-                            <Input
-                                styleName={'search'}
-                                type={'search'}
-                                placeholder={'Search User'}
-                            />
                         </div>
                         {(groupSelect &&
-                            groupSelect.Members.map((ele) => (
-                                
-                                <span key={ele.UserId} onClick={()=>  navigate(`/profile?id=${ele.UserId}`)}>
+                            groupSelect.Members.map((ele, i) => (
+                                <span
+                                    key={ele.UserId}
+                                    onClick={() =>
+                                        navigate(`/profile?id=${ele.UserId}`)
+                                    }>
                                     <MiniUserCard
                                         imgStyleName={'miniUserCardImg'}>
                                         <h4 style={{ color: 'black' }}>

@@ -123,7 +123,7 @@ function Groups({ isMobile, socket }) {
         if (toggle) {
             let resp = await GetAllNonMembers(groupSelect.GroupID);
             setGetallNonMembers(resp);
-            setDisplayAllNonMembers(resp)
+            setDisplayAllNonMembers(resp);
             dropdown.current.style.display = 'block';
         } else {
             dropdown.current.style.display = 'none';
@@ -132,8 +132,8 @@ function Groups({ isMobile, socket }) {
 
     window.onclick = function (e) {
         if (
-            dropdown.current.style.display === 'block' &&
             !toggle &&
+            dropdown.current.style.display === 'block' &&
             e.target !== InputRef.current
         ) {
             dropdown.current.style.display = 'none';

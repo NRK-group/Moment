@@ -1,6 +1,7 @@
 import Card from '../../components/card/Card';
 import './Event.css';
 import { useEffect, useState } from 'react';
+import GroupEventsParticipants from '../../pages/Groups/components/GroupEventsParticipants';
 
 export default function Event({
     eventObj,
@@ -14,16 +15,21 @@ export default function Event({
     eventId,
     setFlag,
     flag,
+    setEle,
+    setOpenModal,
 }) {
 
     const [eventObject, setEventObject] = useState(null);
+    const [staus, setStaus] = useState(attending);
 
     useEffect(() => {
         setEventObject(eventObj)
     }, [flag]);
 
     const UpdateAttends = async () => {
+
         console.log({eventObject})
+     
         if (eventObject !== null) {
         let updateAttends = await fetch(
             `http://localhost:5070/updateEventParticipant`,
@@ -37,6 +43,7 @@ export default function Event({
             .then((data) => data);
         
             setEventObject(null)
+            setStaus(updateAttends)
             setFlag(!flag)
         }
     };
@@ -75,9 +82,17 @@ export default function Event({
                     <label>End:</label>
                     <span>{formatDate(end)}</span>
                     <br />
-                    <br />
+                    <br /> 
                     <label>Attending:</label>{' '}
-                    <button onClick={() => UpdateAttends()}>{attending !== "Going"? "Not Going": "Going"}</button>
+                    <button onClick={() => UpdateAttends()}>{staus !== "Going"? "Not Going": "Going"}</button>
+        
+                    <div onClick={()=>{
+                        
+                        if(eventObj.NumOfParticipants > 0){
+                        setEle(<GroupEventsParticipants data={eventObj.Participants
+                        }/>)
+                        setOpenModal(true)
+                    }}}>Number of members going : {eventObj.NumOfParticipants}</div>
                 </Card>
             </Card>
             <br />

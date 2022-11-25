@@ -5,13 +5,14 @@ import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
 import { CalculateTimeDiff } from '../hooks/calculateTimediff';
 import { GetNotif } from '../hooks/getNotif';
 import { NoNotifications } from './NoNotifications';
-export const GroupNotif = ({ socket }) => {
+export const GroupNotif = ({ socket, setNewMessageNotif }) => {
+    let user = document.cookie.split('=')[1].split('&')[0];
     const [notifications, setNotifications] = useState();
     const [newNotif, setNewNotif] = useState(0);
     GetNotif('group', setNotifications, newNotif);
     let group = {
         invite: 'invited you to join a group •',
-        join: 'want to join your group •',
+        join: 'wants to join your group •',
         event: 'created an event in ',
     };
     let link = {
@@ -28,14 +29,22 @@ export const GroupNotif = ({ socket }) => {
             ) {
                 setNewNotif(newNotif + 1);
             }
+            if (
+                data.type === 'privateMessage' ||
+                data.type === 'groupMessage'
+            ) {
+                console.log('new message');
+                setNewMessageNotif((prev) => prev + 1);
+            }
         };
     }
     console.log(notifications);
-    const handleAction = ({ type, receiverId, senderId }) => {
+    const handleAction = ({ type, groupId, receiverId, senderId }) => {
         if (socket) {
             socket.send(
                 JSON.stringify({
                     type: type,
+                    groupId: groupId,
                     receiverId: receiverId,
                     senderId: senderId,
                 })
@@ -44,8 +53,9 @@ export const GroupNotif = ({ socket }) => {
             if (type === 'acceptInviteRequest') {
                 let newNotif = notifications.map((notif) => {
                     if (
+                        notif.groupId.id === groupId &&
                         notif.receiverId.id === senderId &&
-                        notif.groupId.id === receiverId
+                        notif.userId.id === receiverId
                     ) {
                         console.log('accept');
                         notif.status = 'accepted';
@@ -53,31 +63,52 @@ export const GroupNotif = ({ socket }) => {
                     return notif;
                 });
                 setNotifications(newNotif);
-                socket.send(
-                    JSON.stringify({
-                        type: 'readGroupNotif',
-                        receiverId: user,
-                    })
-                );
             }
             if (type === 'declineInviteRequest') {
                 console.log('decline');
                 let newNotif = notifications.filter(
                     (notif) =>
                         !(
+                            notif.groupId.id === groupId &&
                             notif.receiverId.id === senderId &&
-                            notif.groupId.id === receiverId
+                            notif.userId.id === receiverId
                         )
                 );
                 setNotifications(newNotif);
-                socket.send(
-                    JSON.stringify({
-                        type: 'readGroupNotif',
-                        receiverId: user,
-                    })
+            }
+            if (type === 'acceptJoinRequest') {
+                let newNotif = notifications.map((notif) => {
+                    if (
+                        notif.groupId.id === groupId &&
+                        notif.receiverId.id === senderId &&
+                        notif.userId.id === receiverId
+                    ) {
+                        console.log('accept');
+                        notif.status = 'accepted';
+                    }
+                    return notif;
+                });
+                setNotifications(newNotif);
+            }
+            if (type === 'declineJoinRequest') {
+                console.log('decline');
+                let newNotif = notifications.filter(
+                    (notif) =>
+                        !(
+                            notif.groupId.id === groupId &&
+                            notif.receiverId.id === senderId &&
+                            notif.userId.id === receiverId
+                        )
                 );
+                setNotifications(newNotif);
             }
         }
+        socket.send(
+            JSON.stringify({
+                type: 'readGroupNotif',
+                receiverId: user,
+            })
+        );
     };
     return (
         <>
@@ -115,9 +146,11 @@ export const GroupNotif = ({ socket }) => {
                                                                     'receiverId'
                                                                 );
                                                                 handleAction({
-                                                                    type: 'acceptInviteRequest',
-                                                                    receiverId:
+                                                                    type: 'acceptJoinRequest',
+                                                                    groupId:
                                                                         groupId.id,
+                                                                    receiverId:
+                                                                        userId.id,
                                                                     senderId:
                                                                         receiverId.id,
                                                                 });
@@ -130,9 +163,11 @@ export const GroupNotif = ({ socket }) => {
                                                             content={'decline'}
                                                             action={() => {
                                                                 handleAction({
-                                                                    type: 'declineInviteRequest',
-                                                                    receiverId:
+                                                                    type: 'declineJoinRequest',
+                                                                    groupId:
                                                                         groupId.id,
+                                                                    receiverId:
+                                                                        userId.id,
                                                                     senderId:
                                                                         receiverId.id,
                                                                 });
@@ -153,8 +188,10 @@ export const GroupNotif = ({ socket }) => {
                                                             action={() => {
                                                                 handleAction({
                                                                     type: 'acceptInviteRequest',
-                                                                    receiverId:
+                                                                    groupId:
                                                                         groupId.id,
+                                                                    receiverId:
+                                                                        userId.id,
                                                                     senderId:
                                                                         receiverId.id,
                                                                 });
@@ -168,8 +205,10 @@ export const GroupNotif = ({ socket }) => {
                                                             action={() => {
                                                                 handleAction({
                                                                     type: 'declineInviteRequest',
-                                                                    receiverId:
+                                                                    groupId:
                                                                         groupId.id,
+                                                                    receiverId:
+                                                                        userId.id,
                                                                     senderId:
                                                                         receiverId.id,
                                                                 });

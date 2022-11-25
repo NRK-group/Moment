@@ -45,7 +45,7 @@ export default function Profile({ socket }) {
             });
         }
         GetProfile(id).then((response) => setValues(response));
-    }, [id]);
+    }, [id, followStatus]);
     const relBtn = (
         <Button
             content={followStatus}
@@ -153,7 +153,6 @@ export default function Profile({ socket }) {
                     postContainer='profilePostContainer'
                     id={id}
                     privacyVal={followStatus}
-
                 />
             ) : (
                 <Card styleName='restrictedAccount'>

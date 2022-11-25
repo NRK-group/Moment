@@ -4,9 +4,7 @@ import { FollowNotif } from './followNotif';
 import { GroupNotif } from './GroupNotif';
 export const NotificationContentContainer = ({
     socket,
-    followNotifContainer,
-    setFollowNotif,
-    setFollowNotifContainer,
+    setNewMessageNotif,
 }) => {
     const { type } = useParams();
     return (
@@ -15,12 +13,15 @@ export const NotificationContentContainer = ({
                 {type === 'follow' ? (
                     <FollowNotif
                         socket={socket}
-                        setFollowNotif={setFollowNotif}
-                        notifications={followNotifContainer}
-                        setFollowNotifContainer={setFollowNotifContainer}
+                        setNewMessageNotif={setNewMessageNotif}
                     />
                 ) : null}
-                {type === 'group' ? <GroupNotif socket={socket} /> : null}
+                {type === 'group' ? (
+                    <GroupNotif
+                        socket={socket}
+                        setNewMessageNotif={setNewMessageNotif}
+                    />
+                ) : null}
                 {type === 'general' ? <NoNotifications /> : null}
             </>
         </div>

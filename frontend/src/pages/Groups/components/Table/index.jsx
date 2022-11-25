@@ -15,9 +15,9 @@ function Table({ socket, data }) {
             <div id='table' className='groups-List-Table'>
                 <table>
                     {data.map((ele) => (
-                        <tbody className={ele.member?'groups-List-Block': 'groups-List-tbody'} key={ele.GroupID}>
+                        <tbody className={'groups-List-tbody'} key={ele.GroupID}>
                             <tr onClick={() =>{
-                                 RequestToS(GetCookie('session_token').split('&')[0], ele.Admin, socket, "groupInvitationJoin", ele.GroupID)
+                                socket && RequestToS(GetCookie('session_token').split('&')[0], ele.Admin, socket, "groupInvitationJoin", ele.GroupID)
                             }}>
                                 <td>{ele.Name}</td>
                             </tr>

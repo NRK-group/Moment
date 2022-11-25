@@ -17,7 +17,7 @@ function Home({ isMobile }) {
             .then(async (resp) => await resp.json())
             .then((data) => data);
             console.log({fetchPost})
-        setPosts(fetchPost.reverse());
+        setPosts(fetchPost);
     };
     useEffect(() => {
         GetAllPosts();
@@ -29,7 +29,7 @@ function Home({ isMobile }) {
                 
                 <div className='homePage'>
                    
-                                { posts && posts.map((data) => (
+                                { posts && posts.reverse().map((data) => (
                                     <Post
                                     key={data.PostID}
                                         avatarSrc={

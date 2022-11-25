@@ -7,6 +7,7 @@ import GetCloseFriends, {
     UpdateCloseFriends,
 } from '../../pages/profile/CloseFriend';
 import GetFollowers from '../../pages/profile/Followers';
+import config from '../../../config';
 
 export default function CloseFriendsUsers() {
     const naviagte = useNavigate('');
@@ -61,9 +62,8 @@ export default function CloseFriendsUsers() {
                             return (
                                 <FollowStatUsers
                                     key={i}
-                                    imgSrc={`http://localhost:5070/${obj.img}`}
+                                    imgSrc={`${config.api}/${obj.img}`}
                                     username={obj.name}
-
                                     profileId={obj.id}
                                     typeVal={'Remove'}
                                     btnAction={UpdateCloseFriends}
@@ -85,9 +85,8 @@ export default function CloseFriendsUsers() {
                                 <FollowStatUsers
                                     key={i}
                                     profileImg='followStatAvatarImg'
-                                    imgSrc={`http://localhost:5070/${obj.img}`}
+                                    imgSrc={`${config.api}/${obj.img}`}
                                     username={obj.name}
-
                                     crossIcon='none'
                                     profileId={obj.id}
                                     typeVal={'Add'}

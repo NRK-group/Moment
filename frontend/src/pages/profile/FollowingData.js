@@ -1,8 +1,10 @@
+import config from '../../../config';
 import { GetCookie } from './ProfileData';
 //Checkfollowing checks the relationship between two accounts: Following, Not Following or Pending.
 export default function CheckFollowing(userId) {
     return fetch(
-        'http://localhost:5070/following?' +
+        config.api +
+            '/following?' +
             new URLSearchParams({
                 //Add params to specifiy to server which user
                 followingID: userId,
@@ -26,7 +28,7 @@ function FollowRelationshipUpdate(followingId) {
         FollowerId: userId,
         FollowingId: followingId,
     };
-    return fetch('http://localhost:5070/followrequest', {
+    return fetch(config.api + '/followrequest', {
         method: 'PUT',
         credentials: 'include',
         Accept: 'application/json',

@@ -1,5 +1,7 @@
+import config from '../../../config';
+
 export default async function GetFollowers() {
-    return await fetch('http://localhost:5070/followers', {
+    return await fetch(config.api + '/followers', {
         credentials: 'include',
     }).then(async (response) => {
         return await response.json();

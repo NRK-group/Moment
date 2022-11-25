@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import config from '../../../config';
 import Card from '../../components/card/Card';
 import { MessagesIcon } from '../../components/Icons/Icons';
 import { GetCookie } from '../../pages/profile/ProfileData';
@@ -20,11 +21,15 @@ export default function NewPost() {
     };
 
     const UploadImage = (data) => {
-        return fetch(`http://localhost:5070/imageUpload`, {
-            credentials: 'include',
-            method: 'POST',
-            body: data,
-        });
+        return fetch(
+            `${config.api} /
+                imageUpload`,
+            {
+                credentials: 'include',
+                method: 'POST',
+                body: data,
+            }
+        );
     };
 
     function UploadPost(textVal, privacy) {
@@ -45,7 +50,7 @@ export default function NewPost() {
                 break;
         }
 
-        fetch(`http://localhost:5070/post`, {
+        fetch(`${config.api}/post`, {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({

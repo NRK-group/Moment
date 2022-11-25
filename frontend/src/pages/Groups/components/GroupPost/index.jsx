@@ -6,7 +6,7 @@ import { MessagesIcon } from '../../../../components/Icons/Icons';
 import { GetCookie } from '../../../../pages/profile/ProfileData';
 import '../../../../features/newpost/NewPost.css';
 
-export default function GroupPost({groupId, setOpenModal, flag , setFlag}) {
+export default function GroupPost({ groupId, setOpenModal, flag, setFlag }) {
     const navigate = useNavigate('');
     let imgUpload = useRef(),
         content = useRef();
@@ -17,11 +17,15 @@ export default function GroupPost({groupId, setOpenModal, flag , setFlag}) {
     };
 
     const UploadImage = (data) => {
-        let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
-            credentials: 'include',
-            method: 'POST',
-            body: data,
-        }).then(async (res) => {
+        let uploadImage = fetch(
+            `${config.api} /
+                imageUpload`,
+            {
+                credentials: 'include',
+                method: 'POST',
+                body: data,
+            }
+        ).then(async (res) => {
             console.log(res);
         });
     };
@@ -29,7 +33,7 @@ export default function GroupPost({groupId, setOpenModal, flag , setFlag}) {
     function UploadPost(textVal) {
         if (textVal.trim() === '') return;
 
-        fetch(`http://localhost:5070/post`, {
+        fetch(`${config.api}/post`, {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({
@@ -50,60 +54,59 @@ export default function GroupPost({groupId, setOpenModal, flag , setFlag}) {
                 UploadImage(formData);
                 setImage(null);
             }
-            setOpenModal(false)
-            setFlag(!flag)
+            setOpenModal(false);
+            setFlag(!flag);
             return resp;
         });
-
     }
     return (
         <div id='GroupPost'>
-        <Card styleName='newPostBox'>
-            <Card styleName='newPostHeader'>
-                <span className='newPostTitle'>Create a post </span>
-            </Card>
-
-            <Card styleName='NewPostContent'>
-                <Card styleName='newPostPhotoSection'>
-                    {image ? (
-                        <img
-                            className='newPostImg'
-                            src={URL.createObjectURL(image)}></img>
-                    ) : (
-                        <Card styleName='newPostImgHolder'></Card>
-                    )}
-                    <button
-                        className='newPostImgBtn'
-                        onClick={() => imgUpload.current.click()}>
-                        Select a photo
-                    </button>
-                    <input
-                        type='file'
-                        className='none'
-                        ref={imgUpload}
-                        onChange={handleChangeImage}
-                    />
+            <Card styleName='newPostBox'>
+                <Card styleName='newPostHeader'>
+                    <span className='newPostTitle'>Create a post </span>
                 </Card>
 
-                <Card styleName='NewPostContentInput'>
-                    <textarea
-                        ref={content}
-                        cols='100'
-                        rows='7'
-                        wrap='hard'
-                        className='newPostTextContent'
-                        maxLength='280'
-                        placeholder='What happened today ?'
-                    />
-                    <button
-                        className='NewPostSendBtn'
-                        onClick={() => UploadPost(content.current.value)}>
-                        <span className='shareText'>Share</span>
-                        <MessagesIcon />
-                    </button>
+                <Card styleName='NewPostContent'>
+                    <Card styleName='newPostPhotoSection'>
+                        {image ? (
+                            <img
+                                className='newPostImg'
+                                src={URL.createObjectURL(image)}></img>
+                        ) : (
+                            <Card styleName='newPostImgHolder'></Card>
+                        )}
+                        <button
+                            className='newPostImgBtn'
+                            onClick={() => imgUpload.current.click()}>
+                            Select a photo
+                        </button>
+                        <input
+                            type='file'
+                            className='none'
+                            ref={imgUpload}
+                            onChange={handleChangeImage}
+                        />
+                    </Card>
+
+                    <Card styleName='NewPostContentInput'>
+                        <textarea
+                            ref={content}
+                            cols='100'
+                            rows='7'
+                            wrap='hard'
+                            className='newPostTextContent'
+                            maxLength='280'
+                            placeholder='What happened today ?'
+                        />
+                        <button
+                            className='NewPostSendBtn'
+                            onClick={() => UploadPost(content.current.value)}>
+                            <span className='shareText'>Share</span>
+                            <MessagesIcon />
+                        </button>
+                    </Card>
                 </Card>
             </Card>
-        </Card>
         </div>
     );
 }

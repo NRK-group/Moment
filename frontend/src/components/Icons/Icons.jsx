@@ -1,5 +1,6 @@
 import './Icons.css';
 import Icon from '../Icon/Icon';
+import config from '../../../config';
 
 const HomeIcon = () => {
     return (
@@ -236,7 +237,7 @@ const ProfileIcon = ({ imgStyleName, iconStyleName, img }) => {
             {img ? (
                 <img
                     className={imgStyleName}
-                    src={'http://localhost:5070/' + img}
+                    src={config.api + '/' + img}
                     alt='profile'
                 />
             ) : (

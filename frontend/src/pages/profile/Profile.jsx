@@ -18,6 +18,7 @@ import {
     UpdateRelationshipBtn,
     SetRelBtn,
 } from './FollowingData';
+import config from '../../../config';
 
 export default function Profile({ socket }) {
     const navigate = useNavigate();
@@ -72,7 +73,7 @@ export default function Profile({ socket }) {
         <Card styleName='profileCard'>
             <Card styleName='profileSection'>
                 <UserImg
-                    src={`http://localhost:5070/` + values.Avatar}
+                    src={`${config.api}/` + values.Avatar}
                     profileImg='profileAvatarImg'
                     userImgHolder={'profileAvatar'}
                 />

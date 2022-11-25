@@ -6,12 +6,13 @@ import GetFollowers from '../../../profile/Followers';
 import { useEffect, useRef } from 'react';
 import { GetCookie } from '../../../profile/ProfileData';
 import { RequestToS } from '../../hooks/useGroupshook';
+import config from '../../../../../config';
 
 export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [closeF, setCloseF] = useState([]);
-   let selectR = useRef(null);
+    let selectR = useRef(null);
 
     useEffect(() => {
         GetFollowers().then((response) => {
@@ -20,14 +21,14 @@ export default function AddGroup({ setOpenModal, flag, setFlag, socket }) {
     }, []);
 
     const CreateGroup = async () => {
-        let creategroup = await fetch('http://localhost:5070/group', {
+        let creategroup = await fetch(config.api + '/group', {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({ Name: name, Description: description }),
         })
             .then(async (resp) => await resp.text())
             .then((data) => data);
-        if (selectR.current.value !== "" && creategroup !== "") {
+        if (selectR.current.value !== '' && creategroup !== '') {
             RequestToS(
                 GetCookie('session_token').split('&')[0],
                 selectR.current.value,

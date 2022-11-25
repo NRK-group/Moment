@@ -8,6 +8,7 @@ import { useRef, useState, useEffect } from 'react';
 import ReadMoreReact from 'read-more-react';
 import { useLocation } from 'react-router-dom';
 import InputEmoji from 'react-input-emoji';
+import config from '../../../config';
 
 const Comments = ({ isMobile }) => {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
@@ -42,7 +43,7 @@ const Comments = ({ isMobile }) => {
     };
 
     const PostComments = async () => {
-        let comments = await fetch(`http://localhost:5070/comment/`, {
+        let comments = await fetch(`${config.api}/comment/`, {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({ postId: state.PostId, content: text }),
@@ -69,8 +70,8 @@ const Comments = ({ isMobile }) => {
         PostComments();
     }
 
-     const UploadImage = (data) => {
-        let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
+    const UploadImage = (data) => {
+        let uploadImage = fetch(`${config.api}/imageUpload`, {
             credentials: 'include',
             method: 'POST',
             body: data,
@@ -80,7 +81,7 @@ const Comments = ({ isMobile }) => {
     };
 
     useEffect(() => {
-        let comments = fetch(`http://localhost:5070/comment/${state.PostId}`, {
+        let comments = fetch(`${config.api}/comment/${state.PostId}`, {
             credentials: 'include',
             method: 'GET',
         }).then(async (response) => {
@@ -109,11 +110,20 @@ const Comments = ({ isMobile }) => {
             <Card styleName={cardStyleName}>
                 <div className='Comments'>
                     <div className='CommentsLeft'>
-                        { state.PostBodyImgSrc &&
-                        <div className='CommentsImg'>
-                            <img src={`http://localhost:5070/${state.PostBodyImgSrc}`}  style={{height:"300px", width:"200px"}} />
-                        </div> || state.PostContent && <div className='CommentsText'> <p>{state.PostContent}</p> </div>
-}
+                        {(state.PostBodyImgSrc && (
+                            <div className='CommentsImg'>
+                                <img
+                                    src={`${config.api}/${state.PostBodyImgSrc}`}
+                                    style={{ height: '300px', width: '200px' }}
+                                />
+                            </div>
+                        )) ||
+                            (state.PostContent && (
+                                <div className='CommentsText'>
+                                    {' '}
+                                    <p>{state.PostContent}</p>{' '}
+                                </div>
+                            ))}
                         <div className='Comments-Emoji'></div>
                         <div className='CommentsChat'>
                             <InputEmoji
@@ -213,7 +223,7 @@ const Comments = ({ isMobile }) => {
                                                 {ele.ImageUpload && (
                                                     <div className='Comments-Img'>
                                                         <img
-                                                            src={`http://localhost:5070/${ele.ImageUpload}`}
+                                                            src={`${config.api}/${ele.ImageUpload}`}
                                                             alt='Girl in a jacket'
                                                             style={{
                                                                 width: '100px',

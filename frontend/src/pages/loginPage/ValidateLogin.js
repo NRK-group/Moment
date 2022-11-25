@@ -1,3 +1,5 @@
+import config from '../../../config';
+
 function CheckCreds(email, password) {
     //Check the values inside the login input fields
     //Check the password isn't too short
@@ -31,7 +33,7 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
         Password: password,
     };
     // Send the data to the server to be validated by login handler
-    let auth = fetch('http://localhost:5070/login', {
+    let auth = fetch(config.api + '/login', {
         credentials: 'include',
         method: 'POST',
         headers: {
@@ -44,7 +46,7 @@ export default function ValidateLoginAttempt(email, password, errMsg) {
             return response.json();
         })
         .then((resp) => {
-            errMsg.innerHTML = "";
+            errMsg.innerHTML = '';
 
             if (resp.Message !== 'Valid Login') {
                 errMsg.innerHTML = resp.Message;

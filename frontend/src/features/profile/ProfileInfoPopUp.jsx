@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import UpdateProfile from '../../pages/profile/updateProfile';
+import config from '../../../config';
 
 export default function ProfileStatsPopUp(props) {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function ProfileStatsPopUp(props) {
         aboutMe = useRef(),
         avatarRef = useRef(),
         email = useRef(),
-        accPriv = useRef()
+        accPriv = useRef();
     const [DOB, setDob] = useState(new Date());
     const [data, setData] = useState({});
     useEffect(() => {
@@ -36,8 +37,7 @@ export default function ProfileStatsPopUp(props) {
                     styleName='authAvatar'
                     refr={avatarRef}
                     style={{
-                        backgroundImage:
-                            `url('http://localhost:5070/` + avatar + `')`,
+                        backgroundImage: `url(${config.api}'/` + avatar + `')`,
                     }}>
                     <button className='profileAvatarBtn'>+</button>
                 </Card>
@@ -45,13 +45,13 @@ export default function ProfileStatsPopUp(props) {
                     styleName='profileInfoPrivacy'
                     value={data.IsPublic}
                     refr={accPriv}
-                    closefriends = {false}
+                    closefriends={false}
                 />
                 <AuthInput
                     type='text'
                     styleName='loginInput profileInput'
                     placeholder='First Name'
-                    refr = {firstName}
+                    refr={firstName}
                     value={data.FirstName}
                 />
                 <AuthInput
@@ -88,7 +88,7 @@ export default function ProfileStatsPopUp(props) {
                     type='text'
                     styleName='loginInput profileInput'
                     placeholder='Email'
-                    refr = {email}
+                    refr={email}
                     value={data.Email}
                 />
 

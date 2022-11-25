@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import config from '../../../../config';
 export const GetFollow = () => {
     const [following, setFollowing] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5070/message/new', {
+        fetch(config.api + '/message/new', {
             credentials: 'include',
         }).then(async (res) => {
             let data = await res.json();

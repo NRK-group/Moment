@@ -36,7 +36,7 @@ export default function ProfilePosts(props) {
                         data.Privacy >= privacyNum || !props.id ? (
                             <Post
                                 key={data.PostID}
-                                avatarSrc={`http://localhost:5070/${data.Image}`}
+                                avatarSrc={`${config.api}/${data.Image}`}
                                 name={data.NickName}
                                 postContent={data.Content}
                                 userID={data.UserID}

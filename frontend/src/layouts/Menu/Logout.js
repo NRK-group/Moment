@@ -1,5 +1,7 @@
+import config from '../../../config';
+
 export default function Logout(redir, setauth) {
-    fetch('http://localhost:5070/logout', {
+    fetch(config.api + '/logout', {
         credentials: 'include',
     })
         .then(async (response) => {
@@ -7,8 +9,8 @@ export default function Logout(redir, setauth) {
         })
         .then((resp) => {
             if (resp === 'Logged Out') {
-                setauth(false)
-                redir('/')
+                setauth(false);
+                redir('/');
                 return true;
             }
             return false;

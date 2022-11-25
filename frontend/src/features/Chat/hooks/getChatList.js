@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import config from '../../../../config';
 export const GetChatList = (setClist, newMessage) => {
     const [chatList, setChatList] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5070/chat', {
+        fetch(config.api + '/chat', {
             credentials: 'include',
         }).then(async (res) => {
             let data = await res.json();

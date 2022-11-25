@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import config from '../../../../config';
 export const GetNotif = (type, setNotifications, newNotif) => {
     const [notif, setNotif] = useState([]);
     useEffect(() => {
         fetch(
-            'http://localhost:5070/notification?' +
+            config.api +
+                '/notification?' +
                 new URLSearchParams({ notifType: type }),
             {
                 credentials: 'include',

@@ -1,7 +1,8 @@
+import config from '../../../config';
 import { GetCookie } from './ProfileData';
 
 export default async function GetCloseFriends() {
-    return await fetch('http://localhost:5070/getclosefriend', {
+    return await fetch(config.api + '/getclosefriend', {
         credentials: 'include',
     }).then(async (response) => {
         return await response.json();
@@ -14,22 +15,24 @@ async function UpdateCloseFriends(closeFriend, set) {
         UserID: USER_ID,
         CloseFriendId: closeFriend,
     };
-    return await fetch('http://localhost:5070/closefriend', {
+    return await fetch(config.api + '/closefriend', {
         credentials: 'include',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(DATA),
-    }).then(async (response) => {
-        return await response.json();
-    }).then(resp => {
-    if (resp.Message === "Removed") set("Add")
-    if (resp.Message === "Added") set("Remove")
+    })
+        .then(async (response) => {
+            return await response.json();
+        })
+        .then((resp) => {
+            if (resp.Message === 'Removed') set('Add');
+            if (resp.Message === 'Added') set('Remove');
 
-     console.log("UPDATED TO:   ", resp.Message)
-    });
+            console.log('UPDATED TO:   ', resp.Message);
+        });
 }
 
 export { UpdateCloseFriends };

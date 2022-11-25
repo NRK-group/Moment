@@ -7,9 +7,15 @@ import '../../../../features/newpost/NewPost.css';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import './GroupEvent.css';
-import {RequestToS} from '../../hooks/useGroupshook'
+import { RequestToS } from '../../hooks/useGroupshook';
 
-export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, socket}) {
+export default function GroupEvent({
+    groupId,
+    setOpenModal,
+    flag,
+    setFlag,
+    socket,
+}) {
     const [startDate, setStartDate] = useState(
         new Date(new Date().setFullYear(new Date().getFullYear()))
     );
@@ -18,7 +24,7 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
         new Date(new Date().setFullYear(new Date().getFullYear()))
     );
 
-    const [err, setErr] = useState(null)
+    const [err, setErr] = useState(null);
 
     let imgUpload = useRef(),
         content = useRef(),
@@ -34,11 +40,15 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
     };
 
     const UploadImage = (data) => {
-        let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
-            credentials: 'include',
-            method: 'POST',
-            body: data,
-        }).then(async (res) => {
+        let uploadImage = fetch(
+            `${config.api} /
+                imageUpload`,
+            {
+                credentials: 'include',
+                method: 'POST',
+                body: data,
+            }
+        ).then(async (res) => {
             console.log(res);
         });
     };
@@ -48,13 +58,16 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
         if (location.trim() === '') return;
         if (eventName.trim() === '') return;
 
-        if( startDate > endDate || startDate < new Date() || endDate  < new Date()){
-            setErr("check you dates")
-            return
+        if (
+            startDate > endDate ||
+            startDate < new Date() ||
+            endDate < new Date()
+        ) {
+            setErr('check you dates');
+            return;
         }
 
-
-        fetch(`http://localhost:5070/event`, {
+        fetch(`${config.api}/event`, {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({
@@ -81,8 +94,8 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
                 setImage(null);
             }
             setOpenModal(false);
-            setFlag(!flag)
-            RequestToS(userIDR.current, groupId, socket, "eventNotif", groupId)
+            setFlag(!flag);
+            RequestToS(userIDR.current, groupId, socket, 'eventNotif', groupId);
             return resp;
         });
     }
@@ -90,7 +103,7 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
         <div id='GroupEvent'>
             <Card styleName='newPostBoxEvent'>
                 <Card styleName='newPostHeaderEvent'>
-                    <span className='newPostTitle' >Create a Event </span>
+                    <span className='newPostTitle'>Create a Event </span>
                 </Card>
 
                 <Card styleName='NewPostContent'>
@@ -166,7 +179,7 @@ export default function GroupEvent({ groupId, setOpenModal, flag , setFlag, sock
                             <MessagesIcon />
                         </button>
 
-                       {err && <p className='err' >{err}</p>}
+                        {err && <p className='err'>{err}</p>}
                     </Card>
                 </Card>
             </Card>

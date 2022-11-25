@@ -30,7 +30,7 @@ export default function Following() {
                             return (
                                 <FollowerHolder
                                     key={i}
-                                    imgSrc={`http://localhost:5070/${obj.img}`}
+                                    imgSrc={`${config.api}/${obj.img}`}
                                     username={obj.name}
                                     profileId={obj.id}
                                     crossIcon='none'

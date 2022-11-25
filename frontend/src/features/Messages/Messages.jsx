@@ -10,6 +10,7 @@ import { useScrollDown } from './hooks/scrollDown';
 import { debounce } from './hooks/debounce';
 import InputEmoji from 'react-input-emoji';
 import GetProfile from '../../pages/profile/ProfileData';
+import config from '../../../config';
 export const Messages = ({
     socket,
     currentUserInfo,
@@ -29,7 +30,8 @@ export const Messages = ({
     useScrollDown(chatBox, messages);
     useEffect(() => {
         fetch(
-            'http://localhost:5070/message?' +
+            config.api +
+                '/message?' +
                 new URLSearchParams({
                     chatId: chatId,
                     type: type,

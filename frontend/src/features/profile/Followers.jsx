@@ -8,7 +8,7 @@ import { FollowRelationshipUpdate } from '../../pages/profile/FollowingData';
 import FollowerHolder from './FollowerHolder';
 
 export default function Followers() {
-    const navigate = useNavigate('')
+    const navigate = useNavigate('');
     const [follower, setFollower] = useState([]);
     useEffect(() => {
         GetFollowers().then((response) => setFollower(response));
@@ -32,9 +32,8 @@ export default function Followers() {
                             return (
                                 <FollowerHolder
                                     key={i}
-                                    imgSrc={`http://localhost:5070/${obj.img}`}
+                                    imgSrc={`${config.api}/${obj.img}`}
                                     username={obj.name}
-
                                     profileId={obj.id}
                                     typeVal={'Following'}
                                     btnAction={FollowRelationshipUpdate}

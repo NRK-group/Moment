@@ -27,6 +27,7 @@ import {
     GroupsIcon,
 } from '../../components/Icons/Icons';
 import { useRef, useState, useEffect } from 'react';
+import config from '../../../config';
 
 function Groups({ isMobile, socket }) {
     let bodyStyleName = isMobile ? 'mobile' : 'desktop';
@@ -35,13 +36,10 @@ function Groups({ isMobile, socket }) {
     const navigate = useNavigate();
 
     const GetAllUsergroups = async () => {
-        let fetchAllUsergroups = await fetch(
-            'http://localhost:5070/getUserGroups',
-            {
-                credentials: 'include',
-                method: 'GET',
-            }
-        )
+        let fetchAllUsergroups = await fetch(config.api + '/getUserGroups', {
+            credentials: 'include',
+            method: 'GET',
+        })
             .then(async (resp) => await resp.json())
             .then((data) => data);
         if (fetchAllUsergroups !== null) {
@@ -95,7 +93,7 @@ function Groups({ isMobile, socket }) {
     };
 
     const Getgroups = async () => {
-        let fetchGroups = await fetch('http://localhost:5070/group', {
+        let fetchGroups = await fetch(config.api + '/group', {
             credentials: 'include',
             method: 'GET',
         })
@@ -129,11 +127,11 @@ function Groups({ isMobile, socket }) {
     };
 
     window.onclick = function () {
-       if(dropdown.current.style.display === 'block' && !toggle){
-        dropdown.current.style.display = 'none';
-        setToggle(!toggle);
-       }
-    }
+        if (dropdown.current.style.display === 'block' && !toggle) {
+            dropdown.current.style.display = 'none';
+            setToggle(!toggle);
+        }
+    };
 
     return (
         <Body styleName={bodyStyleName}>
@@ -308,7 +306,7 @@ function Groups({ isMobile, socket }) {
                                 groupPosts.map((data) => (
                                     <Post
                                         key={data.PostID}
-                                        avatarSrc={`http://localhost:5070/${data.Image}`}
+                                        avatarSrc={`${config.api}/${data.Image}`}
                                         name={data.NickName}
                                         postContent={data.Content}
                                         userID={data.UserID}
@@ -359,8 +357,15 @@ function Groups({ isMobile, socket }) {
                                         <a
                                             key={ele.id}
                                             onClick={() => {
-                                                RequestToS(GetCookie('session_token').split('&')[0], ele.id, socket, "groupInvitationRequest", groupSelect.GroupID)
-                                        
+                                                RequestToS(
+                                                    GetCookie(
+                                                        'session_token'
+                                                    ).split('&')[0],
+                                                    ele.id,
+                                                    socket,
+                                                    'groupInvitationRequest',
+                                                    groupSelect.GroupID
+                                                );
                                             }}>
                                             {ele.firstName}
                                         </a>
@@ -374,8 +379,11 @@ function Groups({ isMobile, socket }) {
                         </div>
                         {(groupSelect &&
                             groupSelect.Members.map((ele) => (
-                                
-                                <span key={ele.UserId} onClick={()=>  navigate(`/profile?id=${ele.UserId}`)}>
+                                <span
+                                    key={ele.UserId}
+                                    onClick={() =>
+                                        navigate(`/profile?id=${ele.UserId}`)
+                                    }>
                                     <MiniUserCard
                                         imgStyleName={'miniUserCardImg'}
                                         optContent={ele.UserName}>

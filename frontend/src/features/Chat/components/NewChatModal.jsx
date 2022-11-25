@@ -4,6 +4,7 @@ import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
 import { useNavigate } from 'react-router-dom';
 import { GetFollow } from '../hooks/getFollow';
 import { useState } from 'react';
+import config from '../../../../config';
 export const NewChatModal = () => {
     const navigate = useNavigate();
     let following = GetFollow();
@@ -17,7 +18,7 @@ export const NewChatModal = () => {
     });
     const handleNewMessage = (e) => {
         let receiverId = e.currentTarget.getAttribute('data-receiverid');
-        fetch('http://localhost:5070/chat', {
+        fetch(config.api + '/chat', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

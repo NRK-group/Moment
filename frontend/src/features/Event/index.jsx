@@ -2,6 +2,7 @@ import Card from '../../components/card/Card';
 import './Event.css';
 import { useEffect, useState } from 'react';
 import GroupEventsParticipants from '../../pages/Groups/components/GroupEventsParticipants';
+import config from '../../../config';
 
 export default function Event({
     eventObj,
@@ -18,33 +19,31 @@ export default function Event({
     setEle,
     setOpenModal,
 }) {
-
     const [eventObject, setEventObject] = useState(null);
     const [staus, setStaus] = useState(attending);
 
     useEffect(() => {
-        setEventObject(eventObj)
+        setEventObject(eventObj);
     }, [flag]);
 
     const UpdateAttends = async () => {
+        console.log({ eventObject });
 
-        console.log({eventObject})
-     
         if (eventObject !== null) {
-        let updateAttends = await fetch(
-            `http://localhost:5070/updateEventParticipant`,
-            {
-                credentials: 'include',
-                method: 'POST',
-                body: JSON.stringify(eventObject),
-            }
-        )
-            .then(async (resp) => await resp.text())
-            .then((data) => data);
-        
-            setEventObject(null)
-            setStaus(updateAttends)
-            setFlag(!flag)
+            let updateAttends = await fetch(
+                `${config.api}/updateEventParticipant`,
+                {
+                    credentials: 'include',
+                    method: 'POST',
+                    body: JSON.stringify(eventObject),
+                }
+            )
+                .then(async (resp) => await resp.text())
+                .then((data) => data);
+
+            setEventObject(null);
+            setStaus(updateAttends);
+            setFlag(!flag);
         }
     };
 
@@ -53,7 +52,6 @@ export default function Event({
         let result = myDate.toString().slice(0, 24);
         return result;
     };
-    
 
     return (
         <>
@@ -65,7 +63,7 @@ export default function Event({
                 </Card>
                 <Card styleName={'EventBody'}>
                     {(eventBodyImgSrc && (
-                        <img src={`http://localhost:5070/${eventBodyImgSrc}`} />
+                        <img src={`${config.api}/${eventBodyImgSrc}`} />
                     )) ||
                         (eventContent && <p>{eventContent}</p>)}
                 </Card>
@@ -82,17 +80,24 @@ export default function Event({
                     <label>End:</label>
                     <span>{formatDate(end)}</span>
                     <br />
-                    <br /> 
-                    <label>Attending:</label>{' '}
-                    <button onClick={() => UpdateAttends()}>{staus !== "Going"? "Not Going": "Going"}</button>
-        
-                    <div onClick={()=>{
-                        
-                        if(eventObj.NumOfParticipants > 0){
-                        setEle(<GroupEventsParticipants data={eventObj.Participants
-                        }/>)
-                        setOpenModal(true)
-                    }}}>Number of members going : {eventObj.NumOfParticipants}</div>
+                    <br />
+                    <label>Attending:</label>
+                    <button onClick={() => UpdateAttends()}>
+                        {staus !== 'Going' ? 'Not Going' : 'Going'}
+                    </button>
+                    <div
+                        onClick={() => {
+                            if (eventObj.NumOfParticipants > 0) {
+                                setEle(
+                                    <GroupEventsParticipants
+                                        data={eventObj.Participants}
+                                    />
+                                );
+                                setOpenModal(true);
+                            }
+                        }}>
+                        Number of members going : {eventObj.NumOfParticipants}
+                    </div>
                 </Card>
             </Card>
             <br />

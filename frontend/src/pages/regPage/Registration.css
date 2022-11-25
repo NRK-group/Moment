@@ -28,7 +28,8 @@
     min-height: 125px;
     width: 10vmax;
     min-width: 125px;
-    background-image: url('http://localhost:5070/images/profile/default-user.svg');
+    /* background-image: url('http://localhost:5070/images/profile/default-user.svg'); */
+    background-image: url('social-network-production-d7e3.up.railway.app/images/profile/default-user.svg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -45,7 +46,7 @@
     z-index: 1;
 }
 
-.regDob{
+.regDob {
     font-weight: lighter;
     font-size: 75%;
 }

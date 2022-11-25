@@ -3,7 +3,7 @@ import Avatar from '../../components/Avatar';
 import { useNavigate } from 'react-router-dom';
 
 import './Post.css';
-
+import config from '../../../config';
 
 export default function Post({
     userID,
@@ -46,15 +46,15 @@ export default function Post({
                     </div>
                 </Card>
                 <Card styleName={'PostBody'}>
-                    {(postBodyImgSrc && <img src= {`http://localhost:5070/${postBodyImgSrc}`} />) ||
+                    {(postBodyImgSrc && (
+                        <img src={`${config.api}/${postBodyImgSrc}`} />
+                    )) ||
                         (postContent && <p>{postContent}</p>)}
                 </Card>
                 <Card styleName={'PostContent'}>
-                   
                     {postBodyImgSrc && (
                         <span className='postTextHolder'>
                             <p className='PostContentText'>{postContent}</p>
-                           
                         </span>
                     )}
                     <p className='PostContentVBtn'>

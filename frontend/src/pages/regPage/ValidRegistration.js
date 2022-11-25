@@ -1,5 +1,6 @@
 import { ValidateEmail } from '../loginPage/ValidateLogin';
 import { isValid } from 'date-fns';
+import config from '../../../config';
 
 async function SendRegistration(values, div) {
     let result = ValidateRegistrationInfo(values);
@@ -28,7 +29,7 @@ async function SendRegistration(values, div) {
 
     div.innerHTML = `<div class="dot-flashing"></div>`;
 
-    let registered = await fetch('http://localhost:5070/registration', {
+    let registered = await fetch(config.api + '/registration', {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -90,7 +91,7 @@ function UpdateProfleImg(fileInput, profileImg, errMsg) {
     if (!file) return;
     const formData = new FormData();
     formData.append('file', file[0]);
-    fetch('http://localhost:5070/updateprofileimg', {
+    fetch(config.api + '/updateprofileimg', {
         credentials: 'include',
         method: 'POST',
         body: formData,
@@ -104,7 +105,7 @@ function UpdateProfleImg(fileInput, profileImg, errMsg) {
                 errMsg.innerHTML = resp;
                 return;
             }
-            profileImg.style.backgroundImage = `url("http://localhost:5070/${resp}")`;
+            profileImg.style.backgroundImage = `url("${config.api}/${resp}")`;
             errMsg.innerHTML = '';
         });
 }

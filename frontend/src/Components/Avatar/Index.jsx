@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Card from '../card/Card'
 import './Avatar.css';
 
 function Avatar({ avatarSrc, avatarAlt, styleName, name , avatarRedirect, avatarIcon }) {

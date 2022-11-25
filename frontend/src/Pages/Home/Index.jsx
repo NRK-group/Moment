@@ -1,8 +1,6 @@
 import './Home.css';
-import Avatar from '../../components/Avatar';
-import Post from '../../features/Post';
-import Body from '../../components/Body/Body';
-import Card from '../../components/card/Card';
+import Post from '../../Features/Post';
+import Card from '../../Components/Card/Card';
 import { useState, useEffect } from 'react';
 
 function Home({ isMobile }) {

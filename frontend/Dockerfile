@@ -20,5 +20,4 @@ RUN rm -rf ./*
 COPY --from=builder /App-frontend/build .
 # Containers run nginx with global directives and daemon off
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
-# CMD [ "npm", "run", "preview" ]
 

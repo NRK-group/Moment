@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"backend/pkg/db/sqlite"
 	"backend/pkg/group"
@@ -32,7 +33,7 @@ func main() {
 	// initialize the database struct
 	data := &structs.DB{DB: networkDb}
 	database := &handler.Env{Env: data}
-	//CreateingTengroups(data)
+	// CreateingTengroups(data)
 	// close the database
 	defer networkDb.Close()
 
@@ -52,8 +53,13 @@ func main() {
 	})
 
 	// start the server
-	log.Println("Server is running on port 5070")
-	http.ListenAndServe(":5070", nil)
+	port := ""
+	port = os.Getenv("PORT")
+	if port == "" {
+		port = "8800"
+	}
+	log.Print("Listening on 0.0.0.0:" + port)
+	log.Fatal(http.ListenAndServe("0.0.0.0:"+port, nil))
 }
 
 // SetUpRoutes initialises the handlers

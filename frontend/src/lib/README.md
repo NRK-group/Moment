@@ -1,1 +1,0 @@
-# Facade pattern functions

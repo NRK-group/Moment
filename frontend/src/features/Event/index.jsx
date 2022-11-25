@@ -27,7 +27,7 @@ export default function Event({
     const UpdateAttends = async () => {
         if (eventObject !== null || new Date() < end) {
             let updateAttends = await fetch(
-                `http://localhost:5070/updateEventParticipant`,
+                `${config.api}/updateEventParticipant`,
                 {
                     credentials: 'include',
                     method: 'POST',

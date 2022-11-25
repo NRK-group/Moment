@@ -6,7 +6,6 @@ import Card from '../../components/card/Card';
 import Post from '../../features/Post';
 import AddGroup from './components/AddGroup';
 import Modal from '../../features/Modal';
-import Input from '../../components/Input/Input';
 import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
 import GroupList from './components/GroupList';
 import GroupPost from './components/GroupPost';
@@ -63,6 +62,7 @@ function Groups({ isMobile, socket }) {
     const [flag, setFlag] = useState(false);
     const [groupS, setGroupS] = useState(null);
     const [getallNonMembers, setGetallNonMembers] = useState(null);
+    const [displayAllNonMembers, setDisplayAllNonMembers] = useState(null);
     const [groupE, setGroupE] = useState(null);
     const [groupSelect, setGroupSelect] = useState(null);
     const [openModal, setOpenModal] = useState(false);
@@ -123,6 +123,7 @@ function Groups({ isMobile, socket }) {
         if (toggle) {
             let resp = await GetAllNonMembers(groupSelect.GroupID);
             setGetallNonMembers(resp);
+            setDisplayAllNonMembers(resp)
             dropdown.current.style.display = 'block';
         } else {
             dropdown.current.style.display = 'none';
@@ -130,11 +131,27 @@ function Groups({ isMobile, socket }) {
     };
 
     window.onclick = function (e) {
-        console.log(e.target)
-        console.log(InputRef.current)
-        if (dropdown.current.style.display === 'block' && !toggle && e.target !== InputRef.current) {
+        if (
+            dropdown.current.style.display === 'block' &&
+            !toggle &&
+            e.target !== InputRef.current
+        ) {
             dropdown.current.style.display = 'none';
             setToggle(!toggle);
+        }
+    };
+
+    const SearchUsers = (searchText) => {
+        if (searchText !== '') {
+            setDisplayAllNonMembers(
+                getallNonMembers.filter((ele) =>
+                    ele.firstName
+                        .toLowerCase()
+                        .includes(searchText.toLowerCase())
+                )
+            );
+        } else {
+            setDisplayAllNonMembers(getallNonMembers);
         }
     };
 
@@ -357,19 +374,22 @@ function Groups({ isMobile, socket }) {
                             <button
                                 className='profileDetailBtn grey'
                                 onClick={() => OpenDropdownMenu()}>
-                                Add User
+                                Add a user
                             </button>
                             <div ref={dropdown} className='dropdown-content'>
-                                <div className='UserSearch' >
-                                <input
-                                ref={InputRef}
-                                className='search'
-                                type= 'search'
-                                placeholder='Search User'
-                            />
+                                <div className='UserSearch'>
+                                    <input
+                                        ref={InputRef}
+                                        className='search'
+                                        type='text'
+                                        onChange={({ target }) => {
+                                            SearchUsers(target.value);
+                                        }}
+                                        placeholder='Search User'
+                                    />
                                 </div>
-                                {getallNonMembers &&
-                                    getallNonMembers.map((ele) => (
+                                {displayAllNonMembers &&
+                                    displayAllNonMembers.map((ele) => (
                                         <a
                                             key={ele.id}
                                             onClick={() => {

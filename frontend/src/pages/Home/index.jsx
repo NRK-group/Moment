@@ -29,7 +29,7 @@ function Home({ isMobile }) {
                 
                 <div className='homePage'>
                    
-                                { posts && posts.reverse().map((data) => (
+                                { posts && posts.map((data) => (
                                     <Post
                                     key={data.PostID}
                                         avatarSrc={

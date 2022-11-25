@@ -5,9 +5,10 @@
     height: 70%;
     width: 100%;
     background-color: var(--background-color);
-    padding: 1%;
+    padding: 0 1% ;
     text-align: center;
     border: 1px solid var(--terheading-color);
+    
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
 }
@@ -21,6 +22,10 @@
     display: flex;
 }
 
+.PostBody p {
+    word-break: break-all;
+}
+
 .PostBody:hover {
     box-shadow: 0 8px 16px 0 rgba(203, 201, 201, 0.2);
 }
@@ -30,6 +35,8 @@
     height: 8%;
     justify-content: space-between;
     border: 1px solid var(--terheading-color);
+    border-top-left-radius: 5px;
+    border-top-right-radius:5px ;
 }
 
 .PostHeader P {
@@ -80,8 +87,12 @@
     justify-content: center;
     height: 18%;
     background-color: var(--background-color);
-    padding: 1%;
+    padding: 0 1%;
     border: 1px solid var(--terheading-color);
+    border-top: none;
+    border-bottom: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius:5px ;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
 }
@@ -195,7 +206,8 @@ word-break: break-word;
     height: 80%;
     min-height: 450px;
     min-width: 350px;
-    border-radius: 5px;
+    max-width: 375px;
+    border-radius: 15px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -209,6 +221,14 @@ word-break: break-word;
 
     .PostContentIconsLeft .iconContainer {
         margin-right: 3vw;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .PostContainer{
+        max-width: none;
+        max-height: none;
+        
     }
 }
 

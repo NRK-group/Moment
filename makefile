@@ -18,8 +18,8 @@ runTest:
 
 backendDocker:
 	docker build -t golang-server ./backend
-	docker run --rm -p 5070:5070 golang-server
+	docker run --rm -it  -p 5070:5070/tcp golang-server:latest
 
 frontendDocker:
 	docker build -t react-frontend-app ./frontend
-	docker run --rm -p 8070:80 react-frontend-app
+	docker run --rm -it -p 80:80/tcp -p 8070:8070/tcp react-frontend-app:latest

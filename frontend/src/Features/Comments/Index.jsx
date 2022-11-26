@@ -111,7 +111,7 @@ const Comments = ({ isMobile }) => {
                     <div className='CommentsLeft'>
                         { state.PostBodyImgSrc &&
                         <div className='CommentsImg'>
-                            <img src={`http://localhost:5070/${state.PostBodyImgSrc}`}  style={{height:"300px", width:"200px"}} />
+                            <img src={`http://localhost:5070/${state.PostBodyImgSrc}`}/>
                         </div> || state.PostContent && <div className='CommentsText'> <p>{state.PostContent}</p> </div>
 }
                         <div className='Comments-Emoji'></div>

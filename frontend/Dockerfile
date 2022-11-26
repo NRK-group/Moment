@@ -20,5 +20,6 @@ RUN rm -rf ./*
 COPY --from=builder /App/dist .
 ADD nginx.conf /etc/nginx/nginx.conf
 # Containers run nginx with global directives and daemon off
+EXPOSE 8070
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 

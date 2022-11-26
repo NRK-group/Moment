@@ -23,5 +23,7 @@ export default defineConfig({
         },
         chunkSizeWarningLimit: 600,
     },
-    plugins: [react()],
+    preview: {
+        port: 8070,
+    },
 });

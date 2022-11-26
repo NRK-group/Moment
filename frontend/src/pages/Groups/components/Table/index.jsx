@@ -1,11 +1,8 @@
-import './table.css';
-import {RequestToS} from '../../hooks/useGroupshook'
-import { GetCookie } from '../../../profile/ProfileData'; 
+import './Table.css';
+import { RequestToS } from '../../Hooks/UseGroupshook';
+import { GetCookie } from '../../../Profile/ProfileData';
 
 function Table({ socket, data }) {
-
-   
-    
     return (
         <>
             <div className='groups-List-header'>
@@ -15,10 +12,22 @@ function Table({ socket, data }) {
             <div id='table' className='groups-List-Table'>
                 <table>
                     {data.map((ele) => (
-                        <tbody className={'groups-List-tbody'} key={ele.GroupID}>
-                            <tr onClick={() =>{
-                                socket && RequestToS(GetCookie('session_token').split('&')[0], ele.Admin, socket, "groupInvitationJoin", ele.GroupID)
-                            }}>
+                        <tbody
+                            className={'groups-List-tbody'}
+                            key={ele.GroupID}>
+                            <tr
+                                onClick={() => {
+                                    socket &&
+                                        RequestToS(
+                                            GetCookie('session_token').split(
+                                                '&'
+                                            )[0],
+                                            ele.Admin,
+                                            socket,
+                                            'groupInvitationJoin',
+                                            ele.GroupID
+                                        );
+                                }}>
                                 <td>{ele.Name}</td>
                             </tr>
                         </tbody>

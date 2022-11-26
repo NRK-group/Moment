@@ -4,10 +4,10 @@ import Card from '../../../../Components/Card/Card';
 import { MessagesIcon } from '../../../../Components/Icons/Icons';
 import { GetCookie } from '../../../Profile/ProfileData';
 import '../../../../Features/Newpost/NewPost.css';
-import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import './GroupEvent.css';
 import { RequestToS } from '../../Hooks/UseGroupshook';
+import DateTimePicker from 'react-datetime-picker';
 
 export default function GroupEvent({
     groupId,
@@ -130,19 +130,19 @@ export default function GroupEvent({
                             <h4>Location:</h4>
                             <input ref={location}></input>
                             <br />
-
                             <span>Start Date</span>
-                            <Datetime
+                            <DateTimePicker
                                 value={startDate}
                                 onChange={(date) => setStartDate(date)}
                             />
+                            ;
                             <br />
-
                             <span>End Date</span>
-                            <Datetime
+                            <DateTimePicker
                                 value={endDate}
                                 onChange={(date) => setEndDate(date)}
                             />
+                            ;
                         </div>
                         <br />
                         <label htmlFor='attending'>Attending? : </label>

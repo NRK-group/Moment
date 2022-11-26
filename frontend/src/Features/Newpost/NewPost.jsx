@@ -114,7 +114,7 @@ export default function NewPost() {
                         />
                         {show && (
                             <a
-                                href={'/closefriends'}
+                                href={'/closefriends?back=newpost'}
                                 className='updateCloseFriends'>
                                 Update Close Friends
                             </a>

@@ -107,7 +107,7 @@ export default function Profile({ socket }) {
                                 </button>
                                 <button
                                     className='profileDetailBtn grey'
-                                    onClick={() => navigate('/closefriends')}>
+                                    onClick={() => navigate('/closefriends?back=profile')}>
                                     <i className='fa-solid fa-user-group profileBestFriendsIcon'></i>
                                     Close Friends
                                 </button>

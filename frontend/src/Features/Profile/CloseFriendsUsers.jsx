@@ -12,7 +12,8 @@ export default function CloseFriendsUsers() {
     const naviagte = useNavigate('');
     const [closeFriends, setCloseFriends] = useState([]);
     const [followers, setFollowers] = useState([]);
-
+    const urlParams = new URLSearchParams(queryString);
+    let back = urlParams.get('back');
     //Get the close friends
     useEffect(() => {
         //Fetch the close friends
@@ -47,7 +48,7 @@ export default function CloseFriendsUsers() {
                     <span className='profileCloseFriendsHeader'>
                         <button
                             className={'crossIcon'}
-                            onClick={() => history.back()}>
+                            onClick={() => naviagte("/"+back)}>
                             <i className='fa-solid fa-arrow-left'></i>
                         </button>
                         <span className='closeFriendsHeading'>

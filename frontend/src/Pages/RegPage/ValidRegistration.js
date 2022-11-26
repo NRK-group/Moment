@@ -1,4 +1,4 @@
-import { ValidateEmail } from '../loginPage/ValidateLogin';
+import { ValidateEmail } from '../LoginPage/ValidateLogin';
 import { isValid } from 'date-fns';
 
 async function SendRegistration(values, div) {

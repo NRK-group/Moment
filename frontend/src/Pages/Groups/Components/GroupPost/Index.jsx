@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../../../../components/card/Card';
-import { MessagesIcon } from '../../../../components/Icons/Icons';
+import Card from '../../../../Components/Card/Card';
+import { MessagesIcon } from '../../../../Components/Icons/Icons';
 import { GetCookie } from '../../../Profile/ProfileData';
-import '../../../../features/newpost/NewPost.css';
+import '../../../../Features/Newpost/NewPost.css';
 
 export default function GroupPost({ groupId, setOpenModal, flag, setFlag }) {
     const navigate = useNavigate('');

@@ -1,11 +1,11 @@
 
 FROM node:16.17.0 AS builder
 
-WORKDIR /App-frontend
+WORKDIR /App
 
 COPY package*.json ./
 RUN npm install
-COPY . .
+COPY . ./
 
 RUN npm run build
 
@@ -17,7 +17,8 @@ WORKDIR /usr/share/nginx/html
 # Remove default nginx static resources
 RUN rm -rf ./*
 # Copies static resources from builder stage
-COPY --from=builder /App-frontend/build .
+COPY --from=builder /App/dist .
+ADD nginx.conf /etc/nginx/nginx.conf
 # Containers run nginx with global directives and daemon off
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 

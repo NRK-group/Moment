@@ -1,6 +1,5 @@
-import Card from "../../components/card/Card"
+import Card from "../../Components/Card/Card"
 import UserImg from "./UserImg"
-import Profile from "../../pages/profile/Profile"
 import { useNavigate } from "react-router-dom"
 
 

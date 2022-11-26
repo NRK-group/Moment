@@ -1,4 +1,4 @@
-import './tableParticipants.css';
+import './TableParticipants.css';
 
 function TabletableParticipants({ data }) {
    

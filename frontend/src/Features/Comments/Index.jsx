@@ -1,9 +1,9 @@
 import './Comments.css';
-import Avatar from '../../components/Avatar';
-import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
-import Body from '../../components/Body/Body';
-import Card from '../../components/card/Card';
-import { MessagesIcon } from '../../components/Icons/Icons';
+import Avatar from '../../Components/Avatar/Index';
+import MiniUserCard from '../../Components/MiniUserCard/MiniUserCard';
+import Body from '../../Components/Body/Body';
+import Card from '../../Components/Card/Card';
+import { MessagesIcon } from '../../Components/Icons/Icons';
 import { useRef, useState, useEffect } from 'react';
 import ReadMoreReact from 'read-more-react';
 import { useLocation } from 'react-router-dom';

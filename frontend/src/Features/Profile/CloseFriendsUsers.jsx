@@ -1,12 +1,12 @@
-import Card from '../../components/card/Card';
+import Card from '../../Components/Card/Card';
 import FollowStatUsers from './FollowStatUsers';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import GetCloseFriends, {
     UpdateCloseFriends,
-} from '../../pages/profile/CloseFriend';
-import GetFollowers from '../../pages/profile/Followers';
+} from '../../Pages/Profile/CloseFriend';
+import GetFollowers from '../../Pages/Profile/Followers';
 
 export default function CloseFriendsUsers() {
     const naviagte = useNavigate('');

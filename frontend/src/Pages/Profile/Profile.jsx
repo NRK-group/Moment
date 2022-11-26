@@ -1,16 +1,13 @@
-import Card from '../../components/card/Card';
-import FollowStatsPopUp from '../../features/profile/FollowStatsPopUp';
-import ProfileStats from '../../features/profile/ProfileStats';
-import UserImg from '../../features/profile/UserImg';
-import ProfilePosts from '../../features/profile/ProfilePosts';
+import Card from '../../Components/Card/Card';
+import ProfileStats from '../../Features/Profile/ProfileStats';
+import UserImg from '../../Features/Profile/UserImg';
+import ProfilePosts from '../../Features/Profile/ProfilePosts';
 import './Profile.css';
-import FollowStatUsers from '../../features/profile/FollowStatUsers';
-import CloseFriendsUsers from '../../features/profile/CloseFriendsUsers';
 import GetProfile, { FormatDOB } from './ProfileData';
 import { GetCookie } from './ProfileData';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Button } from '../../components/Button/Button';
+import { Button } from '../../Components/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import CheckFollowing from './FollowingData';
 import {

@@ -1,4 +1,4 @@
-import './table.css';
+import './Table.css';
 import { RequestToS } from '../../Hooks/UseGroupshook';
 import { GetCookie } from '../../../Profile/ProfileData';
 

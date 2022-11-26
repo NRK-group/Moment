@@ -1,10 +1,9 @@
 import './Header.css';
 import { DesktopHeaderNav, MobileHeaderNav } from '../Navbar/Navbar';
-import Input from '../../components/Input/Input';
+import Input from '../../Components/Input/Input';
 import { useEffect } from 'react';
-import { GetChatList } from '../../features/Chat/hooks/getChatList';
-import { GetNotif } from '../../features/Notification/hooks/getNotif';
-import { useLocation } from 'react-router-dom';
+import { GetChatList } from '../../Features/Chat/Hooks/GetChatList';
+import { GetNotif } from '../../Features/Notification/Hooks/GetNotif';
 const Header = ({
     setIsMenuOpen,
     setIsSearchModalOpen,

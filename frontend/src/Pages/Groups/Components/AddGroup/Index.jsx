@@ -1,6 +1,6 @@
 import './AddGroup.css';
-import Card from '../../../../components/card/Card';
-import { MessagesIcon } from '../../../../components/Icons/Icons';
+import Card from '../../../../Components/Card/Card';
+import { MessagesIcon } from '../../../../Components/Icons/Icons';
 import { useState } from 'react';
 import GetFollowers from '../../../Profile/Followers';
 import { useEffect, useRef } from 'react';

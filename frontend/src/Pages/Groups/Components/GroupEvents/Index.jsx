@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useRef } from 'react';
-import Card from '../../../../components/card/Card';
-import { MessagesIcon } from '../../../../components/Icons/Icons';
+import Card from '../../../../Components/Card/Card';
+import { MessagesIcon } from '../../../../Components/Icons/Icons';
 import { GetCookie } from '../../../Profile/ProfileData';
-import '../../../../features/newpost/NewPost.css';
+import '../../../../Features/Newpost/NewPost.css';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import './GroupEvent.css';
-import { RequestToS } from '../../Hooks/useGroupshook';
+import { RequestToS } from '../../Hooks/UseGroupshook';
 
 export default function GroupEvent({
     groupId,

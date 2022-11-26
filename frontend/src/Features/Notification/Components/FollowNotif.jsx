@@ -1,10 +1,8 @@
-import { set } from 'date-fns';
-import { useEffect } from 'react';
 import { useState } from 'react';
-import { Button } from '../../../components/Button/Button';
-import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
-import { CalculateTimeDiff } from '../hooks/calculateTimediff';
-import { GetNotif } from '../hooks/getNotif';
+import { Button } from '../../../Components/Button/Button';
+import MiniUserCard from '../../../Components/MiniUserCard/MiniUserCard';
+import { CalculateTimeDiff } from '../Hooks/CalculateTimediff';
+import { GetNotif } from '../Hooks/GetNotif';
 import { NoNotifications } from './NoNotifications';
 export const FollowNotif = ({ socket, setNewMessageNotif }) => {
     let type = 'follow';

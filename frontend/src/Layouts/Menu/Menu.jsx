@@ -1,5 +1,5 @@
 import './Menu.css';
-import { Button } from '../../components/Button/Button';
+import { Button } from '../../Components/Button/Button';
 import { NavLink } from 'react-router-dom';
 import Logout from './Logout';
 import { useNavigate } from 'react-router-dom';

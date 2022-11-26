@@ -1,6 +1,6 @@
 import ChatContainerHeader from './ChatContainerHeader';
-import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import MiniUserCard from '../../../Components/MiniUserCard/MiniUserCard';
+import { NavLink, Outlet } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 export const ChatUsersContainer = ({
     currentUserInfo,

@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { NoNotifications } from './NoNotifications';
-import { FollowNotif } from './followNotif';
+import { FollowNotif } from './FollowNotif';
 import { GroupNotif } from './GroupNotif';
 export const NotificationContentContainer = ({
     socket,

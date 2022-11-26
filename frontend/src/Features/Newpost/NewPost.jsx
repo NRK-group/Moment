@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../../components/card/Card';
-import { MessagesIcon } from '../../components/Icons/Icons';
-import { GetCookie } from '../../Pages/profile/ProfileData';
+import Card from '../../Components/Card/Card';
+import { MessagesIcon } from '../../Components/Icons/Icons';
+import { GetCookie } from '../../Pages/Profile/ProfileData';
 import PrivacySelector from '../Profile/PrivacySelector';
 import './NewPost.css';
 

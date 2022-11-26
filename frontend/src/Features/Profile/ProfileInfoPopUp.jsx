@@ -1,12 +1,12 @@
-import Card from '../../components/card/Card';
-import AuthInput from '../authentication/AuthInput';
+import Card from '../../Components/Card/Card';
+import AuthInput from '../Authentication/AuthInput';
 import PrivacySelector from './PrivacySelector';
-import GetProfile from '../../pages/profile/ProfileData';
+import GetProfile from '../../Pages/Profile/ProfileData';
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import UpdateProfile from '../../pages/profile/updateProfile';
+import UpdateProfile from '../../Pages/Profile/UpdateProfile';
 
 export default function ProfileStatsPopUp(props) {
     const navigate = useNavigate();

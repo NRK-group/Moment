@@ -1,5 +1,5 @@
-import Card from '../../components/card/Card';
-import Avatar from '../../components/Avatar';
+import Card from '../../Components/Card/Card';
+import Avatar from '../../Components/Avatar/Index';
 import { useNavigate } from 'react-router-dom';
 
 import './Post.css';

@@ -1,4 +1,4 @@
-import Card from "../../components/card/Card"
+import Card from "../../Components/Card/Card"
 export default function AuthCard(props) {
   return (
     <Card styleName='loginContainer'>

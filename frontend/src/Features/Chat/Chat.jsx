@@ -1,14 +1,14 @@
 import './Chat.css';
-import Body from '../../components/Body/Body';
-import Card from '../../components/card/Card';
-import SendMessageBox from '../Messages/components/SendMessageBox';
-import { ChatUsersContainer } from './components/chatUsersContainer';
+import Body from '../../Components/Body/Body';
+import Card from '../../Components/Card/Card';
+import SendMessageBox from '../Messages/Components/SendMessageBox';
+import { ChatUsersContainer } from './Components/ChatUsersContainer';
 import { Messages } from '../Messages/Messages';
-import { NewChatModal } from './components/NewChatModal';
+import { NewChatModal } from './Components/NewChatModal';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import GetProfile from '../../pages/profile/ProfileData';
-import { GetChatList } from './hooks/getChatList';
+import GetProfile from '../../Pages/Profile/ProfileData';
+import { GetChatList } from './Hooks/GetChatList';
 const Chat = ({
     isMobile,
     socket,

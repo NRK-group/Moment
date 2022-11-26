@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Button } from '../../../components/Button/Button';
-import MiniUserCard from '../../../components/MiniUserCard/MiniUserCard';
-import { CalculateTimeDiff } from '../hooks/calculateTimediff';
-import { GetNotif } from '../hooks/getNotif';
+import { Button } from '../../../Components/Button/Button';
+import MiniUserCard from '../../../Components/MiniUserCard/MiniUserCard';
+import { CalculateTimeDiff } from '../Hooks/CalculateTimediff';
+import { GetNotif } from '../Hooks/GetNotif';
 import { NoNotifications } from './NoNotifications';
 export const GroupNotif = ({ socket, setNewMessageNotif }) => {
     let user = document.cookie.split('=')[1].split('&')[0];

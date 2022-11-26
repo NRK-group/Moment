@@ -1,15 +1,14 @@
 import './Messages.css';
-import { MessagesIcon } from '../../components/Icons/Icons';
-import { MessageContainer } from './components/messageContainer';
-import { MessageContent } from './components/MessageContent';
-import { ProfileIcon, UploadIcon } from '../../components/Icons/Icons';
+import { MessagesIcon } from '../../Components/Icons/Icons';
+import { MessageContainer } from './Components/MessageContainer';
+import { MessageContent } from './Components/MessageContent';
+import { ProfileIcon, UploadIcon } from '../../Components/Icons/Icons';
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { useScrollDown } from './hooks/scrollDown';
-import { debounce } from './hooks/debounce';
+import { useScrollDown } from './Hooks/ScrollDown';
+import { debounce } from './Hooks/Debounce';
 import InputEmoji from 'react-input-emoji';
-import GetProfile from '../../Pages/Profile/ProfileData';
 export const Messages = ({
     socket,
     currentUserInfo,

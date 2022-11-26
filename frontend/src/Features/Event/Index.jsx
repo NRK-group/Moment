@@ -1,7 +1,7 @@
-import Card from '../../components/card/Card';
+import Card from '../../Components/Card/Card';
 import './Event.css';
-import { useEffect, useState } from 'react';
-import GroupEventsParticipants from '../../Pages/Groups/components/GroupEventsParticipants';
+import { useState } from 'react';
+import GroupEventsParticipants from '../../Pages/Groups/Components/GroupEventsParticipants/Index';
 
 export default function Event({
     eventObj,

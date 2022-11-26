@@ -1,30 +1,30 @@
 import './Groups.css';
 import { GetCookie } from '../Profile/ProfileData';
 import { useNavigate } from 'react-router-dom';
-import Body from '../../components/Body/Body';
-import Card from '../../components/card/Card';
-import Post from '../../features/Post';
-import AddGroup from './components/AddGroup';
-import Modal from '../../features/Modal';
-import MiniUserCard from '../../components/MiniUserCard/MiniUserCard';
-import GroupList from './components/GroupList';
-import GroupPost from './components/GroupPost';
-import GroupEvent from './components/GroupEvents';
-import Event from '../../features/Event';
+import Body from '../../Components/Body/Body';
+import Card from '../../Components/Card/Card';
+import Post from '../../Features/Post/Index';
+import AddGroup from './Components/AddGroup/Index';
+import Modal from '../../Features/Modal/Index';
+import MiniUserCard from '../../Components/MiniUserCard/MiniUserCard';
+import GroupList from './Components/GroupList/Index';
+import GroupPost from './Components/GroupPost/Index';
+import GroupEvent from './Components/GroupEvents/Index';
+import Event from '../../Features/Event/Index';
 
 import {
     RequestToS,
     GetAllGroupPosts,
     GetAllGroupEvents,
     GetAllNonMembers,
-} from './hooks/useGroupshook';
+} from './Hooks/UseGroupshook';
 
 import {
     ChevronRightIcon,
     ChevronLeftIcon,
     BarsIcon,
     GroupsIcon,
-} from '../../components/Icons/Icons';
+} from '../../Components/Icons/Icons';
 import { useRef, useState, useEffect } from 'react';
 
 function Groups({ isMobile, socket }) {

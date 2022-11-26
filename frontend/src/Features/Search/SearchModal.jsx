@@ -1,4 +1,4 @@
-import { SearchResultsContainer } from './components/SearchResultsContainer';
+import { SearchResultsContainer } from './Components/SearchResultsContainer';
 import './Search.css';
 export const SearchModal = ({ query }) => {
     return (

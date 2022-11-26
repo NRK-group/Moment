@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Card from '../../components/card/Card';
+import Card from '../../Components/Card/Card';
 import UserImg from './UserImg';
 import { useNavigate } from 'react-router-dom';
 

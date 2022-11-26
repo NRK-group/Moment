@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
-import Card from '../../components/card/Card';
-import GetPosts from '../../pages/profile/ProfilePosts';
-import Post from '../Post';
+import Card from '../../Components/Card/Card';
+import GetPosts from '../../Pages/Profile/ProfilePosts';
+import Post from '../Post/Index';
 export default function ProfilePosts(props) {
     const [posts, setPosts] = useState([]);
     const [empty, setEmpty] = useState('');

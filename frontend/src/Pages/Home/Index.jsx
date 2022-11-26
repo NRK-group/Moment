@@ -1,5 +1,5 @@
 import './Home.css';
-import Post from '../../Features/Post';
+import Post from '../../Features/Post/Index';
 import Card from '../../Components/Card/Card';
 import { useState, useEffect } from 'react';
 

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Card from '../../components/card/Card';
+import Card from '../../Components/Card/Card';
 
 export default function ProfileStats(props) {
     const navigate = useNavigate('');

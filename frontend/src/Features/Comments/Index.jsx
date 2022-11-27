@@ -56,7 +56,6 @@ const Comments = ({ isMobile }) => {
                 formData.append('table', 'Comment');
                 formData.append('idType', 'commentId');
                 formData.append('id', resp[0].CommentID);
-
                 UploadImage(formData).then(() => setFlag(!flag));
                 setImage(null);
             } else {

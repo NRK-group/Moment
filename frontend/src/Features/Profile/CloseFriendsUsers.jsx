@@ -12,6 +12,7 @@ export default function CloseFriendsUsers() {
     const naviagte = useNavigate('');
     const [closeFriends, setCloseFriends] = useState([]);
     const [followers, setFollowers] = useState([]);
+    const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     let back = urlParams.get('back');
     //Get the close friends

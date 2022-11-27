@@ -56,26 +56,24 @@ const Comments = ({ isMobile }) => {
                 formData.append('table', 'Comment');
                 formData.append('idType', 'commentId');
                 formData.append('id', resp[0].CommentID);
-
-                UploadImage(formData);
+                UploadImage(formData).then(() => setFlag(!flag));
                 setImage(null);
+            } else {
+                setFlag(!flag);
             }
             return resp;
         });
-        setFlag(!flag);
     };
 
     function handleOnEnter() {
         PostComments();
     }
 
-     const UploadImage = (data) => {
-        let uploadImage = fetch(`http://localhost:5070/imageUpload`, {
+    const UploadImage = (data) => {
+        return fetch(`http://localhost:5070/imageUpload`, {
             credentials: 'include',
             method: 'POST',
             body: data,
-        }).then(async (res) => {
-            console.log(res);
         });
     };
 
@@ -109,11 +107,19 @@ const Comments = ({ isMobile }) => {
             <Card styleName={cardStyleName}>
                 <div className='Comments'>
                     <div className='CommentsLeft'>
-                        { state.PostBodyImgSrc &&
-                        <div className='CommentsImg'>
-                            <img src={`http://localhost:5070/${state.PostBodyImgSrc}`}/>
-                        </div> || state.PostContent && <div className='CommentsText'> <p>{state.PostContent}</p> </div>
-}
+                        {(state.PostBodyImgSrc && (
+                            <div className='CommentsImg'>
+                                <img
+                                    src={`http://localhost:5070/${state.PostBodyImgSrc}`}
+                                />
+                            </div>
+                        )) ||
+                            (state.PostContent && (
+                                <div className='CommentsText'>
+                                    {' '}
+                                    <p>{state.PostContent}</p>{' '}
+                                </div>
+                            ))}
                         <div className='Comments-Emoji'></div>
                         <div className='CommentsChat'>
                             <InputEmoji

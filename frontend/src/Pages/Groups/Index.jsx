@@ -409,7 +409,7 @@ function Groups({ isMobile, socket }) {
                             </div>
                         </div>
                         {(groupSelect &&
-                            groupSelect.Members.map((ele, i) => (
+                            groupSelect.Members.reverse().map((ele, i) => (
                                 <span
                                     key={ele.UserId}
                                     onClick={() =>

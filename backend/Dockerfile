@@ -5,7 +5,7 @@ RUN apk add --update gcc g++
 RUN go build -o moment-backend .
 
 # # # Run stage
-FROM alpine:3.16
+FROM alpine:3.17
 WORKDIR /moment-backend
 COPY --from=build /moment-backend .
 EXPOSE 5070

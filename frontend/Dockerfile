@@ -10,7 +10,7 @@ COPY . ./
 RUN npm run build
 
 
-FROM nginx:1.19.0
+FROM nginx:latest
 #copies React to the container directory
 # Set working directory to nginx resources directory
 WORKDIR /usr/share/nginx/html

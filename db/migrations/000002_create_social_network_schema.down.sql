@@ -1,4 +1,2 @@
-DROP TABLE IF EXISTS "Groups";
-DROP TABLE IF EXISTS "Comment";
-DROP TABLE IF EXISTS "Post";
+DROP TABLE IF EXISTS `Groups`, `Comment`, `Post`;
 

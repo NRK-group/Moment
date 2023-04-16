@@ -9,21 +9,16 @@ services:
       dockerfile: db.Dockerfile
     networks:
       - default
-    # restart: always
     ports:
-      # <Port exposed> : < MySQL Port running inside container>
       - "3360:3306"
-    # setting some env vars to create the DB
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "secret"
       MYSQL_DATABASE: "social_network"
       MYSQL_USER: "test_db"
       MYSQL_PASSWORD: "secret"
-        # we mount a data volume to make sure we don't lose data
     volumes:
-      - ./mysql:/var/lib/mysql
-      - ./my.cnf:/etc/mysql/my.cnf
-      - ./initdb:/docker-entrypoint-initdb.d
+      - mysql:/var/lib/mysql
+      - ./db/migrations:/docker-entrypoint-initdb.d # Mounts the 'db/migrations' directory as a volume to the container's /docker-entrypoint-initdb.d directory
     command: --default-authentication-plugin=mysql_native_password
 networks:
   default:

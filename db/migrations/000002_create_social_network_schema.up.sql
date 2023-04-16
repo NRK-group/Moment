@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Post(
     imageUpload VARCHAR(255),
     numLikes INTEGER DEFAULT 0,
     createdAt DATETIME NOT NULL,
-    privacy INTEGER,
+    privacy INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS Comment(
@@ -16,13 +16,13 @@ CREATE TABLE IF NOT EXISTS Comment(
     nickName VARCHAR(255) NOT NULL,
     postId VARCHAR(255) NOT NULL,
     userId VARCHAR(255) NOT NULL,
-    content NOT NULL,
+    content VARCHAR(255) NOT NULL,
     image VARCHAR(255),
     imageUpload VARCHAR(255),
     numLikes INTEGER DEFAULT 0,
-    createdAt DATETIME NOT NULL,
+    createdAt DATETIME NOT NULL
 );
-CREATE TABLE IF NOT EXISTS Groups(
+CREATE TABLE IF NOT EXISTS `Groups`(
     groupId VARCHAR(255) NOT NULL PRIMARY KEY,
     admin VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -33,4 +33,4 @@ ALTER TABLE Comment ADD FOREIGN KEY (postId) REFERENCES Post(postId);
 ALTER TABLE Comment ADD FOREIGN KEY (userId) REFERENCES User(userId);
 
 ALTER TABLE Post ADD FOREIGN KEY (userId) REFERENCES User(userId);
-ALTER TABLE Post ADD FOREIGN KEY (groupId) REFERENCES Groups(groupId);
+ALTER TABLE Post ADD FOREIGN KEY (groupId) REFERENCES `Groups`(groupId);

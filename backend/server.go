@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,6 +11,9 @@ import (
 	"backend/pkg/handler"
 	"backend/pkg/structs"
 	wSocket "backend/pkg/websocket"
+
+	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 func CreateingTengroups(database *structs.DB) {
@@ -24,15 +28,18 @@ func CreateingTengroups(database *structs.DB) {
 
 func main() {
 	// this open or create the database
-	networkDb := sqlite.CreateDatabase("./social_network.db")
-
+	// networkDb := sqlite.CreateDatabase("./social_network.db")
+	networkDb, err := sql.Open("mysql", "test_db:secret@tcp(localhost:3360)/social_network")
+	if err != nil {
+		log.Fatal(err)
+	}
 	// migrate the database
 	sqlite.MigrateDatabase("file://pkg/db/migrations/sqlite", "sqlite3://./social_network.db")
 
 	// initialize the database struct
 	data := &structs.DB{DB: networkDb}
 	database := &handler.Env{Env: data}
-	//CreateingTengroups(data)
+	// CreateingTengroups(data)
 	// close the database
 	defer networkDb.Close()
 

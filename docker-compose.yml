@@ -18,7 +18,6 @@ services:
       MYSQL_PASSWORD: "secret"
     volumes:
       - mysql:/var/lib/mysql
-      - ./db/migrations:/docker-entrypoint-initdb.d # Mounts the 'db/migrations' directory as a volume to the container's /docker-entrypoint-initdb.d directory
     command: --default-authentication-plugin=mysql_native_password
 networks:
   default:

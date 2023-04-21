@@ -21,7 +21,7 @@ func CreateingTengroups(database *structs.DB) {
 		group1 := structs.Group{Name: "Pie" + fmt.Sprint(i), Description: "Eating Pie" + fmt.Sprint(i), Admin: "wasfdfgfd"}
 		_, err := group.CreateGroup(group1.Name, group1.Description, group1.Admin, database)
 		if err != nil {
-			fmt.Println("Error Inserting the struct into the db %v", err)
+			fmt.Println("Error Inserting the struct into the db", err.Error())
 		}
 	}
 }

@@ -17,7 +17,7 @@
     "react-datetime-picker": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-input-emoji": "^4.3.0",
-    "react-router-dom": "^6.4.2",
+    "react-router-dom": "^6.14.0",
     "react-use-file-upload": "^0.9.5",
     "read-more-react": "^1.0.10",
     "uuid": "^9.0.0"

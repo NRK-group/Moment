@@ -1,48 +1,53 @@
-# Moment
+# Social-network
 
-A social media website taking inspiration from Instagram and Facebook, built with React, Golang, Docker, SQLite3, and CSS.
+Name: Moment
 
-![Login Page](./resources/moment-login.png)
-![Home Page](./resources/moment-home.png)
+Description: A social network for sharing moments
 
-## Installation and Setup Instructions
+## Features
 
-You will need `Docker` installed globally on your machine.
+-   Authentication
+-   Profile
+-   Followers
+-   Close Friends
+-   Posts
+-   Comments
+-   Groups
+-   Notification
+-   Chats
 
-A Dockerfile has been made for both the frontend and backend.
+## Frontend
 
-There is also a makefile that has commands to build both docker images.
+React
 
-Before building the docker images you must ensure that docker is installed and running on your machine.
+### Run instructions for frontend:
 
-### Step 1
+Development:
 
-Clone this repository
-
-```bash
-git clone git@github.com:NRK-group/Moment.git
+```cmd
+    make run dev
 ```
 
-### Step 2
+Docker:
 
-Navigate to the root directory of the project
-
-```bash
-cd Moment
+```cmd
+    make frontendDocker
 ```
 
-### Step 3
+## Backend
 
-Build the application. Run the following command in the root directory of the project to build the docker images.
+GoLang
 
-```bash
-make build
+### Run instructions for backend:
+
+Development:
+
+```cmd
+    make run go
 ```
 
-### Step 4
+Docker:
 
-Open [localhost:8070](http://localhost:8070) in your browser to view the application.
-
-## Step 5
-
-Register an account and start posting!
+```cmd
+    make backendDocker
+```

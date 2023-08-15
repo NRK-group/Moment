@@ -53,6 +53,8 @@ a social media website that takes design inspiration from Instagram and Facebook
 - Go
 - Sqlite
 - Docker
+- GitHUb
+- Git
 
 ---
 
